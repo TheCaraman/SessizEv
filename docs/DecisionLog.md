@@ -1,0 +1,52 @@
+# Karar Günlüğü — THE QUIET HOURS
+
+Her karar numaralı, tarihli ve gerekçelidir. Bir karar değişirse eskisi silinmez; "Geçersiz → K-xxx" diye işaretlenir.
+
+Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene kadar geçerli) · **Açık** (karar bekliyor)
+
+## Onaylı kararlar
+
+| No | Tarih | Karar | Gerekçe |
+|---|---|---|---|
+| K-001 | 2026-11-16 | **Lily Reed öldürülemez ve ekranda şiddet görmez.** Ona uygulanabilecek yargılar: soruşturmaya devam, Noah ile birlikte gözlem altında tutma, evden çıkarma. | Yaş derecelendirmesi ve mağaza riski; çocuğa yönelik oynanabilir şiddet yok. |
+| K-002 | 2026-11-16 | **Lily her zaman sağlıklıdır** (enfeksiyon atamasına girmez). Oyuncu bunu asla kesin olarak öğrenemez; rüyaları belirsiz kalır. | K-001 ile tutarlılık; enfekte çocuk, çözümü olmayan bir ikilem üretirdi. |
+| K-003 | 2026-11-16 | **Altıncı son eklendi:** sağlıklı Daniel, ayakta kalan toplulukla evde kalır. Çalışma adı: THE LONG QUIET. | "Kalma" seçiminin sonu yoktu; iyi oynayan oyuncu cezalandırılmamalı. |
+| K-004 | 2026-11-16 | **Enfekte Daniel tahliyeyi seçerse son WE olur.** Epilog, ağın tahliye bölgesine taşındığını ima eder. | DAWN "sağlıklı" şartı koşuyor; boşluk kapatıldı. |
+| K-005 | 2026-11-16 | **Enfekte sayısı:** 17 uygun NPC içinde 3–5. İlk altı ziyaretçi teklifinden en az biri enfektedir. | Perde II hiçbir oyunda boş kalmaz; evin temiz kalması yine mümkündür. |
+| K-006 | 2026-11-16 | **NPC kademeleri:** 6 ana, 6 ikincil, 6 kısa yaylı. Hiçbiri jenerik işçi değildir. | Yazım ve üretim yükünü yaklaşık yarıya indirir. |
+| K-007 | 2026-11-16 | **Motor: Godot 4.7.2 stable (standart, .NET değil), GDScript, Forward+.** | Resmi sitede doğrulanan güncel kararlı sürüm (18 Ağustos 2026). |
+| K-008 | 2026-11-16 | **Görsel yön revizyonu:** PS1 düşük poligon temeli korunur, ama ton "temiz retro" değil; kirli, bunaltıcı, tekinsiz. Ayrıntı: ArtBible.md §2. | Proje sahibinin isteği. |
+| K-009 | 2026-11-16 | **3D varlık üretimi:** Blender kullanılmıyor. Ev ve eşyalar motor içinde (kod ve CSG ile) üretilir; karakterler modüler ilkel parça kitinden kurulur. Dokular için yapay zekâ görsel araçları kullanılabilir; her doku için tam istem metni verilir. | Proje sahibi Blender kullanmıyor. |
+
+## Varsayımlar
+
+| No | Varsayım | Kaynak sorun |
+|---|---|---|
+| V-001 | Gece dört nöbet bloğudur: 23–01, 01–03, 03–05, 05–07. Blok içinde serbest dolaşılır; saat blok bitince ilerler. | Hibrit zaman ile gerçek zamanlı nöbet çelişkisi |
+| V-002 | Rastgelelik yalnızca "ne olacağını" belirler; seed'lidir, gün başında hesaplanıp kaydedilir. Oyuncu müdahalesinin sonucu tamamen duruma bağlıdır. | "Gizli zar yok" kuralı |
+| V-003 | Mühürsüz kontamine nesneye yalnızca Daniel dokunabilir. | Kanonik enfeksiyon kuralı 4 |
+| V-004 | Her enfekte NPC'nin en az üç bağımsız kanıt fırsatı, her sağlıklı NPC'nin gerçek açıklaması olan en az iki şüpheli davranışı vardır. | Adil çıkarım |
+| V-005 | Enfeksiyon kampanya başında tüm kadro için bir kez atanır ve kaydedilir. | Kural 3 ile bölüm 43 uyumu |
+| V-006 | Manuel kayıt yalnızca gündüz serbest dolaşımda. Otomatik kayıt: faz geçişleri ve her geri dönüşsüz karar sonrası. | Kayıt istismarı |
+| V-007 | Diyalog için hazır eklenti yok; kendi veri güdümlü sistemimiz. | Bağımlılık riski, yerelleştirme |
+| V-008 | Lily evden çıkarılırsa Noah onunla birlikte gider; Lily asla tek başına dışarı bırakılmaz. Noah çıkarılır, ölür veya kaybolursa Lily evde kalır ve bir bakıcıya bağlanır. | K-001'in doğal sonucu |
+| V-009 | Girdi eylemleri `project.godot` içinde değil, açılışta kodla kaydedilir (`InputSetup`). | Tuş yeniden atama ve elle yazılan proje dosyasında hata riski |
+| V-010 | Belgeler Türkçe, oyun içi tüm metinler İngilizce ve çeviri anahtarlıdır. | Bölüm 0 |
+| V-011 | Sağlıklı Daniel, topluluğu yıkılmış hâlde tahliye olursa son EMPTY HOUSE'tur (yalnız ayrılış varyantı). | Son önceliği boşluğu |
+
+## Açık konular
+
+| No | Konu | Not |
+|---|---|---|
+| A-001 | Su kaynağı: sayılan stok mu, "şebeke çalışıyor/arızalı" durumu mu? | Onay gelmedi; şimdilik özgün spesifikasyon geçerli (hafif sayılan stok). |
+| A-002 | Altıncı sonun nihai adı | Çalışma adı THE LONG QUIET. |
+| A-003 | "Maruz kalmış" (exposed) durumunun ilerleme kuralları | GDD §8'de taslak; dengeleme Faz 5'te. |
+| A-004 | Animasyon kaynağı | Lisansı uygun (CC0) iskelet animasyon paketi mi, kodla üretilen basit pozlar mı? Faz 3 öncesi karar. |
+| A-005 | ~~Godot ve git kurulu değil~~ — **Kapandı (2026-11-16)** | Godot 4.7.2 `tools/godot-4.7.2/` altında (proje klasörünün dışında). Git 2.56.1 kuruldu; depo başlatıldı. Uzak depo (GitHub vb.) henüz yok. |
+
+## Değişiklik günlüğü
+
+| Tarih | Değişiklik |
+|---|---|
+| 2026-11-16 | Proje iskeleti ve ilk belge seti oluşturuldu. |
+| 2026-11-16 | Faz 1.1 doğrulandı: proje Godot 4.7.2'de başsız içe aktarıldı ve açılış sahnesi hatasız, uyarısız çalıştı; dokuz girdi eylemi kaydedildi. Pencereli (görsel) çalıştırma henüz yapılmadı. |
