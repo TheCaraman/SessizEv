@@ -14,9 +14,11 @@ Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
 
 ## Sahibin son geri bildirimi ve mevcut iş
 
-Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. ART-REV-001 kapsamında yalnızca tek oda için çizimsel gündüz/gece karşılaştırması hazırlanıyor. Üretim görselleri şimdilik korunur. docs/art/AtmosphereRevision.md ve messages/2026-11-16-ArtRevision.md esas alınır; eski ART-001 üslup kabulüne dayanarak yeni oda üretilmez.
+Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. Sahip ART-REV-003 çizimsel yönünü korumayı ve ilk odayı oyunda göstermeyi onayladı. Oturma odası yeni görsele bağlandı; gerçek kampanya 1080p görüntüsü docs/qa/first-room-approved.png. Diğer 12 oda henüz eski geçici sanatta. TV/radyo görsel katmanları ve ayrı gece resmi açık.
 
 POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre/maliyet onayı, opak günlük, olay güdümlü elektrikli ışık, saate bağlı pencere, figür/eşya tonu ve en/tr 1080p/1440p mevcut tesisat eylemi sınaması. Otomatik işçi başlatılmadı; ana Codex uyguladı. Görsel yön hâlâ sahibin incelemesinde; ART-REV-003 çizimsel örneği üretime bağlanmadı. Tam elle oynama açık.
+
+Gece nöbeti: NightTimeline saf hesap modülü ve veri tanımı hazır; 2905 yeni denetim dahil 12 paket/5321 geçti. Henüz GameState/oyuncu nöbet akışına bağlanmadı. docs/NightWatchDesign.md ve docs/qa/NightTimeline.md sonraki entegrasyonu tanımlar.
 
 ## Tamamlanmamış alanlar
 

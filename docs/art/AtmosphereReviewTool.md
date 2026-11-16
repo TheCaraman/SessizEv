@@ -1,5 +1,7 @@
 # Motor içinde atmosfer karşılaştırması
 
+Güncelleme: sahip çizimsel yönü ve ilk oda entegrasyonunu onayladı. Araç artık arşivlenmiş eski oda ile gerçek üretim yolundaki yeni odayı karşılaştırır; aşağıdaki onay-bekleme ifadeleri önceki teslimin tarihsel notlarıdır.
+
 `scenes/dev/atmosphere_review.tscn` ayrı inceleme sahnesidir. Normal başlangıç sahnesini veya üretim arka planlarını değiştirmez. Kampanya başlatmaz, kaydetmez, kişi kabul etmez. Mevcut RoomView arayüzünün arka planında iki görseli aynı kadrajda gösterir.
 
 Godot editöründe bu sahneyi açıp F6 ile çalıştır. 1/mevcut, 2/öneri düğmeleri veya tuşlarıyla değiştir; Escape aracı kapatır. Başlangıçta öneri gösterilir. Türkçe açıklamalar geliştirme aracına aittir; ürün menüsü değildir.

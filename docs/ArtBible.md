@@ -2,6 +2,8 @@
 
 Sürüm 0.2 · 2026-11-16 · K-011 ve K-012'ye göre yeniden yazıldı. Önceki "kirli PS1" yönü geçersizdir.
 
+Güncel sahip onayı: ART-REV-003 çizimsel yönü koru ve ilk odayı oyunda göster. Oturma odası artık bu örneği kullanır; diğer odalar eski geçici sanatla kalır. Kalın/koyu konturlar, sade biçimler, yeşil gölgeler ve hafif çarpık perspektif esas; önceki boyanmış gerçekçilik yönü geçersizdir. Referanslar yalnızca atmosfer/biçim içindir; sahneler kopyalanmaz.
+
 ## 1. Sunum biçimi (K-011)
 
 | Alan | Biçim |
@@ -48,7 +50,7 @@ Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 - **Dosya yolu:** `assets/rooms/<oda_kimliği>.png`. Kimlikler: `living_room`, `dining`, `kitchen`, `pantry`, `utility`, `bathroom_ground`, `guest_a`, `guest_b`, `daniel_bedroom`, `isolation`, `multipurpose`, `bathroom_upper`, `storage`.
 - **Arka plan boş olmalı:** içinde insan yok. Karakterler ayrı katmandır.
 - **Bakış:** kapı eşiğinden içeri, göz hizasından, hafif geniş açı. Her odada aynı.
-- **Işık ve üslup:** referans `assets/rooms/living_room.png` (karar ART-001): perdeden soğuk gün ışığı, zayıf sıcak lamba, hafif pus, pürüzsüz boyanmış gerçekçilik.
+- **Işık ve üslup:** güncel referans `assets/rooms/living_room.png` (ART-REV-003 sahibi onayı): sade çizimsel biçimler, koyu konturlar, kirli yeşil gölge, soluk sıcak duvar ve sınırlı sarı ışık. Fotogerçekçi/ayrıntılı yağlı boya görünümünden kaçın.
 - **Alt üçte bir sakin olmalı:** anlatı paneli ve düğmeler orayı örter.
 - Dosya yoksa oyun yeşil bir yer tutucu ve "yer tutucu görsel" yazısı gösterir.
 
@@ -57,10 +59,11 @@ Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 ```
 Interior of a [room] in a run-down small-town house, seen from the doorway at eye level,
 slightly wide angle. Empty of people. [3-5 concrete objects].
-Smooth painted realism, high resolution, no pixelation, no outlines. Plain dirty-yellow
-walls, off-white ceiling, brown wood, deep red rug, dark teal upholstery. Cool daylight
-through a gap in the curtains, one weak warm lamp, light haze. Lower third kept calm.
-Reference: assets/rooms/living_room.png (decision ART-001).
+Simplified graphic illustration, irregular dark contours, broad color shapes,
+slightly uncanny perspective, no photorealism, no pixelation. Muted warm plaster,
+neutral ceiling, brown wood, burgundy upholstery, deep green-teal shadows.
+Dim curtain light and a small warm lamp. Lower third kept calm.
+Reference: assets/rooms/living_room.png (owner-approved ART-REV-003 direction).
 No text, no logos, no people. 16:9.
 ```
 

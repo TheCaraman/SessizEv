@@ -1,6 +1,6 @@
 # Atmosfer düzeltmesi — ART-REV-001
 
-Durum: Karşılaştırmalı örnek hazırlanıyor; üretim varlıklarını değiştirme onayı değildir.
+Durum: Sahip ART-REV-003 yönünü korumayı ve ilk odayı oyunda göstermeyi onayladı. Oturma odası üretim yoluna bağlandı; diğer 12 odanın toplu değişimi yapılmadı. Aşağıdaki önceki örnek notları tarihsel kayıttır.
 
 ## Sahibin geri bildirimi
 

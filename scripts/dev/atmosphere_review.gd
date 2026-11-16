@@ -1,8 +1,8 @@
 extends Node
 ## Review-only scene: no campaign creation, save writes or production swaps.
 const OPTIONS: Array[Dictionary] = [
-	{"title": "Mevcut geçici oda", "path": "res://assets/rooms/living_room.png", "capture": "current"},
-	{"title": "Önerilen çizimsel yön — onay bekliyor", "path": "res://docs/art/concepts/ART-REV-003-graphic-study.png", "capture": "proposed"},
+	{"title": "Önceki geçici oda", "path": "res://docs/art/concepts/previous-living-room.png", "capture": "current"},
+	{"title": "Onaylanan çizimsel yön — ilk oda", "path": "res://assets/rooms/living_room.png", "capture": "proposed"},
 ]
 var _view: RoomView
 var _caption: Label
