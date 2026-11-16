@@ -1,0 +1,110 @@
+{
+  "version": "0.1.3-dev.20261116.4",
+  "suites": 24,
+  "checks": 6196,
+  "audio_driver": "WASAPI",
+  "settings_gpu_checks": 72,
+  "settings_gpu_previews": [
+    "settings-en.png",
+    "settings-tr.png"
+  ],
+  "log_directory": "C:\\Users\\eyups\\AppData\\Local\\Temp\\tqh-tests-6c614b54d6e74b6281104eb1c5a2841d",
+  "results": [
+    {
+      "suite": "AUDIO LIFECYCLE TEST",
+      "checks": 35
+    },
+    {
+      "suite": "CAMPAIGN TEST",
+      "checks": 69
+    },
+    {
+      "suite": "DAY12 INTEGRATION TEST",
+      "checks": 832
+    },
+    {
+      "suite": "DAY 2 TEST",
+      "checks": 737
+    },
+    {
+      "suite": "DAY4 REVIEW TEST",
+      "checks": 70
+    },
+    {
+      "suite": "DOOR AUDIO TEST",
+      "checks": 10
+    },
+    {
+      "suite": "DOOR TRANSITION TEST",
+      "checks": 15
+    },
+    {
+      "suite": "HOUSE LAYOUT TEST",
+      "checks": 99
+    },
+    {
+      "suite": "HOUSE NIGHT EVENTS TEST",
+      "checks": 16
+    },
+    {
+      "suite": "INTERACTION TEST",
+      "checks": 14
+    },
+    {
+      "suite": "ISOLATION TEST",
+      "checks": 65
+    },
+    {
+      "suite": "MENU TEST",
+      "checks": 80
+    },
+    {
+      "suite": "NIGHT OBSERVATION TEST",
+      "checks": 38
+    },
+    {
+      "suite": "NIGHT STATE TEST",
+      "checks": 32
+    },
+    {
+      "suite": "NIGHT TIMELINE TEST",
+      "checks": 2921
+    },
+    {
+      "suite": "NIGHT WATCH TEST",
+      "checks": 144
+    },
+    {
+      "suite": "PLAYER MOVEMENT TEST",
+      "checks": 6
+    },
+    {
+      "suite": "POWER INCIDENT TEST",
+      "checks": 669
+    },
+    {
+      "suite": "PRESENTATION TEST",
+      "checks": 89
+    },
+    {
+      "suite": "RESIDENT JUDGMENT TEST",
+      "checks": 47
+    },
+    {
+      "suite": "ROOM LIGHTING TEST",
+      "checks": 56
+    },
+    {
+      "suite": "SAVE WRITE TEST",
+      "checks": 58
+    },
+    {
+      "suite": "SETTINGS TEST",
+      "checks": 70
+    },
+    {
+      "suite": "SHELTER TEST",
+      "checks": 24
+    }
+  ]
+}

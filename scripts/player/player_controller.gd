@@ -40,6 +40,12 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	_apply_mouse_mode()
+	Settings.preferences_changed.connect(_apply_preferences)
+	_apply_preferences()
+
+func _apply_preferences() -> void:
+	mouse_sensitivity = Settings.get_number("mouse_sensitivity")
+	($Head/Camera3D as Camera3D).fov = Settings.get_number("fov")
 
 
 func _unhandled_input(event: InputEvent) -> void:

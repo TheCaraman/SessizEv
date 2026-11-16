@@ -14,6 +14,7 @@ var _continue_button: Button
 var _note: Label
 var _language_choice: OptionButton
 var _localized: Dictionary = {}
+var _settings: SettingsView
 
 
 func _notification(what: int) -> void:
@@ -29,6 +30,8 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().paused = false
 	_build_interface()
+	_settings = SettingsView.new()
+	add_child(_settings)
 	refresh()
 
 
@@ -117,6 +120,11 @@ func _build_interface() -> void:
 	_localized[new_game] = "MENU_NEW_GAME"
 	new_game.pressed.connect(_on_new_game_pressed)
 	column.add_child(new_game)
+	var settings_button: Button = _make_button(tr("MENU_SETTINGS"))
+	settings_button.name = "SettingsButton"
+	_localized[settings_button] = "MENU_SETTINGS"
+	settings_button.pressed.connect(func() -> void: _settings.open())
+	column.add_child(settings_button)
 
 	var quit: Button = _make_button(tr("MENU_QUIT"))
 	_localized[quit] = "MENU_QUIT"

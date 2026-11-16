@@ -10,6 +10,7 @@ signal closed
 const MENU_SCENE: String = "res://scenes/main/main_menu.tscn"
 const TEXT_COLOR := Color(0.88, 0.86, 0.76)
 const DIM_COLOR := Color(0.58, 0.57, 0.50)
+var _settings: SettingsView
 
 
 func _ready() -> void:
@@ -17,6 +18,8 @@ func _ready() -> void:
 	# Keeps working while the rest of the tree is paused.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_build_interface()
+	_settings = SettingsView.new()
+	add_child(_settings)
 	visible = false
 
 
@@ -36,13 +39,17 @@ func close() -> void:
 	if not visible:
 		return
 	visible = false
+	_settings.close()
 	get_tree().paused = false
 	closed.emit()
 
 
 func _input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed(&"pause"):
-		close()
+		if _settings.visible:
+			_settings.close()
+		else:
+			close()
 		get_viewport().set_input_as_handled()
 
 
@@ -79,6 +86,10 @@ func _build_interface() -> void:
 	var resume: Button = _make_button(tr("PAUSE_RESUME"))
 	resume.pressed.connect(close)
 	column.add_child(resume)
+	var settings_button: Button = _make_button(tr("MENU_SETTINGS"))
+	settings_button.name = "SettingsButton"
+	settings_button.pressed.connect(func() -> void: _settings.open())
+	column.add_child(settings_button)
 
 	var main_menu: Button = _make_button(tr("PAUSE_MAIN_MENU"))
 	main_menu.pressed.connect(_go_to_main_menu)

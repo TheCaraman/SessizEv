@@ -26,7 +26,12 @@ var _choices: VBoxContainer
 func _ready() -> void:
 	layer = 7
 	_build_interface()
+	Settings.preferences_changed.connect(_apply_preferences)
+	_apply_preferences()
 	visible = false
+
+func _apply_preferences() -> void:
+	_figure.modulate = Settings.world_tint()
 
 
 ## Called once by the session scene.

@@ -86,7 +86,34 @@ func _ready() -> void:
 	check((view.get_prop_layer() as RoomProps).get_prop_ids() == PackedStringArray(["media_console"]), "living room loads authored media prop")
 	view.open("kitchen")
 	check((view.get_prop_layer() as RoomProps).get_prop_ids().is_empty(), "room changes clear prior props")
+	var audio_refs: Array[WeakRef] = _audio_refs(scene)
 	viewport.queue_free()
+	await get_tree().process_frame
+	if AudioServer.get_driver_name() != "Dummy":
+		# AudioServer releases stopped voices on a later mix. Do not terminate
+		# the process in the same frame as queued scene destruction.
+		var deadline: int = Time.get_ticks_msec() + 1000
+		while _has_live_audio(audio_refs) and Time.get_ticks_msec() < deadline:
+			await get_tree().create_timer(0.02).timeout
+		check(not _has_live_audio(audio_refs), "scene audio is released before test process exits")
 	if failures == 0:
 		print("PRESENTATION TEST: PASS (%d checks)" % checks)
 	get_tree().quit(0 if failures == 0 else 1)
+
+func _audio_refs(scene: Node) -> Array[WeakRef]:
+	var refs: Array[WeakRef] = []
+	for node: Node in scene.find_children("*", "AudioStreamPlayer3D", true, false):
+		var player := node as AudioStreamPlayer3D
+		if player.stream != null:
+			refs.append(weakref(player.stream))
+		if player.playing:
+			var playback: AudioStreamPlayback = player.get_stream_playback()
+			if playback != null:
+				refs.append(weakref(playback))
+	return refs
+
+func _has_live_audio(refs: Array[WeakRef]) -> bool:
+	for reference: WeakRef in refs:
+		if reference.get_ref() != null:
+			return true
+	return false

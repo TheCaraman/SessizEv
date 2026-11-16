@@ -56,6 +56,7 @@ func _ready() -> void:
 	_root.add_child(_transition_cover)
 	visible = false
 	EventBus.room_view_requested.connect(_reveal_from_door)
+	Settings.preferences_changed.connect(_refresh)
 	EventBus.residents_changed.connect(_refresh)
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _refresh())
 	EventBus.dialogue_ended.connect(func(_id: String) -> void: _refresh())
@@ -166,10 +167,10 @@ func _refresh() -> void:
 		_background.texture = load(_visual_path) as Texture2D if has_image else _get_placeholder()
 		(_prop_layer as RoomProps).show_room(str(_room_id), _background.texture.get_size())
 		_placeholder_note.visible = not has_image
-	_background.modulate = visual["background_tint"]
+	_background.modulate = Settings.world_tint(visual["background_tint"])
 	# Only world layers share the temporary lighting tint; UI remains readable.
-	_character_layer.modulate = visual["actor_tint"]
-	_prop_layer.modulate = visual["actor_tint"]
+	_character_layer.modulate = Settings.world_tint(visual["actor_tint"])
+	_prop_layer.modulate = Settings.world_tint(visual["actor_tint"])
 	_clear(_character_layer)
 	var names := PackedStringArray()
 	for npc_id: String in GameState.get_room_occupants(_room_id):

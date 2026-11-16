@@ -24,6 +24,7 @@ uniform float vertical_resolution : hint_range(120.0, 4320.0, 1.0) = 4320.0;
 uniform float color_levels : hint_range(4.0, 256.0, 1.0) = 255.0;
 uniform float dither_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
+uniform float brightness : hint_range(0.7, 1.6) = 1.0;
 
 uniform float grade_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 grade_shadow : source_color = vec3(0.03, 0.05, 0.04);
@@ -93,5 +94,5 @@ void fragment() {
 	if (uv.y < letterbox || uv.y > 1.0 - letterbox) {
 		color = vec3(0.0);
 	}
-	COLOR = vec4(clamp(color, 0.0, 1.0), 1.0);
+	COLOR = vec4(clamp(color * brightness, 0.0, 1.0), 1.0);
 }

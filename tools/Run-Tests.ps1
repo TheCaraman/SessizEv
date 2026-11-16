@@ -43,7 +43,8 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     if ($Expected) { $log -split "`n" | Where-Object { $_ -match 'TEST: PASS' } | Write-Output }
 }
 Invoke-GodotCheck @('--headless', '--path', $testProject, '--import')
-foreach ($test in @('door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')) {
+$tests = @('settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')
+foreach ($test in $tests) {
     $arguments = @('--headless')
     # Godot processes these switches in order: headless sets Dummy, so the
     # explicit audio driver must follow it.
@@ -53,9 +54,9 @@ foreach ($test in @('door_transition_test', 'night_observation_test', 'isolation
 }
 if ($AudioDriver) {
     Invoke-GodotCheck @('--headless', '--audio-driver', $AudioDriver, '--path', $testProject, 'res://tests/audio_lifecycle_test.tscn', '--', "--expected-driver=$AudioDriver") 'AUDIO LIFECYCLE TEST: PASS'
-    Write-Output 'All twenty-three test suites passed (including hardware audio lifecycle).'
+    Write-Output "All $($tests.Count + 1) test suites passed (including hardware audio lifecycle)."
 } else {
-    Write-Output 'All twenty-two core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows.'
+    Write-Output "All $($tests.Count) core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows."
 }
 Write-Output "Logs and project copy: $testData"
 Write-Output "Isolated user data: $userDirName (under the platform application-data directory)"

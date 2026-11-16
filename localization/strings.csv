@@ -80,7 +80,7 @@ MENU_QUIT,"Quit","Çık"
 MENU_OVERWRITE_NOTE,"A new game replaces your save the next time the game saves.","Yeni oyun, oyun bir sonraki kez kaydettiğinde mevcut kaydının yerini alır."
 MENU_LOAD_FAILED,"The save could not be read.","Kayıt okunamadı."
 MENU_LANGUAGE,Language,Dil
-MENU_SETTINGS_FAILED,The language preference could not be saved.,Dil tercihi kaydedilemedi.
+MENU_SETTINGS_FAILED,The preferences could not be saved.,Ayarlar kaydedilemedi.
 PAUSE_TITLE,"Paused","Duraklatıldı"
 PAUSE_RESUME,"Resume","Devam et"
 PAUSE_MAIN_MENU,"Main menu","Ana menü"
@@ -265,3 +265,9 @@ ISO_CARE_DONE,You checked immediate needs and listened. This is not a medical ex
 ISO_CARE_ELENA,"I can tell you if I need water. I can't tell you what a quiet night proves. Please keep checking on everyone.","Suya ihtiyacım olursa söyleyebilirim. Sessiz bir gecenin neyi kanıtladığını söyleyemem. Lütfen herkesi kontrol etmeyi sürdür."
 ISO_CARE_MARCUS,"I'm here. I heard the latch. Tell me when you'll come back; don't leave me guessing.","Buradayım. Mandalı duydum. Ne zaman döneceğini söyle; beni tahmin yürütmeye bırakma."
 ISO_CARE_ARTHUR,"I'm frightened. You can write that down without turning it into a symptom. Thank you for listening.","Korkuyorum. Bunu bir belirtiye dönüştürmeden de yazabilirsin. Dinlediğin için teşekkür ederim."
+MENU_SETTINGS,"Settings","Ayarlar"
+SETTINGS_BRIGHTNESS,"Brightness","Parlaklık"
+SETTINGS_MOUSE_SENSITIVITY,"Mouse sensitivity","Fare hassasiyeti"
+SETTINGS_FOV,"Field of view","Görüş açısı"
+SETTINGS_DEFAULTS,"Restore defaults","Varsayılanlara dön"
+SETTINGS_BACK,"Back","Geri"

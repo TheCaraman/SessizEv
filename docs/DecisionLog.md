@@ -100,3 +100,6 @@ Sahip önceki koridor ve karttan tam ekran odaya geçişi reddetti. Resmî refer
 
 ## HOUSE-ATMOS-004 / 2026-11-16 / Sahibin yeni reddi
 Sahip son evin renk/tasarım/ışık/atmosferini uzak ve basık buldu; baştan düzenleme yetkisi verdi. Ayrı çalışma dalında geniş tam üst koridor ve kapalı iki kat hacmi kuruldu; atrium/galeri/tepe penceresi kaldırıldı. Özgün oturma odası üslubunda sıva/döşeme/teal boya kaynakları, açık perde aralığı, yerel pencere dolgusu ve sıcak lamba adaları uygulandı; ağır filtre/gölge ezme/sinema şeridi kaldırıldı. Kod/plan/QA kaynakları docs/qa/HouseAtmosphereV3.md. Kanonik Claude003 yarım dosyaları korunur, bu dal farklı bir deneme sürümüdür; nihai sanat kabulü iddia edilmez.
+
+## SETTINGS-PLAYTEST-001 / 2026-11-16
+GDD temel PC ayarları ilk dilim: parlaklık, fare hassasiyeti, FOV. Varsayılanlar1.0/.0022/78 korunur; ana/pause menüsü aynıSettingsView kullanır, EN/TR. Tercihler kampanyadan ayrı; bozuk eski veri güvenli varsayılan alır, dil yazımı sayısal tercihleri silmez. RGB parlaklık alfa veya UI yazılarına uygulanmaz. Yeni mekanik/sanat kararı değil, mevcut gereksinim uygulamasıdır. Tam grafik/ses/rebind/motion ayarları bu dilimin dışında açık kalır. QA: docs/qa/PlaytestSettings.md.
