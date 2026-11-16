@@ -20,6 +20,8 @@ var _journal: JournalView
 var _current_room: StringName = &""
 var _electric_lights: Array[Node3D] = []
 var _electric_materials: Array[StandardMaterial3D] = []
+var _window_lights: Array[Dictionary] = []
+var _window_materials: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -80,6 +82,17 @@ func _physics_process(_delta: float) -> void:
 
 func _cache_electric_lighting() -> void:
 	# Cache this session only; another preview/session must keep its own materials.
+	for light: Node in get_tree().get_nodes_in_group("window_lights"):
+		if is_ancestor_of(light) and light is Light3D:
+			_window_lights.append({"node": light, "energy": light.light_energy})
+	for backdrop: Node in get_tree().get_nodes_in_group("window_backdrops"):
+		if not is_ancestor_of(backdrop) or not backdrop is MeshInstance3D:
+			continue
+		var source: Material = backdrop.get_active_material(0)
+		if source is StandardMaterial3D:
+			var local_material: StandardMaterial3D = source.duplicate()
+			backdrop.material_override = local_material
+			_window_materials.append({"material": local_material, "color": local_material.albedo_color, "emission": local_material.emission})
 	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
 		if is_ancestor_of(light) and light is Node3D:
 			_electric_lights.append(light)
@@ -94,10 +107,31 @@ func _cache_electric_lighting() -> void:
 
 
 func _update_electric_lighting(powered: bool) -> void:
+	var daylight: float = daylight_factor(GameState.minutes)
+	for entry: Dictionary in _window_lights:
+		entry["node"].light_energy = float(entry["energy"]) * daylight
+	for entry: Dictionary in _window_materials:
+		var material: StandardMaterial3D = entry["material"]
+		material.albedo_color = entry["color"] * daylight
+		material.emission = entry["emission"] * daylight
 	for light: Node3D in _electric_lights:
 		light.visible = powered
 	for material: StandardMaterial3D in _electric_materials:
 		material.emission_enabled = powered
+
+
+## Weak exterior light remains at night, independent of household power.
+## Always multiply cached originals; repeated clock events cannot darken them again.
+static func daylight_factor(minutes: int) -> float:
+	if minutes < 420:
+		return 0.08
+	if minutes < 480:
+		return lerpf(0.08, 1.0, float(minutes - 420) / 60.0)
+	if minutes < 1080:
+		return 1.0
+	if minutes < 1320:
+		return lerpf(1.0, 0.08, float(minutes - 1080) / 240.0)
+	return 0.08
 
 
 func get_current_room() -> StringName:
@@ -124,7 +158,7 @@ func _build_environment() -> void:
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.03
+	environment.volumetric_fog_density = 0.012
 	environment.volumetric_fog_albedo = Color(0.74, 0.80, 0.82)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
 	environment.volumetric_fog_emission_energy = 0.15

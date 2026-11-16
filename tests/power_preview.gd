@@ -10,11 +10,11 @@ func _ready() -> void:
 	player.set_physics_process(false)
 	player.position = Vector3(6, 0, 9.5)
 	player.rotation.y = 0
-	for i: int in 8:
+	for i: int in 60:
 		await get_tree().process_frame
 	await shot("DAY3-001-before")
 	GameState.advance_minutes(30)
-	for i: int in 8:
+	for i: int in 60:
 		await get_tree().physics_frame
 	await shot("DAY3-001-outage")
 	var view: RoomView = scene.get_node("RoomView")

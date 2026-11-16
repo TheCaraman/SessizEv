@@ -390,6 +390,7 @@ func _add_window(
 		Vector3(width + 0.3, height + 0.3, 0.01), &"window_sky"
 	)
 	sky.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	sky.add_to_group("window_backdrops")
 
 	# Frame, one upright and one cross bar. These throw shadows into the room.
 	for side: float in [-1.0, 1.0]:
@@ -424,6 +425,7 @@ func _add_window(
 	var toward := Vector3(0.12, 0.2, -out * 4.5)
 	var daylight := SpotLight3D.new()
 	daylight.name = "Daylight"
+	daylight.add_to_group("window_lights")
 	daylight.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
 	daylight.light_color = Color(0.92, 0.95, 1.0)
 	daylight.light_energy = 3.0

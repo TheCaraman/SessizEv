@@ -194,6 +194,17 @@ func _ready() -> void:
 		check(not fitting.material_override.emission_enabled, "lamp glow off")
 	var daylight: Node = scene.find_child("Daylight", true, false)
 	check(daylight != null and daylight.visible, "window daylight independent")
+	var night_energy: float = daylight.light_energy
+	check(night_energy > 0.0 and night_energy < 0.5, "night window remains weakly lit")
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	check(is_equal_approx(daylight.light_energy, night_energy), "repeated clock event does not compound dimming")
+	var saved_minutes: int = GameState.minutes
+	GameState.minutes = 720
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	check(daylight.light_energy > night_energy * 5.0, "daytime exterior light stronger than night during outage")
+	GameState.minutes = saved_minutes
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	check(is_equal_approx(daylight.light_energy, night_energy), "return to night restores exact light energy")
 	check(scene.get_node("Player/EmergencyNavigation").light_energy > 0, "accessible emergency light")
 	var key := InputEventAction.new()
 	key.action = "journal"
