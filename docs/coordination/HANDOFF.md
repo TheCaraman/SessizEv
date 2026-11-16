@@ -127,3 +127,6 @@ Dayanak 4b2887d. Aday kayıt ve ardından canlı uygulama API'si eklendi; yükle
 
 ## 2026-11-16 / Codex / DAY4-REVIEW-001
 Dayanak 44578a2. İlk ücretsiz sabah değerlendirme eylemi/JournalView bağlantısı ve legacy fallback. 18 paket/5787 denetim; GPU capture 74. Tam Day4 sayılmaz. Sonraki: gerçek tanık ve nonlethal karar doğrulaması. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / DAY4-EXPEL-001
+Dayanak 015c8fb. İlk nonlethal kovma akışı, gerçek oda ve iki basışlı anlık görüntü onayı. 19 paket/5834 denetim; GPU39. Başlangıçta Türkçe testte boş contains beklentisi hatası düzeltildi; ürün hatası değildi. Sosyal sahne/izolasyon henüz yok. Sahiplik bırakıldı.

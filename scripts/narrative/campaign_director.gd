@@ -17,6 +17,7 @@ var power: PowerIncident
 var night: NightSession
 var _player_actions: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://resources/events/player_actions.json"))
 var _watch_confirmation: bool = false
+var judgment := ResidentJudgment.new()
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
@@ -45,6 +46,7 @@ func setup(dialogue: DialogueRunner) -> void:
 	EventBus.time_changed.connect(_check_power_time)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _repair_confirmation = false)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _watch_confirmation = false)
+	EventBus.room_view_closed.connect(func(_room: StringName) -> void: judgment.cancel())
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
 	# A visitor who ran out of patience during a conversation leaves when it ends.
@@ -59,6 +61,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	for id: String in judgment.targets(room_id):
+		actions.append({"id": "expel:" + id, "label": tr("JUDGMENT_EXPEL_ACTION").format({"name": Roster.get_display_name(id)})})
 	if room_id == "daniel_bedroom" and Day4Review.available():
 		actions.append({"id": "review_last_night", "label": tr("DAY4_REVIEW_ACTION")})
 	if room_id == str(night.events.definition["source_room"]) and night.events.can_inspect():
@@ -108,6 +112,11 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 		return ""
 	if action_id != "watch":
 		_watch_confirmation = false
+	if not action_id.begins_with("expel:"):
+		judgment.cancel()
+	else:
+		_repair_confirmation = false
+		return judgment.expel(room_id, action_id.trim_prefix("expel:"))
 
 	if action_id.begins_with("power:"):
 		var choice: String = action_id.trim_prefix("power:")

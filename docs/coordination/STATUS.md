@@ -41,3 +41,6 @@ SAVE-TXN-001 tamam: beklenen durum kontrolü, adayın kaydı, ardından canlı u
 
 ## Gün 4 ilk değerlendirme
 Daniel odasında ücretsiz inceleme mevcut; yalnız toplanmış kanıt ve güncel sakin sayısı, kayıt yokluğu açık. Güvenli aday işlemle açılış kaydedilir. 18 paket/5787 denetim, GPU capture 74 geçti. docs/qa/Day4Review.md. Tam suçlama/izolasyon/kovma ve gerçek tanık sistemi henüz yok; kesit sınırı korunur.
+
+## Gün 4 ilk evden çıkarma
+Üç uygun yetişkin için bulunduğu odada iki basışlı kovma; 15 dakika/−20 hedef güveni, iş/yatak temizliği, kaynak iadesi yok, enfeksiyon sabit. 19 paket/5834 denetim; GPU capture 39. docs/qa/ResidentExpulsion.md. İzolasyon, tanık ve sosyal ayrılık sahneleri açık. Sanat defaultları korunur; aday onayı sayılmaz.
