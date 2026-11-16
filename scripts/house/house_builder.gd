@@ -30,6 +30,7 @@ func build() -> void:
 	_build_stairs()
 	_build_ceilings()
 	_build_lamps()
+	_build_light_shafts()
 	_build_runners()
 
 
@@ -112,7 +113,7 @@ func _add_wall_piece(
 	var along_x: bool = wall["axis"] == "x"
 	var center := Vector3(mid, center_y, wall["at"]) if along_x else Vector3(wall["at"], center_y, mid)
 	var size := Vector3(length, height, thickness) if along_x else Vector3(thickness, height, length)
-	var piece: StaticBody3D = _add_box(parent, center, size, &"wallpaper_green")
+	var piece: StaticBody3D = _add_box(parent, center, size, &"wallpaper")
 
 	# Full-height pieces get a skirting board and a dark rail under the ceiling,
 	# both standing proud of the wall on either side.
@@ -289,10 +290,38 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.position = ceiling_point + Vector3(0.0, -0.25, 0.0)
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
-	lamp.light_energy = 1.25
-	lamp.omni_attenuation = 1.2
+	# Weak warm pools: the corridors are lit mostly by the cold haze.
+	lamp.light_energy = 0.55
+	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
+	lamp.shadow_blur = 2.5
+	lamp.light_volumetric_fog_energy = 1.2
 	parent.add_child(lamp)
+
+
+## Cold beams cutting through the haze, as if from a high window out of sight.
+## One crosses the downstairs hall, one the upstairs corridor.
+func _build_light_shafts() -> void:
+	var shafts := Node3D.new()
+	shafts.name = "LightShafts"
+	add_child(shafts)
+	for floor_index: int in 2:
+		var base_y: float = HouseLayout.floor_height(floor_index)
+		var from := Vector3(5.25, base_y + 2.35, 8.1)
+		var toward := Vector3(6.75, base_y + 0.2, 4.2)
+		var shaft := SpotLight3D.new()
+		shaft.name = "Shaft_F%d" % floor_index
+		shaft.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
+		shaft.light_color = Color(0.60, 0.88, 0.98)
+		shaft.light_energy = 1.6
+		shaft.spot_range = 9.0
+		shaft.spot_angle = 18.0
+		shaft.spot_angle_attenuation = 0.6
+		shaft.spot_attenuation = 0.8
+		shaft.shadow_enabled = true
+		shaft.shadow_blur = 2.0
+		shaft.light_volumetric_fog_energy = 4.0
+		shafts.add_child(shaft)
 
 
 ## Carpet runners along the downstairs hall and the upstairs corridor.

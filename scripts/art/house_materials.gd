@@ -25,7 +25,7 @@ static func get_material(kind: StringName) -> StandardMaterial3D:
 
 static func _create(kind: StringName) -> StandardMaterial3D:
 	match kind:
-		&"wallpaper_green":
+		&"wallpaper":
 			return _triplanar(kind, 0.5)
 		&"parquet", &"wood_stairs", &"door_paint", &"door_panel_paint", &"frame_paint", &"trim_dark":
 			return _triplanar(kind, 1.0)

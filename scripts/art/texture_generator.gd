@@ -16,11 +16,11 @@ const DETAIL_SIZE: int = 512
 
 static func generate_all(output_dir: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
-	_save(_wallpaper(), output_dir, "wallpaper_green")
+	_save(_wallpaper(), output_dir, "wallpaper")
 	_save(_parquet(), output_dir, "parquet")
-	_save(_painted_wood(Color(0.47, 0.41, 0.19), 61), output_dir, "door_paint")
-	_save(_painted_wood(Color(0.55, 0.48, 0.23), 62), output_dir, "door_panel_paint")
-	_save(_painted_wood(Color(0.60, 0.60, 0.50), 63), output_dir, "frame_paint")
+	_save(_painted_wood(Color(0.08, 0.21, 0.20), 61), output_dir, "door_paint")
+	_save(_painted_wood(Color(0.11, 0.26, 0.24), 62), output_dir, "door_panel_paint")
+	_save(_painted_wood(Color(0.50, 0.50, 0.42), 63), output_dir, "frame_paint")
 	_save(_painted_wood(Color(0.06, 0.13, 0.11), 64), output_dir, "trim_dark")
 	_save(_varnished_wood(Color(0.22, 0.16, 0.09), 42), output_dir, "wood_stairs")
 	_save(_runner(), output_dir, "runner")
@@ -47,90 +47,32 @@ static func _hash(a: int, b: int, c: int) -> float:
 	return x - floorf(x)
 
 
-## Dense foliage wallpaper: dirty-yellow and olive leaves scattered over dark
-## green, with soft damp patches. Tiles seamlessly; one tile covers 2 m.
+## Plain, slightly faded wallpaper: one dirty ochre colour with a faint
+## tone-on-tone diamond repeat, thin stripes and soft damp patches.
+## Tiles seamlessly; one tile covers 2 m.
 static func _wallpaper() -> Image:
 	var size: int = WALLPAPER_SIZE
-	var cells: int = 16
-	var cell: float = float(size) / float(cells)
-	var leaves_per_cell: int = 3
-
-	# Leaf parameters per cell: centre x, centre y, cos, sin, half length,
-	# half width, colour index.
-	var leaves: Array[PackedFloat32Array] = []
-	leaves.resize(cells * cells)
-	for cy: int in cells:
-		for cx: int in cells:
-			var data := PackedFloat32Array()
-			for i: int in leaves_per_cell:
-				var k: int = i * 10
-				var angle: float = _hash(cx, cy, k + 2) * TAU
-				data.append((float(cx) + _hash(cx, cy, k)) * cell)
-				data.append((float(cy) + _hash(cx, cy, k + 1)) * cell)
-				data.append(cos(angle))
-				data.append(sin(angle))
-				data.append(cell * (0.34 + 0.22 * _hash(cx, cy, k + 3)))
-				data.append(cell * (0.10 + 0.07 * _hash(cx, cy, k + 4)))
-				data.append(_hash(cx, cy, k + 5))
-			leaves[cy * cells + cx] = data
-
+	var cell: float = float(size) / 16.0
 	var mottle: Image = _noise(size, 11, 0.02)
 	var damp: Image = _noise(size, 12, 0.004)
-	var ground_dark := Color(0.05, 0.16, 0.13)
-	var ground_light := Color(0.09, 0.24, 0.19)
-	var leaf_yellow := Color(0.62, 0.50, 0.16)
-	var leaf_ochre := Color(0.46, 0.36, 0.11)
-	var leaf_olive := Color(0.24, 0.30, 0.12)
-	var half: float = float(size) * 0.5
-
+	var base := Color(0.40, 0.33, 0.17)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
-		var cell_y: int = int(float(y) / cell)
+		var row: int = int(float(y) / cell)
+		var ly: float = fmod(float(y), cell) - cell * 0.5
 		for x: int in size:
-			var color: Color = ground_dark.lerp(ground_light, mottle.get_pixel(x, y).r)
-			var cell_x: int = int(float(x) / cell)
-			for oy: int in range(-1, 2):
-				for ox: int in range(-1, 2):
-					var data: PackedFloat32Array = leaves[
-						posmod(cell_y + oy, cells) * cells + posmod(cell_x + ox, cells)
-					]
-					for i: int in leaves_per_cell:
-						var b: int = i * 7
-						# Shortest offset on the torus keeps the tile seamless.
-						var dx: float = float(x) - data[b]
-						var dy: float = float(y) - data[b + 1]
-						if dx > half:
-							dx -= size
-						elif dx < -half:
-							dx += size
-						if dy > half:
-							dy -= size
-						elif dy < -half:
-							dy += size
-						var along: float = dx * data[b + 2] + dy * data[b + 3]
-						var half_length: float = data[b + 4]
-						if absf(along) >= half_length:
-							continue
-						var across: float = absf(-dx * data[b + 3] + dy * data[b + 2])
-						var ratio: float = along / half_length
-						# A pointed leaf: widest in the middle, zero at both tips.
-						var edge: float = data[b + 5] * (1.0 - ratio * ratio) - across
-						if edge <= 0.0:
-							continue
-						var tone: float = data[b + 6]
-						var leaf: Color = leaf_olive
-						if tone > 0.66:
-							leaf = leaf_yellow
-						elif tone > 0.33:
-							leaf = leaf_ochre
-						# Darker midrib, lighter toward the rim.
-						leaf = leaf.darkened(0.35 * clampf(1.0 - across / 1.6, 0.0, 1.0))
-						color = color.lerp(leaf, clampf(edge / 1.5, 0.0, 1.0))
-			# Large soft damp patches.
-			color = color.darkened(clampf((damp.get_pixel(x, y).r - 0.45) * 1.1, 0.0, 0.45))
+			var shifted: float = float(x) + (cell * 0.5 if row % 2 == 1 else 0.0)
+			var lx: float = fmod(shifted, cell) - cell * 0.5
+			var d: float = absf(lx) + absf(ly)
+			# A thin diamond outline with a small dot in the middle.
+			var outline: float = clampf(1.0 - absf(d - cell * 0.30) / 1.6, 0.0, 1.0)
+			var dot: float = clampf(1.0 - d / 3.0, 0.0, 1.0)
+			var stripe: float = clampf(1.0 - absf(lx) / 1.2, 0.0, 1.0) * 0.5
+			var color: Color = base.darkened(0.24 * maxf(outline, maxf(dot, stripe)))
+			color = color.darkened(mottle.get_pixel(x, y).r * 0.10)
+			color = color.darkened(clampf((damp.get_pixel(x, y).r - 0.58) * 0.9, 0.0, 0.22))
 			image.set_pixel(x, y, color)
 	return image
-
 
 ## Dark block parquet. One tile covers 1 m: four squares across, each made of
 ## four strips, alternating direction.

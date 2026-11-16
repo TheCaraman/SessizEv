@@ -28,7 +28,9 @@ Bu yapı sayesinde aynı oda görseli, içine kim girerse girsin ve ne değişir
 
 Koddan kurulur (`scripts/house/house_builder.gd`). Dokular `assets/textures/` altında PNG dosyalarıdır; şimdilik `scripts/art/texture_generator.gd` üretir. Aynı adla boyanmış bir doku koyulursa oyun onu kullanır.
 
-Mevcut öğeler: yaprak desenli yeşil duvar kâğıdı, çıkıntılı süpürgelik ve tavan altı koyu çıta, koyu parke, kademeli panelli kirli sarı kapılar, kademeli kapı kasaları, pirinç kapı kolları, desenli yolluk halı, düz tavan lambaları.
+Mevcut öğeler: sade, kirli sarı duvar kâğıdı (çok silik baklava deseni), çıkıntılı süpürgelik ve tavan altı koyu çıta, koyu parke, kademeli panelli koyu turkuaz kapılar, soluk kademeli kasalar, pirinç kapı kolları, desenli yolluk halı, tavan lambaları.
+
+**Işık ve atmosfer (proje sahibinin üçüncü referansına göre):** ortam soğuk turkuaz bir pusla doludur ve ışık bu pusun içinde görünür (hacimli sis). Tavan lambaları zayıf, sıcak ışık adacıkları yapar; her katta pusun içinden geçen soğuk bir ışık huzmesi vardır. Yumuşak gölge, köşelerde temas gölgesi ve parlak yüzeylerde hafif parlama açıktır. Duvarlar sade tutulur; görünümü taşıyan şey desen değil ışıktır.
 
 Eksikler: gerçek basamaklı merdiven, pencere, koridor eşyaları (portmanto, ayna, telefon sehpası), kapı açılma sesi ve geçiş efekti.
 

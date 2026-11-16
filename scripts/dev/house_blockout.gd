@@ -15,12 +15,33 @@ func _ready() -> void:
 	environment.background_mode = Environment.BG_COLOR
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color(0.30, 0.48, 0.42)
-	environment.ambient_light_energy = 0.22
+	# Cold teal fill light everywhere; warm lamps only make small pools in it.
+	environment.ambient_light_color = Color(0.20, 0.48, 0.58)
+	environment.ambient_light_energy = 0.45
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+
+	# Thick teal haze that light visibly travels through.
+	environment.volumetric_fog_enabled = true
+	environment.volumetric_fog_density = 0.07
+	environment.volumetric_fog_albedo = Color(0.40, 0.75, 0.88)
+	environment.volumetric_fog_emission = Color(0.04, 0.22, 0.28)
+	environment.volumetric_fog_emission_energy = 0.35
+	environment.volumetric_fog_anisotropy = 0.55
+	environment.volumetric_fog_length = 24.0
+	environment.volumetric_fog_ambient_inject = 0.4
+
+	# Soft bloom around lit surfaces and soft contact shadows in corners.
+	environment.glow_enabled = true
+	environment.glow_intensity = 0.7
+	environment.glow_bloom = 0.12
+	environment.glow_hdr_threshold = 0.9
+	environment.ssao_enabled = true
+	environment.ssao_radius = 0.8
+	environment.ssao_intensity = 2.5
+
 	environment.adjustment_enabled = true
-	environment.adjustment_saturation = 1.15
-	environment.adjustment_contrast = 1.12
+	environment.adjustment_saturation = 1.2
+	environment.adjustment_contrast = 1.1
 	var world_environment := WorldEnvironment.new()
 	world_environment.environment = environment
 	add_child(world_environment)
