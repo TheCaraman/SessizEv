@@ -18,6 +18,8 @@ extends Node3D
 var _journal: JournalView
 
 var _current_room: StringName = &""
+var _electric_lights: Array[Node3D] = []
+var _electric_materials: Array[StandardMaterial3D] = []
 
 
 func _ready() -> void:
@@ -52,6 +54,11 @@ func _ready() -> void:
 	emergency.omni_range = 9.0
 	emergency.light_color = Color(0.75, 0.82, 0.83)
 	_player.add_child(emergency)
+	_cache_electric_lighting()
+	_director.power.power_changed.connect(_update_electric_lighting)
+	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_electric_lighting(_director.power.is_powered()))
+	EventBus.day_started.connect(func(_day: int) -> void: _update_electric_lighting(_director.power.is_powered()))
+	_update_electric_lighting(_director.power.is_powered())
 	_update_control()
 
 
@@ -68,13 +75,29 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
-		if fitting.material_override == null:
-			fitting.material_override = fitting.get_active_material(0).duplicate()
-		(fitting.material_override as StandardMaterial3D).emission_enabled = _director.power.is_powered()
-	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
-		light.visible = _director.power.is_powered()
 	_current_room = HouseLayout.room_at(_player.global_position)
+
+
+func _cache_electric_lighting() -> void:
+	# Cache this session only; another preview/session must keep its own materials.
+	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
+		if is_ancestor_of(light) and light is Node3D:
+			_electric_lights.append(light)
+	for fitting: Node in get_tree().get_nodes_in_group("electric_fittings"):
+		if not is_ancestor_of(fitting) or not fitting is MeshInstance3D:
+			continue
+		var source: Material = fitting.get_active_material(0)
+		if source is StandardMaterial3D:
+			var local_material: StandardMaterial3D = source.duplicate()
+			fitting.material_override = local_material
+			_electric_materials.append(local_material)
+
+
+func _update_electric_lighting(powered: bool) -> void:
+	for light: Node3D in _electric_lights:
+		light.visible = powered
+	for material: StandardMaterial3D in _electric_materials:
+		material.emission_enabled = powered
 
 
 func get_current_room() -> StringName:

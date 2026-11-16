@@ -27,6 +27,8 @@ Ara teslim: onarım yardımcısı isteklilik/enerji kontrolü 400ee1a ile tamaml
    içine gerçekte yapılanları yaz; manuel oynamadıysan oynadım deme.
 
 Dosyalar: scripts/*, scenes/*, localization/*, resources/*, tests/*,
+Ara teslim 2: elektrikli lamba/malzeme önbelleği ve olaylarla güç eşleme tamam; figür/eşya tonu arka planla eşlendi. 2275 denetim geçti. Ayrıntı docs/qa/LightingLayers.md. Saat eğrisi/pencere ışığı ve geniş ekran/dil taşması açık; bu görev henüz TAMAM değildir.
+
 tools/Run-Tests.ps1, docs/qa/*. Sanat PNG'leri, tasarım/koordinasyon kayıtları ve
 otomasyon dosyaları bu görevin kapsamı dışındadır. Kaydı yeniden başlatma veya
 enfeksiyonu yeniden atama yok. Kayıt şeması yalnızca gerçekten gerekirse göçle değişir.

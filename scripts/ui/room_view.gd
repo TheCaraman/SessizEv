@@ -50,6 +50,7 @@ func _ready() -> void:
 ## but offers no actions.
 func setup(director: CampaignDirector) -> void:
 	_director = director
+	_director.power.power_changed.connect(func(_powered: bool) -> void: _refresh())
 
 
 func is_open() -> bool:
@@ -129,6 +130,9 @@ func _refresh() -> void:
 	if not visible:
 		return
 	_background.modulate = Color(0.43, 0.46, 0.49) if _director != null and not _director.power.is_powered() else (Color(0.65, 0.67, 0.70) if GameState.minutes >= 1200 else Color.WHITE)
+	# Only world layers share the temporary lighting tint; UI remains readable.
+	_character_layer.modulate = _background.modulate
+	_prop_layer.modulate = _background.modulate
 	_clear(_character_layer)
 	var names := PackedStringArray()
 	for npc_id: String in GameState.get_room_occupants(_room_id):

@@ -1,5 +1,6 @@
 class_name PowerIncident
 extends Node
+signal power_changed(powered: bool)
 ## Scene-local authored incident. Hidden records never enter journal data.
 var definition: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://resources/events/day3_power.json"))
 
@@ -50,6 +51,7 @@ func trigger() -> void:
 	var actor: String = actors[rng.randi_range(0, actors.size() - 1)] if cause == "sabotage" else ""
 	GameState.power_incident = {"state": "outage", "cause": cause, "actor": actor, "day": 3, "minutes": 1380, "snapshot": snapshot, "movement": {"actor": actor, "from": GameState.get_location(actor), "to": "utility", "access": "unlocked_route", "minutes": 1380} if actor != "" else {}, "motive": "interrupt_communications_after_warning" if actor != "" else "", "inspected": []}
 	EvidenceManager.collect("power_failure", "POWER_WAKE")
+	power_changed.emit(false)
 	EventBus.notice_requested.emit(tr("POWER_WAKE"))
 	SaveManager.save_game()
 
@@ -85,6 +87,7 @@ func repair(confirmed: bool = false) -> String:
 	GameState.resources[resource] -= 1
 	GameState.power_incident["state"] = "restored"
 	GameState.power_incident["repair"] = {"helper": helper, "resource": resource, "day": GameState.day, "minutes": GameState.minutes}
+	power_changed.emit(true)
 	GameState.advance_minutes(duration)
 	EventBus.resources_changed.emit()
 	EvidenceManager.collect("power_restored", "POWER_RESTORED")
