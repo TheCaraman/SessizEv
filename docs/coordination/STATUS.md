@@ -16,7 +16,7 @@ Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
 
 Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. ART-REV-001 kapsamında yalnızca tek oda için çizimsel gündüz/gece karşılaştırması hazırlanıyor. Üretim görselleri şimdilik korunur. docs/art/AtmosphereRevision.md ve messages/2026-11-16-ArtRevision.md esas alınır; eski ART-001 üslup kabulüne dayanarak yeni oda üretilmez.
 
-POLISH-SLICE-001 bekliyor; otomatik işçi henüz başlatılmadı. Kalan teknik maddeler: zamana bağlı ışık, eylem satırı taşması, günlük arkasındaki HUD ve onarım yardımcısının uygunluğu.
+POLISH-SLICE-001 ana Codex oturumunda kısmen ilerledi; otomatik işçi başlatılmadı. Marcus yardım istekliliği/enerjisi ve opak günlük tamamlandı. Son tam regresyon: 9 paket, 2272 denetim. Gerçek 1080p günlük görüntüsü docs/qa/JournalModal-1080.png içinde. Kalan: zamana bağlı ışık, figür aydınlığı ve geniş ekran/dil taşma denetimi.
 
 ## Tamamlanmamış alanlar
 

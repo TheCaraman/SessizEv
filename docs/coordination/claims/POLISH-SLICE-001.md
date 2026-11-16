@@ -1,7 +1,9 @@
 # POLISH-SLICE-001 — doğrulanmış kesitin sunum düzeltmeleri
 
-Sahip: otomatik Codex işçisi. Başlangıç: Gün 3 + sanat birleşimi, 2250 test geçti.
+Sahip: ana Codex oturumu; otomatik işçi başlatılmadı. Başlangıç: Gün 3 + sanat birleşimi, 2250 test geçti.
 Bu görev yeni hikâye veya mekanik eklemez; var olan ışık ve arayüzü sağlamlaştırır.
+
+Ara teslim: onarım yardımcısı isteklilik/enerji kontrolü 400ee1a ile tamamlandı; opak günlük 0bb7509 ile tamamlandı. Son tam regresyon 2272 denetim geçti. JournalModal.md gerçek 1080p görüntüsünü ve sınırları kaydeder. Oda eylemleri zaten HFlowContainer kullanıyor; geniş ekran/dil taşma testi henüz yapılmadı. Işık maddeleri ve figür aydınlığı açık.
 
 1. Elektrikli lamba/emission güncellemelerini her physics frame'de grup taramak
    yerine olay güdümlü, sahne-yerel bir sunum denetleyicisine taşı. Kaynak malzemeleri
