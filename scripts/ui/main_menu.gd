@@ -12,6 +12,17 @@ const DIM_COLOR := Color(0.58, 0.57, 0.50)
 
 var _continue_button: Button
 var _note: Label
+var _language_choice: OptionButton
+var _localized: Dictionary = {}
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and _note != null:
+		for control: Control in _localized:
+			control.text = tr(_localized[control])
+		refresh()
+		if _language_choice != null:
+			_language_choice.select(1 if TranslationServer.get_locale().begins_with("tr") else 0)
 
 
 func _ready() -> void:
@@ -76,12 +87,14 @@ func _build_interface() -> void:
 
 	var title := Label.new()
 	title.text = tr("MENU_TITLE")
+	_localized[title] = "MENU_TITLE"
 	title.add_theme_color_override(&"font_color", TEXT_COLOR)
 	title.add_theme_font_size_override(&"font_size", 72)
 	column.add_child(title)
 
 	var subtitle := Label.new()
 	subtitle.text = tr("MENU_SUBTITLE")
+	_localized[subtitle] = "MENU_SUBTITLE"
 	subtitle.add_theme_color_override(&"font_color", DIM_COLOR)
 	subtitle.add_theme_font_size_override(&"font_size", 24)
 	column.add_child(subtitle)
@@ -95,12 +108,32 @@ func _build_interface() -> void:
 	column.add_child(_continue_button)
 
 	var new_game: Button = _make_button(tr("MENU_NEW_GAME"))
+	_localized[new_game] = "MENU_NEW_GAME"
 	new_game.pressed.connect(_on_new_game_pressed)
 	column.add_child(new_game)
 
 	var quit: Button = _make_button(tr("MENU_QUIT"))
+	_localized[quit] = "MENU_QUIT"
 	quit.pressed.connect(func() -> void: get_tree().quit())
 	column.add_child(quit)
+
+	var language_label := Label.new()
+	language_label.text = tr("MENU_LANGUAGE")
+	_localized[language_label] = "MENU_LANGUAGE"
+	language_label.add_theme_font_size_override("font_size", 24)
+	column.add_child(language_label)
+	_language_choice = OptionButton.new()
+	_language_choice.name = "LanguageChoice"
+	_language_choice.add_item("English")
+	_language_choice.add_item("Türkçe")
+	_language_choice.add_theme_font_size_override("font_size", 26)
+	_language_choice.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_language_choice.select(1 if TranslationServer.get_locale().begins_with("tr") else 0)
+	_language_choice.item_selected.connect(func(index: int) -> void:
+		if Settings.set_language(Settings.LANGUAGES[index]) != OK:
+			_note.text = tr("MENU_SETTINGS_FAILED")
+			_language_choice.select(1 if TranslationServer.get_locale().begins_with("tr") else 0))
+	column.add_child(_language_choice)
 
 	_note = Label.new()
 	_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

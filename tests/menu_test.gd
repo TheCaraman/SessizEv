@@ -31,6 +31,7 @@ func _ready() -> void:
 	SaveManager.delete_save()
 
 	_check_menu_without_save()
+	_check_language_preferences()
 	GameState.new_campaign(42)
 	_session = SESSION_SCENE.instantiate()
 	add_child(_session)
@@ -66,6 +67,22 @@ func _check_menu_without_save() -> void:
 	add_child(menu)
 	_check(not menu.has_continue(), "no save: nothing to continue")
 	_check(not (menu.get("_continue_button") as Button).visible, "no save: the Continue button should be hidden")
+	menu.free()
+
+
+func _check_language_preferences() -> void:
+	var before: Dictionary = GameState.to_dict()
+	var menu: MainMenu = MENU_SCENE.instantiate()
+	add_child(menu)
+	menu._language_choice.item_selected.emit(1)
+	_check(Settings.language == "tr" and TranslationServer.get_locale().begins_with("tr"), "menu selects Turkish")
+	_check(menu._language_choice.selected == 1, "language selection updates")
+	Settings.load_preferences()
+	_check(Settings.language == "tr", "language survives disk reload")
+	_check(Settings.set_language("unsupported") == ERR_INVALID_PARAMETER and Settings.language == "tr", "unsupported language rejected")
+	menu._language_choice.item_selected.emit(0)
+	_check(Settings.language == "en" and menu._language_choice.selected == 0, "menu returns to English")
+	_check(GameState.to_dict() == before, "language never modifies campaign")
 	menu.free()
 
 
