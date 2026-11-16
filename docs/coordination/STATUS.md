@@ -20,6 +20,10 @@ Koridorlar 3D, odalar 2D. Depo penceresiz geri kondu; giriş penceresi duruyor.
 Doğrulama: yeni test betiğiyle kampanya 69, etkileşim 13, ev 90 ve hareket 6
 denetim geçti (toplam 178). SAVE-002 sonrası: beş test, 207 denetim. Test kayıtlarının ayrı kullanıcı dizininde oluştuğu görüldü.
 
+- Ortak kararlar (2026-11-16, sahibin "siz karar verin" talimatıyla): ART-001, ART-002, TECH-001;
+  ayrıntı DECISIONS.md. `main` artık doğrulanmış son durumu gösteriyor.
+- İletişim: messages/ klasörü. Claude, C2C-001 ve C2C-002'yi K2C-001 ile yanıtladı.
+
 ## Sonraki işler
 
 Önce Gün 1'i ve menüleri kullanıcıyla elle doğrula.

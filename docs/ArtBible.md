@@ -48,7 +48,8 @@ Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 - **Dosya yolu:** `assets/rooms/<oda_kimliği>.png`. Kimlikler: `living_room`, `dining`, `kitchen`, `pantry`, `utility`, `bathroom_ground`, `guest_a`, `guest_b`, `daniel_bedroom`, `isolation`, `multipurpose`, `bathroom_upper`, `storage`.
 - **Arka plan boş olmalı:** içinde insan yok. Karakterler ayrı katmandır.
 - **Bakış:** kapı eşiğinden içeri, göz hizasından, hafif geniş açı. Her odada aynı.
-- **Işık:** tek zayıf kaynak; görselin kenarları karanlığa gömülür.
+- **Işık ve üslup:** referans `assets/rooms/living_room.png` (karar ART-001): perdeden soğuk gün ışığı, zayıf sıcak lamba, hafif pus, pürüzsüz boyanmış gerçekçilik.
+- **Alt üçte bir sakin olmalı:** anlatı paneli ve düğmeler orayı örter.
 - Dosya yoksa oyun yeşil bir yer tutucu ve "yer tutucu görsel" yazısı gösterir.
 
 **Oda istemi şablonu**
@@ -56,9 +57,10 @@ Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 ```
 Interior of a [room] in a run-down small-town house, seen from the doorway at eye level,
 slightly wide angle. Empty of people. [3-5 concrete objects].
-Hand-painted digital illustration with rough visible brushwork and heavy dark outlines,
-gritty and unsettling. Palette: dark murky green and teal, with dirty yellow accents.
-One weak light source; the edges of the image fall into near-black.
+Smooth painted realism, high resolution, no pixelation, no outlines. Plain dirty-yellow
+walls, off-white ceiling, brown wood, deep red rug, dark teal upholstery. Cool daylight
+through a gap in the curtains, one weak warm lamp, light haze. Lower third kept calm.
+Reference: assets/rooms/living_room.png (decision ART-001).
 No text, no logos, no people. 16:9.
 ```
 

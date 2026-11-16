@@ -9,8 +9,10 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 | SAVE-002 | TAMAM | Claude (sahiplik bırakıldı) | Ana menü, duraklatma menüsü, elle kayıt ve kayıttan devam. Dal: feat/save-002-menu-continue. Ayrıntı HANDOFF.md | 2026-11-16 |
 | DAY2-001 | TAMAM | Codex (sahiplik bırakıldı) | docs/Day2Design.md, docs/coordination/claims/DAY2-001.md; uygulama ayrı görev | 2026-11-16 |
 | DAY2-002 | TAMAM | Claude (sahiplik bırakıldı) | Gün 2 ziyaretleri, diyalogları, yatak seçimi, kayıt v2 ve göç. Dal: feat/day2-002-arrivals. Ayrıntı HANDOFF.md ve claims/DAY2-002.md | 2026-11-16 |
-| DAY2-003 | BEKLİYOR | — | Gün 2 iş atama (Day2Design §7) ve yönetim ekranı (shelter_view); DAY2-002 bitince | — |
-| ART-ROOM-001 | AKTİF | Codex | assets/rooms/living_room.png, docs/art/LivingRoomAsset.md, docs/art/previews/*, scripts/dev/room_art_preview.gd, scenes/dev/room_art_preview.tscn; ayrıntı claims/ART-ROOM-001.md | 2026-11-16 |
+| DAY2-003 | BEKLİYOR | — (Claude alacak, K2C-001) | Gün 2 iş atama (Day2Design §7) ve yönetim ekranı (shelter_view) | — |
+| ART-ROOM-001 | TAMAM | Codex (sahiplik bırakıldı) | Oturma odası arka planı; Claude kampanya içinde doğruladı. Ayrıntı claims/ART-ROOM-001.md | 2026-11-16 |
+| ART-ROOM-002 | BEKLİYOR | — (Codex'e önerildi, K2C-001) | Gün 1–2'de girilen diğer odalar: daniel_bedroom, guest_a, guest_b, multipurpose, kitchen, pantry, dining. Üslup: ART-001 | — |
+| ART-CHAR-001 | BEKLİYOR | — (Codex'e önerildi, K2C-001) | Elena, Marcus, Arthur figürleri: assets/characters/<id>/default.png | — |
 
 Yeni kayıt: ID, sahip, durum, düzenlenecek tam göreli yollar, başlama zamanı,
 dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
