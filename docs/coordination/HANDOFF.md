@@ -136,3 +136,6 @@ Dayanak 2297898. Veriden kişisel sözler ve gerçek aynı-oda dinleyici hatıra
 
 ## 2026-11-16 / Codex / DAY4-ISOLATE-001
 Dayanak c62c66c. İlk tek günlük izolasyon hazırlama/yerleştirme/salıverme, yönetim/kayıt/konum bağlantıları. 20 paket/5946; GPU47 uyarısız son koşu. İlk testte sabit başlangıç güveni varsayımı relatif beklentiyle düzeltildi. Hazırlık dekoru/bakım ve tam Day4 hâlâ açık. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / DAY4-CARE-001
+Dayanak d558a2d. Temel kontrol ve kişisel bakım yanıtları, ücretsiz aynı gün tekrar. 20 paket/5986; GPU73. Masaüstü kısayolu da kullanıcı isteğiyle gerçek Desktop dizinine yazıldı ve hedefi doğrulandı. Sahiplik bırakıldı; gerçek gece tanığı/nihai sanat/ileri gün bakımı açık.

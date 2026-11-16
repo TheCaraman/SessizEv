@@ -259,3 +259,9 @@ ISO_DONE_PLACE,The resident is now isolated. Their original bed stays reserved.,
 ISO_DONE_RELEASE,The resident has been released. Their previous restrictions remain in effect.,Sakin serbest bırakıldı. Önceden var olan erişim kısıtları sürüyor.
 ISO_PLAN_LOCKED,{name} is isolated. Release them before changing their bed or job.,{name} izolasyonda. İşini veya yatağını değiştirmeden önce serbest bırak.
 ISO_RESERVED,{name} — Isolated; original bed reserved; no work,{name} — İzolasyonda; eski yatağı rezerv; çalışmıyor
+ISO_CARE_ACTION,Check on {name},{name} ile ilgilen
+ISO_CONFIRM_CARE,"Check on {name}? {minutes} minutes. No medical supplies are consumed and no diagnosis is made. Press again; another action or leaving cancels.","{name} kontrol edilsin mi? {minutes} dakika. Tıbbi malzeme tüketilmez ve teşhis konmaz. Tekrar bas; başka eylem veya çıkmak iptal eder."
+ISO_CARE_DONE,You checked immediate needs and listened. This is not a medical examination or an infection test. Today's check is recorded; rereading is free.,Temel ihtiyaçlarını kontrol edip dinledin. Bu tıbbi muayene veya enfeksiyon testi değil. Bugünkü kontrol kaydedildi; tekrar okumak ücretsiz.
+ISO_CARE_ELENA,"I can tell you if I need water. I can't tell you what a quiet night proves. Please keep checking on everyone.","Suya ihtiyacım olursa söyleyebilirim. Sessiz bir gecenin neyi kanıtladığını söyleyemem. Lütfen herkesi kontrol etmeyi sürdür."
+ISO_CARE_MARCUS,"I'm here. I heard the latch. Tell me when you'll come back; don't leave me guessing.","Buradayım. Mandalı duydum. Ne zaman döneceğini söyle; beni tahmin yürütmeye bırakma."
+ISO_CARE_ARTHUR,"I'm frightened. You can write that down without turning it into a symptom. Thank you for listening.","Korkuyorum. Bunu bir belirtiye dönüştürmeden de yazabilirsin. Dinlediğin için teşekkür ederim."

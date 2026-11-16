@@ -3,5 +3,11 @@
   "prepare_repair": 1,
   "place_minutes": 15,
   "release_minutes": 10,
-  "first_trust": -10
+  "first_trust": -10,
+  "care_minutes": 15,
+  "care_keys": {
+    "elena_ward": "ISO_CARE_ELENA",
+    "marcus_hale": "ISO_CARE_MARCUS",
+    "arthur_bell": "ISO_CARE_ARTHUR"
+  }
 }

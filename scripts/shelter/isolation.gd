@@ -24,6 +24,7 @@ func actions(room: String) -> Array[Dictionary]:
 		if not GameState.get_flag("isolation_ready", false):
 			list.append({"id": "prepare", "label": TranslationServer.translate("ISO_PREPARE")})
 		elif id != "":
+			list.append({"id": "care:" + id, "label": TranslationServer.translate("ISO_CARE_ACTION").format({"name": Roster.get_display_name(id)})})
 			list.append({"id": "release:" + id, "label": TranslationServer.translate("ISO_RELEASE").format({"name": Roster.get_display_name(id)})})
 		return list
 	if id == "" and GameState.get_flag("isolation_ready", false):
@@ -44,6 +45,9 @@ func perform(room: String, choice: String) -> String:
 	var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RULES))
 	var operation: String = choice.get_slice(":", 0)
 	var target: String = choice.get_slice(":", 1)
+	if operation == "care" and GameState.get_flag(care_marker(target), false):
+		cancel()
+		return care_text(target, rules)
 	var minutes: int = int(rules[operation + "_minutes"])
 	if GameState.minutes + minutes > GameState.LAST_MINUTE:
 		cancel()
@@ -63,9 +67,12 @@ func perform(room: String, choice: String) -> String:
 	if operation == "prepare":
 		candidate["flags"]["isolation_ready"] = true
 		candidate["resources"]["repair"] -= int(rules["prepare_repair"])
+	elif operation == "care":
+		candidate["flags"][care_marker(target)] = true
 	else:
 		candidate["npcs"][target]["isolated"] = operation == "place"
 		if operation == "place":
+			candidate["flags"][care_marker(target)] = true
 			candidate["jobs"].erase(target)
 			var marker: String = "isolation_first_" + target
 			if not candidate["flags"].get(marker, false):
@@ -73,4 +80,14 @@ func perform(room: String, choice: String) -> String:
 				candidate["flags"][marker] = true
 	var result: Error = SaveManager.commit_candidate(now, candidate, "isolation-" + str(sequence))
 	cancel()
-	return TranslationServer.translate("ISO_DONE_" + operation.to_upper()) if result == OK else TranslationServer.translate("JUDGMENT_SAVE_FAILED")
+	if result != OK:
+		return TranslationServer.translate("JUDGMENT_SAVE_FAILED")
+	if operation in ["place", "care"]:
+		return care_text(target, rules)
+	return TranslationServer.translate("ISO_DONE_" + operation.to_upper())
+
+func care_marker(id: String) -> String:
+	return "isolation_care_day_%d_%s" % [GameState.day, id]
+
+func care_text(id: String, rules: Dictionary) -> String:
+	return TranslationServer.translate("ISO_CARE_DONE") + "\n\n" + Roster.get_display_name(id) + ": " + TranslationServer.translate(rules["care_keys"][id])

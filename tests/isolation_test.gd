@@ -41,6 +41,7 @@ func _ready() -> void:
 		view.perform_action("isolation:place:elena_ward")
 		check(GameState.get_location("elena_ward") == "isolation" and GameState.get_room_occupants("guest_a").is_empty(), "one physical location")
 		check(GameState.get_bed_of("elena_ward") == "guest_a_1" and GameState.get_headcount() == 3 and GameState.get_residents().size() == 2, "bed reserved and consumption unchanged")
+		check(GameState.get_flag("isolation_care_day_4_elena_ward", false), "placement includes today's basic care")
 		check(GameState.npcs["elena_ward"]["infected"] == infected and GameState.npcs["elena_ward"]["trust"] == expected_trust, "no infection change and first trust cost")
 		var shelter: ShelterManager = scene.get_node("ShelterManager")
 		check(shelter.why_refuses("elena_ward", "inventory")["key"] == "ISO_PLAN_LOCKED", "isolated worker refuses")
@@ -71,6 +72,15 @@ func _ready() -> void:
 					if "--capture-isolation" in OS.get_cmdline_user_args():
 						await RenderingServer.frame_post_draw
 						check(viewport.get_texture().get_image().save_png("res://docs/qa/isolation-%s-%d.png" % [locale, width]) == OK, "isolation capture")
+					var care_before: Dictionary = GameState.to_dict()
+					view.perform_action("isolation:care:elena_ward")
+					check(GameState.to_dict() == care_before and view.get_narration_text().contains(tr("ISO_CARE_ELENA")), "same-day care reread is free " + locale)
+					for frame: int in 5:
+						await get_tree().process_frame
+					check(bounds.encloses(view._narration_panel.get_global_rect()), "care text fits " + locale)
+					if "--capture-isolation" in OS.get_cmdline_user_args():
+						await RenderingServer.frame_post_draw
+						check(viewport.get_texture().get_image().save_png("res://docs/qa/isolation-care-%s-%d.png" % [locale, width]) == OK, "care capture")
 		view.close()
 		view.open("guest_b")
 		check(not view.get_action_ids().has("isolation:place:marcus_hale"), "second occupant refused")
@@ -100,6 +110,22 @@ func _ready() -> void:
 	var isolation := Isolation.new()
 	var before: Dictionary = GameState.to_dict()
 	check(isolation.perform("isolation", "prepare") == tr("ISO_NO_MATERIALS") and GameState.to_dict() == before, "no materials no costs")
+	for id: String in ["elena_ward", "marcus_hale", "arthur_bell"]:
+		GameState.new_campaign(42)
+		GameState.day = 4
+		GameState.minutes = 600
+		GameState.admit(id, "guest_a_1")
+		GameState.npcs[id]["isolated"] = true
+		GameState.flags["isolation_ready"] = true
+		var legacy: Dictionary = GameState.to_dict()
+		var first: String = isolation.perform("isolation", "care:" + id)
+		check(first.contains(tr("ISO_CONFIRM_CARE").format({"name": Roster.get_display_name(id), "minutes": 15})) and GameState.to_dict() == legacy, "missing care record needs free confirmation " + id)
+		isolation.perform("isolation", "care:" + id)
+		check(GameState.minutes == 615 and GameState.npcs == legacy["npcs"] and GameState.resources == legacy["resources"], "care costs time without cure release or supplies " + id)
+		check(GameState.flags.get(isolation.care_marker(id), false) and SaveManager.load_game(), "care marker persists " + id)
+		var cared: Dictionary = GameState.to_dict()
+		isolation.perform("isolation", "care:" + id)
+		check(GameState.to_dict() == cared, "repeated care not charged " + id)
 	SaveManager.delete_save("isolation_test")
 	SaveManager.delete_save()
 	if failures == 0:

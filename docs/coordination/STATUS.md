@@ -50,3 +50,6 @@ Daniel odasında ücretsiz inceleme mevcut; yalnız toplanmış kanıt ve günce
 
 ## İlk izolasyon
 Hazırlama 30dk/1repair, yerleştirme15dk, salıverme10dk; ayrı onaylar/kayıt. Tek occupant, rezerv yatak, resident tüketimi, iş engeli, izolasyondan kovma var. Bozuk rezerv/ikinci occupant reddediliyor. 20 paket/5946 denetim, GPU47. docs/qa/IsolationFirstPlayable.md. Günlük bakım, hazırlık dekoru, izolasyon diyaloğu ve gece tanığı hâlâ açık; mevcut küçük oda eski sanattır.
+
+## İzolasyon temel kontrolü
+Yerleştirmede temel kontrol kaydı ve üç kişisel yanıt; aynı gün ücretsiz tekrar. Eski işaretsiz geçerli izolasyonda 15dk/iki basış. Teşhis/tedavi yok. 20 paket/5986, GPU73. docs/qa/IsolationCare.md. Sahibin isteğiyle masaüstüne THE QUIET HOURS.lnk eklendi, hedefi doğrulandı. Genel günlük bakım/ihmal ve ileri günler açık.
