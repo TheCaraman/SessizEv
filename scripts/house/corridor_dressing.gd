@@ -98,6 +98,7 @@ func _table_lamp(base: Vector3) -> void:
 	_box(base + Vector3(0.0, 0.02, 0.0), Vector3(0.10, 0.04, 0.10), &"brass")
 	_box(base + Vector3(0.0, 0.16, 0.0), Vector3(0.025, 0.26, 0.025), &"brass")
 	var shade := _box(base + Vector3(0.0, 0.36, 0.0), Vector3(0.20, 0.17, 0.20), &"lamp_shade") as MeshInstance3D
+	shade.add_to_group("electric_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# A cloth shade glows much less than a bare ceiling fitting.
 	var shade_material := HouseMaterials.get_material(&"lamp_shade").duplicate() as StandardMaterial3D
@@ -106,6 +107,7 @@ func _table_lamp(base: Vector3) -> void:
 	(shade.mesh as BoxMesh).material = shade_material
 
 	var light := OmniLight3D.new()
+	light.add_to_group("electric_lights")
 	light.name = "TableLampLight"
 	light.position = base + Vector3(-0.1, 0.40, 0.0)
 	light.light_color = Color(1.0, 0.72, 0.40)

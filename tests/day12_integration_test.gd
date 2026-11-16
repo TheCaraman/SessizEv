@@ -82,7 +82,7 @@ func _run() -> void:
 	before = GameState.resources.duplicate()
 	var morning: String = director.perform_room_action("daniel_bedroom", "sleep")
 	check(GameState.day == 3 and GameState.resources.food == before.food - 2 and GameState.resources.water == before.water - 2, "second night consumes once per person")
-	check(morning.contains(tr("NARR_END_OF_BUILD")), "Day 3 boundary is reported")
+	check(not morning.contains(tr("NARR_END_OF_BUILD")), "Day 3 content is available")
 	director.perform_room_action("daniel_bedroom", "sleep")
 	check(GameState.day == 3, "repeated second-night action does not consume again")
 	_check_translations()

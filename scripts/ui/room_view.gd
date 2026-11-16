@@ -29,7 +29,7 @@ var _placeholder_note: Label
 var _present: Label
 var _narration: Label
 var _narration_panel: PanelContainer
-var _actions: HBoxContainer
+var _actions: HFlowContainer
 var _links: HBoxContainer
 var _hint: Label
 var _placeholder_texture: Texture2D
@@ -127,6 +127,7 @@ func _input(event: InputEvent) -> void:
 func _refresh() -> void:
 	if not visible:
 		return
+	_background.modulate = Color(0.43, 0.46, 0.49) if _director != null and not _director.power.is_powered() else (Color(0.65, 0.67, 0.70) if GameState.minutes >= 1200 else Color.WHITE)
 	_clear(_character_layer)
 	var names := PackedStringArray()
 	for npc_id: String in GameState.get_room_occupants(_room_id):
@@ -275,7 +276,7 @@ func _build_interface() -> void:
 	_narration.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_narration_panel.add_child(_narration)
 
-	_actions = HBoxContainer.new()
+	_actions = HFlowContainer.new()
 	_actions.add_theme_constant_override(&"separation", 14)
 	footer.add_child(_actions)
 

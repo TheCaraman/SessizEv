@@ -15,11 +15,16 @@ extends Node3D
 @onready var _shelter: ShelterManager = $ShelterManager
 @onready var _shelter_view: ShelterView = $ShelterView
 
+var _journal: JournalView
+
 var _current_room: StringName = &""
 
 
 func _ready() -> void:
 	_build_environment()
+	_journal = JournalView.new()
+	add_child(_journal)
+	_journal.closed.connect(_update_control)
 
 	_director.shelter = _shelter
 	_shelter_view.setup(_shelter)
@@ -41,18 +46,34 @@ func _ready() -> void:
 	EventBus.dialogue_started.connect(func(_id: String) -> void: _update_control())
 	EventBus.dialogue_ended.connect(func(_id: String) -> void: _update_control())
 	_pause_menu.closed.connect(_update_control)
+	var emergency := OmniLight3D.new()
+	emergency.name = "EmergencyNavigation"
+	emergency.light_energy = 0.22
+	emergency.omni_range = 9.0
+	emergency.light_color = Color(0.75, 0.82, 0.83)
+	_player.add_child(emergency)
 	_update_control()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Rooms and conversations take the pause key first; this only runs while
 	# the player is walking the corridors.
-	if event.is_action_pressed(&"pause"):
+	if event.is_action_pressed("journal") and not (_room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open() or _pause_menu.is_open()):
+		_journal.open()
+		_update_control()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"pause"):
 		_pause_menu.open()
 		get_viewport().set_input_as_handled()
 
 
 func _physics_process(_delta: float) -> void:
+	for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
+		if fitting.material_override == null:
+			fitting.material_override = fitting.get_active_material(0).duplicate()
+		(fitting.material_override as StandardMaterial3D).emission_enabled = _director.power.is_powered()
+	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
+		light.visible = _director.power.is_powered()
 	_current_room = HouseLayout.room_at(_player.global_position)
 
 
@@ -63,7 +84,7 @@ func get_current_room() -> StringName:
 func _update_control() -> void:
 	# Ask the runner, not the view: the view hides a moment after the runner
 	# finishes.
-	var busy: bool = _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
+	var busy: bool = _journal.visible or _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
 	# Assigning also re-applies the mouse mode, which the pause menu changes.
 	_player.control_enabled = not busy
 

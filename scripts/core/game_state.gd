@@ -15,7 +15,7 @@ enum Phase { MORNING, AFTERNOON, EVENING, NIGHT }
 ## Version 2 added beds, resolved_arrivals and visitor_arrival; version 3 added
 ## jobs, completed_jobs and reports (docs/Day2Design.md, section 10).
 ## Older saves are migrated on load.
-const SAVE_VERSION: int = 3
+const SAVE_VERSION: int = 4
 ## The day starts at 07:00. Times are minutes since midnight.
 const DAY_START: int = 7 * 60
 const AFTERNOON_START: int = 12 * 60
@@ -35,6 +35,8 @@ const BEDS: Array[String] = [
 ]
 
 ## True once a campaign has been started or loaded.
+var power_incident: Dictionary = {}
+var evidence: Array[Dictionary] = []
 var active: bool = false
 var campaign_seed: int = 0
 var day: int = 1
@@ -70,6 +72,8 @@ func new_campaign(seed_value: int = -1) -> void:
 		var picker := RandomNumberGenerator.new()
 		picker.randomize()
 		seed_value = picker.randi()
+	power_incident = {}
+	evidence = []
 	campaign_seed = seed_value
 	day = 1
 	minutes = DAY_START
@@ -120,7 +124,8 @@ func advance_minutes(amount: int) -> void:
 	if amount <= 0:
 		return
 	var before: Phase = get_phase()
-	minutes = mini(minutes + amount, LAST_MINUTE)
+	var ceiling: int = NIGHT_START if day == 3 and power_incident.is_empty() and minutes <= NIGHT_START else LAST_MINUTE
+	minutes = mini(minutes + amount, ceiling)
 	EventBus.time_changed.emit(day, minutes)
 	if get_phase() != before:
 		EventBus.phase_changed.emit(get_phase())
@@ -296,7 +301,7 @@ func start_next_day() -> void:
 
 func to_dict() -> Dictionary:
 	return {
-		"campaign_seed": campaign_seed,
+		"power_incident": power_incident.duplicate(true), "evidence": evidence.duplicate(true), "campaign_seed": campaign_seed,
 		"day": day,
 		"minutes": minutes,
 		"flags": flags.duplicate(true),
@@ -317,6 +322,12 @@ func to_dict() -> Dictionary:
 ## been through JSON (where every number comes back as a float) and one from
 ## save version 1 (which had no beds or visit records).
 func from_dict(data: Dictionary) -> void:
+	power_incident = _restore_numbers(data.get("power_incident", {}))
+	evidence = []
+	for entry: Dictionary in data.get("evidence", []):
+		evidence.append(_restore_numbers(entry))
+	if not data.has("power_incident") and int(data.get("day", 1)) > 3:
+		power_incident = {"state": "legacy_skipped"}
 	campaign_seed = int(data.get("campaign_seed", 0))
 	day = int(data.get("day", 1))
 	minutes = int(data.get("minutes", DAY_START))
@@ -409,3 +420,19 @@ func _migrate_from_version_1() -> void:
 		resolved_arrivals.append("d1_elena")
 	if visitor == "elena_ward":
 		visitor_arrival = "d1_elena"
+
+## JSON stores numbers as floats; preserve recorded timestamps and snapshots.
+func _restore_numbers(value: Variant) -> Variant:
+	if value is Dictionary:
+		var result: Dictionary = {}
+		for key: Variant in value:
+			result[key] = _restore_numbers(value[key])
+		return result
+	if value is Array:
+		var result: Array = []
+		for item: Variant in value:
+			result.append(_restore_numbers(item))
+		return result
+	if value is float and float(int(value)) == value:
+		return int(value)
+	return value

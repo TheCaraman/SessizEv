@@ -11,8 +11,12 @@ const ARRIVALS_PATH: String = "res://resources/events/arrivals.json"
 ## Daniel will not go to bed before this.
 const EARLIEST_SLEEP_MINUTE: int = 20 * 60
 ## The last day with authored content; later mornings say so on screen.
-const LAST_AUTHORED_DAY: int = 2
+const LAST_AUTHORED_DAY: int = 3
 
+var power: PowerIncident
+var _repair_confirmation: bool = false
+var _confirmation_day: int = 0
+var _confirmation_minute: int = 0
 var shelter: ShelterManager
 
 var _dialogue: DialogueRunner
@@ -26,8 +30,12 @@ var _warned_action: String = ""
 
 ## Called once by the session scene before play begins.
 func setup(dialogue: DialogueRunner) -> void:
+	power = PowerIncident.new()
+	add_child(power)
 	_dialogue = dialogue
 	_load_arrivals()
+	EventBus.time_changed.connect(_check_power_time)
+	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _repair_confirmation = false)
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
 	# A visitor who ran out of patience during a conversation leaves when it ends.
@@ -42,8 +50,13 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
-	if GameState.day == 2 and room_id == "daniel_bedroom" and shelter != null:
+	if GameState.day >= 2 and GameState.day <= 4 and room_id == "daniel_bedroom" and shelter != null:
 		actions.append({"id": "manage", "label": tr("SHELTER_TITLE")})
+	if room_id == "utility" and GameState.power_incident.has("cause"):
+		for id: String in ["panel", "access", "outside", "card", "repair", "defer"]:
+			actions.append({"id": "power:" + id, "label": tr("POWER_ACTION_" + id.to_upper()) if id != "repair" else tr("POWER_GENERATOR" if GameState.power_incident["cause"] == "grid_outage" else "POWER_ACTION_REPAIR")})
+	if room_id == "utility" and GameState.power_incident.has("cause") and power.eligible("marcus_hale"):
+		actions.append({"id": "power:explain", "label": tr("POWER_ACTION_EXPLAIN")})
 	match room_id:
 		"living_room":
 			actions.append({"id": "watch_tv", "label": tr("ACTION_WATCH_TV")})
@@ -77,13 +90,37 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	if not available:
 		return ""
 
+	if action_id.begins_with("power:"):
+		var choice: String = action_id.trim_prefix("power:")
+		if choice == "repair":
+			var result: String = power.repair(_repair_confirmation and _confirmation_day == GameState.day and _confirmation_minute == GameState.minutes)
+			_confirmation_day = GameState.day
+			_confirmation_minute = GameState.minutes
+			_repair_confirmation = not _repair_confirmation
+			return result
+		_repair_confirmation = false
+		if choice == "explain" and power.eligible("marcus_hale"):
+			EvidenceManager.collect("power_marcus", "POWER_MARCUS_CLAIM", "claim")
+			return tr("POWER_MARCUS_CLAIM")
+		if choice == "card":
+			EvidenceManager.collect("power_card", "POWER_CARD")
+			return tr("POWER_CARD")
+		if choice == "defer":
+			return tr("POWER_DEFER")
+		return power.inspect(choice)
+
+	_repair_confirmation = false
 	if action_id.begins_with("talk:"):
 		_warned_action = ""
 		_dialogue.start(_dialogue_for(action_id.trim_prefix("talk:")))
 		return ""
 
 	# Warn once before an action that would outlast the person at the door.
+	if action_id == "watch_tv" and not power.is_powered():
+		return tr("POWER_TV_OFF")
 	var duration: int = _duration_of(action_id)
+	if GameState.day >= 3 and not power.pending() and GameState.minutes + duration > GameState.LAST_MINUTE:
+		return tr("POWER_TOO_LATE")
 	var key: String = "%s|%s" % [room_id, action_id]
 	if duration > 0 and _would_lose_visitor(duration) and _warned_action != key:
 		_warned_action = key
@@ -155,12 +192,16 @@ func _spend(minutes: int) -> bool:
 				spend = until
 				interrupted = true
 			break
+	if power.pending() and GameState.minutes + spend >= GameState.NIGHT_START:
+		GameState.advance_minutes(maxi(0, GameState.NIGHT_START - GameState.minutes))
+		power.trigger()
+		return true
 	GameState.advance_minutes(spend)
 	return interrupted
 
 
 func _with_knock(interrupted: bool, text: String) -> String:
-	return text + ("\n\n" + tr("NARR_KNOCK_INTERRUPTS") if interrupted else "")
+	return text + ("\n\n" + tr("POWER_WAKE" if GameState.day == 3 else "NARR_KNOCK_INTERRUPTS") if interrupted else "")
 
 
 ## A broadcast is told in full the first time each day and briefly after.
@@ -170,7 +211,7 @@ func _broadcast(key: String, first_text: String, again_text: String) -> String:
 	var interrupted: bool = _spend(_duration_of("watch_tv" if key == "tv" else "radio"))
 	if interrupted:
 		# Cut off before the end: it can be heard properly later.
-		return tr("NARR_KNOCK_INTERRUPTS")
+		return tr("POWER_WAKE" if GameState.day == 3 else "NARR_KNOCK_INTERRUPTS")
 	GameState.set_flag(flag)
 	return tr(first_text) if first else tr(again_text)
 
@@ -313,6 +354,12 @@ func _on_front_door_used() -> void:
 ## Ends the day. The first two nights are quiet by design: no authored attack
 ## or sabotage (docs/Day2Design.md, section 8). Returns the morning narration.
 func _resolve_night() -> String:
+	if power.pending():
+		GameState.advance_minutes(maxi(0, GameState.NIGHT_START - GameState.minutes))
+		power.trigger()
+		return tr("POWER_WAKE")
+	if GameState.day >= 4:
+		return tr("NARR_END_OF_BUILD")
 	var watch_reports: PackedStringArray = shelter.resolve_night() if shelter != null else PackedStringArray()
 	GameState.start_next_day()
 	SaveManager.save_game()
@@ -341,3 +388,7 @@ func _resolve_night() -> String:
 	if GameState.day > LAST_AUTHORED_DAY:
 		text += "\n\n" + tr("NARR_END_OF_BUILD")
 	return text
+
+func _check_power_time(_day: int, _minutes: int) -> void:
+	if power.pending() and GameState.minutes >= GameState.NIGHT_START:
+		power.trigger()

@@ -131,6 +131,10 @@ func apply_plan(plan: Dictionary) -> Dictionary:
 	if not changed:
 		return {"key": "", "args": {}}
 
+	# A plan interrupted by the authored event has no partial assignments.
+	if GameState.day == 3 and GameState.power_incident.is_empty() and GameState.minutes + PLAN_MINUTES >= GameState.NIGHT_START:
+		GameState.advance_minutes(PLAN_MINUTES)
+		return {"key": "POWER_WAKE", "args": {}}
 	# The talk comes first; work starts when it is over.
 	for npc_id: String in job_plan:
 		if str(job_plan[npc_id]) != current["jobs"].get(npc_id, NO_JOB):
@@ -238,6 +242,11 @@ func _complete(npc_id: String) -> Dictionary:
 	if GameState.get_status(npc_id) != "resident":
 		GameState.jobs.erase(npc_id)
 		return {}
+	if GameState.day >= 3:
+		for unavailable: String in ["isolated", "injured", "incapacitated", "absent"]:
+			if GameState.npcs[npc_id].get(unavailable, false):
+				GameState.jobs.erase(npc_id)
+				return {}
 	var entry: Dictionary = GameState.jobs[npc_id]
 	var job_id: String = str(entry["job"])
 	var job: Dictionary = _jobs[job_id]
@@ -255,7 +264,7 @@ func _complete(npc_id: String) -> Dictionary:
 
 	# A character with the right background gives a fuller report, if one has
 	# been written for them. Skill changes the detail, never who may do the job.
-	var key: String = str(job["report"])
+	var key: String = "POWER_WATCH" if GameState.day == 3 and job.get("at_night", false) and GameState.power_incident.has("cause") else str(job["report"])
 	var personal: String = "%s_%s" % [key, npc_id.get_slice("_", 0).to_upper()]
 	if tr(personal) != personal:
 		key = personal

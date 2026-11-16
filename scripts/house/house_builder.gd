@@ -334,9 +334,11 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	var shade: MeshInstance3D = _add_mesh(
 		parent, ceiling_point + Vector3(0.0, -0.05, 0.0), Vector3(0.28, 0.06, 0.28), &"lamp_shade"
 	)
+	shade.add_to_group("electric_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 	var lamp := OmniLight3D.new()
+	lamp.add_to_group("electric_lights")
 	lamp.name = lamp_name
 	lamp.position = ceiling_point + Vector3(0.0, -0.25, 0.0)
 	lamp.omni_range = light_range

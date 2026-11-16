@@ -1,0 +1,1 @@
+{"types":["fact","claim","suspicion"],"catalogue":{"POWER_WAKE":"fact","POWER_PANEL_LOOSE":"fact","POWER_PANEL_GRID":"fact","POWER_PANEL_TOOL":"fact","POWER_ACCESS_CLEAR":"fact","POWER_ACCESS_UNKNOWN":"fact","POWER_OUTSIDE_LIT":"fact","POWER_OUTSIDE_DARK":"fact","POWER_CARD":"fact","POWER_RESTORED":"fact","POWER_MARCUS_CLAIM":"claim","POWER_INTERFERENCE":"suspicion"}}
