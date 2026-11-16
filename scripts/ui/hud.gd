@@ -49,6 +49,8 @@ func _ready() -> void:
 	EventBus.room_view_closed.connect(func(_id: StringName) -> void: _set_covered(&"room", false))
 	EventBus.dialogue_started.connect(func(_id: String) -> void: _set_covered(&"dialogue", true))
 	EventBus.dialogue_ended.connect(func(_id: String) -> void: _set_covered(&"dialogue", false))
+	EventBus.shelter_view_opened.connect(func() -> void: _set_covered(&"shelter", true))
+	EventBus.shelter_view_closed.connect(func() -> void: _set_covered(&"shelter", false))
 	_update_clock()
 	_update_subtitle()
 	if GameState.active:

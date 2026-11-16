@@ -115,7 +115,7 @@ func perform_action(action_id: String) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not visible:
+	if not visible or (get_parent().has_node("ShelterView") and get_parent().get_node("ShelterView").is_open()):
 		return
 	if event.is_action_pressed(&"pause") or event.is_action_pressed(&"interact"):
 		close()

@@ -96,10 +96,17 @@ func why_refuses(npc_id: String, job_id: String) -> Dictionary:
 		return _problem("PLAN_NOT_RESIDENT", npc_id)
 	if int(GameState.npcs[npc_id]["trust"]) <= REFUSAL_TRUST:
 		return _problem("REFUSE_NO_TRUST", npc_id)
+	var person: Dictionary = GameState.npcs[npc_id]
+	if person.get("injured", false):
+		return _problem("REFUSE_INJURED", npc_id)
+	if person.get("tired", false) or int(person.get("energy", 100)) <= 20:
+		return _problem("REFUSE_TIRED", npc_id)
 	var job: Dictionary = _jobs[job_id]
+	if str(job.get("room", "")) in person.get("blocked_rooms", []):
+		return _problem("REFUSE_ACCESS", npc_id)
 	if job.get("needs_food", false) and int(GameState.resources["food"]) <= 0:
 		return _problem("REFUSE_NO_FOOD", npc_id)
-	if not job.get("at_night", false) and GameState.minutes + int(job["minutes"]) > GameState.NIGHT_START:
+	if not job.get("at_night", false) and GameState.minutes + PLAN_MINUTES + int(job["minutes"]) > GameState.NIGHT_START:
 		return _problem("REFUSE_TOO_LATE", npc_id)
 	return {"key": "", "args": {}}
 
@@ -125,6 +132,9 @@ func apply_plan(plan: Dictionary) -> Dictionary:
 		return {"key": "", "args": {}}
 
 	# The talk comes first; work starts when it is over.
+	for npc_id: String in job_plan:
+		if str(job_plan[npc_id]) != current["jobs"].get(npc_id, NO_JOB):
+			GameState.jobs.erase(npc_id)
 	GameState.advance_minutes(PLAN_MINUTES)
 
 	# Beds: rebuild the whole map so swaps never collide half-way.
@@ -149,6 +159,9 @@ func apply_plan(plan: Dictionary) -> Dictionary:
 ## Finishes every job whose time is up. Safe to call any number of times:
 ## a job is rewarded once.
 func resolve_finished_jobs() -> void:
+	for npc_id: String in GameState.jobs.keys():
+		if GameState.get_status(npc_id) != "resident":
+			GameState.jobs.erase(npc_id)
 	var finished: Array[String] = []
 	for npc_id: String in GameState.jobs:
 		var entry: Dictionary = GameState.jobs[npc_id]
@@ -222,15 +235,20 @@ func _start_job(npc_id: String, job_id: String) -> void:
 ## Ends a resident's job, records its result once and returns the report
 ## (empty if this exact job had already been completed).
 func _complete(npc_id: String) -> Dictionary:
+	if GameState.get_status(npc_id) != "resident":
+		GameState.jobs.erase(npc_id)
+		return {}
 	var entry: Dictionary = GameState.jobs[npc_id]
 	var job_id: String = str(entry["job"])
 	var job: Dictionary = _jobs[job_id]
 	GameState.jobs.erase(npc_id)
 
 	var completion_id: String = "%d:%s:%s:%d" % [int(entry["day"]), npc_id, job_id, int(entry["start"])]
-	if GameState.completed_jobs.has(completion_id):
+	var daily_id: String = "%d:%s" % [int(entry["day"]), job_id]
+	if GameState.completed_jobs.has(completion_id) or GameState.completed_jobs.has(daily_id):
 		return {}
 	GameState.completed_jobs.append(completion_id)
+	GameState.completed_jobs.append(daily_id)
 
 	if job.has("sets_flag"):
 		GameState.set_flag(str(job["sets_flag"]).format({"day": GameState.day}))

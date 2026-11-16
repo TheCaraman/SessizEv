@@ -340,12 +340,13 @@ func from_dict(data: Dictionary) -> void:
 	npcs = {}
 	for id: String in data.get("npcs", {}):
 		var entry: Dictionary = data["npcs"][id]
-		npcs[id] = {
+		npcs[id] = entry.duplicate(true)
+		npcs[id].merge({
 			"status": str(entry.get("status", "unknown")),
 			"infected": bool(entry.get("infected", false)),
 			"trust": int(entry.get("trust", 0)),
 			"room": str(entry.get("room", "")),
-		}
+		}, true)
 
 	beds = {}
 	resolved_arrivals = []

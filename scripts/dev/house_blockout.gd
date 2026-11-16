@@ -12,12 +12,20 @@ extends Node3D
 @onready var _room_view: RoomView = $RoomView
 @onready var _dialogue_view: DialogueView = $DialogueView
 
+@onready var _shelter: ShelterManager = $ShelterManager
+@onready var _shelter_view: ShelterView = $ShelterView
+
 var _current_room: StringName = &""
 
 
 func _ready() -> void:
 	_build_environment()
 
+	_director.shelter = _shelter
+	_shelter_view.setup(_shelter)
+	EventBus.shelter_view_requested.connect(_shelter_view.open)
+	EventBus.shelter_view_opened.connect(_update_control)
+	EventBus.shelter_view_closed.connect(_update_control)
 	_director.setup(_dialogue)
 	_room_view.setup(_director)
 	_dialogue_view.setup(_dialogue)
@@ -55,7 +63,7 @@ func get_current_room() -> StringName:
 func _update_control() -> void:
 	# Ask the runner, not the view: the view hides a moment after the runner
 	# finishes.
-	var busy: bool = _room_view.is_open() or _dialogue.is_active()
+	var busy: bool = _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
 	# Assigning also re-applies the mouse mode, which the pause menu changes.
 	_player.control_enabled = not busy
 

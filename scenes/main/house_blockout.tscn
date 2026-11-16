@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/dev/house_blockout.gd" id="1_blockout"]
 [ext_resource type="PackedScene" path="res://scenes/house/house.tscn" id="2_house"]
@@ -10,6 +10,9 @@
 [ext_resource type="Script" path="res://scripts/narrative/campaign_director.gd" id="8_director"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_view.gd" id="9_dialogue_view"]
 [ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="10_pause"]
+
+[ext_resource type="Script" path="res://scripts/shelter/shelter_manager.gd" id="11_shelter"]
+[ext_resource type="Script" path="res://scripts/ui/shelter_view.gd" id="12_shelter_view"]
 
 [node name="HouseBlockout" type="Node3D"]
 script = ExtResource("1_blockout")
@@ -38,3 +41,9 @@ script = ExtResource("6_hud")
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 script = ExtResource("10_pause")
+
+[node name="ShelterManager" type="Node" parent="."]
+script = ExtResource("11_shelter")
+
+[node name="ShelterView" type="CanvasLayer" parent="."]
+script = ExtResource("12_shelter_view")

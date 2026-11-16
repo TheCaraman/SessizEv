@@ -48,6 +48,8 @@ func open() -> void:
 	visible = true
 	_rebuild()
 	EventBus.shelter_view_opened.emit()
+	if not _bed_pickers.is_empty():
+		(_bed_pickers.values()[0] as Control).grab_focus()
 
 
 ## Closes the screen and throws the draft away. Costs nothing.
@@ -149,7 +151,7 @@ func _make_row(npc_id: String) -> Control:
 	row.add_theme_constant_override(&"separation", 18)
 
 	var who := VBoxContainer.new()
-	who.custom_minimum_size = Vector2(420.0, 0.0)
+	who.custom_minimum_size = Vector2(360.0, 0.0)
 	who.add_child(_make_label(Roster.get_display_name(npc_id), 28, TEXT_COLOR))
 	var trust: int = int(GameState.npcs[npc_id]["trust"])
 	var room: Dictionary = HouseLayout.get_room(StringName(GameState.get_location(npc_id)))
@@ -164,7 +166,7 @@ func _make_row(npc_id: String) -> Control:
 	row.add_child(who)
 
 	var bed_picker := OptionButton.new()
-	bed_picker.custom_minimum_size = Vector2(360.0, 0.0)
+	bed_picker.custom_minimum_size = Vector2(300.0, 0.0)
 	bed_picker.add_theme_font_size_override(&"font_size", 22)
 	for i: int in GameState.BEDS.size():
 		var bed_id: String = GameState.BEDS[i]
@@ -216,7 +218,7 @@ func _build_interface() -> void:
 
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override(&"separation", 18)
-	for column_title: Array in [["SHELTER_COL_WHO", 420.0], ["SHELTER_COL_BED", 360.0], ["SHELTER_COL_JOB", 300.0]]:
+	for column_title: Array in [["SHELTER_COL_WHO", 360.0], ["SHELTER_COL_BED", 300.0], ["SHELTER_COL_JOB", 300.0]]:
 		var title: Label = _make_label(tr(column_title[0]), 20, DIM_COLOR)
 		title.custom_minimum_size = Vector2(column_title[1], 0.0)
 		header.add_child(title)

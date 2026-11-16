@@ -13,6 +13,8 @@ const EARLIEST_SLEEP_MINUTE: int = 20 * 60
 ## The last day with authored content; later mornings say so on screen.
 const LAST_AUTHORED_DAY: int = 2
 
+var shelter: ShelterManager
+
 var _dialogue: DialogueRunner
 ## Visits, sorted by day, then start time, then id.
 var _arrivals: Array[Dictionary] = []
@@ -40,6 +42,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	if GameState.day == 2 and room_id == "daniel_bedroom" and shelter != null:
+		actions.append({"id": "manage", "label": tr("SHELTER_TITLE")})
 	match room_id:
 		"living_room":
 			actions.append({"id": "watch_tv", "label": tr("ACTION_WATCH_TV")})
@@ -87,6 +91,9 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	_warned_action = ""
 
 	match action_id:
+		"manage":
+			EventBus.shelter_view_requested.emit()
+			return ""
 		"watch_tv":
 			return _broadcast("tv", "NARR_TV_DAY1" if GameState.day == 1 else "NARR_TV_LATER", "NARR_TV_AGAIN")
 		"radio":
@@ -306,6 +313,7 @@ func _on_front_door_used() -> void:
 ## Ends the day. The first two nights are quiet by design: no authored attack
 ## or sabotage (docs/Day2Design.md, section 8). Returns the morning narration.
 func _resolve_night() -> String:
+	var watch_reports: PackedStringArray = shelter.resolve_night() if shelter != null else PackedStringArray()
 	GameState.start_next_day()
 	SaveManager.save_game()
 
@@ -318,6 +326,9 @@ func _resolve_night() -> String:
 		text = tr("NARR_MORNING_ALONE").format({"day": GameState.day})
 	else:
 		text = tr("NARR_MORNING_OTHERS").format({"day": GameState.day, "count": others})
+
+	if not watch_reports.is_empty():
+		text += "\n\n" + "\n".join(watch_reports)
 
 	# A shortfall is always reported, never hidden.
 	var short: PackedStringArray = []

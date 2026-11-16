@@ -63,3 +63,10 @@ signal notice_requested(text: String)
 ## A key binding was changed through InputSetup.rebind().
 @warning_ignore("unused_signal")
 signal input_binding_changed(action: StringName)
+
+@warning_ignore("unused_signal")
+signal shelter_view_requested
+@warning_ignore("unused_signal")
+signal shelter_view_opened
+@warning_ignore("unused_signal")
+signal shelter_view_closed
