@@ -128,6 +128,28 @@ func _ready() -> void:
 	GameState.power_incident["cause"] = "loose_connection"
 	power.repair(true)
 	check(GameState.minutes == 1405 and GameState.power_incident["repair"]["helper"] == "marcus_hale", "eligible Marcus 25 minutes")
+	for condition: Dictionary in [{"trust": -40}, {"trust": -41}, {"tired": true}, {"energy": 20}, {"energy": 0}]:
+		prepare(91)
+		GameState.admit("marcus_hale", "guest_a_1")
+		for key: String in condition:
+			GameState.npcs["marcus_hale"][key] = condition[key]
+		check(power.eligible("marcus_hale"), "unwilling helper still physically eligible " + str(condition))
+		check(not power.can_help_repair("marcus_hale"), "helper refusal " + str(condition))
+		power.trigger()
+		GameState.power_incident["cause"] = "loose_connection"
+		power.repair(true)
+		check(GameState.minutes == 1415 and GameState.power_incident["repair"]["helper"] == "", "solo fallback " + str(condition))
+	for infected: bool in [false, true]:
+		prepare(91)
+		GameState.admit("marcus_hale", "guest_a_1")
+		GameState.npcs["marcus_hale"]["infected"] = infected
+		GameState.npcs["marcus_hale"]["trust"] = -39
+		GameState.npcs["marcus_hale"]["energy"] = 21
+		check(power.can_help_repair("marcus_hale"), "willing helper regardless of infection")
+		power.trigger()
+		GameState.power_incident["cause"] = "loose_connection"
+		power.repair(true)
+		check(GameState.minutes == 1405, "helper duration at willingness boundary")
 	var historical: Dictionary = GameState.power_incident.duplicate(true)
 	GameState.remove_npc("marcus_hale", "dead")
 	check(GameState.power_incident == historical, "historical record retained")

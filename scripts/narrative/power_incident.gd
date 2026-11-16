@@ -21,6 +21,14 @@ func eligible(id: String) -> bool:
 	var job: Dictionary = GameState.jobs.get(id, {})
 	return job.is_empty() or int(job.get("day", 0)) != GameState.day or (str(job.get("job", "")) != "night_watch" and int(job.get("end", 0)) <= GameState.minutes)
 
+## Willing assistance is separate from the physical opportunity for sabotage.
+## Infection never determines whether a resident can help with repairs.
+func can_help_repair(id: String) -> bool:
+	if not eligible(id):
+		return false
+	var person: Dictionary = GameState.npcs[id]
+	return int(person.get("trust", 0)) > ShelterManager.REFUSAL_TRUST and not person.get("tired", false) and int(person.get("energy", 100)) > 20
+
 func trigger() -> void:
 	if not pending():
 		return
@@ -68,7 +76,7 @@ func repair(confirmed: bool = false) -> String:
 	if not confirmed:
 		return tr("POWER_CONFIRM")
 	var resource: String = definition["causes"][GameState.power_incident["cause"]]["resource"]
-	var helper: String = "marcus_hale" if eligible("marcus_hale") else ""
+	var helper: String = "marcus_hale" if can_help_repair("marcus_hale") else ""
 	var duration: int = int(definition["helper_minutes"] if helper != "" else definition["solo_minutes"])
 	if GameState.minutes + duration > GameState.LAST_MINUTE:
 		return tr("POWER_TOO_LATE")
