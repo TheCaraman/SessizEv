@@ -29,7 +29,7 @@ func _ready() -> void:
 	check(not player.control_enabled and not room.is_open(), "opening locks control before showing room")
 	await get_tree().create_timer(0.3).timeout
 	check(absf(door.get_node("Hinge").rotation.y) > 0.1 and not room.is_open(), "door visibly rotates before room")
-	check(door.get_node("RoomThreshold").visible, "threshold has actual room image")
+	check(door.get_node("RoomThreshold").visible and door.get_node("RoomThreshold").material_override.albedo_texture == null, "recess never displays a scaled room card")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-opening.png") == OK, "opening image saved")

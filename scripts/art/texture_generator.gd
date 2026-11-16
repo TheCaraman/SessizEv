@@ -66,7 +66,7 @@ static func _wallpaper() -> Image:
 	var size: int = WALLPAPER_SIZE
 	var mottle: Image = _noise(size, 11, 0.008)
 	var damp: Image = _noise(size, 12, 0.003)
-	var base := Color(0.43, 0.32, 0.27)
+	var base := Color(0.54, 0.48, 0.37)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
 		for x: int in size:

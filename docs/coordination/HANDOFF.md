@@ -148,3 +148,6 @@ Sahip odaların tutarsızlığını, koridorun darlığını/atmosferini ve anl�
 
 ## 2026-11-16 / Codex / VISUAL-REBUILD-001 mekân teslimi
 Dayanak a9b376b. Kalan11oda çizimsel yeniden üretildi ve bağlandı; 13anaoda artık ortak master. Özgün eski kaynaklar ve prompt/provenans saklandı, manifest temizlendi. 22paket/6036, GPUgaleri13 PASS. Kaynaklar incelendi, örnek gerçek RoomView'lar kontrol edildi. Kullanıcı bitince test edeceğini söyledi; bu revizyon test için hazırdır. Genel oyun hedefi devam eder. Nihai grafik kabulü ve ayrı gece/güç varyantları/karakterler açık.
+
+## 2026-11-16 / Codex / CORRIDOR-REFERENCE-002
+Sahibin son eleştirisi önceliklidir: önceki koridor kabul edilmedi. Resmî referans araştırması ve uygulama docs/qa/CorridorReferenceRevision.md. Geometri/pencere/dış sokak/kapı geçişi ikinci revizyon yapıldı, 22paket6063PASS, GPU9/64PASS. Utility ışık varyantları bu arada tamamlandı. CORRIDOR-REFERENCE-002 açık: eşya/sanat ayrıntıları henüz referans kalitesinde değil, nihai kabul iddia etme. Yerel masaüstü kısayolu aynı kanonik projeyi açar; eski çalışan oyun yeniden başlatılmalı. Diğer asistan bu dosyayı okumadan haberdar sayılmaz.

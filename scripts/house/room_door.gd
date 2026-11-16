@@ -20,6 +20,7 @@ var _held_open: bool = false
 var _tween: Tween
 var _portal: MeshInstance3D
 var _width: float = 0.9
+var _cover: ColorRect
 
 func configure_leaf(leaf: Node3D, width: float) -> void:
 	_width = width
@@ -27,6 +28,15 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	_hinge.name = "Hinge"
 	_hinge.position.x = -width * 0.5
 	add_child(_hinge)
+	var transition := CanvasLayer.new()
+	transition.layer = 20
+	add_child(transition)
+	_cover = ColorRect.new()
+	_cover.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_cover.color = Color(0.008, 0.012, 0.01)
+	_cover.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_cover.visible = false
+	transition.add_child(_cover)
 	leaf.reparent(_hinge, true)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void:
 		if _held_open:
@@ -37,11 +47,7 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	)
 
 func _show_room_threshold() -> void:
-	var visuals := RoomVisuals.new()
-	var look: Dictionary = visuals.resolve(str(room_id), GameState.minutes, GameState.power_incident.get("state", "") != "outage")
-	if not ResourceLoader.exists(look["path"]):
-		return
-	var texture: Texture2D = load(look["path"])
+	# A dark recess instead of a miniature copy of the fullscreen room.
 	if _portal == null:
 		_portal = MeshInstance3D.new()
 		_portal.name = "RoomThreshold"
@@ -49,16 +55,12 @@ func _show_room_threshold() -> void:
 		quad.size = Vector2(_width, HouseLayout.DOOR_HEIGHT)
 		_portal.mesh = quad
 		_portal.position.y = HouseLayout.DOOR_HEIGHT * 0.5
+		var material := StandardMaterial3D.new()
+		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		material.albedo_color = Color(0.008, 0.012, 0.01)
+		_portal.material_override = material
 		add_child(_portal)
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	material.albedo_texture = texture
-	material.albedo_color = look["background_tint"]
-	var crop: float = (_width / HouseLayout.DOOR_HEIGHT) / (texture.get_width() / float(texture.get_height()))
-	material.uv1_scale = Vector3(crop, 1.0, 1.0)
-	material.uv1_offset = Vector3((1.0 - crop) * 0.5, 0.0, 0.0)
-	_portal.material_override = material
 	_portal.visible = true
 
 func _exit_tree() -> void:
@@ -100,10 +102,16 @@ func interact(player: Node) -> void:
 	if _portal != null:
 		_portal.position.z = -direction * 0.065
 	_tween = create_tween()
-	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), 0.65).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), 0.55).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_callback(func() -> void:
+		_cover.modulate.a = 0.0
+		_cover.visible = true
+	)
+	_tween.tween_property(_cover, "modulate:a", 1.0, 0.12)
 	_tween.tween_callback(func() -> void:
 		_held_open = true
 		EventBus.room_view_requested.emit(room_id)
+		_cover.visible = false
 		_opening = false
 		EventBus.door_transition_changed.emit(false)
 	)

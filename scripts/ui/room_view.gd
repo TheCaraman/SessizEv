@@ -38,6 +38,7 @@ var _visuals := RoomVisuals.new()
 var _visual_variant: String = ""
 var _visual_path: String = ""
 var _reveal_tween: Tween
+var _transition_cover: ColorRect
 
 
 func get_visual_variant() -> String:
@@ -47,6 +48,12 @@ func get_visual_variant() -> String:
 func _ready() -> void:
 	layer = 5
 	_build_interface()
+	_transition_cover = ColorRect.new()
+	_transition_cover.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_transition_cover.color = Color(0.008, 0.012, 0.01)
+	_transition_cover.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_transition_cover.visible = false
+	_root.add_child(_transition_cover)
 	visible = false
 	EventBus.room_view_requested.connect(_reveal_from_door)
 	EventBus.residents_changed.connect(_refresh)
@@ -91,6 +98,7 @@ func open(room_id: StringName) -> void:
 	if _reveal_tween != null and _reveal_tween.is_running():
 		_reveal_tween.kill()
 	_root.modulate.a = 1.0
+	_transition_cover.visible = false
 	var room: Dictionary = HouseLayout.get_room(room_id)
 	if room.is_empty() or HouseLayout.WALKABLE_ROOMS.has(room_id):
 		push_warning("RoomView: '%s' is not a 2D room" % room_id)
@@ -108,10 +116,11 @@ func open(room_id: StringName) -> void:
 
 func _reveal_from_door(room_id: StringName) -> void:
 	open(room_id)
-	_root.modulate.a = 0.0
+	_transition_cover.visible = true
+	_transition_cover.modulate.a = 1.0
 	_reveal_tween = create_tween()
-	_reveal_tween.tween_property(_root, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_SINE)
-
+	_reveal_tween.tween_property(_transition_cover, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
+	_reveal_tween.tween_callback(func() -> void: _transition_cover.visible = false)
 
 func close() -> void:
 	if not visible:

@@ -65,3 +65,6 @@ Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim d
 
 ## Mekân testi için bütün ev revizyonu
 13 ana oda ortak çizim dilinde, koridor 3m ve yeni malzeme/ışık, fiziksel kapı geçişi mevcut. 22 paket/6036 denetim; gerçek GPU galeri 13oda görüntüsü PASS. 11 yeni kaynak ayrı ayrı incelendi. docs/art/WholeHouseGraphicRevision.md. VISUAL-REBUILD-001 DEVİR: sahibi koridor/odaları test edebilir; nihai sanat kabulü değildir. Karakterler, ayrı gece/elektriksiz varyantlar ve bazı koridor eşyaları ayrıca açık. Kullanıcıya hazır bildirimi artık yapılabilir.
+
+## Koridor referans ikinci düzeltmesi / 2026-11-16
+Önceki görsel teslim sahibi tarafından reddedildi. Resmî Steam görselleri tarayıcıda incelendi. İki katta açık merdiven görüşü ve güvenli 1,1m parapet, 3m giriş açıklığı, iki alt/tek üst gerçek dış pencere, depo küçültme ve çizimsel uzak sokak + ön 3D çit/yol bağlandı. Oda kartı kapıdan kaldırıldı; fiziksel açılış/kararma/sabit oda geçişi. 22 paket/6063 PASS; GPUkapı9/ışık64 PASS, gerçek koridor/foyer renderları incelendi. Küçük eşyalar/sanat ayrıntıları ve sahibin estetik kabulü hâlâ açık: CORRIDOR-REFERENCE-002 AKTİF. Genel oynanabilir hedef tamamlanmış sayılmaz. Utility üç ışık varyantı tamam, manifest ve promptlar kayıtlı. docs/qa/CorridorReferenceRevision.md.

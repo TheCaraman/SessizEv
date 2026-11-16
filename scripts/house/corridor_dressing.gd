@@ -64,8 +64,8 @@ func _build_hall() -> void:
 
 	# Wall clock above the table.
 	var east: float = 7.0 - HouseLayout.INTERIOR_WALL_THICKNESS * 0.5
-	_box(Vector3(east - 0.02, 1.85, 5.6), Vector3(0.04, 0.28, 0.28), &"wood_stairs")
-	_flat_box(Vector3(east - 0.045, 1.85, 5.6), Vector3(0.01, 0.22, 0.22), Color(0.62, 0.60, 0.50))
+	_box(Vector3(east - 0.12, 0.94, 5.6), Vector3(0.08, 0.28, 0.22), &"wood_stairs")
+	_flat_box(Vector3(east - 0.165, 0.94, 5.6), Vector3(0.01, 0.22, 0.17), Color(0.62, 0.60, 0.50))
 
 
 func _build_upper_corridor() -> void:
@@ -81,9 +81,7 @@ func _build_upper_corridor() -> void:
 
 	# Pictures along the stairwell wall.
 	var east: float = 7.0 - HouseLayout.INTERIOR_WALL_THICKNESS * 0.5
-	_picture(Vector3(east - 0.02, UPPER + 1.6, 4.2), Vector2(0.36, 0.48), false, 0.0, Color(0.18, 0.20, 0.24))
-	_picture(Vector3(east - 0.02, UPPER + 1.6, 5.2), Vector2(0.36, 0.48), false, deg_to_rad(-2.5), Color(0.26, 0.24, 0.18))
-	_picture(Vector3(east - 0.02, UPPER + 1.6, 6.2), Vector2(0.36, 0.48), false, 0.0, Color(0.22, 0.18, 0.16))
+	# The stairwell is open above its guard; no floating wall pictures.
 
 	# Small cabinet on the landing, opposite the top of the stairs.
 	var cabinet := Vector3(4.22, UPPER, 2.0)
@@ -118,8 +116,8 @@ func _table_lamp(base: Vector3) -> void:
 	light.add_to_group("electric_lights")
 	light.name = "TableLampLight"
 	light.position = base + Vector3(-0.1, 0.40, 0.0)
-	light.light_color = Color(1.0, 0.72, 0.40)
-	light.light_energy = 0.9
+	light.light_color = Color(0.86, 0.88, 0.65)
+	light.light_energy = 0.55
 	light.omni_range = 4.0
 	light.omni_attenuation = 1.8
 	light.shadow_enabled = true

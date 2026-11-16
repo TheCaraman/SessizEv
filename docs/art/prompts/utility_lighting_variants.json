@@ -1,0 +1,17 @@
+[
+  {
+    "variant": "night",
+    "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-f5ed2b4b-7f6f-4f19-96d0-e5ec2b41bbd6.png",
+    "prompt": "Edit this exact original game-room painting into ONE lighting variant, preserving camera, framing, all furniture and equipment positions and geometry. The same fuse panel stays centered on the back wall, workbench left and generator enclosure right. No people, text or UI. NO photorealism or 3D rendering: preserve the source's flat irregular hand-painted graphic horror art, matte patchy color planes and dark drawn contours. Preserve wide 16:9 dimensions and do not crop. Night WITH electrical power. The overhead caged bulb and left workbench task lamp are ON with small weak dirty-amber pools. The ventilation grille admits no daylight, only very faint muted blue-green moonlight. Deep green shadows remain readable. Keep exactly the original room, all objects, composition, flat painted graphic style and irregular contours."
+  },
+  {
+    "variant": "outage_day",
+    "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-026d3406-b9f3-4465-a23f-bb5cdc702fcb.png",
+    "prompt": "Edit this exact original game-room painting into ONE lighting variant, preserving camera, framing, all furniture and equipment positions and geometry. The same fuse panel stays centered on the back wall, workbench left and generator enclosure right. No people, text or UI. NO photorealism or 3D rendering: preserve the source's flat irregular hand-painted graphic horror art, matte patchy color planes and dark drawn contours. Preserve wide 16:9 dimensions and do not crop. Daytime POWER OUTAGE. Both the overhead caged bulb and the left task lamp are OFF: dark bulbs, no yellow emission, no amber halo or bright lamp shade. Weak overcast cool teal-grey daylight enters through the high right ventilation grille, providing the only motivated illumination plus soft doorway spill. Equipment remains readable. Do not just put a dark filter over the original lit lamps."
+  },
+  {
+    "variant": "outage_night",
+    "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-81b73528-9ee1-4a53-9202-616d6b70bf05.png",
+    "prompt": "Edit this exact original game-room painting into ONE lighting variant, preserving camera, framing, all furniture and equipment positions and geometry. The same fuse panel stays centered on the back wall, workbench left and generator enclosure right. No people, text or UI. NO photorealism or 3D rendering: preserve the source's flat irregular hand-painted graphic horror art, matte patchy color planes and dark drawn contours. Preserve wide 16:9 dimensions and do not crop. Night POWER OUTAGE. BOTH practical electric lights are physically OFF: overhead bulb and left workbench lamp dark with NO amber glow, halo, emissive shade or lit bulb. Only very faint blue-green light through the high right ventilation grille and dim neutral doorway spill. Low visibility but readable panel/workbench/generator, no total black. No red emergency light, flashlight, candles or additional light source objects."
+  }
+]

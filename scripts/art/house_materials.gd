@@ -30,9 +30,9 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 		&"wainscot":
 			return _flat(Color(0.085, 0.15, 0.125), 1.0)
 		&"door_paint":
-			return _flat(Color(0.10, 0.19, 0.17), 1.0)
+			return _triplanar(kind, 0.7)
 		&"door_panel_paint":
-			return _flat(Color(0.13, 0.23, 0.20), 1.0)
+			return _triplanar(kind, 0.7)
 		&"frame_paint":
 			return _flat(Color(0.16, 0.21, 0.18), 1.0)
 		&"trim_dark":
@@ -45,7 +45,7 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 		&"runner":
 			return _uv_mapped(kind)
 		&"ceiling":
-			return _flat(Color(0.43, 0.40, 0.34), 1.0)
+			return _flat(Color(0.62, 0.60, 0.51), 1.0)
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
 		&"window_sky":

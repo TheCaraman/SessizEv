@@ -41,10 +41,10 @@ const ROOMS: Array[Dictionary] = [
 	{"id": &"daniel_bedroom", "name_key": "ROOM_DANIEL", "floor": 1, "rects": [Rect2(0.0, 6.0, 4.0, 4.0)]},
 	{"id": &"isolation", "name_key": "ROOM_ISOLATION", "floor": 1, "rects": [Rect2(4.0, 0.0, 4.2, 1.8)]},
 	{"id": &"landing", "name_key": "ROOM_LANDING", "floor": 1, "rects": [Rect2(4.0, 1.8, 4.2, 1.2)]},
-	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(4.0, 3.0, 3.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
+	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(4.0, 3.0, 3.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0), Rect2(4.0, 8.5, 2.8, 1.5)]},
 	{"id": &"multipurpose", "name_key": "ROOM_MULTIPURPOSE", "floor": 1, "rects": [Rect2(8.2, 0.0, 3.8, 6.5)]},
 	{"id": &"bathroom_upper", "name_key": "ROOM_BATHROOM_UPPER", "floor": 1, "rects": [Rect2(8.2, 6.5, 3.8, 3.5)]},
-	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(4.0, 8.5, 4.2, 1.5)]},
+	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(6.8, 8.5, 1.4, 1.5)]},
 ]
 
 ## Rooms the player walks through in 3D. Every other room is shown as a 2D
@@ -72,7 +72,7 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 0, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true,
 		"openings": [{"pos": 7.25, "sealed": true, "id": &"rear_door"}]},
 	{"floor": 0, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true,
-		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door", "front": true}, {"pos": 7.45, "width": 0.9, "window": true}]},
+		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door", "front": true}, {"pos": 7.45, "width": 0.9, "window": true}, {"pos": 4.75, "width": 1.0, "window": true}]},
 	{"floor": 0, "axis": "z", "at": 0.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	{"floor": 0, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Ground floor, interior ---
@@ -85,16 +85,16 @@ const WALLS: Array[Dictionary] = [
 	# Kitchen / pantry.
 	{"floor": 0, "axis": "z", "at": 9.5, "from": 0.0, "to": 3.0, "openings": [{"pos": 1.5}]},
 	# Hall / staircase.
-	{"floor": 0, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
+	{"floor": 0, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "guard": true, "openings": []},
 	# Staircase / utility, then the bathroom door off the stair-foot nook.
 	{"floor": 0, "axis": "z", "at": 8.2, "from": 3.0, "to": 10.0, "openings": [{"pos": 8.0, "to": &"bathroom_ground"}]},
 	# Utility / bathroom.
 	{"floor": 0, "axis": "x", "at": 7.5, "from": 8.2, "to": 12.0, "openings": []},
 	# Hall / vestibule.
-	{"floor": 0, "axis": "x", "at": 8.5, "from": 4.0, "to": 8.2, "openings": [{"pos": 6.0, "width": 1.2}]},
+	{"floor": 0, "axis": "x", "at": 8.5, "from": 4.0, "to": 8.2, "openings": [{"pos": 5.6, "width": 3.0}]},
 	# --- Upper floor, exterior ---
 	{"floor": 1, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
-	{"floor": 1, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
+	{"floor": 1, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": [{"pos": 5.3, "width": 1.5, "window": true}]},
 	{"floor": 1, "axis": "z", "at": 0.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	{"floor": 1, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Upper floor, interior ---
@@ -109,10 +109,11 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 1, "axis": "z", "at": 8.2, "from": 0.0, "to": 10.0, "openings": [{"pos": 2.4, "to": &"multipurpose"}, {"pos": 8.0, "to": &"bathroom_upper"}]},
 	{"floor": 1, "axis": "x", "at": 6.5, "from": 8.2, "to": 12.0, "openings": []},
 	# Stairwell enclosure (open at the north end, where the stairs arrive).
-	{"floor": 1, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
+	{"floor": 1, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "guard": true, "openings": []},
 	{"floor": 1, "axis": "x", "at": 7.5, "from": 7.0, "to": 8.2, "openings": []},
 	# Storage closet north wall.
-	{"floor": 1, "axis": "x", "at": 8.5, "from": 4.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"storage"}]},
+	{"floor": 1, "axis": "x", "at": 8.5, "from": 6.8, "to": 8.2, "openings": [{"pos": 7.5, "to": &"storage"}]},
+	{"floor": 1, "axis": "z", "at": 6.8, "from": 8.5, "to": 10.0, "openings": []},
 ]
 
 

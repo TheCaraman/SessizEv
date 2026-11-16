@@ -31,6 +31,9 @@ func build() -> void:
 	_build_ceilings()
 	_build_lamps()
 	_build_runners()
+	var exterior := preload("res://scripts/house/exterior_vista.gd").new()
+	exterior.name = "ExteriorVista"
+	add_child(exterior)
 
 	var dressing := CorridorDressing.new()
 	dressing.name = "CorridorDressing"
@@ -81,6 +84,11 @@ func _build_wall(wall: Dictionary) -> void:
 	var holder := Node3D.new()
 	holder.name = "Wall_F%d_%s_%s" % [wall["floor"], wall["axis"], str(wall["at"]).replace(".", "_")]
 	add_child(holder)
+	if wall.get("guard", false):
+		# Solid 1.1m guard preserves safe stair separation, opens the sightline.
+		_add_wall_piece(holder, wall, wall["from"], wall["to"], base_y, 1.1, thickness)
+		_add_mesh(holder, Vector3(wall["at"], base_y + 1.12, (wall["from"] + wall["to"]) * 0.5), Vector3(0.16, 0.06, wall["to"] - wall["from"]), &"wood_stairs")
+		return
 
 	var openings: Array = (wall["openings"] as Array).duplicate()
 	openings.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["pos"] < b["pos"])
@@ -409,13 +417,7 @@ func _add_window(
 	collision.position = Vector3(0.0, middle, 0.0)
 	window.add_child(collision)
 
-	# Bright overcast sky behind the glass. It must not block the daylight.
-	var sky: MeshInstance3D = _add_mesh(
-		window, Vector3(0.0, middle, out * (wall_thickness * 0.5 + 0.02)),
-		Vector3(width + 0.3, height + 0.3, 0.01), &"window_sky"
-	)
-	sky.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	sky.add_to_group("window_backdrops")
+	# An actual exterior vista replaces the opaque luminous card.
 
 	# Frame, one upright and one cross bar. These throw shadows into the room.
 	for side: float in [-1.0, 1.0]:
@@ -439,8 +441,8 @@ func _add_window(
 	var curtain_middle: float = (curtain_top + curtain_bottom) * 0.5
 	var left_edge: float = -width * 0.5 - 0.12
 	var right_edge: float = width * 0.5 + 0.12
-	var gap_left: float = -0.10
-	var gap_right: float = 0.30
+	var gap_left: float = -0.23
+	var gap_right: float = 0.42
 	_add_mesh(window, Vector3(0.0, curtain_top + 0.02, curtain_z), Vector3(width + 0.36, 0.022, 0.022), &"brass")
 	_add_curtain(window, left_edge, gap_left, curtain_bottom, curtain_height, curtain_z)
 	_add_curtain(window, gap_right, right_edge, curtain_bottom, curtain_height, curtain_z)
@@ -452,10 +454,10 @@ func _add_window(
 	daylight.name = "Daylight"
 	daylight.add_to_group("window_lights")
 	daylight.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
-	daylight.light_color = Color(0.92, 0.95, 1.0)
+	daylight.light_color = Color(0.72, 0.86, 0.73)
 	daylight.light_energy = 3.0
 	daylight.spot_range = 11.0
-	daylight.spot_angle = 22.0
+	daylight.spot_angle = 32.0
 	daylight.spot_angle_attenuation = 0.5
 	daylight.spot_attenuation = 0.6
 	daylight.shadow_enabled = true

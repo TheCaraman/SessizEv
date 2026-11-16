@@ -54,6 +54,8 @@ func _physics_process(_delta: float) -> void:
 			_check_rooms()
 			_check_openings()
 			_check_solid_walls()
+			_check(_raycast(Vector3(6.5, 4.4, 5.0), Vector3(7.7, 4.4, 5.0)).is_empty(), "open stairwell admits eye-level sightline above safe guard")
+			_check(_capsule_fits(Vector3(5.3, 2.85, 9.1)), "upper window recess is genuinely accessible")
 			# Stand at the foot of the stairs, facing north (the default facing).
 			_player.global_position = Vector3(7.6, 0.05, 8.0)
 			_player.velocity = Vector3.ZERO

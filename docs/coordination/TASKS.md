@@ -42,3 +42,7 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | NIGHT-WITNESS-001 | TAMAM | Codex (sahiplik bırakıldı; yalnız doğrulayıcı) | scripts/narrative/night_observation.gd, resources/events/night_observation.json, tests/night_observation_test.*, tools/Run-Tests.ps1, docs/qa/NightObservation.md | 2026-11-16 |
 
 | VISUAL-REBUILD-001 | DEVİR | Codex (mekân test sürümü hazır; sahip incelemesi) | Sahibin geri bildirimi: koridor baştan, tüm odalarda çizimsel tutarlılık; ilk dilim room_door/house_builder, RoomView, EventBus, HouseBlockout ve etkileşim testi | 2026-11-16 |
+
+| ART-LIGHT-UTILITY-001 | TAMAM | Codex (sahiplik bırakıldı) | assets/rooms/variants/utility_*.png, room_visuals.json, room_lighting_test, provenance ve QA | 2026-11-16 |
+| CORRIDOR-REFERENCE-002 | AKTİF | Codex | house_layout/builder, exterior_vista, room_door, RoomView, ilgili test ve görsel QA | 2026-11-16 |
+| QA-AUDIO-EXIT-001 | BEKLİYOR | — | presentation_test kapanışındaki AudioStreamWAV/PlaybackWAV ObjectDB uyarısının yaşam döngüsünü çöz; işlev testleri geçiyor | 2026-11-16 |

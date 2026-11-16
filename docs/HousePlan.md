@@ -1,10 +1,10 @@
 # THE QUIET HOURS — Ev Kat Planı
 
-Sürüm 0.3 · 2026-11-16 · **Durum: sahibin genişletme isteğiyle yeni geometri uygulandı; görsel inceleme sürüyor**
+Sürüm 0.4 · 2026-11-16 · **Durum: sahibin genişletme isteğiyle yeni geometri uygulandı; görsel inceleme sürüyor**
 
 Planın kod karşılığı `scripts/house/house_layout.gd` dosyasıdır; ikisi çelişirse önce bu belge güncellenir. Sahibin son isteğiyle ana dolaşım şeridi 3m oldu; fizik/kapsül/merdiven testleri ve gerçek render kontrolü yapıldı. Baştan sona elle yürüyüş ayrıca açık; karar DecisionLog ve docs/qa/CorridorRebuild.md içinde kayıtlıdır.
 
-Uygulamada netleşenler: merdiven iki duvar arasında kapalıdır (korkuluk yok). Zemin kat banyosuna, merdivenin dibindeki holün uzantısından girilir. Dış kapılar şimdilik kapalı panellerdir.
+Uygulamada netleşenler: merdivenin koridora bakan duvarı 1,1 m yüksekliğinde koruyucu parapettir; iki kat arasında görüş açılır. Zemin kat banyosuna, merdivenin dibindeki holün uzantısından girilir. Dış kapılar şimdilik kapalı panellerdir.
 
 ## Genel ölçüler
 
@@ -40,7 +40,7 @@ Uygulamada netleşenler: merdiven iki duvar arasında kapalıdır (korkuluk yok)
 | Merdiven boşluğu | 7–8,2 | 3–7,5 | 1,2 × 4,5 | Korkuluklu | Alt kattaki sesler buradan duyulur |
 | Çok amaçlı oda | 8,2–12 | 0–6,5 | 3,8 × 6,5 | Sahanlıktan | 2 yatak; yükseltmeyle 4 |
 | Banyo | 8,2–12 | 6,5–10 | 3,8 × 3,5 | Koridorun güney ucundan | — |
-| Depo dolabı | 4–8,2 | 8,5–10 | 4,2 × 1,5 | Koridordan | Yedek malzeme, saklanan eşyalar |
+| Depo dolabı | 6,8–8,2 | 8,5–10 | 1,4 × 1,5 | Koridordan | Yedek malzeme, saklanan eşyalar |
 
 ## Kapasite
 
@@ -58,3 +58,7 @@ Başlangıç: Misafir A (2) + Misafir B (2) + Çok amaçlı (2) = **6**. Yüksel
 - Pencere yerleri blockout sırasında belirlenecek (her yatak odasında en az bir, izolasyon odasında yok).
 - Merdiven altı boşluk şimdilik kapalı hacim.
 - Mobilya yerleşimi Faz 2'de.
+
+## Son referans düzeltmesi (CORRIDOR-REFERENCE-002)
+
+Alt giriş–hol açıklığı 3 m oldu (x=4,1–7,1). Üst deponun batı kısmı koridora katıldı: x=4–6,8, z=8,5–10. Yeni üst pencere x=5,3; iki alt giriş penceresi x=4,75 ve 7,45; tümü gerçek ön dış duvar z=10 üzerindedir. Depo penceresiz kalır. Dışarıdaki erişilemez bahçe, çit, yol, komşu ev ve ağaç dekoru açık dünya değildir. Önceki kapalı merdiven tanımı geçersizdir. Fizik testleri ve render incelemesi ayrıca QA kaydındadır.

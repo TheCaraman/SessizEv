@@ -41,8 +41,31 @@ func _ready() -> void:
 	var visuals := RoomVisuals.new()
 	check(visuals.resolve("living_room", 1500, true)["variant"] == "night", "01:00 uses night variant")
 	check(visuals.resolve("living_room", 1860, false)["variant"] == "outage_day", "07:00 unresolved outage uses daytime variant")
-	room.open("utility")
-	check(room.get_visual_variant() == "fallback", "unconverted rooms retain existing assets")
+	var utility: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RoomVisuals.DATA_PATH))["utility"]
+	for state: Dictionary in cases:
+		GameState.minutes = state["minutes"]
+		GameState.power_incident = {} if state["powered"] else {"state": "outage", "cause": "loose_connection", "inspected": []}
+		room.open("utility")
+		EventBus.time_changed.emit(GameState.day, GameState.minutes)
+		for frame: int in 4:
+			await get_tree().process_frame
+		check(room.get_visual_variant() == state["variant"], "utility authored variant " + state["variant"])
+		check(room._background.texture.resource_path == utility[state["variant"]], "utility image path")
+		check(room._background.modulate == Color.WHITE, "utility lighting never darkened twice")
+		check(room._title.modulate == Color.WHITE and room._background.texture.get_size() == Vector2(1672, 941), "utility native framing and readable UI")
+		var utility_tint: Color = room.get_prop_layer().modulate
+		EventBus.time_changed.emit(GameState.day, GameState.minutes)
+		check(room.get_prop_layer().modulate == utility_tint, "utility repeated signal idempotent")
+		if "--capture-room-lighting" in OS.get_cmdline_user_args():
+			await RenderingServer.frame_post_draw
+			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/utility-lighting-%s.png" % state["variant"]) == OK, "utility capture saved")
+	check(SaveManager.save_game("utility_lighting") == OK and SaveManager.load_game("utility_lighting"), "utility outage survives load")
+	check(room.get_visual_variant() == "outage_night", "load keeps correct utility lighting")
+	director.power.repair(true)
+	check(room.get_visual_variant() == "night", "repair refreshes open utility without reopening")
+	SaveManager.delete_save("utility_lighting")
+	room.open("pantry")
+	check(room.get_visual_variant() == "fallback", "rooms without authored lighting variants keep fallback")
 	check(room._background.modulate == room.get_prop_layer().modulate, "fallback keeps old world layer tint")
 	session.free()
 	if failures == 0:

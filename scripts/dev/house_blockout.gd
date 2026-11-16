@@ -125,8 +125,9 @@ func _update_electric_lighting(powered: bool) -> void:
 		entry["node"].light_energy = float(entry["energy"]) * daylight
 	for entry: Dictionary in _window_materials:
 		var material: StandardMaterial3D = entry["material"]
-		material.albedo_color = entry["color"] * daylight
-		material.emission = entry["emission"] * daylight
+		# Preserve distant silhouettes at night without increasing indoor beams.
+		material.albedo_color = entry["color"] * maxf(daylight, 0.18)
+		material.emission = entry["emission"] * maxf(daylight, 0.18)
 	for light: Node3D in _electric_lights:
 		light.visible = powered
 	for material: StandardMaterial3D in _electric_materials:
@@ -167,7 +168,7 @@ func _build_environment() -> void:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
 	environment.ambient_light_color = Color(0.35, 0.47, 0.40)
-	environment.ambient_light_energy = 0.22
+	environment.ambient_light_energy = 0.38
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
