@@ -151,3 +151,8 @@ Dayanak a9b376b. Kalan11oda çizimsel yeniden üretildi ve bağlandı; 13anaoda 
 
 ## 2026-11-16 / Codex / CORRIDOR-REFERENCE-002
 Sahibin son eleştirisi önceliklidir: önceki koridor kabul edilmedi. Resmî referans araştırması ve uygulama docs/qa/CorridorReferenceRevision.md. Geometri/pencere/dış sokak/kapı geçişi ikinci revizyon yapıldı, 22paket6063PASS, GPU9/64PASS. Utility ışık varyantları bu arada tamamlandı. CORRIDOR-REFERENCE-002 açık: eşya/sanat ayrıntıları henüz referans kalitesinde değil, nihai kabul iddia etme. Yerel masaüstü kısayolu aynı kanonik projeyi açar; eski çalışan oyun yeniden başlatılmalı. Diğer asistan bu dosyayı okumadan haberdar sayılmaz.
+
+## 2026-11-16 / Kullanıcı isteğiyle tam devir
+Geliştirme sürümü 0.1.1-dev.20261116.2. docs/coordination/CLAUDE_HANDOFF.md güncel ayrıntılı kaynak; yapılanlar, eksikler, testler, gerçek dosyalar ve sınırlar listeli. START_HERE içindeki eski Gün2 yok bilgisi düzeltildi. CORRIDOR-REFERENCE-002 DEVİR, Codex sahipliği bıraktı. docs/coordination/messages/20261116-codex-to-claude-checkpoint.md Claude'a yöneltilen dosya mesajıdır; okunduğu iddia edilmez. Kullanıcının denemesi için ana menüde gerçek version alanı gösterilir; mevcut kampanya kayıtlarına dokunulmaz.
+
+Devir sürüm doğrulaması: menu80PASS, Start-Game -PrepareOnly PASS, masaüstü kısayolu hedefi doğrulandı; gerçek menü sürüm görüntüsü alındı. Normal kampanya kayıtları değiştirilmedi.

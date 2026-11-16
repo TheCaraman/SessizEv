@@ -9,7 +9,7 @@ Aşağıdaki metin projeyi açan Claude/ChatGPT/Codex'e verilebilir:
 > Başka bir asistanın aktif dosyalarını değiştirme. Aynı klasörde dal değiştirmenin
 > herkesi etkilediğini unutma. Karar üstünlüğü modele göre değil, onaylı vizyona
 > uyum, oyuncuya katkı, kanıt ve toplam üretim maliyetine göre belirlenir.
-> Yaratıcı değişikliklerde proje sahibine danış. Gün 1 hazır, Gün 2 henüz yok.
+> Yaratıcı değişikliklerde proje sahibine danış. Gün 1–3 ilk oynanabilir, Gün 4 kısmi; güncel devir için CLAUDE_HANDOFF.md oku.
 > PS1/piksel estetiği reddedildi; 3D koridorlar ve katmanlı 2D odalar geçerli.
 > Tesliminde yalnızca kendi dosyalarını commit et, ilgili testleri çalıştır ve
 > devir günlüğünü gerçek sonuçlarla güncelle. Çalıştırmadığın testi geçti diye yazma.

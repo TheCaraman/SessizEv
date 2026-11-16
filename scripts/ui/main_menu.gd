@@ -98,6 +98,12 @@ func _build_interface() -> void:
 	subtitle.add_theme_color_override(&"font_color", DIM_COLOR)
 	subtitle.add_theme_font_size_override(&"font_size", 24)
 	column.add_child(subtitle)
+	var build_label := Label.new()
+	build_label.name = "BuildVersion"
+	build_label.text = str(ProjectSettings.get_setting("application/config/version", ""))
+	build_label.add_theme_color_override(&"font_color", DIM_COLOR)
+	build_label.add_theme_font_size_override(&"font_size", 20)
+	column.add_child(build_label)
 
 	var gap := Control.new()
 	gap.custom_minimum_size = Vector2(0.0, 48.0)

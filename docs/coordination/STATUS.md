@@ -68,3 +68,6 @@ Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim d
 
 ## Koridor referans ikinci düzeltmesi / 2026-11-16
 Önceki görsel teslim sahibi tarafından reddedildi. Resmî Steam görselleri tarayıcıda incelendi. İki katta açık merdiven görüşü ve güvenli 1,1m parapet, 3m giriş açıklığı, iki alt/tek üst gerçek dış pencere, depo küçültme ve çizimsel uzak sokak + ön 3D çit/yol bağlandı. Oda kartı kapıdan kaldırıldı; fiziksel açılış/kararma/sabit oda geçişi. 22 paket/6063 PASS; GPUkapı9/ışık64 PASS, gerçek koridor/foyer renderları incelendi. Küçük eşyalar/sanat ayrıntıları ve sahibin estetik kabulü hâlâ açık: CORRIDOR-REFERENCE-002 AKTİF. Genel oynanabilir hedef tamamlanmış sayılmaz. Utility üç ışık varyantı tamam, manifest ve promptlar kayıtlı. docs/qa/CorridorReferenceRevision.md.
+
+## Kullanıcı isteğiyle kayıt ve Claude devri
+0.1.1-dev.20261116.2 ana menü sürümü eklendi; config/name ve save schema korunur. Güncel tek başlangıç: docs/coordination/CLAUDE_HANDOFF.md. CORRIDOR-REFERENCE-002 sahipliği bırakıldı, yeni perde/çerçeve düzenlemesi başlatılmadı. Ayrı Claude mesajı yazıldı; okunma/ACK henüz yok. Kısayol kanonik projeye bağlıdır; bu paket standalone export değildir. Yerel Git checkpoint/etiket ve bundle yedeği hazırlanır.
