@@ -34,6 +34,9 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-010 | Belgeler Türkçe, oyun içi tüm metinler İngilizce ve çeviri anahtarlıdır. | Bölüm 0 |
 | V-011 | Sağlıklı Daniel, topluluğu yıkılmış hâlde tahliye olursa son EMPTY HOUSE'tur (yalnız ayrılış varyantı). | Son önceliği boşluğu |
 
+| V-012 | Merdivenlerde basamak çıkma mantığı yok; merdiven çarpışması rampa biçimindedir. Basamaklar yalnızca görseldir. | Kontrolcü sadeliği, NPC yol bulma |
+| V-013 | Yürüme hızı 2,4 m/s, hızlı yürüme 3,8 m/s, göz yüksekliği 1,6 m, görüş açısı 70°. Dengeleme değerleridir. | Faz 1.2 |
+
 ## Açık konular
 
 | No | Konu | Not |
@@ -41,6 +44,7 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | A-001 | Su kaynağı: sayılan stok mu, "şebeke çalışıyor/arızalı" durumu mu? | Onay gelmedi; şimdilik özgün spesifikasyon geçerli (hafif sayılan stok). |
 | A-002 | Altıncı sonun nihai adı | Çalışma adı THE LONG QUIET. |
 | A-003 | "Maruz kalmış" (exposed) durumunun ilerleme kuralları | GDD §8'de taslak; dengeleme Faz 5'te. |
+| A-006 | Ev kat planı onayı | Taslak `HousePlan.md` içinde. Onaylanmadan blockout başlamaz. |
 | A-004 | Animasyon kaynağı | Lisansı uygun (CC0) iskelet animasyon paketi mi, kodla üretilen basit pozlar mı? Faz 3 öncesi karar. |
 | A-005 | ~~Godot ve git kurulu değil~~ — **Kapandı (2026-11-16)** | Godot 4.7.2 `tools/godot-4.7.2/` altında (proje klasörünün dışında). Git 2.56.1 kuruldu; depo başlatıldı. Uzak depo (GitHub vb.) henüz yok. |
 

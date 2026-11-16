@@ -23,9 +23,9 @@ Ses yönü ve kalite planı şimdilik bu belgede tutulur; içerik büyüdüğün
 | No | Görev | Durum |
 |---|---|---|
 | 1.1 | Proje kurulumu: `project.godot`, klasörler, `EventBus`, `InputSetup`, açılış sahnesi | **Tamam** — 4.7.2'de başsız çalıştırıldı, hata yok |
-| 1.2 | Birinci şahıs kontrolcü | Bekliyor |
+| 1.2 | Birinci şahıs kontrolcü | **Tamam** — otomatik test geçti (`tests/player_movement_test.tscn`); pencereli elle deneme yapılmadı |
 | 1.3 | Etkileşim sistemi (ışın, `Interactable`, ipucu) | Bekliyor |
-| 1.4 | Ev blockout'u (önce kat planı onayı) | Bekliyor |
+| 1.4 | Ev blockout'u (önce kat planı onayı) | Kat planı taslağı hazır (`HousePlan.md`); onay bekliyor |
 | 1.5 | Kapılar, kilitler, ışık anahtarları | Bekliyor |
 | 1.6 | Retro görüntü hattı, temel gösterge, `Settings` | Bekliyor |
 | 1.7 | `TimeManager`, `GameState`, `SaveManager` temeli | Bekliyor |
