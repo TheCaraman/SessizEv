@@ -67,7 +67,7 @@ func _build() -> void:
 		var limits: Vector2 = Settings.LIMITS[key]
 		slider.min_value = limits.x
 		slider.max_value = limits.y
-		slider.step = 0.00011 if key == "mouse_sensitivity" else (0.05 if key == "brightness" else 1.0)
+		slider.step = 0.00011 if key == "mouse_sensitivity" else (0.01 if key == "master_volume" else (0.05 if key == "brightness" else 1.0))
 		slider.custom_minimum_size = Vector2(280, 44)
 		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		slider.value_changed.connect(func(value: float) -> void:

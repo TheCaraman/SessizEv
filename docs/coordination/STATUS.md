@@ -88,3 +88,6 @@ QA-AUDIO-EXIT-001 incelendi: pipe WAV/playback uyarısı headless/Dummy koşulun
 
 ## Oynanabilir temel ayarlar / SETTINGS-PLAYTEST-001
 Sürüm0.1.3-dev.20261116.4: ana/pause menüsünde Ayarlar; parlaklık/fare/FOV, defaults ve geri, EN/TR. Tercihler user://settings.cfg içinde kampanyadan ayrı; dil-only eski dosya taşınır, invalid tip/range güvenli. Aktif3D/2D/karaktereRGB parlaklık uygulanır, alfa/UIdeğişmez. Varsayılan sanat aynı. GerçekTab modalodak, ikiEsc/pause,720p/1080p/1440p ve kalıcılık testleri var.24paket6196WASAPIPASS; GPU72, EN/TR incelendi. docs/qa/PlaytestSettings.md. Ses notu düzeltildi: yalnızDummy açıklaması fazla kesindi, erken test exit WASAPI'de de uyarı üretti; presentation artık weakref temizliğini bekliyor. Ürün sesine anlamsız yama yok. Tam ayarlar/grafik/ses/rebind/motion sonradan açık; Claude003 adayına dokunulmadı.
+
+## SETTINGS-AUDIO-001
+Ana ses düzeyi0–100% ve sıfırda mute uygulandı; kalıcılık/legacy/defaults ve6kontrol Tab zinciri.24paket/6219 WASAPIPASS; GPU92 ve EN/TR incelendi. Sürüm0.1.4-dev.20261116.5, aynı aktifworktree. Kategori sesleri ve öznel dinleme kontrolü açık.

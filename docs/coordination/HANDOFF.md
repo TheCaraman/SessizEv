@@ -180,3 +180,6 @@ Yalnız test/araç/QA. Gerçek WASAPI ile etkin kapı+boru seslerinin sahne sök
 
 ## 2026-11-16 / Codex / SETTINGS-PLAYTEST-001
 Dayanaka4fdffa. Üç temel tercih ve ana/pause modalSettingsView, Settingsload/commit/signal, kamera ve sahne-yerelWorldPresentation, 2DRGB/alpha koruması. Localization6yeni anahtar, genel save hata cümlesi.70ayar denetimi; gerçekTab vepausegirdisi SubViewportpush_input. İlk rootinputfixture hatası düzeltildi. Son24paket6196WASAPIPASS, GPU72 ve EN/TR görselincelendi. İlkfullpassWASAPIsunumexit2ObjectDByarışı buldu; presentation testteardownayırtlıweakrefbekleme eklendi, üç89koşu ve sonfullpass temiz. Önceki Dummy-only açıklaması açıkça düzeltildi. Defaultartist/gamestate/schema aynı; sürüm0.1.3-dev.20261116.4. YeniMotion/lens hâlâ kapalı aday, varsayılıonay yok. Ayrı kalıcıdal, kanonik003dosyaları korunur.
+
+## 2026-11-16 / Codex / SETTINGS-AUDIO-001
+Dayanak8034a5f. Mevcut Settings üzerinden Master gain/mute; yeniautoload yok. Ana/pause dördüncüslider, CSVEN/TR; settings90 ve tam24/6219 PASS, GPU92;720p/1080p/1440p sınırları/gerçekTab6kontrol ve pauseESC korundu. docs/qa/MasterVolume.md ve master-volume-last-run.json kanıtı. Eski ses miksajı varsayılan100%, kampanyadan ayrı. Sürüm0.1.4-dev.20261116.5; sahiplik bırakıldı. Nihai sesmikseri tamamlanmış sayılmaz.

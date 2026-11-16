@@ -3,8 +3,8 @@ extends Node
 const PATH: String = "user://settings.cfg"
 const LANGUAGES: Array[String] = ["en", "tr"]
 signal preferences_changed
-const DEFAULTS: Dictionary = {"brightness": 1.0, "mouse_sensitivity": 0.0022, "fov": 78.0}
-const LIMITS: Dictionary = {"brightness": Vector2(0.7, 1.6), "mouse_sensitivity": Vector2(0.00055, 0.0066), "fov": Vector2(60.0, 95.0)}
+const DEFAULTS: Dictionary = {"brightness": 1.0, "mouse_sensitivity": 0.0022, "fov": 78.0, "master_volume": 1.0}
+const LIMITS: Dictionary = {"brightness": Vector2(0.7, 1.6), "mouse_sensitivity": Vector2(0.00055, 0.0066), "fov": Vector2(60.0, 95.0), "master_volume": Vector2(0.0, 1.0)}
 var language: String = "en"
 var _values: Dictionary = DEFAULTS.duplicate()
 
@@ -21,6 +21,7 @@ func load_preferences() -> void:
 		var value: Variant = config.get_value("preferences", key, DEFAULTS[key]) if loaded == OK else DEFAULTS[key]
 		if _valid_number(key, value):
 			_values[key] = float(value)
+	_apply_audio()
 	TranslationServer.set_locale(language)
 	preferences_changed.emit()
 
@@ -63,6 +64,15 @@ func _commit(values: Dictionary, locale: String) -> Error:
 	if error == OK:
 		_values = values.duplicate()
 		language = locale
+		_apply_audio()
 		TranslationServer.set_locale(language)
 		preferences_changed.emit()
 	return error
+
+func _apply_audio() -> void:
+	var master: int = AudioServer.get_bus_index(&"Master")
+	if master < 0:
+		return
+	var volume: float = get_number("master_volume")
+	AudioServer.set_bus_volume_linear(master, volume)
+	AudioServer.set_bus_mute(master, volume == 0.0)

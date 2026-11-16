@@ -53,3 +53,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | HOUSE-ATMOS-004 | DEVİR | Codex ayrı worktree (deneme sürümü hazır; sanat kabulü açık) | Sahibin son reddi: normal ev hacmi, tam geniş üst koridor, özgün çizimsel yüzey, kaynağa dayalı ışık; Claude003 kanonik dosyaları korunur | 2026-11-16 |
 | QA-AUDIO-DUMMY-002 | BEKLİYOR | — | Erken test kapanışındaki WAV/playback uyarısı WASAPI üzerinde de yeniden görüldü; presentation teardown weakref bekleme ile düzeltildi. Dummy/üst motor araştırması açık; ek negatif komutun önceki policy reddi korunur | 2026-11-16 |
 | SETTINGS-PLAYTEST-001 | TAMAM | Codex (ayrı worktree; sahiplik bırakıldı) | Ana/pause ayar ekranı; parlaklık/fare/FOV; ayrı kalıcı tercihler, EN/TR, test/render | 2026-11-16 |
+
+| SETTINGS-AUDIO-001 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | scripts/core/settings.gd, scripts/ui/settings_view.gd, localization/strings.csv, tests/settings_test.gd; ana ses düzeyi ve mute, mevcut tercihler/kampanya korunur | 2026-11-16 |

@@ -23,10 +23,19 @@ func _ready() -> void:
 	check(Settings.set_number("brightness", 1.35) == OK, "brightness saved")
 	check(Settings.set_number("mouse_sensitivity", 0.0044) == OK, "sensitivity saved")
 	check(Settings.set_number("fov", 90.0) == OK, "FOV saved")
+	var master: int = AudioServer.get_bus_index(&"Master")
+	check(Settings.set_number("master_volume", 0.35) == OK, "volume saved")
+	check(is_equal_approx(AudioServer.get_bus_volume_linear(master), 0.35), "live Master gain follows preference")
+	check(Settings.set_number("master_volume", 0.0) == OK and AudioServer.is_bus_mute(master), "zero volume is fully muted")
+	check(Settings.set_number("master_volume", 1.01) == ERR_INVALID_PARAMETER and AudioServer.is_bus_mute(master), "invalid volume does not unmute")
+	Settings.load_preferences()
+	check(AudioServer.is_bus_mute(master) and Settings.get_number("master_volume") == 0.0, "mute survives reload")
+	check(Settings.set_number("master_volume", 0.35) == OK and not AudioServer.is_bus_mute(master), "raising volume unmutes")
 	check(Settings.set_language("tr") == OK, "language write preserves numeric values")
 	Settings.load_preferences()
 	check(Settings.language == "tr" and is_equal_approx(Settings.get_number("brightness"), 1.35), "mixed preferences survive reload")
 	check(is_equal_approx(Settings.get_number("mouse_sensitivity"), 0.0044) and is_equal_approx(Settings.get_number("fov"), 90.0), "controls survive reload")
+	check(is_equal_approx(Settings.get_number("master_volume"), 0.35), "language write preserves volume")
 	check(GameState.to_dict() == campaign, "preferences never change campaign state")
 	var legacy := ConfigFile.new()
 	legacy.set_value("interface", "language", "tr")
@@ -61,6 +70,9 @@ func _ready() -> void:
 	panel._sliders["brightness"].value = 1.35
 	panel._sliders["mouse_sensitivity"].value = 0.0044
 	panel._sliders["fov"].value = 90.0
+	panel._sliders["master_volume"].value = 0.25
+	check(is_equal_approx(AudioServer.get_bus_volume_linear(master), 0.25), "volume slider edits actual audio gain")
+	check(panel._readouts["master_volume"].text == "25%", "volume readout uses percentage")
 	check(is_equal_approx(Settings.get_number("brightness"), 1.35), "brightness slider edits its own setting")
 	check(is_equal_approx(player.mouse_sensitivity, 0.0044), "live player sensitivity updates")
 	check(is_equal_approx(player.get_node("Head/Camera3D").fov, 90.0), "live FOV updates")
@@ -72,7 +84,7 @@ func _ready() -> void:
 	check(is_equal_approx(session.get_node("DialogueView")._figure.modulate.r, 1.35), "dialogue figure follows brightness")
 	panel._back.grab_focus()
 	var visited: Array[Control] = []
-	for press: int in 5:
+	for press: int in 6:
 		var tab := InputEventKey.new()
 		tab.keycode = KEY_TAB
 		tab.physical_keycode = KEY_TAB
@@ -87,7 +99,7 @@ func _ready() -> void:
 		check(focused != null and panel.is_ancestor_of(focused), "real Tab input stays inside modal")
 		if focused not in visited:
 			visited.append(focused)
-	check(visited.size() == 5, "Tab reaches every settings control")
+	check(visited.size() == 6, "Tab reaches every settings control")
 	for resolution: Vector2i in [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1440)]:
 		viewport.size = resolution
 		for locale: String in ["en", "tr"]:
@@ -103,6 +115,7 @@ func _ready() -> void:
 				check(viewport.get_texture().get_image().save_png("res://docs/qa/settings-%s.png" % locale) == OK, "settings capture saved")
 	panel.find_child("RestoreDefaults", true, false).pressed.emit()
 	check(Settings.language == "tr" and is_equal_approx(Settings.get_number("brightness"), 1.0), "reset preserves language")
+	check(not AudioServer.is_bus_mute(master) and is_equal_approx(AudioServer.get_bus_volume_linear(master), 1.0), "reset restores audible default gain")
 	panel.close()
 	menu.free()
 	room.close()

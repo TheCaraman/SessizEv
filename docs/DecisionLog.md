@@ -103,3 +103,6 @@ Sahip son evin renk/tasarım/ışık/atmosferini uzak ve basık buldu; baştan d
 
 ## SETTINGS-PLAYTEST-001 / 2026-11-16
 GDD temel PC ayarları ilk dilim: parlaklık, fare hassasiyeti, FOV. Varsayılanlar1.0/.0022/78 korunur; ana/pause menüsü aynıSettingsView kullanır, EN/TR. Tercihler kampanyadan ayrı; bozuk eski veri güvenli varsayılan alır, dil yazımı sayısal tercihleri silmez. RGB parlaklık alfa veya UI yazılarına uygulanmaz. Yeni mekanik/sanat kararı değil, mevcut gereksinim uygulamasıdır. Tam grafik/ses/rebind/motion ayarları bu dilimin dışında açık kalır. QA: docs/qa/PlaytestSettings.md.
+
+## K-SETTINGS-AUDIO-001 / 2026-11-16
+Onaylı ses erişilebilirliği kapsamının ilk adımı ana ses düzeyidir (0–100%). Settings mevcut Master bus kazancını uygular; sıfırda mute, pozitif değerde unmute. Yeni autoload veya yeni ses varlığı yok. Varsayılan 100% mevcut miksajı korur. Tercih kampanya dışındaki settings.cfg dosyasında; eksik eski değer 100%. Ayrı müzik/efekt/diyalog/ambiyans kontrolleri bu adımda tamamlanmış sayılmaz.
