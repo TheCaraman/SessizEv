@@ -65,12 +65,71 @@ func _read_state(slot: String) -> Dictionary:
 	if json.parse(FileAccess.get_file_as_string(path)) != OK or not json.data is Dictionary:
 		return {}
 	var payload: Dictionary = json.data
+	if not _whole_number(payload.get("save_version")):
+		return {}
 	var version: int = int(payload.get("save_version", 0))
 	if version < 1 or version > GameState.SAVE_VERSION:
 		return {}
 	if not payload.get("state") is Dictionary:
 		return {}
-	return payload["state"]
+	var state: Dictionary = payload["state"]
+	return state if _valid_state_shape(state) else {}
+
+
+## Validate before from_dict can mutate live state. Older optional fields remain
+## optional so version 1–3 migrations continue to preserve their original data.
+func _valid_state_shape(state: Dictionary) -> bool:
+	for key: String in ["campaign_seed", "day", "minutes"]:
+		if not _whole_number(state.get(key)):
+			return false
+	if int(state["day"]) < 1 or int(state["minutes"]) < 0 or int(state["minutes"]) > 1439:
+		return false
+	for key: String in ["flags", "resources", "player", "npcs"]:
+		if not state.get(key) is Dictionary:
+			return false
+	for key: String in ["beds", "jobs", "power_incident"]:
+		if state.has(key) and not state[key] is Dictionary:
+			return false
+	for key: String in ["resolved_arrivals", "completed_jobs", "reports", "evidence"]:
+		if state.has(key) and not state[key] is Array:
+			return false
+	for value: Variant in state["resources"].values():
+		if not _whole_number(value) or float(value) < 0:
+			return false
+	for key: String in GameState.STARTING_RESOURCES:
+		if not state["resources"].has(key):
+			return false
+	for id: String in Roster.get_ids():
+		if not state["npcs"].has(id):
+			return false
+	for key: String in ["energy", "stress"]:
+		if not _whole_number(state["player"].get(key)):
+			return false
+	for entry: Variant in state["npcs"].values():
+		if not entry is Dictionary:
+			return false
+		if not entry.get("infected") is bool or not _whole_number(entry.get("trust")):
+			return false
+		for key: String in ["status", "room"]:
+			if not entry.get(key) is String:
+				return false
+	for entry: Variant in state.get("jobs", {}).values():
+		if not entry is Dictionary:
+			return false
+		for key: String in ["day", "start", "end"]:
+			if not _whole_number(entry.get(key)):
+				return false
+	for entry: Variant in state.get("reports", []):
+		if not entry is Dictionary or not entry.get("args", {}) is Dictionary:
+			return false
+	for entry: Variant in state.get("evidence", []):
+		if not entry is Dictionary:
+			return false
+	return true
+
+
+func _whole_number(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and float(value) == floorf(float(value))
 
 
 func delete_save(slot: String = AUTOSAVE_SLOT) -> void:

@@ -37,7 +37,7 @@ func _ready() -> void:
 	_pause_menu = _session.get_node("PauseMenu") as PauseMenu
 
 
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
 	_frame += 1
 	match _frame:
 		5:
@@ -137,6 +137,26 @@ func _check_damaged_save() -> void:
 	_check(not menu.prepare_continue(), "loading a damaged save should fail")
 	_check(JSON.stringify(GameState.to_dict()) == before, "a failed load must leave the campaign untouched")
 	menu.free()
+
+	# Valid JSON with malformed nested data must fail before touching GameState.
+	var valid_payload: Dictionary = JSON.parse_string(good)
+	var invalid_states: Array[Dictionary] = []
+	for broken: Dictionary in [{"day": "three"}, {"minutes": 1440}, {"minutes": -1}, {"minutes": 420.5}, {"resources": []}, {"player": null}, {"npcs": {"elena_ward": false}}, {"jobs": {"elena_ward": []}}, {"reports": [false]}, {"evidence": ["bad"]}, {"beds": []}, {"power_incident": []}]:
+		var invalid: Dictionary = valid_payload["state"].duplicate(true)
+		invalid.merge(broken, true)
+		invalid_states.append(invalid)
+	invalid_states.append({})
+	for field: String in ["resources", "npcs"]:
+		var invalid: Dictionary = valid_payload["state"].duplicate(true)
+		invalid[field] = {}
+		invalid_states.append(invalid)
+	for invalid: Dictionary in invalid_states:
+		file = FileAccess.open(path, FileAccess.WRITE)
+		file.store_string(JSON.stringify({"save_version": GameState.SAVE_VERSION, "state": invalid}))
+		file.close()
+		_check(SaveManager.get_summary().is_empty(), "malformed structure has no summary")
+		_check(not SaveManager.load_game(), "malformed structure rejected")
+		_check(JSON.stringify(GameState.to_dict()) == before, "malformed nested load is atomic")
 
 	file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(good)
