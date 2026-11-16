@@ -121,3 +121,6 @@ Görev sahipliği bırakıldı mı:
 
 ## 2026-11-16 / Codex / SAVE-SAFE-001
 Dayanak 1555f81. SaveManager güvenli dosya yayın temeli, test paketi ve QA belgesi eklendi. 17 paket/5669 denetim geçti; tqh-tests-210be92b665f40d68a04773bd3c124d7. Gerçek disk arızası/elektrik kesintisi sınanmadı. Canlı durum transaction'ı ve Gün 4 uygulaması sonraki bağımlılık. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / SAVE-TXN-001
+Dayanak 4b2887d. Aday kayıt ve ardından canlı uygulama API'si eklendi; yükleme davranışı varsayılanda korundu. 17 paket/5690 denetim geçti; tqh-tests-58a475ade0f2425c9583c0aebbd43cda. Mevcut eylemler topluca dönüştürülmedi. Gün 4 gerçek tanık/karar doğrulaması sonraki iş. Sahiplik bırakıldı.

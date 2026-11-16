@@ -26,3 +26,5 @@ Yeni kayıt: ID, sahip, durum, düzenlenecek tam göreli yollar, başlama zaman�
 dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 
 | SAVE-SAFE-001 | TAMAM | Codex (sahiplik bırakıldı) | scripts/save/save_manager.gd; tests/save_write_test.*; tools/Run-Tests.ps1; docs/qa/SafeSaveWrite.md | 2026-11-16 |
+
+| SAVE-TXN-001 | TAMAM | Codex (sahiplik bırakıldı) | save_manager.gd commit_candidate, game_state.gd bildirim seçeneği, save_write_test.gd ve docs/qa/CandidateTransactions.md | 2026-11-16 |

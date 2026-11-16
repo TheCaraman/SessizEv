@@ -19,9 +19,45 @@ func has_save(slot: String = AUTOSAVE_SLOT) -> bool:
 
 ## Saves the current campaign. Returns OK or the error that stopped it.
 func save_game(slot: String = AUTOSAVE_SLOT) -> Error:
+	return _save_state(GameState.to_dict(), slot)
+
+
+## A caller builds the candidate without touching live GameState. No await or
+## signals occur until persistence succeeds. A stale quote must be rebuilt.
+func commit_candidate(expected: Dictionary, candidate: Dictionary, transaction_id: String, slot: String = AUTOSAVE_SLOT) -> Error:
+	if not GameState.active or transaction_id.is_empty() or not transaction_id.is_valid_filename() or transaction_id.contains("."):
+		return ERR_INVALID_PARAMETER
+	var marker: String = "transaction/" + transaction_id
+	if GameState.flags.has(marker):
+		return ERR_ALREADY_EXISTS
+	if GameState.to_dict() != expected:
+		return ERR_BUSY
+	if not _valid_state_shape(candidate) or candidate.size() != expected.size():
+		return ERR_INVALID_DATA
+	for key: String in expected:
+		if not candidate.has(key):
+			return ERR_INVALID_DATA
+	# A shelter judgment cannot silently replace the campaign or its infection
+	# assignments. Player exposure is a separate authored system, not this API.
+	if candidate["day"] != expected["day"] or candidate["minutes"] < expected["minutes"] or candidate["campaign_seed"] != expected["campaign_seed"] or candidate["player"].get("infection") != expected["player"].get("infection"):
+		return ERR_INVALID_DATA
+	for id: String in expected["npcs"]:
+		if candidate["npcs"][id]["infected"] != expected["npcs"][id]["infected"]:
+			return ERR_INVALID_DATA
+	if candidate["flags"].has(marker):
+		return ERR_INVALID_DATA
+	var committed: Dictionary = candidate.duplicate(true)
+	committed["flags"][marker] = true
+	var result: Error = _save_state(committed, slot)
+	if result != OK:
+		return result
+	GameState.from_dict(committed, false)
+	return OK
+
+
+func _save_state(state: Dictionary, slot: String) -> Error:
 	if slot.is_empty() or not slot.is_valid_filename() or slot.contains("."):
 		return ERR_INVALID_PARAMETER
-	var state: Dictionary = GameState.to_dict()
 	if not _valid_state_shape(state):
 		return ERR_INVALID_DATA
 	var dir_error: Error = DirAccess.make_dir_recursive_absolute(SAVE_DIR)

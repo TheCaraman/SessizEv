@@ -343,7 +343,7 @@ func to_dict() -> Dictionary:
 ## Restores state from a dictionary made by to_dict(), including one that has
 ## been through JSON (where every number comes back as a float) and one from
 ## save version 1 (which had no beds or visit records).
-func from_dict(data: Dictionary) -> void:
+func from_dict(data: Dictionary, announce_day: bool = true) -> void:
 	night_session = _restore_numbers(data.get("night_session", {}))
 	power_incident = _restore_numbers(data.get("power_incident", {}))
 	evidence = []
@@ -416,8 +416,11 @@ func from_dict(data: Dictionary) -> void:
 		})
 
 	active = true
-	EventBus.day_started.emit(day)
+	if announce_day:
+		EventBus.day_started.emit(day)
 	EventBus.time_changed.emit(day, minutes)
+	if not announce_day:
+		EventBus.phase_changed.emit(get_phase())
 	EventBus.visitor_changed.emit(visitor)
 	EventBus.residents_changed.emit()
 	EventBus.resources_changed.emit()

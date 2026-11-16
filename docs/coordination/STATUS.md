@@ -35,3 +35,6 @@ Gün 3 nöbetine 23:59'a kadar katılma, gerçek başlangıca göre enerji ve v5
 
 ## Güvenli kayıt temeli
 SAVE-SAFE-001 tamam: doğrulanmış pending dosya, backup rotasyonu, başarısız yayın rollback ve ana dosya yokken backup kurtarma. 17 paket/5669 denetim geçti. Ayrıntı docs/qa/SafeSaveWrite.md. Canlı karar transaction'ı henüz uygulanmadı; Gün 4 önkoşulu olarak açık.
+
+## Aday durum işlemi
+SAVE-TXN-001 tamam: beklenen durum kontrolü, adayın kaydı, ardından canlı uygulama; işlem kimliği ve çift uygulama engeli. Sahte gün başlangıcı yok. 17 paket/5690 denetim geçti (save write 58). docs/qa/CandidateTransactions.md. Gün 4'e henüz bağlanmadı; hedef/oda/tanık semantik doğrulaması ayrıca gerekli.
