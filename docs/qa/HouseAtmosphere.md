@@ -60,3 +60,29 @@ Gerçek GPU 1920×1080: `corridor-ground-{day,night}`, `foyer-day`, `corridor-up
 - Merdivenin altı açık basamaklar; korkuluk ve basamak yanağı sade.
 - Kodla üretilmiş desen ve eşyalar elle çizilmiş referans kalitesinde değil.
 - Elle fare/klavye oynanışı yapılmadı.
+
+## İkinci tur — HOUSE-ATMOS-002 (aynı gün)
+
+Sahibin geri bildirimi: öncekinden iyi ama hâlâ basık ve boğucu; gerçek bir ev bu kadar koyu olmaz;
+gece pencerelerden daha çok ışık sızmalı; odalar aynı kalabilir, yürünen alanlar yeniden şekillensin.
+
+- **İki kat yüksekliğinde hol:** holün merdiven tarafı (x 6,8–8,75) ve merdiven boşluğu üst kata açık
+  (`HouseLayout.VOIDS`). Üst koridor bu boşluğa bakan 1,8 m'lik korkuluklu **galeri** oldu; boşluğun üç
+  kenarında 1,1 m korkuluk. Holde bu bölümde tavan 6,4 m.
+- **Tepe penceresi** (`HouseLayout.SKYLIGHT`): çatıda çerçeveli cam; gündüz gün ışığı, gece ay ışığı huzmesi
+  hole iner. Boşluğun ortasındaki lamba çatıdan uzun kabloyla sarkar.
+- **Merdivenin açık yanı:** beyaz balüstrat ve eğim boyunca görünmez korkuluk; oyuncu merdivenden hole düşemez.
+- **Gerçek ev renkleri:** açık bej, solmuş damask duvar kâğıdı; beyaza yakın tavan; açık krem kapılar,
+  beyaz kasa ve süpürgelik; kapı boyasındaki kir azaltıldı. Ekran tonu %62 → %30, gölge ezme %25 → %8,
+  kararma 0,85 → 0,55, sinema şeridi %6,5 → %4. Görüş açısı 70° → 78°.
+- **Gece ışığı:** her koridor penceresinde ve tepe penceresinde gece güçlenen mavimsi ay/sokak ışığı
+  (`moon_lights` grubu, saate bağlı; elektrik kesintisinden bağımsız). Ortam ışığı da saate bağlandı:
+  gündüz 0,5, gece 0,14. Gündüz pencere ışığı ve testteki "gece zayıf" kuralı korundu.
+- Üst kat yolluğu galeriye taşındı. Ev testi: eski "koridor / merdiven duvarı" denetimi "galeri korkuluğu"
+  oldu. 22 paket PASS.
+
+Görüntüler: `corridor-ground-{day,night}`, `foyer-day`, `corridor-upper-{day,night}`, `gallery-down`,
+`hall-void-up`, `hall-void-night`, `foyer-night-shafts`, `hall-toward-entrance`.
+
+Açık: ayarlardan ton yoğunluğu; gece holde elektrik açıkken ay ışığı lambaya göre zayıf kalıyor;
+desen ve eşyalar kodla üretildi; elle oynanış yok.

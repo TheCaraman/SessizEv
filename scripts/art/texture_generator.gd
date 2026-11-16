@@ -18,8 +18,8 @@ static func generate_all(output_dir: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
 	_save(_wallpaper(), output_dir, "wallpaper")
 	_save(corridor_floorboards(), output_dir, "parquet")
-	_save(_painted_wood(Color(0.56, 0.57, 0.49), 61), output_dir, "door_paint")
-	_save(_painted_wood(Color(0.62, 0.62, 0.54), 62), output_dir, "door_panel_paint")
+	_save(_painted_wood(Color(0.70, 0.69, 0.61), 61), output_dir, "door_paint")
+	_save(_painted_wood(Color(0.76, 0.75, 0.67), 62), output_dir, "door_panel_paint")
 	_save(_painted_wood(Color(0.50, 0.50, 0.42), 63), output_dir, "frame_paint")
 	_save(_painted_wood(Color(0.06, 0.13, 0.11), 64), output_dir, "trim_dark")
 	_save(_varnished_wood(Color(0.22, 0.16, 0.09), 42), output_dir, "wood_stairs")
@@ -227,7 +227,7 @@ static func _hash(a: int, b: int, c: int) -> float:
 
 ## Quiet matte plaster: broad irregular painted patches, no decorative repeat.
 static func _wallpaper() -> Image:
-	# Old damask paper, dark green on green, floor to ceiling (HOUSE-ATMOS-001).
+	# Old damask paper, faded beige on cream, floor to ceiling (HOUSE-ATMOS-002).
 	# One tile covers 2 m; the motif repeats about every 29 cm with a half-drop on
 	# alternate columns. Low contrast on purpose: the screen grade and the
 	# light do the rest. Stains and seams keep it from looking new.
@@ -237,9 +237,9 @@ static func _wallpaper() -> Image:
 	var mottle: Image = _noise(size, 11, 0.008)
 	var damp: Image = _noise(size, 12, 0.003)
 	var fibre: Image = _noise(size, 13, 0.09)
-	var ground := Color(0.17, 0.22, 0.15)
-	var motif := Color(0.36, 0.40, 0.25)
-	var line := Color(0.11, 0.14, 0.09)
+	var ground := Color(0.66, 0.60, 0.48)
+	var motif := Color(0.57, 0.52, 0.40)
+	var line := Color(0.47, 0.42, 0.32)
 	var soft: float = 2.2 / cell
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
@@ -275,7 +275,7 @@ static func _wallpaper() -> Image:
 			color = color.darkened(fibre.get_pixel(x, y).r * 0.06)
 			# Broad tired patches and damp.
 			color = color.darkened(floorf(mottle.get_pixel(x, y).r * 5.0) / 5.0 * 0.14)
-			color = color.lerp(Color(0.10, 0.11, 0.07), clampf((damp.get_pixel(x, y).r - 0.50) * 0.9, 0.0, 0.30))
+			color = color.lerp(Color(0.42, 0.38, 0.27), clampf((damp.get_pixel(x, y).r - 0.50) * 0.9, 0.0, 0.35))
 			# Paper seams at every motif column.
 			if int(x) % int(cell) < 2:
 				color = color.darkened(0.25)
@@ -324,7 +324,7 @@ static func _painted_wood(base: Color, noise_seed: int) -> Image:
 		for x: int in size:
 			var streak: float = streaks.get_pixel(x, int(float(y) * 0.06) % size).r
 			var color: Color = base.darkened(streak * 0.16)
-			color = color.darkened(clampf((dirt.get_pixel(x, y).r - 0.42) * 1.0, 0.0, 0.40))
+			color = color.darkened(clampf((dirt.get_pixel(x, y).r - 0.48) * 0.5, 0.0, 0.14))
 			image.set_pixel(x, y, color)
 	return image
 

@@ -22,6 +22,12 @@ var _current_room: StringName = &""
 var _electric_lights: Array[Node3D] = []
 var _electric_materials: Array[StandardMaterial3D] = []
 var _window_lights: Array[Dictionary] = []
+## Cold night light through the windows and skylight; strongest at night.
+var _moon_lights: Array[Dictionary] = []
+## The house environment; its fill light follows the clock.
+var _environment: Environment
+const DAY_AMBIENT: float = 0.5
+const NIGHT_AMBIENT: float = 0.14
 var _window_materials: Array[Dictionary] = []
 
 
@@ -98,6 +104,9 @@ func _cache_electric_lighting() -> void:
 	for light: Node in get_tree().get_nodes_in_group("window_lights"):
 		if is_ancestor_of(light) and light is Light3D:
 			_window_lights.append({"node": light, "energy": light.light_energy})
+	for light: Node in get_tree().get_nodes_in_group("moon_lights"):
+		if is_ancestor_of(light) and light is Light3D:
+			_moon_lights.append({"node": light, "energy": light.light_energy})
 	for backdrop: Node in get_tree().get_nodes_in_group("window_backdrops"):
 		if not is_ancestor_of(backdrop) or not backdrop is MeshInstance3D:
 			continue
@@ -123,6 +132,13 @@ func _update_electric_lighting(powered: bool) -> void:
 	var daylight: float = daylight_factor(GameState.minutes)
 	for entry: Dictionary in _window_lights:
 		entry["node"].light_energy = float(entry["energy"]) * daylight
+	# Moon and street light: the mirror image of daylight. Independent of power.
+	var night: float = clampf((1.0 - daylight) / 0.92, 0.0, 1.0)
+	if _environment != null:
+		_environment.ambient_light_energy = lerpf(DAY_AMBIENT, NIGHT_AMBIENT, night)
+	for entry: Dictionary in _moon_lights:
+		entry["node"].light_energy = float(entry["energy"]) * night
+		entry["node"].visible = night > 0.01
 	for entry: Dictionary in _window_materials:
 		var material: StandardMaterial3D = entry["material"]
 		# Preserve distant silhouettes at night without increasing indoor beams.
@@ -167,8 +183,8 @@ func _build_environment() -> void:
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
-	environment.ambient_light_color = Color(0.30, 0.42, 0.34)
-	environment.ambient_light_energy = 0.27
+	environment.ambient_light_color = Color(0.62, 0.64, 0.56)
+	environment.ambient_light_energy = 0.5
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
@@ -196,4 +212,5 @@ func _build_environment() -> void:
 
 	var world_environment := WorldEnvironment.new()
 	world_environment.environment = environment
+	_environment = environment
 	add_child(world_environment)

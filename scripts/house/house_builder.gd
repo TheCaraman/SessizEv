@@ -43,7 +43,6 @@ func build() -> void:
 func _build_slabs() -> void:
 	var w: float = HouseLayout.WIDTH
 	var d: float = HouseLayout.DEPTH
-	var stairs: Rect2 = HouseLayout.STAIRS
 	var slabs := Node3D.new()
 	slabs.name = "Slabs"
 	add_child(slabs)
@@ -51,15 +50,94 @@ func _build_slabs() -> void:
 	# Ground floor: one piece.
 	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 0.0)
 
-	# Upper floor: four pieces leaving a hole above the staircase.
+	# Upper floor, open over the stairwell and the double-height hall.
 	var upper: float = HouseLayout.STOREY_HEIGHT
-	_add_slab(slabs, Rect2(0.0, 0.0, stairs.position.x, d), upper)
-	_add_slab(slabs, Rect2(stairs.end.x, 0.0, w - stairs.end.x, d), upper)
-	_add_slab(slabs, Rect2(stairs.position.x, 0.0, stairs.size.x, stairs.position.y), upper)
-	_add_slab(slabs, Rect2(stairs.position.x, stairs.end.y, stairs.size.x, d - stairs.end.y), upper)
+	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), HouseLayout.VOIDS):
+		_add_slab(slabs, piece, upper)
 
-	# Roof.
-	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 2.0 * HouseLayout.STOREY_HEIGHT)
+	# Roof, with the skylight left open.
+	var skylight: Array[Rect2] = [HouseLayout.SKYLIGHT]
+	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), skylight):
+		_add_slab(slabs, piece, 2.0 * HouseLayout.STOREY_HEIGHT)
+	_build_skylight()
+
+
+## Splits [param area] along every edge of [param holes] and returns the
+## pieces that are not inside any hole.
+static func _cells_outside(area: Rect2, holes: Array[Rect2]) -> Array[Rect2]:
+	var xs: Array[float] = [area.position.x, area.end.x]
+	var zs: Array[float] = [area.position.y, area.end.y]
+	for hole: Rect2 in holes:
+		for x: float in [hole.position.x, hole.end.x]:
+			if x > area.position.x and x < area.end.x and not xs.has(x):
+				xs.append(x)
+		for z: float in [hole.position.y, hole.end.y]:
+			if z > area.position.y and z < area.end.y and not zs.has(z):
+				zs.append(z)
+	xs.sort()
+	zs.sort()
+	var pieces: Array[Rect2] = []
+	for i: int in xs.size() - 1:
+		for j: int in zs.size() - 1:
+			var cell := Rect2(xs[i], zs[j], xs[i + 1] - xs[i], zs[j + 1] - zs[j])
+			var inside: bool = false
+			for hole: Rect2 in holes:
+				if hole.has_point(cell.get_center()):
+					inside = true
+					break
+			if not inside:
+				pieces.append(cell)
+	return pieces
+
+
+## A glazed roof light over the hall void: frame, glazing bars, a pale sky
+## behind, daylight by day and cold moonlight by night falling into the hall.
+func _build_skylight() -> void:
+	var rect: Rect2 = HouseLayout.SKYLIGHT
+	var roof: float = 2.0 * HouseLayout.STOREY_HEIGHT
+	var center: Vector2 = rect.get_center()
+	var skylight := Node3D.new()
+	skylight.name = "Skylight"
+	add_child(skylight)
+	var y: float = roof - HouseLayout.SLAB_THICKNESS * 0.5
+	for side: float in [-1.0, 1.0]:
+		_add_mesh(skylight, Vector3(center.x + side * rect.size.x * 0.5, y, center.y), Vector3(0.08, 0.26, rect.size.y + 0.08), &"frame_paint")
+		_add_mesh(skylight, Vector3(center.x, y, center.y + side * rect.size.y * 0.5), Vector3(rect.size.x + 0.08, 0.26, 0.08), &"frame_paint")
+	_add_mesh(skylight, Vector3(center.x, y + 0.05, center.y), Vector3(0.04, 0.08, rect.size.y), &"frame_paint")
+	for t: float in [-0.25, 0.0, 0.25]:
+		_add_mesh(skylight, Vector3(center.x, y + 0.05, center.y + t * rect.size.y), Vector3(rect.size.x, 0.08, 0.035), &"frame_paint")
+	# Sky seen through the glass.
+	var sky := MeshInstance3D.new()
+	sky.name = "SkylightSky"
+	var quad := QuadMesh.new()
+	quad.size = Vector2(rect.size.x + 0.4, rect.size.y + 0.4)
+	sky.mesh = quad
+	sky.rotation.x = PI * 0.5
+	sky.position = Vector3(center.x, roof + 0.6, center.y)
+	var sky_material: StandardMaterial3D = HouseMaterials.get_material(&"window_sky").duplicate()
+	sky_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	sky.material_override = sky_material
+	sky.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	sky.add_to_group("window_backdrops")
+	skylight.add_child(sky)
+	# Light falling through the glass, slightly slanted, by day and by night.
+	var from := Vector3(center.x + 0.8, roof + 2.0, center.y - 0.6)
+	var toward := Vector3(center.x - 0.6, 0.0, center.y + 0.8)
+	for spec: Array in [["SkylightDaylight", "window_lights", Color(0.80, 0.86, 0.78), 6.0, 3.0],
+			["SkylightMoon", "moon_lights", Color(0.58, 0.68, 0.95), 5.0, 4.0]]:
+		var light := SpotLight3D.new()
+		light.name = spec[0]
+		light.add_to_group(spec[1])
+		light.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
+		light.light_color = spec[2]
+		light.light_energy = spec[3]
+		light.spot_range = 10.0
+		light.spot_angle = 24.0
+		light.spot_angle_attenuation = 0.6
+		light.shadow_enabled = true
+		light.shadow_blur = 0.6
+		light.light_volumetric_fog_energy = spec[4]
+		skylight.add_child(light)
 
 
 ## Adds a slab whose top surface is at [param top_y].
@@ -284,6 +362,28 @@ func _build_stairs() -> void:
 			Vector3(inner_width, 0.03, step_run + 0.03), &"wood_stairs"
 		)
 
+	# Open side of the stair: a balustrade over the hall, with an invisible
+	# barrier following the slope so nobody steps off into the hall.
+	var length: float = sqrt(rise * rise + run * run)
+	var edge_x: float = stairs.position.x + 0.03
+	var barrier := StaticBody3D.new()
+	barrier.name = "StairBalustrade"
+	var barrier_shape := BoxShape3D.new()
+	barrier_shape.size = Vector3(0.06, 1.0, length)
+	var barrier_collision := CollisionShape3D.new()
+	barrier_collision.shape = barrier_shape
+	barrier.add_child(barrier_collision)
+	barrier.position = Vector3(edge_x, rise * 0.5 + 0.5, center.y)
+	barrier.rotation.x = angle
+	add_child(barrier)
+	var balustrade_rail: MeshInstance3D = _add_mesh(steps, Vector3(edge_x, rise * 0.5 + 0.95, center.y), Vector3(0.07, 0.06, length), &"wood_stairs")
+	balustrade_rail.rotation.x = angle
+	for i: int in count:
+		var t: float = (float(i) + 0.5) / float(count)
+		var step_top: float = step_rise * float(i + 1)
+		PropMeshes.cylinder(steps, Vector3(edge_x, step_top + 0.46, stairs.end.y - run * t), 0.014, 0.014, 0.92,
+			HouseMaterials.get_material(&"frame_paint"), Vector3.ZERO, 8)
+
 	# Handrail on the hall-side wall, following the slope, on four brackets.
 	var rail_x: float = stairs.position.x + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + 0.07
 	var rail: MeshInstance3D = _add_mesh(
@@ -309,8 +409,17 @@ func _build_ceilings() -> void:
 			continue
 		var base_y: float = HouseLayout.floor_height(room["floor"])
 		for rect: Rect2 in room["rects"]:
-			_add_ceiling_panel(ceilings, rect, base_y + WALL_HEIGHT)
-	_add_ceiling_panel(ceilings, HouseLayout.STAIRS, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT)
+			# Downstairs, no ceiling where the hall opens up to the roof.
+			var pieces: Array[Rect2] = [rect]
+			if room["floor"] == 0:
+				pieces = _cells_outside(rect, HouseLayout.VOIDS)
+			for piece: Rect2 in pieces:
+				_add_ceiling_panel(ceilings, piece, base_y + WALL_HEIGHT)
+	# The high ceiling over the voids, around the skylight.
+	var skylight: Array[Rect2] = [HouseLayout.SKYLIGHT]
+	for opening: Rect2 in HouseLayout.VOIDS:
+		for piece: Rect2 in _cells_outside(opening, skylight):
+			_add_ceiling_panel(ceilings, piece, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT)
 
 
 func _add_ceiling_panel(parent: Node3D, rect: Rect2, ceiling_y: float) -> void:
@@ -331,6 +440,13 @@ func _build_lamps() -> void:
 		var rect: Rect2 = room["rects"][0]
 		var center: Vector2 = rect.get_center()
 		var ceiling_y: float = HouseLayout.floor_height(room["floor"]) + WALL_HEIGHT
+		if room["floor"] == 0 and HouseLayout.is_in_void(center):
+			# Under the open hall the lamp hangs on a long flex from the roof.
+			var drop_to: float = ceiling_y + 0.5
+			var roof_y: float = HouseLayout.STOREY_HEIGHT + WALL_HEIGHT
+			var flex := _add_mesh(lamps, Vector3(center.x, (roof_y + drop_to) * 0.5, center.y), Vector3(0.012, roof_y - drop_to, 0.012), &"trim_dark")
+			flex.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			ceiling_y = drop_to
 		_add_lamp(
 			lamps, "Lamp_%s" % room["id"],
 			Vector3(center.x, ceiling_y, center.y), maxf(rect.size.x, rect.size.y) + 2.0
@@ -366,7 +482,7 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.36
+	lamp.light_energy = 0.7
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5
@@ -446,6 +562,24 @@ func _add_window(
 	daylight.light_volumetric_fog_energy = 2.4
 	window.add_child(daylight)
 
+	# At night a cold moon- and streetlight comes in through the same slats.
+	# Its strength follows the clock (house_blockout: moon_lights).
+	var moon := SpotLight3D.new()
+	moon.name = "Moonlight"
+	moon.add_to_group("moon_lights")
+	var moon_from := Vector3(-0.7, sill + height + 1.4, out * 3.0)
+	var moon_toward := Vector3(0.6, 0.0, -out * 4.0)
+	moon.transform = Transform3D(Basis.looking_at(moon_toward - moon_from, Vector3.UP), moon_from)
+	moon.light_color = Color(0.56, 0.66, 0.95)
+	moon.light_energy = 3.2
+	moon.spot_range = 11.0
+	moon.spot_angle = 24.0
+	moon.spot_angle_attenuation = 0.5
+	moon.shadow_enabled = true
+	moon.shadow_blur = 0.4
+	moon.light_volumetric_fog_energy = 4.0
+	window.add_child(moon)
+
 ## Dusty venetian blinds across a window: a head rail, two cords and a stack
 ## of thin tilted slats. One slat hangs askew. [param out] is the outdoor Z
 ## sign in window space.
@@ -499,19 +633,23 @@ func _add_curtain(
 
 ## Carpet runners along the downstairs hall and the upstairs corridor.
 func _build_runners() -> void:
+	# Downstairs down the middle of the hall; upstairs along the gallery,
+	# clear of the parapet over the open hall.
+	var placements: Array[Array] = [[6.875, 7.2, 6.4, RUNNER_WIDTH], [5.88, 6.7, 5.6, 0.95]]
 	for floor_index: int in 2:
-		var length: float = 6.4
+		var length: float = placements[floor_index][2]
+		var runner_width: float = placements[floor_index][3]
 		var quad := QuadMesh.new()
-		quad.size = Vector2(RUNNER_WIDTH, length)
+		quad.size = Vector2(runner_width, length)
 		# The runner texture is square; repeat it along the length.
 		var material := HouseMaterials.get_material(&"runner").duplicate() as StandardMaterial3D
-		material.uv1_scale = Vector3(1.0, length / RUNNER_WIDTH, 1.0)
+		material.uv1_scale = Vector3(1.0, length / runner_width, 1.0)
 		quad.material = material
 		var runner := MeshInstance3D.new()
 		runner.name = "Runner_F%d" % floor_index
 		runner.mesh = quad
 		runner.rotation.x = -PI * 0.5
-		runner.position = Vector3(6.875, HouseLayout.floor_height(floor_index) + 0.006, 7.2)
+		runner.position = Vector3(placements[floor_index][0], HouseLayout.floor_height(floor_index) + 0.006, placements[floor_index][1])
 		runner.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(runner)
 

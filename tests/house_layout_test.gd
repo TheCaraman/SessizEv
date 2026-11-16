@@ -30,7 +30,7 @@ const SOLID_CHECKS: Array[Dictionary] = [
 	{"floor": 1, "from": Vector2(3.125, 5.625), "to": Vector2(3.125, 10.0), "what": "guest A / Daniel"},
 	{"floor": 1, "from": Vector2(8.25, 1.125), "to": Vector2(12.5, 1.125), "what": "isolation / multipurpose"},
 	{"floor": 1, "from": Vector2(12.5, 6.25), "to": Vector2(12.5, 10.0), "what": "multipurpose / bathroom"},
-	{"floor": 1, "from": Vector2(7.5, 6.25), "to": Vector2(9.5, 6.25), "what": "corridor / stairwell"},
+	{"floor": 1, "from": Vector2(5.9, 6.25), "to": Vector2(7.6, 6.25), "what": "gallery parapet over the hall"},
 ]
 
 var _player: PlayerController

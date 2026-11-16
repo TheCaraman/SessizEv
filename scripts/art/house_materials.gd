@@ -35,18 +35,18 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 			return _triplanar(kind, 0.7)
 		&"frame_paint":
 			# Pale, chipped door frames and skirting that catch the light.
-			return _flat(Color(0.66, 0.65, 0.57), 0.85)
+			return _flat(Color(0.82, 0.80, 0.72), 0.85)
 		&"trim_dark":
 			return _flat(Color(0.035, 0.065, 0.05), 1.0)
 		&"parquet", &"wood_stairs":
 			return _triplanar(kind, 1.0)
 		&"trim_door":
 			# The shadowed moulding around each door panel: the door paint, darker.
-			return _flat(Color(0.30, 0.31, 0.26), 1.0)
+			return _flat(Color(0.55, 0.54, 0.47), 1.0)
 		&"runner":
 			return _uv_mapped(kind)
 		&"ceiling":
-			return _flat(Color(0.36, 0.37, 0.31), 1.0)
+			return _flat(Color(0.80, 0.79, 0.72), 1.0)
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
 		&"curtain_cloth":

@@ -76,3 +76,6 @@ Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim d
 Codex'ten devir alındı (ACK yazıldı). Perdeler kıvrımlı ve ışık geçiren kumaş, resimler gerçek görüntülü çerçeveli, palto/ayakkabı/şemsiye/telefon/saat biçimli, üst koridor döşendi. 22 paket/6063 PASS; gerçek GPU görüntüleri incelendi. docs/qa/CorridorProps.md. CORRIDOR-REFERENCE-002 DEVİR: sahip incelemesi; nihai sanat kabulü değildir. Elle oynama yine açık.
 ## Ev büyütmesi ve yeni atmosfer — Claude
 Sahip koridoru reddetti. Ev ×1,25, kat 3,3 m; referans araştırmasıyla yeşil ton/kontur/kararma/sinema şeridi, damask duvar, açık kapılar, jaluzi huzmeleri. 22 paket PASS. docs/qa/HouseAtmosphere.md. HOUSE-ATMOS-001 DEVİR: sahip incelemesi.
+
+## Açık renkli ev ve galeri — Claude
+Hol iki kat yüksekliğinde, üst koridor galeri, çatıda tepe penceresi; açık bej duvar, beyaz tavan, açık kapılar; gece pencerelerden ay ışığı. 22 paket PASS. docs/qa/HouseAtmosphere.md (ikinci tur). HOUSE-ATMOS-002 DEVİR: sahip incelemesi.
