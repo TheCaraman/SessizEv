@@ -20,7 +20,7 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 | ART-ROOM-002 | TAMAM | Codex sanatçı | 13 odanın tamamı görselli; e4e9dad, 388dec6 birleşimi; ArtBible ve docs/art | 2026-11-16 |
 | ART-CHAR-001 | TAMAM | Codex sanatçı | Elena, Marcus, Arthur saydam figürleri; oda zemin hizası ve konuşma kadrajı | 2026-11-16 |
 | ART-CHAR-002 | AKTİF | Codex | Elena çizimsel aday örneği ve konuşma önizlemesi; mevcut default.png korunur | 2026-11-16 |
-| DAY4-DESIGN-001 | AKTİF | Tasarım alt ajanı; koordinasyon Codex | Yalnız docs/Day4Design.md; mevcut kanon ve 0–3 sakin için sonraki gün şartnamesi, uygulama değil | 2026-11-16 |
+| DAY4-DESIGN-001 | TAMAM | Tasarım alt ajanı + Codex incelemesi | docs/Day4Design.md; 0–3 sakin, karar/kayıt/erişim ve test matrisi; isimli gece ifadesi için gerçek gözlem önkoşulu; uygulanmadı | 2026-11-16 |
 
 Yeni kayıt: ID, sahip, durum, düzenlenecek tam göreli yollar, başlama zamanı,
 dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
