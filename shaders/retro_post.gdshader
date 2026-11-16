@@ -17,8 +17,8 @@ uniform float color_levels : hint_range(4.0, 256.0, 1.0) = 255.0;
 uniform float dither_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float grain_strength : hint_range(0.0, 0.3) = 0.025;
 uniform float vignette_strength : hint_range(0.0, 1.0) = 0.55;
-// Multiplied into the image; a slight green cast.
-uniform vec3 tint : source_color = vec3(0.95, 1.0, 0.94);
+// Multiplied into the image; neutral by default.
+uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
 
 const float BAYER[16] = float[16](
 	0.0, 8.0, 2.0, 10.0,

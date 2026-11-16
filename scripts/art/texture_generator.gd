@@ -55,7 +55,7 @@ static func _wallpaper() -> Image:
 	var cell: float = float(size) / 16.0
 	var mottle: Image = _noise(size, 11, 0.02)
 	var damp: Image = _noise(size, 12, 0.004)
-	var base := Color(0.40, 0.33, 0.17)
+	var base := Color(0.44, 0.38, 0.24)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
 		var row: int = int(float(y) / cell)
@@ -80,7 +80,7 @@ static func _parquet() -> Image:
 	var size: int = DETAIL_SIZE
 	var grain: Image = _noise(size, 21, 0.05)
 	var wear: Image = _noise(size, 22, 0.006)
-	var base := Color(0.17, 0.13, 0.07)
+	var base := Color(0.26, 0.18, 0.10)
 	var gap := Color(0.02, 0.03, 0.02)
 	var unit: float = 128.0 / float(size)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
@@ -140,10 +140,10 @@ static func _runner() -> Image:
 	var size: int = DETAIL_SIZE
 	var pile: Image = _noise(size, 71, 0.25)
 	var wear: Image = _noise(size, 72, 0.008)
-	var border := Color(0.05, 0.14, 0.11)
-	var line := Color(0.56, 0.46, 0.17)
-	var field := Color(0.33, 0.25, 0.09)
-	var figure := Color(0.07, 0.18, 0.14)
+	var border := Color(0.15, 0.04, 0.04)
+	var line := Color(0.62, 0.55, 0.38)
+	var field := Color(0.36, 0.09, 0.08)
+	var figure := Color(0.10, 0.17, 0.20)
 	var unit: float = 64.0 / float(size)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:

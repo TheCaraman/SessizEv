@@ -36,8 +36,12 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 			return moulding
 		&"runner":
 			return _uv_mapped(kind)
-		&"ceiling_dark":
-			return _flat(Color(0.03, 0.06, 0.05), 1.0)
+		&"ceiling":
+			return _flat(Color(0.46, 0.44, 0.38), 1.0)
+		&"curtain":
+			return _flat(Color(0.47, 0.42, 0.33), 1.0)
+		&"window_sky":
+			return _emissive(Color(0.74, 0.80, 0.84), 0.9)
 		&"brass":
 			var brass: StandardMaterial3D = _flat(Color(0.45, 0.36, 0.15), 0.35)
 			brass.metallic = 0.7

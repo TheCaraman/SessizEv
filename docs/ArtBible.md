@@ -30,7 +30,11 @@ Koddan kurulur (`scripts/house/house_builder.gd`). Dokular `assets/textures/` al
 
 Mevcut öğeler: sade, kirli sarı duvar kâğıdı (çok silik baklava deseni), çıkıntılı süpürgelik ve tavan altı koyu çıta, koyu parke, kademeli panelli koyu turkuaz kapılar, soluk kademeli kasalar, pirinç kapı kolları, desenli yolluk halı, tavan lambaları.
 
-**Işık ve atmosfer (proje sahibinin üçüncü referansına göre):** ortam soğuk turkuaz bir pusla doludur ve ışık bu pusun içinde görünür (hacimli sis). Tavan lambaları zayıf, sıcak ışık adacıkları yapar; her katta pusun içinden geçen soğuk bir ışık huzmesi vardır. Yumuşak gölge, köşelerde temas gölgesi ve parlak yüzeylerde hafif parlama açıktır. Duvarlar sade tutulur; görünümü taşıyan şey desen değil ışıktır.
+**Işık ve atmosfer (K-014, K-015):** hava soluk, nötr bir pusla doludur ve ışık bu pusun içinde görünür (hacimli sis). Tavan lambaları zayıf, sıcak ışık adacıkları yapar. Gün ışığı gerçek pencerelerden gelir: dışarıdaki ışık perdelerin aralığından ve pencere çıtalarının arasından geçip yere ve duvara düşer. Yumuşak gölge, köşelerde temas gölgesi ve hafif parlama açıktır. Duvarlar sade tutulur; görünümü taşıyan şey desen değil ışıktır.
+
+**Palet dengesi:** kirli sarı duvar · koyu turkuaz kapı · koyu kırmızı yolluk · kahverengi parke · kirli beyaz tavan, kasa ve süpürgelik. Hiçbir renk bütün sahneyi boyamaz; ortam ışığı nötrdür.
+
+**Pencereler:** giriş holünde ön kapının yanında bir, üst koridorun güney ucunda bir pencere. Odaların pencereleri 2D oda görsellerinde çizilir.
 
 Eksikler: gerçek basamaklı merdiven, pencere, koridor eşyaları (portmanto, ayna, telefon sehpası), kapı açılma sesi ve geçiş efekti.
 
@@ -39,7 +43,7 @@ Eksikler: gerçek basamaklı merdiven, pencere, koridor eşyaları (portmanto, a
 Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 
 - **Boyut:** 1920×1080, PNG.
-- **Dosya yolu:** `assets/rooms/<oda_kimliği>.png`. Kimlikler: `living_room`, `dining`, `kitchen`, `pantry`, `utility`, `bathroom_ground`, `guest_a`, `guest_b`, `daniel_bedroom`, `isolation`, `multipurpose`, `bathroom_upper`, `storage`.
+- **Dosya yolu:** `assets/rooms/<oda_kimliği>.png`. Kimlikler: `living_room`, `dining`, `kitchen`, `pantry`, `utility`, `bathroom_ground`, `guest_a`, `guest_b`, `daniel_bedroom`, `isolation`, `multipurpose`, `bathroom_upper`.
 - **Arka plan boş olmalı:** içinde insan yok. Karakterler ayrı katmandır.
 - **Bakış:** kapı eşiğinden içeri, göz hizasından, hafif geniş açı. Her odada aynı.
 - **Işık:** tek zayıf kaynak; görselin kenarları karanlığa gömülür.

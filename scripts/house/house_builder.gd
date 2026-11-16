@@ -30,7 +30,6 @@ func build() -> void:
 	_build_stairs()
 	_build_ceilings()
 	_build_lamps()
-	_build_light_shafts()
 	_build_runners()
 
 
@@ -96,6 +95,10 @@ func _build_wall(wall: Dictionary) -> void:
 		)
 		if opening.has("to") or opening.get("sealed", false):
 			_add_door(holder, wall, opening, base_y, thickness)
+		elif opening.get("window", false):
+			# Wall below the sill, then the window itself.
+			_add_wall_piece(holder, wall, start, end, base_y, HouseLayout.WINDOW_SILL, thickness)
+			_add_window(holder, wall, opening, base_y, thickness)
 		cursor = end
 	if cursor < wall["to"]:
 		_add_wall_piece(holder, wall, cursor, wall["to"], base_y, WALL_HEIGHT, thickness)
@@ -121,7 +124,7 @@ func _add_wall_piece(
 		var trims: Array[Array] = [
 			[SKIRTING_HEIGHT * 0.5, SKIRTING_HEIGHT, 0.036, &"frame_paint"],
 			[SKIRTING_HEIGHT + 0.012, 0.024, 0.05, &"frame_paint"],
-			[WALL_HEIGHT - CEILING_RAIL_HEIGHT * 0.5, CEILING_RAIL_HEIGHT, 0.04, &"trim_dark"],
+			[WALL_HEIGHT - CEILING_RAIL_HEIGHT * 0.5, CEILING_RAIL_HEIGHT, 0.04, &"frame_paint"],
 		]
 		for trim: Array in trims:
 			var trim_center := center
@@ -235,7 +238,7 @@ func _build_stairs() -> void:
 	ramp.name = "Stairs"
 
 
-## Dark ceiling panels over the corridors and the stairwell.
+## Pale plaster ceiling panels over the corridors and the stairwell.
 func _build_ceilings() -> void:
 	var ceilings := Node3D.new()
 	ceilings.name = "Ceilings"
@@ -253,7 +256,7 @@ func _add_ceiling_panel(parent: Node3D, rect: Rect2, ceiling_y: float) -> void:
 	var center: Vector2 = rect.get_center()
 	_add_mesh(
 		parent, Vector3(center.x, ceiling_y - 0.01, center.y),
-		Vector3(rect.size.x, 0.02, rect.size.y), &"ceiling_dark"
+		Vector3(rect.size.x, 0.02, rect.size.y), &"ceiling"
 	)
 
 
@@ -291,37 +294,116 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.55
+	lamp.light_energy = 0.8
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5
-	lamp.light_volumetric_fog_energy = 1.2
+	lamp.light_volumetric_fog_energy = 0.5
 	parent.add_child(lamp)
 
 
-## Cold beams cutting through the haze, as if from a high window out of sight.
-## One crosses the downstairs hall, one the upstairs corridor.
-func _build_light_shafts() -> void:
-	var shafts := Node3D.new()
-	shafts.name = "LightShafts"
-	add_child(shafts)
-	for floor_index: int in 2:
-		var base_y: float = HouseLayout.floor_height(floor_index)
-		var from := Vector3(5.25, base_y + 2.35, 8.1)
-		var toward := Vector3(6.75, base_y + 0.2, 4.2)
-		var shaft := SpotLight3D.new()
-		shaft.name = "Shaft_F%d" % floor_index
-		shaft.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
-		shaft.light_color = Color(0.60, 0.88, 0.98)
-		shaft.light_energy = 1.6
-		shaft.spot_range = 9.0
-		shaft.spot_angle = 18.0
-		shaft.spot_angle_attenuation = 0.6
-		shaft.spot_attenuation = 0.8
-		shaft.shadow_enabled = true
-		shaft.shadow_blur = 2.0
-		shaft.light_volumetric_fog_energy = 4.0
-		shafts.add_child(shaft)
+## Adds a curtained window in an exterior wall: a solid pane you cannot walk
+## through, a glazed frame, a sill, two curtains that do not quite meet, and
+## daylight from outside that reaches in through the gap.
+func _add_window(
+	parent: Node3D, wall: Dictionary, opening: Dictionary, base_y: float, wall_thickness: float
+) -> void:
+	var width: float = opening.get("width", HouseLayout.DOOR_WIDTH)
+	var sill: float = HouseLayout.WINDOW_SILL
+	var height: float = HouseLayout.DOOR_HEIGHT - sill
+	var middle: float = sill + height * 0.5
+
+	# Window space: X across the window, Z through the wall. `out` is the sign
+	# of Z that points outdoors.
+	var window := StaticBody3D.new()
+	window.name = "Window_F%d_%s" % [wall["floor"], str(opening["pos"]).replace(".", "_")]
+	var out: float
+	if wall["axis"] == "x":
+		window.position = Vector3(opening["pos"], base_y, wall["at"])
+		out = 1.0 if wall["at"] > HouseLayout.DEPTH * 0.5 else -1.0
+	else:
+		window.position = Vector3(wall["at"], base_y, opening["pos"])
+		window.rotation.y = PI * 0.5
+		out = 1.0 if wall["at"] > HouseLayout.WIDTH * 0.5 else -1.0
+	parent.add_child(window)
+
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(width, height, 0.05)
+	var collision := CollisionShape3D.new()
+	collision.shape = shape
+	collision.position = Vector3(0.0, middle, 0.0)
+	window.add_child(collision)
+
+	# Bright overcast sky behind the glass. It must not block the daylight.
+	var sky: MeshInstance3D = _add_mesh(
+		window, Vector3(0.0, middle, out * (wall_thickness * 0.5 + 0.02)),
+		Vector3(width + 0.3, height + 0.3, 0.01), &"window_sky"
+	)
+	sky.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+	# Frame, one upright and one cross bar. These throw shadows into the room.
+	for side: float in [-1.0, 1.0]:
+		_add_mesh(window, Vector3(side * (width * 0.5 - 0.025), middle, 0.0), Vector3(0.05, height, 0.07), &"frame_paint")
+		_add_mesh(window, Vector3(0.0, middle + side * (height * 0.5 - 0.025), 0.0), Vector3(width, 0.05, 0.07), &"frame_paint")
+	_add_mesh(window, Vector3(0.0, middle, 0.0), Vector3(0.035, height, 0.05), &"frame_paint")
+	_add_mesh(window, Vector3(0.0, sill + height * 0.62, 0.0), Vector3(width, 0.035, 0.05), &"frame_paint")
+
+	# Sill board and casing on the room side.
+	var inner: float = -out * wall_thickness * 0.5
+	_add_mesh(window, Vector3(0.0, sill - 0.015, inner - out * 0.05), Vector3(width + 0.20, 0.03, 0.14), &"frame_paint")
+	for side: float in [-1.0, 1.0]:
+		_add_mesh(window, Vector3(side * (width * 0.5 + 0.045), middle, inner - out * 0.009), Vector3(0.09, height + 0.18, 0.018), &"frame_paint")
+	_add_mesh(window, Vector3(0.0, sill + height + 0.045, inner - out * 0.009), Vector3(width + 0.18, 0.09, 0.018), &"frame_paint")
+
+	# Curtain rail and two curtains leaving an off-centre gap.
+	var curtain_z: float = inner - out * 0.07
+	var curtain_top: float = sill + height + 0.16
+	var curtain_bottom: float = sill - 0.28
+	var curtain_height: float = curtain_top - curtain_bottom
+	var curtain_middle: float = (curtain_top + curtain_bottom) * 0.5
+	var left_edge: float = -width * 0.5 - 0.12
+	var right_edge: float = width * 0.5 + 0.12
+	var gap_left: float = -0.10
+	var gap_right: float = 0.30
+	_add_mesh(window, Vector3(0.0, curtain_top + 0.02, curtain_z), Vector3(width + 0.36, 0.022, 0.022), &"brass")
+	_add_curtain(window, left_edge, gap_left, curtain_bottom, curtain_height, curtain_z)
+	_add_curtain(window, gap_right, right_edge, curtain_bottom, curtain_height, curtain_z)
+
+	# Daylight: a spot outside, aimed through the window and down the corridor.
+	var from := Vector3(0.12, sill + height + 0.5, out * 1.8)
+	var toward := Vector3(0.12, 0.2, -out * 4.5)
+	var daylight := SpotLight3D.new()
+	daylight.name = "Daylight"
+	daylight.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
+	daylight.light_color = Color(0.92, 0.95, 1.0)
+	daylight.light_energy = 3.0
+	daylight.spot_range = 11.0
+	daylight.spot_angle = 22.0
+	daylight.spot_angle_attenuation = 0.5
+	daylight.spot_attenuation = 0.6
+	daylight.shadow_enabled = true
+	daylight.shadow_blur = 1.5
+	daylight.light_volumetric_fog_energy = 2.2
+	window.add_child(daylight)
+
+## A hanging curtain between two X positions, built from narrow vertical
+## strips that alternate in depth so it reads as folded cloth, not a board.
+func _add_curtain(
+	window: Node3D, from_x: float, to_x: float, bottom: float, height: float, z: float
+) -> void:
+	var strip: float = 0.055
+	var count: int = maxi(int(round((to_x - from_x) / strip)), 1)
+	var step: float = (to_x - from_x) / float(count)
+	for i: int in count:
+		var fold: float = 0.014 if i % 2 == 0 else -0.014
+		# Hems hang at slightly different lengths.
+		var drop: float = 0.02 * float((i * 7) % 3)
+		_add_mesh(
+			window,
+			Vector3(from_x + step * (float(i) + 0.5), bottom + (height - drop) * 0.5 + drop, z + fold),
+			Vector3(step + 0.004, height - drop, 0.02),
+			&"curtain"
+		)
 
 
 ## Carpet runners along the downstairs hall and the upstairs corridor.

@@ -17,6 +17,7 @@ const STOREY_HEIGHT: float = 2.8
 const SLAB_THICKNESS: float = 0.2
 const DOOR_WIDTH: float = 0.9
 const DOOR_HEIGHT: float = 2.1
+const WINDOW_SILL: float = 0.9
 const EXTERIOR_WALL_THICKNESS: float = 0.2
 const INTERIOR_WALL_THICKNESS: float = 0.1
 
@@ -40,10 +41,9 @@ const ROOMS: Array[Dictionary] = [
 	{"id": &"daniel_bedroom", "name_key": "ROOM_DANIEL", "floor": 1, "rects": [Rect2(0.0, 6.0, 5.0, 4.0)]},
 	{"id": &"isolation", "name_key": "ROOM_ISOLATION", "floor": 1, "rects": [Rect2(5.0, 0.0, 3.2, 1.8)]},
 	{"id": &"landing", "name_key": "ROOM_LANDING", "floor": 1, "rects": [Rect2(5.0, 1.8, 3.2, 1.2)]},
-	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(5.0, 3.0, 2.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
+	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(5.0, 3.0, 2.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0), Rect2(5.0, 8.5, 3.2, 1.5)]},
 	{"id": &"multipurpose", "name_key": "ROOM_MULTIPURPOSE", "floor": 1, "rects": [Rect2(8.2, 0.0, 3.8, 6.5)]},
 	{"id": &"bathroom_upper", "name_key": "ROOM_BATHROOM_UPPER", "floor": 1, "rects": [Rect2(8.2, 6.5, 3.8, 3.5)]},
-	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(5.0, 8.5, 3.2, 1.5)]},
 ]
 
 ## Rooms the player walks through in 3D. Every other room is shown as a 2D
@@ -64,12 +64,14 @@ const ROOM_LINKS: Dictionary = {
 ## "openings" are door-height gaps: "pos" is the centre along the wall,
 ## "width" defaults to DOOR_WIDTH, and "sealed" fills the gap with a locked
 ## exterior door, and "to" names the 2D room a corridor door opens.
+## "window" makes the opening a curtained window from WINDOW_SILL up to
+## DOOR_HEIGHT; daylight comes in through it.
 const WALLS: Array[Dictionary] = [
 	# --- Ground floor, exterior ---
 	{"floor": 0, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true,
 		"openings": [{"pos": 7.25, "sealed": true, "id": &"rear_door"}]},
 	{"floor": 0, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true,
-		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door", "front": true}]},
+		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door", "front": true}, {"pos": 7.45, "width": 0.9, "window": true}]},
 	{"floor": 0, "axis": "z", "at": 0.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	{"floor": 0, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Ground floor, interior ---
@@ -91,7 +93,7 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 0, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "width": 1.2}]},
 	# --- Upper floor, exterior ---
 	{"floor": 1, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
-	{"floor": 1, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
+	{"floor": 1, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": [{"pos": 6.0, "width": 1.3, "window": true}]},
 	{"floor": 1, "axis": "z", "at": 0.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	{"floor": 1, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Upper floor, interior ---
@@ -108,8 +110,6 @@ const WALLS: Array[Dictionary] = [
 	# Stairwell enclosure (open at the north end, where the stairs arrive).
 	{"floor": 1, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
 	{"floor": 1, "axis": "x", "at": 7.5, "from": 7.0, "to": 8.2, "openings": []},
-	# Storage closet north wall.
-	{"floor": 1, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"storage"}]},
 ]
 
 

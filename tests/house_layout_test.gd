@@ -120,7 +120,12 @@ func _check_openings() -> void:
 			var label: String = "floor %d, %s-wall at %.1f, opening at %.2f" % [
 				wall["floor"], wall["axis"], wall["at"], opening["pos"]
 			]
-			if opening.get("sealed", false) or opening.has("to"):
+			if opening.get("window", false):
+				# Windows let light in but nobody out: check at glass height.
+				var glass_y := Vector3.UP * (HouseLayout.WINDOW_SILL + 0.6)
+				var pane: Dictionary = _raycast(a + glass_y, b + glass_y)
+				_check(not pane.is_empty(), "a window should block passage (%s)" % label)
+			elif opening.get("sealed", false) or opening.has("to"):
 				# Exterior doors and corridor doors into 2D rooms never open in 3D.
 				var hit: Dictionary = _raycast(a + Vector3.UP, b + Vector3.UP)
 				_check(
