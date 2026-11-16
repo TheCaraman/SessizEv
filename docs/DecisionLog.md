@@ -19,6 +19,8 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | K-009 | 2026-11-16 | **3D varlık üretimi:** Blender kullanılmıyor. Ev ve eşyalar motor içinde (kod ve CSG ile) üretilir; karakterler modüler ilkel parça kitinden kurulur. Dokular için yapay zekâ görsel araçları kullanılabilir; her doku için tam istem metni verilir. | Proje sahibi Blender kullanmıyor. |
 
 | K-010 | 2026-11-16 | **Görsel hedef öne alındı.** Oturma odası, oyunun görünümünün referans odasıdır; retro görüntü geçişi, kodla üretilen dokular ve eşyalar kapı sisteminden önce yapıldı. | Proje sahibi blockout'u ruhsuz buldu; görsel yönü erken doğrulamak riski azaltır. |
+| K-011 | 2026-11-16 | **Melez sunum: koridorlar 3D, odalar 2D.** Oyuncu giriş holü, hol, merdiven, sahanlık ve üst koridorda birinci şahıs yürür. Bir odanın kapısıyla etkileşince oda, çizilmiş 2D bir sahne olarak açılır; karakterler ve değişen eşyalar bu sahnenin üstüne katman olarak eklenir. Karakterler 2D çizimdir. **Özgün spesifikasyonun "tam 3D, 2D oda yok, 2D portre yok" maddelerinin (bölüm 20, 60, 75) yerini alır.** K-008, K-009'un karakter kısmı, K-010 ve V-016 geçersizdir. | Proje sahibinin kararı: hedeflenen görünüme 2D ile ulaşmak mümkün, 3D karakter ve oda üretimi tek kişi için fazla ağır. |
+| K-012 | 2026-11-16 | **Renk teması:** koyu, kirli yeşil ve hafif turkuaz; vurgu olarak kirli sarı. Görüntü net ve doygun; ağır pikselleşme yok. | Proje sahibinin referans görselleri ve tarifi. |
 
 ## Varsayımlar
 
@@ -42,8 +44,13 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-014 | Retro görüntü, tam çözünürlükte çizilen kareyi kaba bir ızgarada örnekleyen tek bir ekran gölgelendiricisidir (`shaders/retro_post.gdshader`); düşük çözünürlüklü ayrı görüntü alanı kullanılmıyor. Daha basit ve fare girdisini etkilemiyor; performans gerekirse Faz 7'de değiştirilir. TechnicalDesign §2'deki şemanın yerini alır. | Faz 1.6 |
 | V-015 | Dokular şimdilik kodla üretiliyor (`scripts/art/house_materials.gd`). Her biri sonradan boyanmış bir dokuyla değiştirilebilir. | K-009 |
 | V-016 | Oturma odasındaki pencere gerçek bir açıklık değil, duvara asılı ışıklı bir paneldir. Gerçek pencereler kapı ve pencere geçişinde gelecek. | K-010 |
+| V-017 | Koridordan kapısı olmayan odalara (yemek alanı, kiler, tesisat odası) komşu odanın 2D sahnesindeki geçiş düğmeleriyle gidilir. | K-011 |
+| V-018 | Oda görselleri `assets/rooms/<oda_kimliği>.png` yolundan yüklenir. Dosya yoksa kodla üretilen bir yer tutucu gösterilir ve ekranda "yer tutucu" yazar. | K-011 |
+| V-019 | Etkileşim ördek tiplemesiyle çalışır: `interact()` yöntemi olan her çarpışma gövdesi etkileşilebilirdir; `get_interaction_prompt()` varsa ipucu yazısını o verir. | Faz 1.3 |
 
 ## Açık konular
+| A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |
+| A-009 | 2D oda ve karakter görsellerinin üretimi | Proje sahibi yapay zekâ görsel aracıyla üretecek; tutarlılık için istem şablonu ve ölçü kuralları ArtBible'a yazılacak. |
 
 | No | Konu | Not |
 |---|---|---|

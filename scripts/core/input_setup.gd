@@ -53,6 +53,11 @@ func get_bound_key(action: StringName) -> Key:
 	return KEY_NONE
 
 
+## Human-readable name of the key bound to [param action], for prompts.
+func get_key_label(action: StringName) -> String:
+	return OS.get_keycode_string(get_bound_key(action))
+
+
 func _ensure_action(action: StringName, keycode: Key) -> void:
 	if not InputMap.has_action(action):
 		InputMap.add_action(action)

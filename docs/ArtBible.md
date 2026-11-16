@@ -1,67 +1,69 @@
 # THE QUIET HOURS — Sanat Kitabı
 
-Sürüm 0.1 · 2026-11-16 · K-008 ve K-009'u içerir
+Sürüm 0.2 · 2026-11-16 · K-011 ve K-012'ye göre yeniden yazıldı. Önceki "kirli PS1" yönü geçersizdir.
 
-## 1. Temel
+## 1. Sunum biçimi (K-011)
 
-Tam 3D, düşük poligon, düşük çözünürlüklü doku, sınırlı palet. Oyun kasıtlı tasarlanmış görünmeli; yarım kalmış değil.
-
-## 2. Ton revizyonu (K-008)
-
-Proje sahibi, görünümün "temiz PS1 nostaljisi"nden çok *No, I'm Not a Human*'ın hissine yakın olmasını istedi. O oyundan alınan şey **his**tir; karakter tasarımı, sahne, arayüz veya varlık kopyalanmaz.
-
-Hedef his: **kirli, bunaltıcı, tekinsiz.** Ev sığınak değil, içinde çok uzun kalınmış bir yer gibi görünmeli.
-
-| Öğe | Yön |
+| Alan | Biçim |
 |---|---|
-| Palet | Hastalıklı sıcak tonlar: hardal, pas, kirli bej, soluk zeytin. Dışarısı soğuk ve soluk. Saf beyaz ve saf siyah yok. |
-| Renk derinliği | Azaltılmış renk sayısı ve düzenli titreklik (dithering). Gölgeler pürüzsüz geçmez, kademelenir. |
-| Gren | Varsayılan orta düzey; ayarlardan kapatılabilir. |
-| Işık | Az sayıda sert kaynak, çıplak ampul hissi. Gündüz bile perdeler yarı kapalı. |
-| Yüzeyler | Lekeli duvar kâğıdı, yağlı mutfak yüzeyleri, sararmış perde, yıpranmış halı. |
-| Yüzler | Düşük çözünürlüklü, boyanmış yüz dokuları. Oranlar hafifçe "yanlış": gözler biraz fazla sabit, cilt biraz fazla solgun. Canavar değil, rahatsız edici biçimde sıradan. |
-| Kamera | Diyalogda yüze normalden biraz daha yakın çerçeve. |
+| Giriş, hol, merdiven, sahanlık, üst koridor | 3D, birinci şahıs yürünür |
+| Diğer bütün odalar | Kapıdan açılan 2D katmanlı sahne |
+| Karakterler | 2D çizim; oda sahnesinin üstüne katman olarak eklenir |
 
-**Özgün spesifikasyonla fark:** bölüm 20 "aşırı gren ve agresif ekran bozulması yok" diyordu. Bu korunur: efektler güçlü ama ölçülüdür, hepsi kapatılabilir; renk sapması, ağır bulanıklık ve kamera sarsıntısı yoktur.
+Bir 2D oda sahnesinin katmanları, arkadan öne: **arka plan** (boş oda) → **eşya** (kampanya boyunca değişenler: yatak, hasar, kanıt) → **karakter** → **arayüz**.
 
-**Değişmeyen:** karakterler ekranda fiziksel 3D modellerdir. Sabit 2D portre kullanılmaz.
+Bu yapı sayesinde aynı oda görseli, içine kim girerse girsin ve ne değişirse değişsin yeniden çizilmez; yalnızca katman eklenir.
 
-**Enfeksiyon ve görünüş:** tekinsiz yüz stili **herkese** uygulanır. Böylece görünüş enfeksiyon testi olamaz; oyuncu herkesten eşit ölçüde rahatsız olur.
+## 2. Renk ve ton (K-012)
 
-## 3. Işık
+- Ana renkler: koyu kirli yeşil ve hafif turkuaz.
+- Vurgu: kirli sarı (kapılar, desen, ışık).
+- Tavanlar ve köşeler neredeyse siyah; ekran kenarlarında belirgin kararma.
+- Görüntü net ve doygun. Dokular düşük çözünürlüklü ama ekran bulanık ya da ağır pikselli değil.
+- Gren ve renk kademelenmesi çok hafif; ayarlardan kapatılabilecek.
 
-- **Gündüz:** kapalı hava, soğuk dış ışık, sıcak iç yüzeyler.
-- **Akşam:** sıcak lambalar, soğuk dış karanlık, uzun gölgeler.
-- **Gece:** derin gölge ama gezilebilir; tam karanlığa yaslanılmaz.
-- **Kriz:** elektrik kesintisi tanıdık mekânı dönüştürür. Kırmızı acil ışık yalnızca belirli sahnelerde.
+**Esin ve sınır:** *No, I'm Not a Human* yalnızca yapı ve ton esinidir (3D koridor, 2D oda, tekinsiz çizim). O oyunun renk düzeni (turuncu duvar, mavi kapı), odaları, karakterleri, arayüzü ve görselleri kopyalanmaz. Bizim paletimiz yeşil/sarıdır.
 
-## 4. Üretim yöntemi (K-009)
+## 3. 3D koridorlar
 
-Blender kullanılmıyor. Buna göre:
+Koddan kurulur (`scripts/house/house_builder.gd`); dokular şimdilik kodla üretilir (`scripts/art/house_materials.gd`) ve her biri sonradan boyanmış bir dokuyla değiştirilebilir.
 
-| Varlık | Yöntem | Dürüst sınır |
-|---|---|---|
-| Ev mimarisi | Motor içinde, kodla ve CSG ile; sonra tek ağa dönüştürme | Düşük poligon mimari için yeterli |
-| Mobilya ve eşya | İlkel parçalardan kurulan sahneler | Yeterli; organik biçimler (kumaş, bitki) basit kalır |
-| Karakterler | Modüler ilkel parça kiti: gövde, baş, saç, giysi parçaları; ortak iskelet | En zayıf halka. Okunaklı ve stilize olur, ama elle modellenmiş karakter kalitesine ulaşmaz |
-| Dokular | Yapay zekâ görsel araçlarıyla üretim; her doku için tam istem ve boyut verilir | Proje sahibi üretir, ben istemi ve yerleştirmeyi sağlarım |
-| Animasyon | Açık konu (A-004) | Karar Faz 3 öncesi |
+Mevcut öğeler: desenli yeşil duvar kâğıdı ve süpürgelik, koyu parke, panelli kirli sarı kapılar ve soluk kasalar, pirinç kapı kolları, desenli yolluk halı, düz tavan lambaları.
 
-Karakter kalitesi Faz 6'dan önce yeniden değerlendirilir. Yetersiz kalırsa seçenekler: lisansı uygun hazır düşük poligon insan paketi ya da bir serbest çalışan sanatçı. Bu bir bütçe kararıdır ve proje sahibine sorulacaktır.
+Eksikler: gerçek basamaklı merdiven, pencere, koridor eşyaları (portmanto, ayna, telefon sehpası), kapı açılma sesi ve geçiş efekti.
 
-## 5. Bütçeler (geçici)
+## 4. 2D oda görselleri — üretim kuralları
 
-- Karakter: 1.500–4.000 üçgen, 256–512 px doku.
-- Oda başına eşya dokuları: 128–256 px.
-- Doku süzme: en yakın komşu.
-- İç görüntüleme çözünürlüğü: varsayılan 640×360; ayarlanabilir.
+Proje sahibi bir yapay zekâ görsel aracıyla üretir. Tutarlılık için:
 
-## 6. Doku istem şablonu
+- **Boyut:** 1920×1080, PNG.
+- **Dosya yolu:** `assets/rooms/<oda_kimliği>.png`. Kimlikler: `living_room`, `dining`, `kitchen`, `pantry`, `utility`, `bathroom_ground`, `guest_a`, `guest_b`, `daniel_bedroom`, `isolation`, `multipurpose`, `bathroom_upper`, `storage`.
+- **Arka plan boş olmalı:** içinde insan yok. Karakterler ayrı katmandır.
+- **Bakış:** kapı eşiğinden içeri, göz hizasından, hafif geniş açı. Her odada aynı.
+- **Işık:** tek zayıf kaynak; görselin kenarları karanlığa gömülür.
+- Dosya yoksa oyun yeşil bir yer tutucu ve "yer tutucu görsel" yazısı gösterir.
+
+**Oda istemi şablonu**
 
 ```
-Konu: [yüzey ya da yüz tanımı]
-Stil: late-1990s low-resolution game texture, hand-painted, muted sickly palette
-       (mustard, rust, dirty beige), flat lighting, no baked shadows, seamless tile
-Boyut: 512×512 (oyunda 256'ya küçültülür)
-Kaçın: fotogerçekçilik, parlak renk, yazı, logo, tanınabilir gerçek kişi ya da mevcut oyun karakteri
+Interior of a [room] in a run-down small-town house, seen from the doorway at eye level,
+slightly wide angle. Empty of people. [3-5 concrete objects].
+Hand-painted digital illustration with rough visible brushwork and heavy dark outlines,
+gritty and unsettling. Palette: dark murky green and teal, with dirty yellow accents.
+One weak light source; the edges of the image fall into near-black.
+No text, no logos, no people. 16:9.
 ```
+
+## 5. 2D karakter görselleri — üretim kuralları
+
+- **Biçim:** saydam arka planlı PNG, ayakta tam boy; yükseklik yaklaşık 900 piksel.
+- **Dosya yolu (planlanan):** `assets/characters/<karakter_kimliği>/<poz>.png`.
+- **Tekinsizlik herkese uygulanır.** Yüzler hafifçe "yanlış" durur; bu, enfekte olanı ele veren bir işaret olamaz.
+- Aynı karakterin farklı pozlarında yüz ve giysi tutarlı kalmalıdır. Yapay zekâ araçlarında bu zordur; her karakter için önce tek bir referans görsel onaylanır, diğer pozlar ondan türetilir.
+- Karakter katmanını dolduracak sistem henüz yazılmadı.
+
+## 6. Dürüst sınırlar
+
+- Koridor dokuları kodla üretildiği için yapay ve tekrarlı görünür; boyanmış dokular gelince değişecek.
+- Hiçbir oda ve karakter görseli henüz yok.
+- Yapay zekâyla üretilen görsellerin ticari kullanım hakları, kullanılan aracın şartlarına bağlıdır; yayından önce lisans denetimi yapılacak.

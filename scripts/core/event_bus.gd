@@ -10,6 +10,18 @@ extends Node
 @warning_ignore("unused_signal")
 signal interaction_prompt_changed(text: String)
 
+## Something asks for a room's 2D scene to be shown (for example a door).
+@warning_ignore("unused_signal")
+signal room_view_requested(room_id: StringName)
+
+## The 2D scene of a room is now on screen.
+@warning_ignore("unused_signal")
+signal room_view_opened(room_id: StringName)
+
+## The 2D room scene was closed and the player is back in the corridor.
+@warning_ignore("unused_signal")
+signal room_view_closed(room_id: StringName)
+
 ## A key binding was changed through InputSetup.rebind().
 @warning_ignore("unused_signal")
 signal input_binding_changed(action: StringName)

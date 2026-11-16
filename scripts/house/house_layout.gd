@@ -46,32 +46,45 @@ const ROOMS: Array[Dictionary] = [
 	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(5.0, 8.5, 3.2, 1.5)]},
 ]
 
+## Rooms the player walks through in 3D. Every other room is shown as a 2D
+## scene when its door is used (docs/DecisionLog.md, K-011).
+const WALKABLE_ROOMS: Array[StringName] = [&"vestibule", &"hall", &"landing", &"corridor"]
+
+## Passages between 2D rooms that have no corridor door of their own.
+const ROOM_LINKS: Dictionary = {
+	&"living_room": [&"dining"],
+	&"dining": [&"living_room", &"kitchen"],
+	&"kitchen": [&"dining", &"pantry", &"utility"],
+	&"pantry": [&"kitchen"],
+	&"utility": [&"kitchen"],
+}
+
 ## Walls. "axis" is the direction the wall runs: "x" walls sit at z = "at" and
 ## span x from "from" to "to"; "z" walls sit at x = "at" and span z.
 ## "openings" are door-height gaps: "pos" is the centre along the wall,
 ## "width" defaults to DOOR_WIDTH, and "sealed" fills the gap with a locked
-## door panel (used for the exterior doors until real doors exist).
+## exterior door, and "to" names the 2D room a corridor door opens.
 const WALLS: Array[Dictionary] = [
 	# --- Ground floor, exterior ---
 	{"floor": 0, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true,
 		"openings": [{"pos": 7.25, "sealed": true, "id": &"rear_door"}]},
 	{"floor": 0, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true,
-		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door"}]},
+		"openings": [{"pos": 6.0, "sealed": true, "id": &"main_door", "front": true}]},
 	{"floor": 0, "axis": "z", "at": 0.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	{"floor": 0, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Ground floor, interior ---
 	# Dining / living room: wide open archway.
 	{"floor": 0, "axis": "x", "at": 4.5, "from": 0.0, "to": 5.0, "openings": [{"pos": 2.5, "width": 3.0}]},
 	# West side of hall and vestibule; the kitchen (z < 3) stays open to dining.
-	{"floor": 0, "axis": "z", "at": 5.0, "from": 3.0, "to": 10.0, "openings": [{"pos": 6.0}]},
+	{"floor": 0, "axis": "z", "at": 5.0, "from": 3.0, "to": 10.0, "openings": [{"pos": 6.0, "to": &"living_room"}]},
 	# South wall of kitchen and pantry: doors to the hall and the utility room.
-	{"floor": 0, "axis": "x", "at": 3.0, "from": 5.0, "to": 12.0, "openings": [{"pos": 6.0}, {"pos": 8.9}]},
+	{"floor": 0, "axis": "x", "at": 3.0, "from": 5.0, "to": 12.0, "openings": [{"pos": 6.0, "to": &"kitchen"}, {"pos": 8.9}]},
 	# Kitchen / pantry.
 	{"floor": 0, "axis": "z", "at": 9.5, "from": 0.0, "to": 3.0, "openings": [{"pos": 1.5}]},
 	# Hall / staircase.
 	{"floor": 0, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
 	# Staircase / utility, then the bathroom door off the stair-foot nook.
-	{"floor": 0, "axis": "z", "at": 8.2, "from": 3.0, "to": 10.0, "openings": [{"pos": 8.0}]},
+	{"floor": 0, "axis": "z", "at": 8.2, "from": 3.0, "to": 10.0, "openings": [{"pos": 8.0, "to": &"bathroom_ground"}]},
 	# Utility / bathroom.
 	{"floor": 0, "axis": "x", "at": 7.5, "from": 8.2, "to": 12.0, "openings": []},
 	# Hall / vestibule.
@@ -84,19 +97,19 @@ const WALLS: Array[Dictionary] = [
 	# --- Upper floor, interior ---
 	# West bedrooms: Guest B, Guest A, Daniel.
 	{"floor": 1, "axis": "z", "at": 5.0, "from": 0.0, "to": 10.0,
-		"openings": [{"pos": 2.4}, {"pos": 4.5}, {"pos": 7.0}]},
+		"openings": [{"pos": 2.4, "to": &"guest_b"}, {"pos": 4.5, "to": &"guest_a"}, {"pos": 7.0, "to": &"daniel_bedroom"}]},
 	{"floor": 1, "axis": "x", "at": 3.0, "from": 0.0, "to": 5.0, "openings": []},
 	{"floor": 1, "axis": "x", "at": 6.0, "from": 0.0, "to": 5.0, "openings": []},
 	# Isolation room south wall.
-	{"floor": 1, "axis": "x", "at": 1.8, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "id": &"isolation_door"}]},
+	{"floor": 1, "axis": "x", "at": 1.8, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"isolation"}]},
 	# East rooms: multipurpose door off the landing, bathroom door off the corridor.
-	{"floor": 1, "axis": "z", "at": 8.2, "from": 0.0, "to": 10.0, "openings": [{"pos": 2.4}, {"pos": 8.0}]},
+	{"floor": 1, "axis": "z", "at": 8.2, "from": 0.0, "to": 10.0, "openings": [{"pos": 2.4, "to": &"multipurpose"}, {"pos": 8.0, "to": &"bathroom_upper"}]},
 	{"floor": 1, "axis": "x", "at": 6.5, "from": 8.2, "to": 12.0, "openings": []},
 	# Stairwell enclosure (open at the north end, where the stairs arrive).
 	{"floor": 1, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
 	{"floor": 1, "axis": "x", "at": 7.5, "from": 7.0, "to": 8.2, "openings": []},
 	# Storage closet north wall.
-	{"floor": 1, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0}]},
+	{"floor": 1, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"storage"}]},
 ]
 
 

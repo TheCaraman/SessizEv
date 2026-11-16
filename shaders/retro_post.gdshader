@@ -9,14 +9,15 @@ shader_type canvas_item;
 uniform sampler2D screen_texture : hint_screen_texture, filter_nearest, repeat_disable;
 
 // Height of the simulated low-resolution image, in pixels.
-uniform float vertical_resolution : hint_range(120.0, 1080.0, 1.0) = 300.0;
+// The look is crisp (docs/DecisionLog.md, K-012): only mild pixelation.
+uniform float vertical_resolution : hint_range(120.0, 1080.0, 1.0) = 540.0;
 // Number of steps per colour channel.
-uniform float color_levels : hint_range(4.0, 64.0, 1.0) = 20.0;
-uniform float dither_strength : hint_range(0.0, 1.0) = 1.0;
-uniform float grain_strength : hint_range(0.0, 0.3) = 0.07;
-uniform float vignette_strength : hint_range(0.0, 1.0) = 0.45;
-// Multiplied into the image; pushes it toward a sickly warm cast.
-uniform vec3 tint : source_color = vec3(1.0, 0.96, 0.84);
+uniform float color_levels : hint_range(4.0, 64.0, 1.0) = 40.0;
+uniform float dither_strength : hint_range(0.0, 1.0) = 0.6;
+uniform float grain_strength : hint_range(0.0, 0.3) = 0.03;
+uniform float vignette_strength : hint_range(0.0, 1.0) = 0.55;
+// Multiplied into the image; a slight green cast.
+uniform vec3 tint : source_color = vec3(0.95, 1.0, 0.94);
 
 const float BAYER[16] = float[16](
 	0.0, 8.0, 2.0, 10.0,

@@ -16,6 +16,11 @@ Bu dosya her oturumda yüklenir. Ayrıntılar `docs/` altındadır; çelişki ol
 - Godot **4.7.2 stable**, standart sürüm, GDScript (tipli), Forward+.
 - 4.7 API ayrıntılarını ezbere değil, resmi belgelerden doğrula.
 
+## Sunum (K-011, K-012)
+- Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D katmanlı sahnelerdir; karakterler 2D çizimdir.
+- Renk teması koyu kirli yeşil/turkuaz, vurgu kirli sarı. Net görüntü; ağır pikselleşme yok.
+- Görsel işe referans görmeden başlama. Proje sahibinin beğenmediği yön: kirletilmiş PS1 görünümü.
+
 ## Değişmez tasarım kuralları
 - FPS dövüşü, nişan alma, açık dünya, crafting ağacı, çok oyunculu yok.
 - Enfeksiyon kampanya başında atanır; sonradan sessizce değişmez. Olağan temasla bulaşmaz.

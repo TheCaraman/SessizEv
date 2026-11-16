@@ -1,18 +1,17 @@
 class_name HouseBuilder
 extends Node3D
-## Builds the house from HouseLayout at runtime.
+## Builds the 3D part of the house from HouseLayout at runtime.
 ##
-## Structure is made of solid boxes: floor slabs, walls with door-height
-## openings, sealed exterior door panels and a ramp for the staircase.
-## Each room also gets a ceiling panel and, unless it has its own dressing
-## (furniture and lighting), one plain lamp.
+## Only the corridors are walkable (docs/DecisionLog.md, K-011): the entrance,
+## the hall, the staircase, the landing and the upstairs corridor. Every
+## opening from a corridor into a room is closed by a RoomDoor; using it shows
+## the room as a 2D scene. Walls of the rooms themselves are still built so
+## the house stays one closed, consistent solid.
 
 const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNESS
-const DOOR_PANEL_THICKNESS: float = 0.08
-const LAMP_COLOR := Color(1.0, 0.80, 0.52)
-
-## Rooms that bring their own lighting through a dressing node.
-const DRESSED_ROOMS: Array[StringName] = [&"living_room"]
+const DOOR_THICKNESS: float = 0.05
+const LAMP_COLOR := Color(1.0, 0.90, 0.66)
+const RUNNER_WIDTH: float = 1.1
 
 
 func _ready() -> void:
@@ -29,10 +28,7 @@ func build() -> void:
 	_build_stairs()
 	_build_ceilings()
 	_build_lamps()
-
-	var living_room := LivingRoomDressing.new()
-	living_room.name = "LivingRoomDressing"
-	add_child(living_room)
+	_build_runners()
 
 
 func _build_slabs() -> void:
@@ -65,7 +61,7 @@ func _add_slab(parent: Node3D, rect: Rect2, top_y: float) -> void:
 		parent,
 		Vector3(center.x, top_y - thickness * 0.5, center.y),
 		Vector3(rect.size.x, thickness, rect.size.y),
-		&"floorboards"
+		&"parquet"
 	)
 
 
@@ -89,40 +85,87 @@ func _build_wall(wall: Dictionary) -> void:
 		var start: float = opening["pos"] - width * 0.5
 		var end: float = opening["pos"] + width * 0.5
 		if start > cursor:
-			_add_wall_piece(holder, wall, cursor, start, base_y, WALL_HEIGHT, thickness, &"wallpaper")
+			_add_wall_piece(holder, wall, cursor, start, base_y, WALL_HEIGHT, thickness)
 		# Lintel above the opening.
 		_add_wall_piece(
 			holder, wall, start, end,
-			base_y + HouseLayout.DOOR_HEIGHT, WALL_HEIGHT - HouseLayout.DOOR_HEIGHT,
-			thickness, &"wallpaper"
+			base_y + HouseLayout.DOOR_HEIGHT, WALL_HEIGHT - HouseLayout.DOOR_HEIGHT, thickness
 		)
-		if opening.get("sealed", false):
-			var panel: StaticBody3D = _add_wall_piece(
-				holder, wall, start, end, base_y, HouseLayout.DOOR_HEIGHT,
-				DOOR_PANEL_THICKNESS, &"door_panel"
-			)
-			panel.name = String(opening.get("id", &"sealed_door"))
+		if opening.has("to") or opening.get("sealed", false):
+			_add_door(holder, wall, opening, base_y, thickness)
 		cursor = end
 	if cursor < wall["to"]:
-		_add_wall_piece(holder, wall, cursor, wall["to"], base_y, WALL_HEIGHT, thickness, &"wallpaper")
+		_add_wall_piece(holder, wall, cursor, wall["to"], base_y, WALL_HEIGHT, thickness)
 
 
 ## Adds one box of a wall between [param from] and [param to] along the wall's
 ## axis, starting at height [param bottom_y].
 func _add_wall_piece(
 	parent: Node3D, wall: Dictionary, from: float, to: float,
-	bottom_y: float, height: float, thickness: float, material: StringName
+	bottom_y: float, height: float, thickness: float
 ) -> StaticBody3D:
 	var mid: float = (from + to) * 0.5
 	var length: float = to - from
 	var center_y: float = bottom_y + height * 0.5
 	if wall["axis"] == "x":
 		return _add_box(
-			parent, Vector3(mid, center_y, wall["at"]), Vector3(length, height, thickness), material
+			parent, Vector3(mid, center_y, wall["at"]), Vector3(length, height, thickness), &"wallpaper_green"
 		)
 	return _add_box(
-		parent, Vector3(wall["at"], center_y, mid), Vector3(thickness, height, length), material
+		parent, Vector3(wall["at"], center_y, mid), Vector3(thickness, height, length), &"wallpaper_green"
 	)
+
+
+## Adds a closed panelled door with its frame in an opening. Doors with a
+## "to" room open that room's 2D scene; sealed exterior doors are locked.
+func _add_door(
+	parent: Node3D, wall: Dictionary, opening: Dictionary, base_y: float, wall_thickness: float
+) -> void:
+	var width: float = opening.get("width", HouseLayout.DOOR_WIDTH)
+	var height: float = HouseLayout.DOOR_HEIGHT
+
+	var door := RoomDoor.new()
+	door.room_id = opening.get("to", &"")
+	door.locked = opening.get("sealed", false)
+	door.name = "Door_%s" % (opening.get("id", door.room_id))
+	if wall["axis"] == "x":
+		door.position = Vector3(opening["pos"], base_y, wall["at"])
+	else:
+		door.position = Vector3(wall["at"], base_y, opening["pos"])
+		door.rotation.y = PI * 0.5
+	parent.add_child(door)
+
+	# From here on everything is in door space: X across the door, Z through it.
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(width, height, DOOR_THICKNESS)
+	var collision := CollisionShape3D.new()
+	collision.shape = shape
+	collision.position = Vector3(0.0, height * 0.5, 0.0)
+	door.add_child(collision)
+
+	_add_mesh(door, Vector3(0.0, height * 0.5, 0.0), Vector3(width, height, DOOR_THICKNESS), &"door_paint")
+	for side: float in [-1.0, 1.0]:
+		var face_z: float = side * (DOOR_THICKNESS * 0.5 + 0.008)
+		# Three raised panels: one wide at the top, two tall below.
+		_add_mesh(door, Vector3(0.0, 1.72, face_z), Vector3(width - 0.22, 0.46, 0.016), &"door_panel_paint")
+		_add_mesh(door, Vector3(-0.19, 0.78, face_z), Vector3(0.27, 1.22, 0.016), &"door_panel_paint")
+		_add_mesh(door, Vector3(0.19, 0.78, face_z), Vector3(0.27, 1.22, 0.016), &"door_panel_paint")
+		# Handle plate and lever.
+		var handle_z: float = side * (DOOR_THICKNESS * 0.5 + 0.012)
+		_add_mesh(door, Vector3(width * 0.5 - 0.07, 1.02, handle_z), Vector3(0.035, 0.16, 0.012), &"brass")
+		_add_mesh(
+			door, Vector3(width * 0.5 - 0.12, 1.04, side * (DOOR_THICKNESS * 0.5 + 0.035)),
+			Vector3(0.12, 0.02, 0.02), &"brass"
+		)
+
+	# Frame, standing slightly proud of the wall on both sides.
+	var frame_depth: float = wall_thickness + 0.04
+	for side: float in [-1.0, 1.0]:
+		_add_mesh(
+			door, Vector3(side * (width * 0.5 + 0.035), height * 0.5 + 0.035, 0.0),
+			Vector3(0.07, height + 0.07, frame_depth), &"frame_paint"
+		)
+	_add_mesh(door, Vector3(0.0, height + 0.035, 0.0), Vector3(width, 0.07, frame_depth), &"frame_paint")
 
 
 ## The staircase is a single ramp: bottom at the south edge on floor 0, top at
@@ -144,23 +187,26 @@ func _build_stairs() -> void:
 	ramp.name = "Stairs"
 
 
-## Thin plaster panels under each slab so ceilings do not show floorboards.
+## Dark ceiling panels over the corridors and the stairwell.
 func _build_ceilings() -> void:
 	var ceilings := Node3D.new()
 	ceilings.name = "Ceilings"
 	add_child(ceilings)
-	var material: StandardMaterial3D = HouseMaterials.get_material(&"plaster")
 	for room: Dictionary in HouseLayout.ROOMS:
+		if not HouseLayout.WALKABLE_ROOMS.has(room["id"]):
+			continue
 		var base_y: float = HouseLayout.floor_height(room["floor"])
 		for rect: Rect2 in room["rects"]:
-			var center: Vector2 = rect.get_center()
-			var mesh := BoxMesh.new()
-			mesh.size = Vector3(rect.size.x, 0.02, rect.size.y)
-			mesh.material = material
-			var panel := MeshInstance3D.new()
-			panel.mesh = mesh
-			panel.position = Vector3(center.x, base_y + WALL_HEIGHT - 0.01, center.y)
-			ceilings.add_child(panel)
+			_add_ceiling_panel(ceilings, rect, base_y + WALL_HEIGHT)
+	_add_ceiling_panel(ceilings, HouseLayout.STAIRS, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT)
+
+
+func _add_ceiling_panel(parent: Node3D, rect: Rect2, ceiling_y: float) -> void:
+	var center: Vector2 = rect.get_center()
+	_add_mesh(
+		parent, Vector3(center.x, ceiling_y - 0.01, center.y),
+		Vector3(rect.size.x, 0.02, rect.size.y), &"ceiling_dark"
+	)
 
 
 func _build_lamps() -> void:
@@ -168,34 +214,57 @@ func _build_lamps() -> void:
 	lamps.name = "Lamps"
 	add_child(lamps)
 	for room: Dictionary in HouseLayout.ROOMS:
-		if DRESSED_ROOMS.has(room["id"]):
+		if not HouseLayout.WALKABLE_ROOMS.has(room["id"]):
 			continue
 		var rect: Rect2 = room["rects"][0]
 		var center: Vector2 = rect.get_center()
-		var base_y: float = HouseLayout.floor_height(room["floor"])
+		var ceiling_y: float = HouseLayout.floor_height(room["floor"]) + WALL_HEIGHT
 		_add_lamp(
 			lamps, "Lamp_%s" % room["id"],
-			Vector3(center.x, base_y + WALL_HEIGHT - 0.3, center.y),
-			maxf(rect.size.x, rect.size.y) + 1.5
+			Vector3(center.x, ceiling_y, center.y), maxf(rect.size.x, rect.size.y) + 2.0
 		)
-	# One lamp high in the stairwell.
 	var stair_center: Vector2 = HouseLayout.STAIRS.get_center()
 	_add_lamp(
 		lamps, "Lamp_stairs",
-		Vector3(stair_center.x, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT - 0.3, stair_center.y),
-		7.0
+		Vector3(stair_center.x, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT, stair_center.y), 7.5
 	)
 
 
-func _add_lamp(parent: Node3D, lamp_name: String, at: Vector3, light_range: float) -> void:
+## A flat ceiling fitting with a light just below it.
+func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_range: float) -> void:
+	var shade: MeshInstance3D = _add_mesh(
+		parent, ceiling_point + Vector3(0.0, -0.05, 0.0), Vector3(0.28, 0.06, 0.28), &"lamp_shade"
+	)
+	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
 	var lamp := OmniLight3D.new()
 	lamp.name = lamp_name
-	lamp.position = at
+	lamp.position = ceiling_point + Vector3(0.0, -0.25, 0.0)
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
-	lamp.light_energy = 0.8
+	lamp.light_energy = 1.25
+	lamp.omni_attenuation = 1.2
 	lamp.shadow_enabled = true
 	parent.add_child(lamp)
+
+
+## Carpet runners along the downstairs hall and the upstairs corridor.
+func _build_runners() -> void:
+	for floor_index: int in 2:
+		var length: float = 5.0
+		var quad := QuadMesh.new()
+		quad.size = Vector2(RUNNER_WIDTH, length)
+		# The runner texture is square; repeat it along the length.
+		var material := HouseMaterials.get_material(&"runner").duplicate() as StandardMaterial3D
+		material.uv1_scale = Vector3(1.0, length / RUNNER_WIDTH, 1.0)
+		quad.material = material
+		var runner := MeshInstance3D.new()
+		runner.name = "Runner_F%d" % floor_index
+		runner.mesh = quad
+		runner.rotation.x = -PI * 0.5
+		runner.position = Vector3(6.0, HouseLayout.floor_height(floor_index) + 0.006, 5.75)
+		runner.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(runner)
 
 
 ## Adds a solid, visible box. [param euler] is the rotation in radians.
@@ -213,12 +282,18 @@ func _add_box(
 	collision.shape = shape
 	body.add_child(collision)
 
+	_add_mesh(body, Vector3.ZERO, size, material)
+	parent.add_child(body)
+	return body
+
+
+## Adds a visible box with no collision.
+func _add_mesh(parent: Node3D, center: Vector3, size: Vector3, material: StringName) -> MeshInstance3D:
 	var mesh := BoxMesh.new()
 	mesh.size = size
 	mesh.material = HouseMaterials.get_material(material)
 	var mesh_instance := MeshInstance3D.new()
 	mesh_instance.mesh = mesh
-	body.add_child(mesh_instance)
-
-	parent.add_child(body)
-	return body
+	mesh_instance.position = center
+	parent.add_child(mesh_instance)
+	return mesh_instance

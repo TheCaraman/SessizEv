@@ -1,0 +1,23 @@
+keys,en,tr
+ROOM_DINING,Dining area,Yemek alanı
+ROOM_LIVING,Living room,Oturma odası
+ROOM_KITCHEN,Kitchen,Mutfak
+ROOM_PANTRY,Pantry,Kiler
+ROOM_HALL,Hall,Hol
+ROOM_VESTIBULE,Entrance,Giriş
+ROOM_UTILITY,Utility room,Tesisat odası
+ROOM_BATHROOM_GROUND,Downstairs bathroom,Alt kat banyosu
+ROOM_GUEST_B,Back bedroom,Arka yatak odası
+ROOM_GUEST_A,Middle bedroom,Orta yatak odası
+ROOM_DANIEL,Daniel's bedroom,Daniel'ın odası
+ROOM_ISOLATION,Box room,Küçük oda
+ROOM_LANDING,Landing,Sahanlık
+ROOM_CORRIDOR,Upstairs corridor,Üst koridor
+ROOM_MULTIPURPOSE,Spare room,Boş oda
+ROOM_BATHROOM_UPPER,Upstairs bathroom,Üst kat banyosu
+ROOM_STORAGE,Storage closet,Depo dolabı
+PROMPT_ENTER_ROOM,{key} — {room},{key} — {room}
+PROMPT_LOCKED,Locked,Kilitli
+ROOMVIEW_LEAVE,{key} — Back to the corridor,{key} — Koridora dön
+ROOMVIEW_GO,Go to: {room},Git: {room}
+ROOMVIEW_PLACEHOLDER,Placeholder image,Yer tutucu görsel

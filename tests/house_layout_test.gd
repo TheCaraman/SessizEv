@@ -7,8 +7,9 @@ extends Node
 ##
 ## Checks:
 ##   1. Every room has a floor at the right height and room to stand in.
-##   2. A player-sized capsule can pass through every unsealed opening.
-##   3. Sealed exterior doors block passage.
+##   2. A player-sized capsule can pass through every open passage.
+##   3. Exterior doors and corridor doors block passage, and each corridor
+##      door leads to the room the layout says it does.
 ##   4. Selected walls between rooms are solid.
 ##   5. HouseLayout.room_at() returns the right room for every room centre.
 ##   6. The player can walk up the stairs to the upper floor, and back down.
@@ -119,9 +120,18 @@ func _check_openings() -> void:
 			var label: String = "floor %d, %s-wall at %.1f, opening at %.2f" % [
 				wall["floor"], wall["axis"], wall["at"], opening["pos"]
 			]
-			if opening.get("sealed", false):
+			if opening.get("sealed", false) or opening.has("to"):
+				# Exterior doors and corridor doors into 2D rooms never open in 3D.
 				var hit: Dictionary = _raycast(a + Vector3.UP, b + Vector3.UP)
-				_check(not hit.is_empty(), "sealed door should block passage (%s)" % label)
+				_check(
+					not hit.is_empty() and hit["collider"] is RoomDoor,
+					"a door should block passage (%s)" % label
+				)
+				if opening.has("to") and not hit.is_empty() and hit["collider"] is RoomDoor:
+					_check(
+						(hit["collider"] as RoomDoor).room_id == opening["to"],
+						"door should lead to '%s' (%s)" % [opening["to"], label]
+					)
 			else:
 				_check(_capsule_can_move(a, b), "capsule should pass through opening (%s)" % label)
 

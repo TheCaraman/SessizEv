@@ -4,15 +4,16 @@ Birinci şahıs, tam 3D psikolojik korku oyunu. Çalışma adı.
 
 ## Durum
 
-Faz 1.4 tamam — birinci şahıs kontrolcü ve iki katlı evin blockout'u çalışıyor. F5 evi açar; giriş holünde başlarsın. Kapı, pencere, mobilya ve oyun içeriği henüz yok.
+Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D sahnelerdir. F5 evi açar; giriş holünde başlarsın. Oda görselleri henüz yer tutucu; karakter ve oyun içeriği yok.
 
-Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, Esc fareyi bırakır ya da geri alır.
+Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E kapıyı kullanır, E ya da Esc odadan koridora döner. Koridorda Esc fareyi bırakır ya da geri alır.
 
 Otomatik testler:
 
 ```
 godot --headless --path . res://tests/player_movement_test.tscn
 godot --headless --path . res://tests/house_layout_test.tscn
+godot --headless --path . res://tests/interaction_test.tscn
 ```
 
 Ekran görüntülerini yenilemek (pencere açar):
