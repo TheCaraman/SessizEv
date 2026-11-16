@@ -10,7 +10,7 @@ extends Node3D
 
 const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNESS
 const DOOR_THICKNESS: float = 0.05
-const LAMP_COLOR := Color(0.88, 0.91, 0.78)
+const LAMP_COLOR := Color(0.96, 0.79, 0.56)
 const RUNNER_WIDTH: float = 1.3
 const SKIRTING_HEIGHT: float = 0.13
 const CEILING_RAIL_HEIGHT: float = 0.09
@@ -50,16 +50,13 @@ func _build_slabs() -> void:
 	# Ground floor: one piece.
 	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 0.0)
 
-	# Upper floor, open over the stairwell and the double-height hall.
+	# Upper floor is complete except for the staircase opening.
 	var upper: float = HouseLayout.STOREY_HEIGHT
 	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), HouseLayout.VOIDS):
 		_add_slab(slabs, piece, upper)
 
-	# Roof, with the skylight left open.
-	var skylight: Array[Rect2] = [HouseLayout.SKYLIGHT]
-	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), skylight):
-		_add_slab(slabs, piece, 2.0 * HouseLayout.STOREY_HEIGHT)
-	_build_skylight()
+	# A normal enclosed upper storey, no atrium or roof-light set.
+	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 2.0 * HouseLayout.STOREY_HEIGHT)
 
 
 ## Splits [param area] along every edge of [param holes] and returns the
@@ -90,56 +87,6 @@ static func _cells_outside(area: Rect2, holes: Array[Rect2]) -> Array[Rect2]:
 	return pieces
 
 
-## A glazed roof light over the hall void: frame, glazing bars, a pale sky
-## behind, daylight by day and cold moonlight by night falling into the hall.
-func _build_skylight() -> void:
-	var rect: Rect2 = HouseLayout.SKYLIGHT
-	var roof: float = 2.0 * HouseLayout.STOREY_HEIGHT
-	var center: Vector2 = rect.get_center()
-	var skylight := Node3D.new()
-	skylight.name = "Skylight"
-	add_child(skylight)
-	var y: float = roof - HouseLayout.SLAB_THICKNESS * 0.5
-	for side: float in [-1.0, 1.0]:
-		_add_mesh(skylight, Vector3(center.x + side * rect.size.x * 0.5, y, center.y), Vector3(0.08, 0.26, rect.size.y + 0.08), &"frame_paint")
-		_add_mesh(skylight, Vector3(center.x, y, center.y + side * rect.size.y * 0.5), Vector3(rect.size.x + 0.08, 0.26, 0.08), &"frame_paint")
-	_add_mesh(skylight, Vector3(center.x, y + 0.05, center.y), Vector3(0.04, 0.08, rect.size.y), &"frame_paint")
-	for t: float in [-0.25, 0.0, 0.25]:
-		_add_mesh(skylight, Vector3(center.x, y + 0.05, center.y + t * rect.size.y), Vector3(rect.size.x, 0.08, 0.035), &"frame_paint")
-	# Sky seen through the glass.
-	var sky := MeshInstance3D.new()
-	sky.name = "SkylightSky"
-	var quad := QuadMesh.new()
-	quad.size = Vector2(rect.size.x + 0.4, rect.size.y + 0.4)
-	sky.mesh = quad
-	sky.rotation.x = PI * 0.5
-	sky.position = Vector3(center.x, roof + 0.6, center.y)
-	var sky_material: StandardMaterial3D = HouseMaterials.get_material(&"window_sky").duplicate()
-	sky_material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	sky.material_override = sky_material
-	sky.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	sky.add_to_group("window_backdrops")
-	skylight.add_child(sky)
-	# Light falling through the glass, slightly slanted, by day and by night.
-	var from := Vector3(center.x + 0.8, roof + 2.0, center.y - 0.6)
-	var toward := Vector3(center.x - 0.6, 0.0, center.y + 0.8)
-	for spec: Array in [["SkylightDaylight", "window_lights", Color(0.80, 0.86, 0.78), 6.0, 3.0],
-			["SkylightMoon", "moon_lights", Color(0.58, 0.68, 0.95), 5.0, 4.0]]:
-		var light := SpotLight3D.new()
-		light.name = spec[0]
-		light.add_to_group(spec[1])
-		light.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
-		light.light_color = spec[2]
-		light.light_energy = spec[3]
-		light.spot_range = 10.0
-		light.spot_angle = 24.0
-		light.spot_angle_attenuation = 0.6
-		light.shadow_enabled = true
-		light.shadow_blur = 0.6
-		light.light_volumetric_fog_energy = spec[4]
-		skylight.add_child(light)
-
-
 ## Adds a slab whose top surface is at [param top_y].
 func _add_slab(parent: Node3D, rect: Rect2, top_y: float) -> void:
 	var center: Vector2 = rect.get_center()
@@ -165,7 +112,12 @@ func _build_wall(wall: Dictionary) -> void:
 	if wall.get("guard", false):
 		# Solid 1.1m guard preserves safe stair separation, opens the sightline.
 		_add_wall_piece(holder, wall, wall["from"], wall["to"], base_y, 1.1, thickness)
-		_add_mesh(holder, Vector3(wall["at"], base_y + 1.12, (wall["from"] + wall["to"]) * 0.5), Vector3(0.16, 0.06, wall["to"] - wall["from"]), &"wood_stairs")
+		var along_x: bool = wall["axis"] == "x"
+		var mid: float = (wall["from"] + wall["to"]) * 0.5
+		var length: float = wall["to"] - wall["from"]
+		var center := Vector3(mid, base_y + 1.12, wall["at"]) if along_x else Vector3(wall["at"], base_y + 1.12, mid)
+		var size := Vector3(length, 0.06, 0.16) if along_x else Vector3(0.16, 0.06, length)
+		_add_mesh(holder, center, size, &"wood_stairs")
 		return
 
 	var openings: Array = (wall["openings"] as Array).duplicate()
@@ -192,6 +144,12 @@ func _build_wall(wall: Dictionary) -> void:
 		cursor = end
 	if cursor < wall["to"]:
 		_add_wall_piece(holder, wall, cursor, wall["to"], base_y, WALL_HEIGHT, thickness)
+	# Continuous cornice crosses the door lintels too, never broken into stubs.
+	var along_x: bool = wall["axis"] == "x"
+	var mid: float = (wall["from"] + wall["to"]) * 0.5
+	var center := Vector3(mid, base_y + WALL_HEIGHT - 0.045, wall["at"]) if along_x else Vector3(wall["at"], base_y + WALL_HEIGHT - 0.045, mid)
+	var size := Vector3(wall["to"] - wall["from"], 0.09, thickness + 0.04) if along_x else Vector3(thickness + 0.04, 0.09, wall["to"] - wall["from"])
+	_add_mesh(holder, center, size, &"frame_paint")
 
 
 ## Adds one box of a wall between [param from] and [param to] along the wall's
@@ -215,7 +173,6 @@ func _add_wall_piece(
 		var trims: Array[Array] = [
 			[SKIRTING_HEIGHT * 0.5, SKIRTING_HEIGHT, 0.036, &"frame_paint"],
 			[SKIRTING_HEIGHT + 0.012, 0.024, 0.05, &"frame_paint"],
-			[WALL_HEIGHT - CEILING_RAIL_HEIGHT * 0.5, CEILING_RAIL_HEIGHT, 0.04, &"frame_paint"],
 		]
 		for trim: Array in trims:
 			var trim_center := center
@@ -415,8 +372,8 @@ func _build_ceilings() -> void:
 				pieces = _cells_outside(rect, HouseLayout.VOIDS)
 			for piece: Rect2 in pieces:
 				_add_ceiling_panel(ceilings, piece, base_y + WALL_HEIGHT)
-	# The high ceiling over the voids, around the skylight.
-	var skylight: Array[Rect2] = [HouseLayout.SKYLIGHT]
+	# Ceiling above the staircase.
+	var skylight: Array[Rect2] = []
 	for opening: Rect2 in HouseLayout.VOIDS:
 		for piece: Rect2 in _cells_outside(opening, skylight):
 			_add_ceiling_panel(ceilings, piece, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT)
@@ -482,7 +439,7 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.7
+	lamp.light_energy = 0.32
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5
@@ -540,8 +497,15 @@ func _add_window(
 
 	# Venetian blinds, half tilted: daylight comes through the gaps as stripes
 	# and visible shafts in the haze (HOUSE-ATMOS-001).
-	_add_blinds(window, width, sill + height - 0.02, sill + 0.02, inner - out * 0.045, out)
+	_add_blinds(window, width, sill + height - 0.02, sill + height * 0.76, inner - out * 0.045, out)
 
+	# Open cream curtains frame the outdoor view instead of sealing the window.
+	var curtain_z: float = inner - out * 0.10
+	var curtain_top: float = sill + height + 0.16
+	var curtain_bottom: float = sill - 0.22
+	_add_mesh(window, Vector3(0.0, curtain_top + 0.02, curtain_z), Vector3(width + 0.40, 0.022, 0.022), &"brass")
+	_add_curtain(window, -width * 0.5 - 0.12, -0.34, curtain_bottom, curtain_top - curtain_bottom, curtain_z)
+	_add_curtain(window, 0.34, width * 0.5 + 0.12, curtain_bottom, curtain_top - curtain_bottom, curtain_z)
 	# Daylight: a spot outside, aimed through the window and down the corridor.
 	# Low, raking, from one side: the shafts cut diagonally across the room.
 	var from := Vector3(0.9, sill + height + 0.9, out * 2.6)
@@ -550,9 +514,9 @@ func _add_window(
 	daylight.name = "Daylight"
 	daylight.add_to_group("window_lights")
 	daylight.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
-	daylight.light_color = Color(0.72, 0.86, 0.73)
-	daylight.light_energy = 4.0
-	daylight.spot_range = 11.0
+	daylight.light_color = Color(0.67, 0.86, 0.76)
+	daylight.light_energy = 3.8
+	daylight.spot_range = 14.0
 	daylight.spot_angle = 26.0
 	daylight.spot_angle_attenuation = 0.5
 	daylight.spot_attenuation = 0.6
@@ -561,6 +525,17 @@ func _add_window(
 	daylight.shadow_blur = 0.4
 	daylight.light_volumetric_fog_energy = 2.4
 	window.add_child(daylight)
+	# Broad low-energy bounced daylight, local to the actual window.
+	var bounce := OmniLight3D.new()
+	bounce.name = "WindowBounce"
+	bounce.position = Vector3(0.0, 1.45, -out * 0.8)
+	bounce.light_color = Color(0.57, 0.78, 0.69)
+	bounce.light_energy = 0.7
+	bounce.omni_range = 6.0
+	bounce.omni_attenuation = 1.6
+	bounce.shadow_enabled = false
+	bounce.add_to_group("window_lights")
+	window.add_child(bounce)
 
 	# At night a cold moon- and streetlight comes in through the same slats.
 	# Its strength follows the clock (house_blockout: moon_lights).
@@ -570,8 +545,8 @@ func _add_window(
 	var moon_from := Vector3(-0.7, sill + height + 1.4, out * 3.0)
 	var moon_toward := Vector3(0.6, 0.0, -out * 4.0)
 	moon.transform = Transform3D(Basis.looking_at(moon_toward - moon_from, Vector3.UP), moon_from)
-	moon.light_color = Color(0.56, 0.66, 0.95)
-	moon.light_energy = 3.2
+	moon.light_color = Color(0.54, 0.75, 0.76)
+	moon.light_energy = 3.8
 	moon.spot_range = 11.0
 	moon.spot_angle = 24.0
 	moon.spot_angle_attenuation = 0.5

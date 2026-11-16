@@ -79,3 +79,6 @@ Sahip koridoru reddetti. Ev ×1,25, kat 3,3 m; referans araştırmasıyla yeşil
 
 ## Açık renkli ev ve galeri — Claude
 Hol iki kat yüksekliğinde, üst koridor galeri, çatıda tepe penceresi; açık bej duvar, beyaz tavan, açık kapılar; gece pencerelerden ay ışığı. 22 paket PASS. docs/qa/HouseAtmosphere.md (ikinci tur). HOUSE-ATMOS-002 DEVİR: sahip incelemesi.
+
+## HOUSE-ATMOS-004 / Codex / yeni oynanabilir görsel denemesi
+Sahibin son atmosfer reddi üzerine ayrı workers/codex-house-atmosphere-v3 kopyasında çalışıldı. Büyük galeri kapatılıp üst koridor3,75m ve tam döşemeli yapıldı; ilkspawn düşmesi ve xkorkuluk kapağı düzeltildi. Üç özgün çizimsel yüzey, açık perde, yerel pencere ışığı ve hafif sunum. Gün1–3/kimlikler/kayıt/enfeksiyon aynı. 22paket6072PASS; GPUalt/üst/giriş gün/gece inceleniyor. Sürüm0.1.2-dev.20261116.3. Claude003 kanonik dosyalarına yazılmadı; entegrasyon beklerken deneme başlatıcıları bu worktree'ye seçilecek. Bu teslim sahibin estetik onayı sayılmaz. docs/qa/HouseAtmosphereV3.md.

@@ -30,7 +30,7 @@ const SOLID_CHECKS: Array[Dictionary] = [
 	{"floor": 1, "from": Vector2(3.125, 5.625), "to": Vector2(3.125, 10.0), "what": "guest A / Daniel"},
 	{"floor": 1, "from": Vector2(8.25, 1.125), "to": Vector2(12.5, 1.125), "what": "isolation / multipurpose"},
 	{"floor": 1, "from": Vector2(12.5, 6.25), "to": Vector2(12.5, 10.0), "what": "multipurpose / bathroom"},
-	{"floor": 1, "from": Vector2(5.9, 6.25), "to": Vector2(7.6, 6.25), "what": "gallery parapet over the hall"},
+	{"floor": 1, "from": Vector2(7.5, 6.25), "to": Vector2(9.5, 6.25), "what": "corridor / stairwell guard"},
 ]
 
 var _player: PlayerController
@@ -51,6 +51,8 @@ func _physics_process(_delta: float) -> void:
 	match _frame:
 		5:
 			_space = _player.get_world_3d().direct_space_state
+			_check(not HouseLayout.is_in_void(Vector2(_player.position.x, _player.position.z)), "initial player spawn is not over an opening")
+			_check(not _raycast(_player.position + Vector3.UP * 0.1, _player.position + Vector3.DOWN * 0.3).is_empty(), "initial player spawn has immediate floor support")
 			_check_rooms()
 			_check_openings()
 			_check_solid_walls()

@@ -50,7 +50,9 @@ $importText = (Get-Content -LiteralPath $importOut -Raw) + (Get-Content -Literal
 if ($importProcess.ExitCode -ne 0 -or $importText -match '(?m)(SCRIPT ERROR:|ERROR:)') {
     throw "Varliklar ice aktarilamadi. Log: $launchCache"
 }
+$projectVersion = [regex]::Match([IO.File]::ReadAllText((Join-Path $sourceProject 'project.godot')), '(?m)^config/version="([^"]+)"').Groups[1].Value
 $launchInfo = [ordered]@{
+    project_version = $projectVersion
     mode = $(if ($NightDemo) { 'night_demo' } else { 'campaign' })
     project = $launchProject
     scene = $scene

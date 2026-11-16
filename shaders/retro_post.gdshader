@@ -25,16 +25,16 @@ uniform float color_levels : hint_range(4.0, 256.0, 1.0) = 255.0;
 uniform float dither_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
 
-uniform float grade_strength : hint_range(0.0, 1.0) = 0.30;
+uniform float grade_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 grade_shadow : source_color = vec3(0.03, 0.05, 0.04);
 uniform vec3 grade_mid : source_color = vec3(0.34, 0.42, 0.33);
 uniform vec3 grade_light : source_color = vec3(0.92, 0.93, 0.80);
-uniform float crush : hint_range(0.0, 1.0) = 0.08;
-uniform float ink_strength : hint_range(0.0, 1.0) = 0.38;
-uniform float vignette_strength : hint_range(0.0, 1.0) = 0.55;
+uniform float crush : hint_range(0.0, 1.0) = 0.0;
+uniform float ink_strength : hint_range(0.0, 1.0) = 0.22;
+uniform float vignette_strength : hint_range(0.0, 1.0) = 0.18;
 // Fraction of the screen height covered by each black bar.
-uniform float letterbox : hint_range(0.0, 0.2) = 0.04;
-uniform float grain_strength : hint_range(0.0, 0.3) = 0.035;
+uniform float letterbox : hint_range(0.0, 0.2) = 0.0;
+uniform float grain_strength : hint_range(0.0, 0.3) = 0.004;
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);

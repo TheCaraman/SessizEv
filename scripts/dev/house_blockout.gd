@@ -26,8 +26,8 @@ var _window_lights: Array[Dictionary] = []
 var _moon_lights: Array[Dictionary] = []
 ## The house environment; its fill light follows the clock.
 var _environment: Environment
-const DAY_AMBIENT: float = 0.5
-const NIGHT_AMBIENT: float = 0.14
+const DAY_AMBIENT: float = 0.27
+const NIGHT_AMBIENT: float = 0.13
 var _window_materials: Array[Dictionary] = []
 
 
@@ -183,13 +183,13 @@ func _build_environment() -> void:
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
-	environment.ambient_light_color = Color(0.62, 0.64, 0.56)
-	environment.ambient_light_energy = 0.5
+	environment.ambient_light_color = Color(0.54, 0.69, 0.61)
+	environment.ambient_light_energy = 0.27
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.018
+	environment.volumetric_fog_density = 0.008
 	environment.volumetric_fog_albedo = Color(0.78, 0.86, 0.80)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
 	environment.volumetric_fog_emission_energy = 0.05
@@ -199,16 +199,16 @@ func _build_environment() -> void:
 
 	# Soft bloom around lit surfaces and soft contact shadows in corners.
 	environment.glow_enabled = true
-	environment.glow_intensity = 0.55
+	environment.glow_intensity = 0.18
 	environment.glow_bloom = 0.12
-	environment.glow_hdr_threshold = 0.85
+	environment.glow_hdr_threshold = 1.2
 	environment.ssao_enabled = true
 	environment.ssao_radius = 0.8
-	environment.ssao_intensity = 1.5
+	environment.ssao_intensity = 0.85
 
 	environment.adjustment_enabled = true
 	environment.adjustment_saturation = 0.86
-	environment.adjustment_contrast = 1.1
+	environment.adjustment_contrast = 1.0
 
 	var world_environment := WorldEnvironment.new()
 	world_environment.environment = environment

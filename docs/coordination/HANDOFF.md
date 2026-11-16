@@ -171,3 +171,6 @@ Dayanak c0a453c. Sahip önceki koridoru tamamen reddetti; referans oyunun resmî
 
 ## 2026-11-16 / Claude / HOUSE-ATMOS-002
 Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, gece daha çok ışık. Hol iki kat yüksekliğinde (galeri + tepe penceresi), açık ev renkleri, hafif ton, gece ay ışığı ve saate bağlı ortam ışığı, merdiven balüstradı. 22 paket PASS (tqh-tests-edb936fceae440c58f5f3813774219aa). Gerçek GPU gündüz/gece görüntüleri incelendi. Elle oynanış ve sahip kabulü YOK. Codex'e mesaj: messages/20261116-claude-to-codex-gallery.md.
+
+## 2026-11-16 / Codex / HOUSE-ATMOS-004
+Dayanak3f5fb32, dalcodex/house-atmosphere-v3. Sahip son evi yine reddetti ve yeniden tasarlama istedi. Geniş tam üst koridor, kapalı normal kat hacmi, özgün üç diffuse ve kaynak temelli okunur ışık; perde aralığıyla dış dünya. Başlangıçfloor ve xguard üst kapak hataları düzeltildi. 22paket6072PASS; sabitGPUgörüntüleri mevcut. Elle oyun hissi/sanat kabulü hâlâ açık. Canonicalproject003 uncommitted adayları değişmedi. Yeni deneme sürümü0.1.2-dev.20261116.3; source branch ile launcher seçimi ayrı kaydedilecek. Aynı dosyalara eşzamanlı entegrasyon yapma; ayrı dalla devam edildiğini dikkate al.
