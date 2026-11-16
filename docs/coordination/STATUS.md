@@ -32,3 +32,6 @@ Görev sahipliği TASKS.md, devir HANDOFF.md, ayrıntılı kararlar DecisionLog.
 
 ## Son teknik ek — geç nöbet
 Gün 3 nöbetine 23:59'a kadar katılma, gerçek başlangıca göre enerji ve v5 yükleme uygulandı. Tam regresyon 16 paket/5632 denetim; son metinle gerçek GPU sunumu 100 denetim. docs/qa/LateNightWatch.md. Manuel oynama açık. Elena v2 adaydır; üretim default değişmedi. Gün 4 yalnızca incelenmiş tasarım, kod değil.
+
+## Güvenli kayıt temeli
+SAVE-SAFE-001 tamam: doğrulanmış pending dosya, backup rotasyonu, başarısız yayın rollback ve ana dosya yokken backup kurtarma. 17 paket/5669 denetim geçti. Ayrıntı docs/qa/SafeSaveWrite.md. Canlı karar transaction'ı henüz uygulanmadı; Gün 4 önkoşulu olarak açık.

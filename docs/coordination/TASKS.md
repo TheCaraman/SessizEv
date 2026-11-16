@@ -24,3 +24,5 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 
 Yeni kayıt: ID, sahip, durum, düzenlenecek tam göreli yollar, başlama zamanı,
 dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
+
+| SAVE-SAFE-001 | TAMAM | Codex (sahiplik bırakıldı) | scripts/save/save_manager.gd; tests/save_write_test.*; tools/Run-Tests.ps1; docs/qa/SafeSaveWrite.md | 2026-11-16 |

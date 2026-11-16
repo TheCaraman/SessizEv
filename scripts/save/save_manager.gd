@@ -14,24 +14,57 @@ func get_path_for(slot: String) -> String:
 
 
 func has_save(slot: String = AUTOSAVE_SLOT) -> bool:
-	return FileAccess.file_exists(get_path_for(slot))
+	return FileAccess.file_exists(get_path_for(slot)) or FileAccess.file_exists(get_path_for(slot) + ".backup")
 
 
 ## Saves the current campaign. Returns OK or the error that stopped it.
 func save_game(slot: String = AUTOSAVE_SLOT) -> Error:
+	if slot.is_empty() or not slot.is_valid_filename() or slot.contains("."):
+		return ERR_INVALID_PARAMETER
+	var state: Dictionary = GameState.to_dict()
+	if not _valid_state_shape(state):
+		return ERR_INVALID_DATA
 	var dir_error: Error = DirAccess.make_dir_recursive_absolute(SAVE_DIR)
 	if dir_error != OK:
 		return dir_error
-	var file := FileAccess.open(get_path_for(slot), FileAccess.WRITE)
+	var path: String = get_path_for(slot)
+	var pending: String = path + ".pending"
+	var backup: String = path + ".backup"
+	var text: String = JSON.stringify({"save_version": GameState.SAVE_VERSION, "state": state}, "\t")
+	var result: Error = _write_text(pending, text)
+	if result != OK:
+		return result
+	if FileAccess.get_file_as_string(pending) != text or _read_state_path(pending).is_empty():
+		return ERR_FILE_CORRUPT
+	# Windows Godot rename deletes an existing destination before moving. Never
+	# publish over an existing file: rotate it first and retain a recovery copy.
+	if FileAccess.file_exists(path):
+		if FileAccess.file_exists(backup):
+			result = DirAccess.remove_absolute(backup)
+			if result != OK:
+				return result
+		result = _move_file(path, backup)
+		if result != OK:
+			return result
+	result = _move_file(pending, path)
+	if result != OK and not FileAccess.file_exists(path) and FileAccess.file_exists(backup):
+		_move_file(backup, path)
+	return result
+
+
+func _write_text(path: String, text: String) -> Error:
+	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
 		return FileAccess.get_open_error()
-	var payload: Dictionary = {
-		"save_version": GameState.SAVE_VERSION,
-		"state": GameState.to_dict(),
-	}
-	file.store_string(JSON.stringify(payload, "\t"))
+	file.store_string(text)
+	file.flush()
+	var result: Error = file.get_error()
 	file.close()
-	return OK
+	return result
+
+
+func _move_file(from: String, to: String) -> Error:
+	return DirAccess.rename_absolute(from, to)
 
 
 ## Loads a campaign into GameState. Returns false if the file is missing,
@@ -59,6 +92,14 @@ func get_summary(slot: String = AUTOSAVE_SLOT) -> Dictionary:
 ## handled quietly.
 func _read_state(slot: String) -> Dictionary:
 	var path: String = get_path_for(slot)
+	# An interrupted publish can leave only the previous committed file. Never
+	# promote .pending: its decision was not committed.
+	if not FileAccess.file_exists(path):
+		path += ".backup"
+	return _read_state_path(path)
+
+
+func _read_state_path(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
 		return {}
 	var json := JSON.new()
@@ -151,5 +192,7 @@ func _whole_number(value: Variant) -> bool:
 
 
 func delete_save(slot: String = AUTOSAVE_SLOT) -> void:
-	if has_save(slot):
-		DirAccess.remove_absolute(get_path_for(slot))
+	for suffix: String in ["", ".backup", ".pending"]:
+		var path: String = get_path_for(slot) + suffix
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)

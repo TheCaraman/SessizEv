@@ -118,3 +118,6 @@ Doğrulama komutu ve gerçek sonucu:
 Çalıştırılmayan kontroller:
 Bilinen sorunlar ve sonraki bağımlılık:
 Görev sahipliği bırakıldı mı:
+
+## 2026-11-16 / Codex / SAVE-SAFE-001
+Dayanak 1555f81. SaveManager güvenli dosya yayın temeli, test paketi ve QA belgesi eklendi. 17 paket/5669 denetim geçti; tqh-tests-210be92b665f40d68a04773bd3c124d7. Gerçek disk arızası/elektrik kesintisi sınanmadı. Canlı durum transaction'ı ve Gün 4 uygulaması sonraki bağımlılık. Sahiplik bırakıldı.
