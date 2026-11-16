@@ -11,7 +11,7 @@ extends Node3D
 const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNESS
 const DOOR_THICKNESS: float = 0.05
 const LAMP_COLOR := Color(0.88, 0.91, 0.78)
-const RUNNER_WIDTH: float = 1.1
+const RUNNER_WIDTH: float = 1.3
 const SKIRTING_HEIGHT: float = 0.13
 const CEILING_RAIL_HEIGHT: float = 0.09
 
@@ -132,19 +132,8 @@ func _add_wall_piece(
 
 	# Full-height pieces get a skirting board and a dark rail under the ceiling,
 	# both standing proud of the wall on either side.
+	# The patterned paper runs floor to ceiling (HOUSE-ATMOS-001): no dado panel.
 	if is_equal_approx(height, WALL_HEIGHT):
-		var lower_center := center
-		lower_center.y = bottom_y + 0.40
-		var lower_size := size
-		lower_size.y = 0.80
-		if along_x:
-			lower_size.z += 0.018
-		else:
-			lower_size.x += 0.018
-		_add_mesh(parent, lower_center, lower_size, &"wainscot")
-		lower_center.y = bottom_y + 0.81
-		lower_size.y = 0.025
-		_add_mesh(parent, lower_center, lower_size, &"trim_dark")
 		var trims: Array[Array] = [
 			[SKIRTING_HEIGHT * 0.5, SKIRTING_HEIGHT, 0.036, &"frame_paint"],
 			[SKIRTING_HEIGHT + 0.012, 0.024, 0.05, &"frame_paint"],
@@ -277,7 +266,7 @@ func _build_stairs() -> void:
 	var steps := Node3D.new()
 	steps.name = "Steps"
 	add_child(steps)
-	var count: int = 16
+	var count: int = 18
 	var step_rise: float = rise / float(count)
 	var step_run: float = run / float(count)
 	var inner_width: float = stairs.size.x - HouseLayout.INTERIOR_WALL_THICKNESS
@@ -377,7 +366,7 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.32
+	lamp.light_energy = 0.36
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5
@@ -433,37 +422,54 @@ func _add_window(
 		_add_mesh(window, Vector3(side * (width * 0.5 + 0.045), middle, inner - out * 0.009), Vector3(0.09, height + 0.18, 0.018), &"frame_paint")
 	_add_mesh(window, Vector3(0.0, sill + height + 0.045, inner - out * 0.009), Vector3(width + 0.18, 0.09, 0.018), &"frame_paint")
 
-	# Curtain rail and two curtains leaving an off-centre gap.
-	var curtain_z: float = inner - out * 0.07
-	var curtain_top: float = sill + height + 0.16
-	var curtain_bottom: float = sill - 0.28
-	var curtain_height: float = curtain_top - curtain_bottom
-	var curtain_middle: float = (curtain_top + curtain_bottom) * 0.5
-	var left_edge: float = -width * 0.5 - 0.12
-	var right_edge: float = width * 0.5 + 0.12
-	var gap_left: float = -0.23
-	var gap_right: float = 0.42
-	_add_mesh(window, Vector3(0.0, curtain_top + 0.02, curtain_z), Vector3(width + 0.36, 0.022, 0.022), &"brass")
-	_add_curtain(window, left_edge, gap_left, curtain_bottom, curtain_height, curtain_z)
-	_add_curtain(window, gap_right, right_edge, curtain_bottom, curtain_height, curtain_z)
+	# Venetian blinds, half tilted: daylight comes through the gaps as stripes
+	# and visible shafts in the haze (HOUSE-ATMOS-001).
+	_add_blinds(window, width, sill + height - 0.02, sill + 0.02, inner - out * 0.045, out)
 
 	# Daylight: a spot outside, aimed through the window and down the corridor.
-	var from := Vector3(0.12, sill + height + 0.5, out * 1.8)
-	var toward := Vector3(0.12, 0.2, -out * 4.5)
+	# Low, raking, from one side: the shafts cut diagonally across the room.
+	var from := Vector3(0.9, sill + height + 0.9, out * 2.6)
+	var toward := Vector3(-0.9, 0.0, -out * 4.2)
 	var daylight := SpotLight3D.new()
 	daylight.name = "Daylight"
 	daylight.add_to_group("window_lights")
 	daylight.transform = Transform3D(Basis.looking_at(toward - from, Vector3.UP), from)
 	daylight.light_color = Color(0.72, 0.86, 0.73)
-	daylight.light_energy = 3.0
+	daylight.light_energy = 4.0
 	daylight.spot_range = 11.0
-	daylight.spot_angle = 32.0
+	daylight.spot_angle = 26.0
 	daylight.spot_angle_attenuation = 0.5
 	daylight.spot_attenuation = 0.6
 	daylight.shadow_enabled = true
-	daylight.shadow_blur = 1.5
-	daylight.light_volumetric_fog_energy = 2.2
+	# Crisp enough that the blind slats print as stripes.
+	daylight.shadow_blur = 0.4
+	daylight.light_volumetric_fog_energy = 2.4
 	window.add_child(daylight)
+
+## Dusty venetian blinds across a window: a head rail, two cords and a stack
+## of thin tilted slats. One slat hangs askew. [param out] is the outdoor Z
+## sign in window space.
+func _add_blinds(window: Node3D, width: float, top: float, bottom: float, z: float, out: float) -> void:
+	var slat_material: Material = HouseMaterials.get_material(&"blind_slat")
+	_add_mesh(window, Vector3(0.0, top + 0.03, z), Vector3(width + 0.06, 0.045, 0.06), &"frame_paint")
+	var pitch: float = 0.052
+	var count: int = int((top - bottom) / pitch)
+	for i: int in count:
+		var slat := MeshInstance3D.new()
+		var mesh := BoxMesh.new()
+		mesh.size = Vector3(width - 0.02, 0.004, 0.05)
+		mesh.material = slat_material
+		slat.mesh = mesh
+		slat.position = Vector3(0.0, top - pitch * (float(i) + 0.5), z)
+		# Half open, the room-side edge lower, so light falls downward.
+		slat.rotation.x = -out * 0.62
+		if i == int(count * 0.62):
+			slat.rotation.z = 0.06
+			slat.position.y -= 0.012
+		window.add_child(slat)
+	for side: float in [-0.32, 0.32]:
+		_add_mesh(window, Vector3(side * width, (top + bottom) * 0.5, z + out * 0.012), Vector3(0.004, top - bottom, 0.004), &"blind_slat")
+
 
 ## A hanging curtain between two X positions: one continuous sheet of cloth
 ## with soft vertical folds, gathered on rings under the rail. Thin enough
@@ -494,7 +500,7 @@ func _add_curtain(
 ## Carpet runners along the downstairs hall and the upstairs corridor.
 func _build_runners() -> void:
 	for floor_index: int in 2:
-		var length: float = 5.0
+		var length: float = 6.4
 		var quad := QuadMesh.new()
 		quad.size = Vector2(RUNNER_WIDTH, length)
 		# The runner texture is square; repeat it along the length.
@@ -505,7 +511,7 @@ func _build_runners() -> void:
 		runner.name = "Runner_F%d" % floor_index
 		runner.mesh = quad
 		runner.rotation.x = -PI * 0.5
-		runner.position = Vector3(5.5, HouseLayout.floor_height(floor_index) + 0.006, 5.75)
+		runner.position = Vector3(6.875, HouseLayout.floor_height(floor_index) + 0.006, 7.2)
 		runner.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(runner)
 

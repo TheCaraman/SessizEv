@@ -12,10 +12,10 @@ func _ready() -> void:
 	var player: PlayerController = scene.get_node("Player")
 	player.set_physics_process(false)
 	player.control_enabled = false
-	player.position = Vector3(5.5, 2.85, 7.7) if upper else Vector3(5.5, 0.05, 8.2)
+	player.position = Vector3(6.875, 3.35, 9.6) if upper else Vector3(6.875, 0.05, 10.25)
 	player.rotation.y = 0.0
 	if "--foyer" in OS.get_cmdline_user_args():
-		player.position = Vector3(5.4, 0.05, 7.7)
+		player.position = Vector3(6.75, 0.05, 9.6)
 		player.rotation.y = PI
 	scene.get_node("Hud").visible = false
 	# Optional free camera for close-ups of props:

@@ -11,14 +11,14 @@ const OUTPUT_DIR: String = "res://docs/screenshots"
 ## name, position (x, y, z), yaw in degrees (positive turns left), pitch in
 ## degrees. An optional "room" opens that room's 2D view for the shot.
 const SHOTS: Array[Dictionary] = [
-	{"name": "01_hall_from_entrance", "position": Vector3(6.0, 0.0, 9.5), "yaw": 0.0, "pitch": -4.0},
-	{"name": "02_entrance_coats_window", "position": Vector3(5.5, 0.0, 9.5), "yaw": -70.0, "pitch": -4.0},
-	{"name": "03_hall_table_lamp", "position": Vector3(5.5, 0.0, 4.3), "yaw": -140.0, "pitch": -10.0},
-	{"name": "04_stairs_from_foot", "position": Vector3(7.6, 0.0, 8.3), "yaw": 0.0, "pitch": 12.0},
-	{"name": "05_upper_corridor", "position": Vector3(6.0, 2.8, 3.4), "yaw": 180.0, "pitch": -6.0},
-	{"name": "06_living_room_actions", "position": Vector3(6.4, 0.0, 6.6), "yaw": 65.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
-	{"name": "07_elena_at_the_door", "position": Vector3(6.0, 0.0, 8.9), "yaw": 180.0, "pitch": 0.0, "answer_door": true},
-	{"name": "09_marcus_bed_choice", "position": Vector3(6.0, 0.0, 8.9), "yaw": 180.0, "pitch": 0.0, "day2_bed_choice": true},
+	{"name": "01_hall_from_entrance", "position": Vector3(7.5, 0.0, 11.875), "yaw": 0.0, "pitch": -4.0},
+	{"name": "02_entrance_coats_window", "position": Vector3(6.875, 0.0, 11.875), "yaw": -70.0, "pitch": -4.0},
+	{"name": "03_hall_table_lamp", "position": Vector3(6.875, 0.0, 5.375), "yaw": -140.0, "pitch": -10.0},
+	{"name": "04_stairs_from_foot", "position": Vector3(9.5, 0.0, 10.375), "yaw": 0.0, "pitch": 12.0},
+	{"name": "05_upper_corridor", "position": Vector3(7.5, 3.3, 4.25), "yaw": 180.0, "pitch": -6.0},
+	{"name": "06_living_room_actions", "position": Vector3(8.0, 0.0, 8.25), "yaw": 65.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
+	{"name": "07_elena_at_the_door", "position": Vector3(7.5, 0.0, 11.125), "yaw": 180.0, "pitch": 0.0, "answer_door": true},
+	{"name": "09_marcus_bed_choice", "position": Vector3(7.5, 0.0, 11.125), "yaw": 180.0, "pitch": 0.0, "day2_bed_choice": true},
 ]
 
 

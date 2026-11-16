@@ -22,15 +22,15 @@ const CAPSULE_CENTER_Y: float = CAPSULE_HEIGHT * 0.5 + 0.05
 
 ## Pairs of plan points (x, z) on the same floor that must NOT see each other.
 const SOLID_CHECKS: Array[Dictionary] = [
-	{"floor": 0, "from": Vector2(2.5, 3.75), "to": Vector2(6.0, 3.75), "what": "dining / hall"},
-	{"floor": 0, "from": Vector2(6.0, 5.0), "to": Vector2(10.0, 5.0), "what": "hall / utility"},
-	{"floor": 0, "from": Vector2(10.0, 6.0), "to": Vector2(10.0, 9.0), "what": "utility / bathroom"},
-	{"floor": 0, "from": Vector2(10.7, 1.5), "to": Vector2(10.7, 5.0), "what": "pantry / utility"},
-	{"floor": 1, "from": Vector2(2.5, 1.5), "to": Vector2(2.5, 4.5), "what": "guest B / guest A"},
-	{"floor": 1, "from": Vector2(2.5, 4.5), "to": Vector2(2.5, 8.0), "what": "guest A / Daniel"},
-	{"floor": 1, "from": Vector2(6.6, 0.9), "to": Vector2(10.0, 0.9), "what": "isolation / multipurpose"},
-	{"floor": 1, "from": Vector2(10.0, 5.0), "to": Vector2(10.0, 8.0), "what": "multipurpose / bathroom"},
-	{"floor": 1, "from": Vector2(6.0, 5.0), "to": Vector2(7.6, 5.0), "what": "corridor / stairwell"},
+	{"floor": 0, "from": Vector2(3.125, 4.6875), "to": Vector2(7.5, 4.6875), "what": "dining / hall"},
+	{"floor": 0, "from": Vector2(7.5, 6.25), "to": Vector2(12.5, 6.25), "what": "hall / utility"},
+	{"floor": 0, "from": Vector2(12.5, 7.5), "to": Vector2(12.5, 11.25), "what": "utility / bathroom"},
+	{"floor": 0, "from": Vector2(13.375, 1.875), "to": Vector2(13.375, 6.25), "what": "pantry / utility"},
+	{"floor": 1, "from": Vector2(3.125, 1.875), "to": Vector2(3.125, 5.625), "what": "guest B / guest A"},
+	{"floor": 1, "from": Vector2(3.125, 5.625), "to": Vector2(3.125, 10.0), "what": "guest A / Daniel"},
+	{"floor": 1, "from": Vector2(8.25, 1.125), "to": Vector2(12.5, 1.125), "what": "isolation / multipurpose"},
+	{"floor": 1, "from": Vector2(12.5, 6.25), "to": Vector2(12.5, 10.0), "what": "multipurpose / bathroom"},
+	{"floor": 1, "from": Vector2(7.5, 6.25), "to": Vector2(9.5, 6.25), "what": "corridor / stairwell"},
 ]
 
 var _player: PlayerController
@@ -54,10 +54,10 @@ func _physics_process(_delta: float) -> void:
 			_check_rooms()
 			_check_openings()
 			_check_solid_walls()
-			_check(_raycast(Vector3(6.5, 4.4, 5.0), Vector3(7.7, 4.4, 5.0)).is_empty(), "open stairwell admits eye-level sightline above safe guard")
-			_check(_capsule_fits(Vector3(5.3, 2.85, 9.1)), "upper window recess is genuinely accessible")
+			_check(_raycast(Vector3(8.125, 4.9, 6.25), Vector3(9.625, 4.9, 6.25)).is_empty(), "open stairwell admits eye-level sightline above safe guard")
+			_check(_capsule_fits(Vector3(6.625, 3.35, 11.375)), "upper window recess is genuinely accessible")
 			# Stand at the foot of the stairs, facing north (the default facing).
-			_player.global_position = Vector3(7.6, 0.05, 8.0)
+			_player.global_position = Vector3(9.5, 0.05, 10.0)
 			_player.velocity = Vector3.ZERO
 		15:
 			Input.action_press(&"move_forward")
@@ -65,7 +65,7 @@ func _physics_process(_delta: float) -> void:
 			Input.action_release(&"move_forward")
 			var position: Vector3 = _player.global_position
 			_check(
-				absf(position.y - HouseLayout.STOREY_HEIGHT) < 0.05 and position.z < 3.0,
+				absf(position.y - HouseLayout.STOREY_HEIGHT) < 0.05 and position.z < 3.75,
 				"stairs should carry the player to the upper landing (y = %.2f, z = %.2f)"
 				% [position.y, position.z]
 			)
@@ -74,7 +74,7 @@ func _physics_process(_delta: float) -> void:
 				"player should be on the landing, got '%s'" % HouseLayout.room_at(position)
 			)
 			# Walk back down.
-			_player.global_position = Vector3(7.6, HouseLayout.STOREY_HEIGHT + 0.05, 2.4)
+			_player.global_position = Vector3(9.5, HouseLayout.STOREY_HEIGHT + 0.05, 3.0)
 			_player.velocity = Vector3.ZERO
 		325:
 			Input.action_press(&"move_back")
@@ -82,7 +82,7 @@ func _physics_process(_delta: float) -> void:
 			Input.action_release(&"move_back")
 			var position: Vector3 = _player.global_position
 			_check(
-				absf(position.y) < 0.05 and position.z > 7.5,
+				absf(position.y) < 0.05 and position.z > 9.375,
 				"player should walk back down the stairs (y = %.2f, z = %.2f)"
 				% [position.y, position.z]
 			)
@@ -90,9 +90,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func _check_rooms() -> void:
-	_check(is_equal_approx((HouseLayout.get_room(&"hall")["rects"][0] as Rect2).size.x, 3.0), "main hall has three metre circulation width")
-	_check(_capsule_fits(Vector3(4.6, 0.0, 4.0)), "newly widened ground strip is physically usable")
-	_check(_capsule_fits(Vector3(4.6, HouseLayout.STOREY_HEIGHT, 5.0)), "newly widened upper strip is physically usable")
+	_check((HouseLayout.get_room(&"hall")["rects"][0] as Rect2).size.x >= 3.7, "main hall is at least 3.7 m wide after HOUSE-ATMOS-001")
+	_check(_capsule_fits(Vector3(5.7, 0.0, 8.4)), "newly widened ground strip is physically usable")
+	_check(_capsule_fits(Vector3(5.6, HouseLayout.STOREY_HEIGHT, 6.25)), "newly widened upper strip is physically usable")
 	for room: Dictionary in HouseLayout.ROOMS:
 		var id: StringName = room["id"]
 		var center: Vector3 = HouseLayout.room_center(id)

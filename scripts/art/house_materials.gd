@@ -34,18 +34,19 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 		&"door_panel_paint":
 			return _triplanar(kind, 0.7)
 		&"frame_paint":
-			return _flat(Color(0.16, 0.21, 0.18), 1.0)
+			# Pale, chipped door frames and skirting that catch the light.
+			return _flat(Color(0.66, 0.65, 0.57), 0.85)
 		&"trim_dark":
 			return _flat(Color(0.035, 0.065, 0.05), 1.0)
 		&"parquet", &"wood_stairs":
 			return _triplanar(kind, 1.0)
 		&"trim_door":
 			# The shadowed moulding around each door panel: the door paint, darker.
-			return _flat(Color(0.04, 0.085, 0.065), 1.0)
+			return _flat(Color(0.30, 0.31, 0.26), 1.0)
 		&"runner":
 			return _uv_mapped(kind)
 		&"ceiling":
-			return _flat(Color(0.62, 0.60, 0.51), 1.0)
+			return _flat(Color(0.36, 0.37, 0.31), 1.0)
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
 		&"curtain_cloth":
@@ -56,6 +57,10 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 			cloth.backlight_enabled = true
 			cloth.backlight = Color(0.42, 0.38, 0.28)
 			return cloth
+		&"blind_slat":
+			var slat: StandardMaterial3D = _flat(Color(0.70, 0.69, 0.60), 0.8)
+			slat.cull_mode = BaseMaterial3D.CULL_DISABLED
+			return slat
 		&"coat_cloth":
 			var wool: StandardMaterial3D = _flat(Color(0.2, 0.2, 0.2), 1.0)
 			wool.cull_mode = BaseMaterial3D.CULL_DISABLED

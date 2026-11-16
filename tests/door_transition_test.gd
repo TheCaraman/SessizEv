@@ -18,7 +18,7 @@ func _ready() -> void:
 	viewport.add_child(scene)
 	var player: PlayerController = scene.get_node("Player")
 	player.set_physics_process(false)
-	player.position = Vector3(6.1, 0.05, 6.0)
+	player.position = Vector3(6.4, 0.05, 7.5)
 	player.rotation.y = deg_to_rad(90.0)
 	var room: RoomView = scene.get_node("RoomView")
 	var door: RoomDoor = scene.find_child("Door_living_room", true, false)

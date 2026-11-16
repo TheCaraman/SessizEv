@@ -18,8 +18,8 @@ static func generate_all(output_dir: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
 	_save(_wallpaper(), output_dir, "wallpaper")
 	_save(corridor_floorboards(), output_dir, "parquet")
-	_save(_painted_wood(Color(0.08, 0.21, 0.20), 61), output_dir, "door_paint")
-	_save(_painted_wood(Color(0.11, 0.26, 0.24), 62), output_dir, "door_panel_paint")
+	_save(_painted_wood(Color(0.56, 0.57, 0.49), 61), output_dir, "door_paint")
+	_save(_painted_wood(Color(0.62, 0.62, 0.54), 62), output_dir, "door_panel_paint")
 	_save(_painted_wood(Color(0.50, 0.50, 0.42), 63), output_dir, "frame_paint")
 	_save(_painted_wood(Color(0.06, 0.13, 0.11), 64), output_dir, "trim_dark")
 	_save(_varnished_wood(Color(0.22, 0.16, 0.09), 42), output_dir, "wood_stairs")
@@ -227,19 +227,60 @@ static func _hash(a: int, b: int, c: int) -> float:
 
 ## Quiet matte plaster: broad irregular painted patches, no decorative repeat.
 static func _wallpaper() -> Image:
+	# Old damask paper, dark green on green, floor to ceiling (HOUSE-ATMOS-001).
+	# One tile covers 2 m; the motif repeats about every 29 cm with a half-drop on
+	# alternate columns. Low contrast on purpose: the screen grade and the
+	# light do the rest. Stains and seams keep it from looking new.
 	var size: int = WALLPAPER_SIZE
+	var cells: int = 7
+	var cell: float = float(size) / float(cells)
 	var mottle: Image = _noise(size, 11, 0.008)
 	var damp: Image = _noise(size, 12, 0.003)
-	var base := Color(0.54, 0.48, 0.37)
+	var fibre: Image = _noise(size, 13, 0.09)
+	var ground := Color(0.17, 0.22, 0.15)
+	var motif := Color(0.36, 0.40, 0.25)
+	var line := Color(0.11, 0.14, 0.09)
+	var soft: float = 2.2 / cell
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
 		for x: int in size:
-			var patch: float = floorf(mottle.get_pixel(x, y).r * 6.0) / 6.0
-			var color: Color = base.darkened(patch * 0.17)
-			color = color.lerp(Color(0.23, 0.29, 0.24), clampf((damp.get_pixel(x, y).r - 0.47) * 0.7, 0.0, 0.20))
+			var column: int = int(float(x) / cell)
+			var shifted_y: float = float(y) + (cell * 0.5 if column % 2 == 1 else 0.0)
+			# Cell space: u, v in -1..1, mirrored left/right.
+			var u: float = absf((fmod(float(x), cell) / cell) * 2.0 - 1.0)
+			var v: float = (fmod(shifted_y, cell) / cell) * 2.0 - 1.0
+			var fill: float = 0.0
+			var ink: float = 0.0
+			# Central medallion: an outlined oval with a solid heart.
+			var oval: float = Vector2(u / 0.30, v / 0.46).length()
+			ink = maxf(ink, 1.0 - smoothstep(0.06, 0.06 + soft * 4.0, absf(oval - 1.0)))
+			fill = maxf(fill, 1.0 - smoothstep(0.42, 0.42 + soft * 3.0, Vector2(u / 0.30, v / 0.46).length()))
+			# Four curling leaves around it.
+			for leaf_v: float in [-0.40, 0.40]:
+				var lu: float = u - 0.42
+				var lv: float = v - leaf_v
+				var angle: float = -0.8 if leaf_v < 0.0 else 0.8
+				var ru: float = lu * cos(angle) - lv * sin(angle)
+				var rv: float = lu * sin(angle) + lv * cos(angle)
+				var leaf: float = Vector2(ru / 0.26, rv / 0.10).length()
+				fill = maxf(fill, 1.0 - smoothstep(1.0, 1.0 + soft * 6.0, leaf))
+				ink = maxf(ink, (1.0 - smoothstep(0.0, soft * 3.0, absf(rv))) * (1.0 - smoothstep(0.9, 1.0, absf(ru / 0.26))) * 0.8)
+			# Stem and finials joining one motif to the next.
+			ink = maxf(ink, (1.0 - smoothstep(0.012, 0.012 + soft * 2.0, u)) * smoothstep(0.44, 0.48, absf(v)))
+			for finial_v: float in [-0.66, 0.66]:
+				fill = maxf(fill, 1.0 - smoothstep(0.07, 0.07 + soft * 3.0, Vector2(u, v - finial_v).length()))
+			# Small dots where four cells meet.
+			fill = maxf(fill, 1.0 - smoothstep(0.06, 0.06 + soft * 3.0, Vector2(1.0 - u, 1.0 - absf(v)).length()))
+			var color: Color = ground.lerp(motif, fill).lerp(line, ink * 0.85)
+			color = color.darkened(fibre.get_pixel(x, y).r * 0.06)
+			# Broad tired patches and damp.
+			color = color.darkened(floorf(mottle.get_pixel(x, y).r * 5.0) / 5.0 * 0.14)
+			color = color.lerp(Color(0.10, 0.11, 0.07), clampf((damp.get_pixel(x, y).r - 0.50) * 0.9, 0.0, 0.30))
+			# Paper seams at every motif column.
+			if int(x) % int(cell) < 2:
+				color = color.darkened(0.25)
 			image.set_pixel(x, y, color)
 	return image
-
 ## Dark block parquet. One tile covers 1 m: four squares across, each made of
 ## four strips, alternating direction.
 static func _parquet() -> Image:

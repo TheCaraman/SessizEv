@@ -3,6 +3,8 @@ extends Node3D
 ## No town simulation, traversable exterior or gameplay entities.
 
 func _ready() -> void:
+	# Authored for the 12 × 10 m house; moved with its front wall when the plan grew 25 %.
+	position = Vector3(1.5, 0.0, 2.5)
 	_box(Vector3(6, -0.23, 24), Vector3(52, 0.1, 28), Color(0.22, 0.29, 0.22))
 	_box(Vector3(6, -0.16, 21), Vector3(52, 0.04, 4), Color(0.23, 0.25, 0.23))
 	_box(Vector3(6, 9, 43), Vector3(85, 35, 0.2), Color(0.39, 0.48, 0.40))

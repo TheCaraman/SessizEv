@@ -94,3 +94,5 @@ Sahibin tamamen yeniden yapım izni kapsamında ana hol ve üst koridor x4..7, 3
 
 ## CORRIDOR-REFERENCE-002 / 2026-11-16
 Sahip önceki koridor ve karttan tam ekran odaya geçişi reddetti. Resmî referans görüntüleri incelendi; gerekçeler docs/qa/CorridorReferenceRevision.md. Açık merdiven görüşü, 3 m giriş, iki alt/tek üst gerçek dış pencere, erişilemez dış dekor, okunabilir orta tonlar ve kartı kaldıran kararma geçişi uygulandı. Üst depo doğuya daraltılır, penceresiz kalır. Bunlar sahibin koridoru yeniden yapma yetkisi kapsamındadır. Nihai çizimsel koridor sanatı onaylanmış değildir; dış dekor önde basit geometri ve arkada özgün çizimsel sokak fonudur.
+
+| K-016 | 2026-11-16 | **Ev büyütüldü ve koridor atmosferi baştan kuruldu (HOUSE-ATMOS-001).** Plan ×1,25 (15 × 12,5 m), kat yüksekliği 3,3 m. Koridor görüntüsü: yeşil tek renkli ton, mürekkep konturu, oval kararma, sinema şeritleri; tavana kadar damask duvar kâğıdı (K-014'teki "sade duvar" yerine), açık renk kapılar, jaluzi ve pus içi huzme. Ayrıntı docs/qa/HouseAtmosphere.md. | Sahip önceki koridoru tamamen reddetti ve referans oyunun estetiğinin araştırılıp evin genişletilmesini istedi. |

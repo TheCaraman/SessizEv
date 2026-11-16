@@ -41,11 +41,11 @@ func _physics_process(_delta: float) -> void:
 	match _frame:
 		5:
 			# In the hall, facing the stair wall (east): nothing to use.
-			_face(Vector3(6.0, 0.05, 5.0), -90.0)
+			_face(Vector3(7.5, 0.05, 6.25), -90.0)
 		10:
 			_check(_prompt == "", "a plain wall should show no prompt, got '%s'" % _prompt)
 			# Facing west, toward the living room door at x = 5, z = 6.
-			_face(Vector3(6.0, 0.05, 6.0), 90.0)
+			_face(Vector3(6.4, 0.05, 7.5), 90.0)
 		15:
 			_check(
 				_prompt.contains("Living room") and _prompt.contains("E"),
@@ -69,7 +69,7 @@ func _physics_process(_delta: float) -> void:
 			_check(_closed == [&"dining"], "closing should be announced once, got %s" % [_closed])
 			_check(_player.control_enabled, "player should regain control after leaving a room")
 			# The front door, from inside the entrance.
-			_face(Vector3(6.0, 0.05, 9.2), 180.0)
+			_face(Vector3(7.5, 0.05, 11.5), 180.0)
 		80:
 			_check(_prompt == "Locked", "front door should read 'Locked', got '%s'" % _prompt)
 			_opened.clear()

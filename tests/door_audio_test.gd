@@ -24,7 +24,7 @@ func _ready() -> void:
 	var audio := DoorAudio.new()
 	add_child(audio)
 	audio.arrival_cue.connect(func(id: String) -> void: cues.append(id))
-	check(audio.position.is_equal_approx(Vector3(6.0, 1.3, 9.9)), "cue at authored front door")
+	check(audio.position.is_equal_approx(Vector3(7.5, 1.3, 12.4)), "cue at authored front door")
 	GameState.set_visitor("elena_ward", "day1_elena")
 	check(cues == ["elena_ward"], "arrival plays once")
 	EventBus.visitor_changed.emit("elena_ward")

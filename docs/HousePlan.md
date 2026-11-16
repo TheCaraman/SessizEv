@@ -1,6 +1,6 @@
 # THE QUIET HOURS — Ev Kat Planı
 
-Sürüm 0.4 · 2026-11-16 · **Durum: sahibin genişletme isteğiyle yeni geometri uygulandı; görsel inceleme sürüyor**
+Sürüm 0.5 · 2026-11-16 · **Durum: HOUSE-ATMOS-001 ile bütün plan ×1,25 büyütüldü (15 × 12,5 m, kat 3,3 m, hol 3,75 m). Aşağıdaki tablolardaki ölçüler 0.4 sürümüne aittir; geçerli değerler house_layout.gd ve docs/qa/HouseAtmosphere.md içindedir.**
 
 Planın kod karşılığı `scripts/house/house_layout.gd` dosyasıdır; ikisi çelişirse önce bu belge güncellenir. Sahibin son isteğiyle ana dolaşım şeridi 3m oldu; fizik/kapsül/merdiven testleri ve gerçek render kontrolü yapıldı. Baştan sona elle yürüyüş ayrıca açık; karar DecisionLog ve docs/qa/CorridorRebuild.md içinde kayıtlıdır.
 
