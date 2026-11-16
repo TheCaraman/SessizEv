@@ -1,0 +1,210 @@
+﻿[
+    {
+        "path":  "assets/rooms/bathroom_ground.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "53B5856BF509C6843E60A1EF23944CA5D558B706ED3E5E4C96ABEB98282AE310"
+    },
+    {
+        "path":  "assets/rooms/bathroom_upper.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "D16AF70358EA31455A860211A814586BE466BE6ABD470241E18CF92A2E54272B"
+    },
+    {
+        "path":  "assets/rooms/daniel_bedroom.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "107F74C4478DB61CCE0791E1048DA9ECCC6E2822912C5973D99E26311FBAA85D"
+    },
+    {
+        "path":  "assets/rooms/dining.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "2CC4E0CEC6DB783EB6ADEB5DE7C599EF2823A6B9F81A7849CBDA881C4EAE0111"
+    },
+    {
+        "path":  "assets/rooms/guest_a.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "D4DF376493DF58F4E866DE110ED35538C40FB35ADDD2829FF832521A17581802"
+    },
+    {
+        "path":  "assets/rooms/guest_b.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "721BCBA4519B470A4965D01989B3A8DDE73DAE0B1BB1D1B42F262046CF5A0430"
+    },
+    {
+        "path":  "assets/rooms/isolation.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "4B1DCF14F9D8122DEE4C170388C68E701F55055D1F8FACDA97A1E9EF7A8D2879"
+    },
+    {
+        "path":  "assets/rooms/kitchen.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "45781AF74B33F4473E9CEC4E5848AFFFDCFBA29C3F3C7EA8AC98EC4B523A7BEB"
+    },
+    {
+        "path":  "assets/rooms/living_room.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "8FA2E73491ED516B3727D60AA4F9F6413C50D353363BD211911FF6C8B99E6AE8"
+    },
+    {
+        "path":  "assets/rooms/multipurpose.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "D8503FE1ACFCBF04834A107A3A92235C11DCE0CD0BD41B90A5BF04BF16B902D4"
+    },
+    {
+        "path":  "assets/rooms/pantry.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "B7D220451BA94E24046B3A4BEC7B2CE41DE5F73CB576127732F0739B5CABA608"
+    },
+    {
+        "path":  "assets/rooms/storage.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "89DEE0968FDB1D2E6B840E61B4746C9687713A1DB519EEC58CD301E388D99732"
+    },
+    {
+        "path":  "assets/rooms/utility.png",
+        "width":  1672,
+        "height":  941,
+        "transparent_character":  false,
+        "corner_alpha":  [
+                             255,
+                             255,
+                             255,
+                             255
+                         ],
+        "sha256":  "34A808CE7720B6A1DF182FFD96A32AED4E0B6C8302E335C9B6EF039DD4530D6E"
+    },
+    {
+        "path":  "assets/characters/arthur_bell/default.png",
+        "width":  1024,
+        "height":  1536,
+        "transparent_character":  true,
+        "corner_alpha":  [
+                             0,
+                             0,
+                             0,
+                             0
+                         ],
+        "sha256":  "6E9E801F8968E2563D8F84D13D42B6CE73ED3F844F35161957B479D21C5B8134"
+    },
+    {
+        "path":  "assets/characters/elena_ward/default.png",
+        "width":  1024,
+        "height":  1536,
+        "transparent_character":  true,
+        "corner_alpha":  [
+                             0,
+                             0,
+                             0,
+                             0
+                         ],
+        "sha256":  "1B85686C46CAD441072B522BE88E2125FF2E31FDEB46E976BC4DD5F3FCD29CC8"
+    },
+    {
+        "path":  "assets/characters/marcus_hale/default.png",
+        "width":  1024,
+        "height":  1536,
+        "transparent_character":  true,
+        "corner_alpha":  [
+                             0,
+                             0,
+                             0,
+                             0
+                         ],
+        "sha256":  "E63E41F9E2DE2481F4C09CA302D9BACD5B020C9CD579B075A1BB6BAF81A27147"
+    }
+]

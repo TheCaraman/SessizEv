@@ -71,7 +71,16 @@ func _show_figure(speaker_id: String) -> void:
 		return
 	var path: String = CHARACTER_IMAGE_PATH % speaker_id
 	if ResourceLoader.exists(path):
-		_figure.texture = load(path) as Texture2D
+		# Reuse the same full-body asset as a waist-up conversation frame.
+		# Legs end behind the reply panel rather than floating above it.
+		var source := load(path) as Texture2D
+		var portrait := AtlasTexture.new()
+		portrait.atlas = source
+		portrait.region = Rect2(
+			float(source.get_width()) * 0.12, 0.0,
+			float(source.get_width()) * 0.76, float(source.get_height()) * 0.62
+		)
+		_figure.texture = portrait
 		_figure.visible = true
 		_silhouette.visible = false
 	else:
@@ -114,8 +123,8 @@ func _build_interface() -> void:
 	_figure = TextureRect.new()
 	_figure.anchor_left = 0.32
 	_figure.anchor_right = 0.68
-	_figure.anchor_top = 0.04
-	_figure.anchor_bottom = 0.56
+	_figure.anchor_top = 0.08
+	_figure.anchor_bottom = 0.78
 	_figure.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_figure.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_figure.mouse_filter = Control.MOUSE_FILTER_IGNORE
