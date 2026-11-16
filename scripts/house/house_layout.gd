@@ -28,23 +28,23 @@ const STAIRS: Rect2 = Rect2(7.0, 3.0, 1.2, 4.5)
 ## Rooms. "rects" lists one or more plan rectangles (x, z, width, depth);
 ## the first rectangle is the room's main area.
 const ROOMS: Array[Dictionary] = [
-	{"id": &"dining", "name_key": "ROOM_DINING", "floor": 0, "rects": [Rect2(0.0, 0.0, 5.0, 4.5)]},
-	{"id": &"living_room", "name_key": "ROOM_LIVING", "floor": 0, "rects": [Rect2(0.0, 4.5, 5.0, 5.5)]},
-	{"id": &"kitchen", "name_key": "ROOM_KITCHEN", "floor": 0, "rects": [Rect2(5.0, 0.0, 4.5, 3.0)]},
+	{"id": &"dining", "name_key": "ROOM_DINING", "floor": 0, "rects": [Rect2(0.0, 0.0, 4.0, 4.5)]},
+	{"id": &"living_room", "name_key": "ROOM_LIVING", "floor": 0, "rects": [Rect2(0.0, 4.5, 4.0, 5.5)]},
+	{"id": &"kitchen", "name_key": "ROOM_KITCHEN", "floor": 0, "rects": [Rect2(4.0, 0.0, 5.5, 3.0)]},
 	{"id": &"pantry", "name_key": "ROOM_PANTRY", "floor": 0, "rects": [Rect2(9.5, 0.0, 2.5, 3.0)]},
-	{"id": &"hall", "name_key": "ROOM_HALL", "floor": 0, "rects": [Rect2(5.0, 3.0, 2.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
-	{"id": &"vestibule", "name_key": "ROOM_VESTIBULE", "floor": 0, "rects": [Rect2(5.0, 8.5, 3.2, 1.5)]},
+	{"id": &"hall", "name_key": "ROOM_HALL", "floor": 0, "rects": [Rect2(4.0, 3.0, 3.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
+	{"id": &"vestibule", "name_key": "ROOM_VESTIBULE", "floor": 0, "rects": [Rect2(4.0, 8.5, 4.2, 1.5)]},
 	{"id": &"utility", "name_key": "ROOM_UTILITY", "floor": 0, "rects": [Rect2(8.2, 3.0, 3.8, 4.5)]},
 	{"id": &"bathroom_ground", "name_key": "ROOM_BATHROOM_GROUND", "floor": 0, "rects": [Rect2(8.2, 7.5, 3.8, 2.5)]},
-	{"id": &"guest_b", "name_key": "ROOM_GUEST_B", "floor": 1, "rects": [Rect2(0.0, 0.0, 5.0, 3.0)]},
-	{"id": &"guest_a", "name_key": "ROOM_GUEST_A", "floor": 1, "rects": [Rect2(0.0, 3.0, 5.0, 3.0)]},
-	{"id": &"daniel_bedroom", "name_key": "ROOM_DANIEL", "floor": 1, "rects": [Rect2(0.0, 6.0, 5.0, 4.0)]},
-	{"id": &"isolation", "name_key": "ROOM_ISOLATION", "floor": 1, "rects": [Rect2(5.0, 0.0, 3.2, 1.8)]},
-	{"id": &"landing", "name_key": "ROOM_LANDING", "floor": 1, "rects": [Rect2(5.0, 1.8, 3.2, 1.2)]},
-	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(5.0, 3.0, 2.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
+	{"id": &"guest_b", "name_key": "ROOM_GUEST_B", "floor": 1, "rects": [Rect2(0.0, 0.0, 4.0, 3.0)]},
+	{"id": &"guest_a", "name_key": "ROOM_GUEST_A", "floor": 1, "rects": [Rect2(0.0, 3.0, 4.0, 3.0)]},
+	{"id": &"daniel_bedroom", "name_key": "ROOM_DANIEL", "floor": 1, "rects": [Rect2(0.0, 6.0, 4.0, 4.0)]},
+	{"id": &"isolation", "name_key": "ROOM_ISOLATION", "floor": 1, "rects": [Rect2(4.0, 0.0, 4.2, 1.8)]},
+	{"id": &"landing", "name_key": "ROOM_LANDING", "floor": 1, "rects": [Rect2(4.0, 1.8, 4.2, 1.2)]},
+	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(4.0, 3.0, 3.0, 5.5), Rect2(7.0, 7.5, 1.2, 1.0)]},
 	{"id": &"multipurpose", "name_key": "ROOM_MULTIPURPOSE", "floor": 1, "rects": [Rect2(8.2, 0.0, 3.8, 6.5)]},
 	{"id": &"bathroom_upper", "name_key": "ROOM_BATHROOM_UPPER", "floor": 1, "rects": [Rect2(8.2, 6.5, 3.8, 3.5)]},
-	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(5.0, 8.5, 3.2, 1.5)]},
+	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(4.0, 8.5, 4.2, 1.5)]},
 ]
 
 ## Rooms the player walks through in 3D. Every other room is shown as a 2D
@@ -77,11 +77,11 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 0, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Ground floor, interior ---
 	# Dining / living room: wide open archway.
-	{"floor": 0, "axis": "x", "at": 4.5, "from": 0.0, "to": 5.0, "openings": [{"pos": 2.5, "width": 3.0}]},
+	{"floor": 0, "axis": "x", "at": 4.5, "from": 0.0, "to": 4.0, "openings": [{"pos": 2.0, "width": 2.6}]},
 	# West side of hall and vestibule; the kitchen (z < 3) stays open to dining.
-	{"floor": 0, "axis": "z", "at": 5.0, "from": 3.0, "to": 10.0, "openings": [{"pos": 6.0, "to": &"living_room"}]},
+	{"floor": 0, "axis": "z", "at": 4.0, "from": 3.0, "to": 10.0, "openings": [{"pos": 6.0, "to": &"living_room"}]},
 	# South wall of kitchen and pantry: doors to the hall and the utility room.
-	{"floor": 0, "axis": "x", "at": 3.0, "from": 5.0, "to": 12.0, "openings": [{"pos": 6.0, "to": &"kitchen"}, {"pos": 8.9}]},
+	{"floor": 0, "axis": "x", "at": 3.0, "from": 4.0, "to": 12.0, "openings": [{"pos": 6.0, "to": &"kitchen"}, {"pos": 8.9}]},
 	# Kitchen / pantry.
 	{"floor": 0, "axis": "z", "at": 9.5, "from": 0.0, "to": 3.0, "openings": [{"pos": 1.5}]},
 	# Hall / staircase.
@@ -91,7 +91,7 @@ const WALLS: Array[Dictionary] = [
 	# Utility / bathroom.
 	{"floor": 0, "axis": "x", "at": 7.5, "from": 8.2, "to": 12.0, "openings": []},
 	# Hall / vestibule.
-	{"floor": 0, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "width": 1.2}]},
+	{"floor": 0, "axis": "x", "at": 8.5, "from": 4.0, "to": 8.2, "openings": [{"pos": 6.0, "width": 1.2}]},
 	# --- Upper floor, exterior ---
 	{"floor": 1, "axis": "x", "at": 0.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
 	{"floor": 1, "axis": "x", "at": 10.0, "from": -0.1, "to": 12.1, "exterior": true, "openings": []},
@@ -99,12 +99,12 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 1, "axis": "z", "at": 12.0, "from": 0.0, "to": 10.0, "exterior": true, "openings": []},
 	# --- Upper floor, interior ---
 	# West bedrooms: Guest B, Guest A, Daniel.
-	{"floor": 1, "axis": "z", "at": 5.0, "from": 0.0, "to": 10.0,
+	{"floor": 1, "axis": "z", "at": 4.0, "from": 0.0, "to": 10.0,
 		"openings": [{"pos": 2.4, "to": &"guest_b"}, {"pos": 4.5, "to": &"guest_a"}, {"pos": 7.0, "to": &"daniel_bedroom"}]},
-	{"floor": 1, "axis": "x", "at": 3.0, "from": 0.0, "to": 5.0, "openings": []},
-	{"floor": 1, "axis": "x", "at": 6.0, "from": 0.0, "to": 5.0, "openings": []},
+	{"floor": 1, "axis": "x", "at": 3.0, "from": 0.0, "to": 4.0, "openings": []},
+	{"floor": 1, "axis": "x", "at": 6.0, "from": 0.0, "to": 4.0, "openings": []},
 	# Isolation room south wall.
-	{"floor": 1, "axis": "x", "at": 1.8, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"isolation"}]},
+	{"floor": 1, "axis": "x", "at": 1.8, "from": 4.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"isolation"}]},
 	# East rooms: multipurpose door off the landing, bathroom door off the corridor.
 	{"floor": 1, "axis": "z", "at": 8.2, "from": 0.0, "to": 10.0, "openings": [{"pos": 2.4, "to": &"multipurpose"}, {"pos": 8.0, "to": &"bathroom_upper"}]},
 	{"floor": 1, "axis": "x", "at": 6.5, "from": 8.2, "to": 12.0, "openings": []},
@@ -112,7 +112,7 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 1, "axis": "z", "at": 7.0, "from": 3.0, "to": 7.5, "openings": []},
 	{"floor": 1, "axis": "x", "at": 7.5, "from": 7.0, "to": 8.2, "openings": []},
 	# Storage closet north wall.
-	{"floor": 1, "axis": "x", "at": 8.5, "from": 5.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"storage"}]},
+	{"floor": 1, "axis": "x", "at": 8.5, "from": 4.0, "to": 8.2, "openings": [{"pos": 6.0, "to": &"storage"}]},
 ]
 
 

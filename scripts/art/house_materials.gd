@@ -27,17 +27,25 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 	match kind:
 		&"wallpaper":
 			return _triplanar(kind, 0.5)
-		&"parquet", &"wood_stairs", &"door_paint", &"door_panel_paint", &"frame_paint", &"trim_dark":
+		&"wainscot":
+			return _flat(Color(0.085, 0.15, 0.125), 1.0)
+		&"door_paint":
+			return _flat(Color(0.10, 0.19, 0.17), 1.0)
+		&"door_panel_paint":
+			return _flat(Color(0.13, 0.23, 0.20), 1.0)
+		&"frame_paint":
+			return _flat(Color(0.16, 0.21, 0.18), 1.0)
+		&"trim_dark":
+			return _flat(Color(0.035, 0.065, 0.05), 1.0)
+		&"parquet", &"wood_stairs":
 			return _triplanar(kind, 1.0)
 		&"trim_door":
 			# The shadowed moulding around each door panel: the door paint, darker.
-			var moulding: StandardMaterial3D = _triplanar(&"door_paint", 1.0)
-			moulding.albedo_color = Color(0.62, 0.60, 0.55)
-			return moulding
+			return _flat(Color(0.04, 0.085, 0.065), 1.0)
 		&"runner":
 			return _uv_mapped(kind)
 		&"ceiling":
-			return _flat(Color(0.46, 0.44, 0.38), 1.0)
+			return _flat(Color(0.43, 0.40, 0.34), 1.0)
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
 		&"window_sky":

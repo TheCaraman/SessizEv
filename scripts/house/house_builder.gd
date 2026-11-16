@@ -10,7 +10,7 @@ extends Node3D
 
 const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNESS
 const DOOR_THICKNESS: float = 0.05
-const LAMP_COLOR := Color(1.0, 0.90, 0.66)
+const LAMP_COLOR := Color(0.88, 0.91, 0.78)
 const RUNNER_WIDTH: float = 1.1
 const SKIRTING_HEIGHT: float = 0.13
 const CEILING_RAIL_HEIGHT: float = 0.09
@@ -125,6 +125,18 @@ func _add_wall_piece(
 	# Full-height pieces get a skirting board and a dark rail under the ceiling,
 	# both standing proud of the wall on either side.
 	if is_equal_approx(height, WALL_HEIGHT):
+		var lower_center := center
+		lower_center.y = bottom_y + 0.40
+		var lower_size := size
+		lower_size.y = 0.80
+		if along_x:
+			lower_size.z += 0.018
+		else:
+			lower_size.x += 0.018
+		_add_mesh(parent, lower_center, lower_size, &"wainscot")
+		lower_center.y = bottom_y + 0.81
+		lower_size.y = 0.025
+		_add_mesh(parent, lower_center, lower_size, &"trim_dark")
 		var trims: Array[Array] = [
 			[SKIRTING_HEIGHT * 0.5, SKIRTING_HEIGHT, 0.036, &"frame_paint"],
 			[SKIRTING_HEIGHT + 0.012, 0.024, 0.05, &"frame_paint"],
@@ -335,9 +347,18 @@ func _build_lamps() -> void:
 
 ## A flat ceiling fitting with a light just below it.
 func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_range: float) -> void:
-	var shade: MeshInstance3D = _add_mesh(
-		parent, ceiling_point + Vector3(0.0, -0.05, 0.0), Vector3(0.28, 0.06, 0.28), &"lamp_shade"
-	)
+	var shade := MeshInstance3D.new()
+	var cover := CylinderMesh.new()
+	cover.top_radius = 0.15
+	cover.bottom_radius = 0.19
+	cover.height = 0.08
+	cover.radial_segments = 48
+	var cover_material := HouseMaterials.get_material(&"lamp_shade").duplicate() as StandardMaterial3D
+	cover_material.emission_energy_multiplier = 0.6
+	cover.material = cover_material
+	shade.mesh = cover
+	shade.position = ceiling_point + Vector3(0.0, -0.05, 0.0)
+	parent.add_child(shade)
 	shade.add_to_group("electric_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
@@ -348,7 +369,7 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.8
+	lamp.light_energy = 0.32
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5
@@ -476,7 +497,7 @@ func _build_runners() -> void:
 		runner.name = "Runner_F%d" % floor_index
 		runner.mesh = quad
 		runner.rotation.x = -PI * 0.5
-		runner.position = Vector3(6.0, HouseLayout.floor_height(floor_index) + 0.006, 5.75)
+		runner.position = Vector3(5.5, HouseLayout.floor_height(floor_index) + 0.006, 5.75)
 		runner.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(runner)
 

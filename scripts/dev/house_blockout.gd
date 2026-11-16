@@ -166,13 +166,13 @@ func _build_environment() -> void:
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
-	environment.ambient_light_color = Color(0.44, 0.48, 0.50)
-	environment.ambient_light_energy = 0.30
+	environment.ambient_light_color = Color(0.35, 0.47, 0.40)
+	environment.ambient_light_energy = 0.22
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.012
+	environment.volumetric_fog_density = 0.006
 	environment.volumetric_fog_albedo = Color(0.74, 0.80, 0.82)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
 	environment.volumetric_fog_emission_energy = 0.15
@@ -182,15 +182,15 @@ func _build_environment() -> void:
 
 	# Soft bloom around lit surfaces and soft contact shadows in corners.
 	environment.glow_enabled = true
-	environment.glow_intensity = 0.45
+	environment.glow_intensity = 0.22
 	environment.glow_bloom = 0.12
 	environment.glow_hdr_threshold = 1.1
 	environment.ssao_enabled = true
 	environment.ssao_radius = 0.8
-	environment.ssao_intensity = 2.5
+	environment.ssao_intensity = 1.5
 
 	environment.adjustment_enabled = true
-	environment.adjustment_saturation = 1.05
+	environment.adjustment_saturation = 0.86
 	environment.adjustment_contrast = 1.1
 
 	var world_environment := WorldEnvironment.new()

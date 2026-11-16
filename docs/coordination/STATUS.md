@@ -59,3 +59,6 @@ NightObservation saf doğrulayıcı ve üç gerçek üst kat rotası hazır. 21 
 
 ## Görsel yeniden yapım — sahibin yeni önceliği
 Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim diline taşınacak. İlk dilim: fiziksel menteşe/oda eşiği/fade kapı geçişi, 22 paket/6033 denetim, GPU9. Mutfak aynı referansla yeniden çizilip bağlandı, gerçek RoomView görüntüsü incelendi. Koridor geometri/malzeme yenilemesi ve kalan 11 oda henüz yapılmadı. Mutfakta ayrı gece/elektriksiz görseller de açık. Gece tanığı üretimi öncelik dışına alındı. docs/qa/DoorOpeningTransition.md; docs/art/kitchen-graphic-revision.json.
+
+## Koridor ilk yeniden yapım
+3m dolaşım, batı sınırıx4, yeni mat yüzey/alt yeşil boya/döşeme ve yuvarlak armatürler bağlandı. 22 paket/6036; alt/üst kat gerçek render incelendi. docs/qa/CorridorRebuild.md. VISUAL-REBUILD-001 AKTİF: kalan 11oda stil dönüşümü ve son ortak görsel kontrol gerekli; kullanıcı bitince bildirim istiyor, ara sürümü bitti diye sunma.

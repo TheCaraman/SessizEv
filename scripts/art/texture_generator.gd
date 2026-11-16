@@ -17,7 +17,7 @@ const DETAIL_SIZE: int = 512
 static func generate_all(output_dir: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
 	_save(_wallpaper(), output_dir, "wallpaper")
-	_save(_parquet(), output_dir, "parquet")
+	_save(corridor_floorboards(), output_dir, "parquet")
 	_save(_painted_wood(Color(0.08, 0.21, 0.20), 61), output_dir, "door_paint")
 	_save(_painted_wood(Color(0.11, 0.26, 0.24), 62), output_dir, "door_panel_paint")
 	_save(_painted_wood(Color(0.50, 0.50, 0.42), 63), output_dir, "frame_paint")
@@ -30,6 +30,20 @@ static func _save(image: Image, output_dir: String, file_name: String) -> void:
 	var path: String = "%s/%s.png" % [output_dir, file_name]
 	var error: Error = image.save_png(ProjectSettings.globalize_path(path))
 	print("%s -> %s" % [path, error_string(error)])
+
+static func corridor_floorboards() -> Image:
+	var size: int = DETAIL_SIZE
+	var grain: Image = _noise(size, 84, 0.012)
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		for x: int in size:
+			var board: int = int(float(x) / size * 6.0)
+			var across: float = fmod(float(x) / size * 6.0, 1.0)
+			var color := Color(0.24, 0.18, 0.12).darkened(_hash(board, 0, 9) * 0.18 + floorf(grain.get_pixel(x, y).r * 5.0) * 0.012)
+			if across < 0.018 or across > 0.985 or y == 0:
+				color = Color(0.035, 0.045, 0.03)
+			image.set_pixel(x, y, color)
+	return image
 
 
 ## Seamlessly tiling greyscale noise; read values with get_pixel(x, y).r.
@@ -47,30 +61,18 @@ static func _hash(a: int, b: int, c: int) -> float:
 	return x - floorf(x)
 
 
-## Plain, slightly faded wallpaper: one dirty ochre colour with a faint
-## tone-on-tone diamond repeat, thin stripes and soft damp patches.
-## Tiles seamlessly; one tile covers 2 m.
+## Quiet matte plaster: broad irregular painted patches, no decorative repeat.
 static func _wallpaper() -> Image:
 	var size: int = WALLPAPER_SIZE
-	var cell: float = float(size) / 16.0
-	var mottle: Image = _noise(size, 11, 0.02)
-	var damp: Image = _noise(size, 12, 0.004)
-	var base := Color(0.44, 0.38, 0.24)
+	var mottle: Image = _noise(size, 11, 0.008)
+	var damp: Image = _noise(size, 12, 0.003)
+	var base := Color(0.43, 0.32, 0.27)
 	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
 	for y: int in size:
-		var row: int = int(float(y) / cell)
-		var ly: float = fmod(float(y), cell) - cell * 0.5
 		for x: int in size:
-			var shifted: float = float(x) + (cell * 0.5 if row % 2 == 1 else 0.0)
-			var lx: float = fmod(shifted, cell) - cell * 0.5
-			var d: float = absf(lx) + absf(ly)
-			# A thin diamond outline with a small dot in the middle.
-			var outline: float = clampf(1.0 - absf(d - cell * 0.30) / 1.6, 0.0, 1.0)
-			var dot: float = clampf(1.0 - d / 3.0, 0.0, 1.0)
-			var stripe: float = clampf(1.0 - absf(lx) / 1.2, 0.0, 1.0) * 0.5
-			var color: Color = base.darkened(0.24 * maxf(outline, maxf(dot, stripe)))
-			color = color.darkened(mottle.get_pixel(x, y).r * 0.10)
-			color = color.darkened(clampf((damp.get_pixel(x, y).r - 0.58) * 0.9, 0.0, 0.22))
+			var patch: float = floorf(mottle.get_pixel(x, y).r * 6.0) / 6.0
+			var color: Color = base.darkened(patch * 0.17)
+			color = color.lerp(Color(0.23, 0.29, 0.24), clampf((damp.get_pixel(x, y).r - 0.47) * 0.7, 0.0, 0.20))
 			image.set_pixel(x, y, color)
 	return image
 

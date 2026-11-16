@@ -88,6 +88,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func _check_rooms() -> void:
+	_check(is_equal_approx((HouseLayout.get_room(&"hall")["rects"][0] as Rect2).size.x, 3.0), "main hall has three metre circulation width")
+	_check(_capsule_fits(Vector3(4.6, 0.0, 4.0)), "newly widened ground strip is physically usable")
+	_check(_capsule_fits(Vector3(4.6, HouseLayout.STOREY_HEIGHT, 5.0)), "newly widened upper strip is physically usable")
 	for room: Dictionary in HouseLayout.ROOMS:
 		var id: StringName = room["id"]
 		var center: Vector3 = HouseLayout.room_center(id)

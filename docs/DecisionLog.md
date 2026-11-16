@@ -88,3 +88,6 @@ Güncel dengeleme varsayımı (DAYTIME-REST): gündüz 60 dakika dinlenme 15 ene
 
 ## Sahip geri bildirimi — koridor ve oda tutarlılığı
 Sahip oturma odasını hedefe yakın buldu, diğer odaların gerçekçi geçici üslubunu reddetti. Koridorun dar, atmosferden uzak ve harita açısından başarısız olduğunu belirtti; tamamen baştan yapılmasına açıkça izin verdi. Kapıya etkileşimde fiziksel açılış animasyonu istedi. Bu yön mevcut onaylı çizimsel oda stilinin bütün eve taşınmasıdır; PS1/pikselleştirme geri getirilmeyecek. İlk teknik dilim kapı açılışıdır; diğer görsel işler devam eder.
+
+## Koridor ölçü/geometri revizyonu — ilk uygulama
+Sahibin tamamen yeniden yapım izni kapsamında ana hol ve üst koridor x4..7, 3m genişlikte; batı oda sınırı x4, merdiven/dış sınır sabit. Bu gerçek geometri değişikliğidir, ekran FOV'u veya modeli esnetme değildir. Mat nötr sıva/koyu yeşil alt boya, sade uzun döşeme ve yeni yuvarlak ışık geometrisi eklendi. Sanat incelemesi devam eder; nihai koridor tamamlanmış sayılmaz.

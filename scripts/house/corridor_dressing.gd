@@ -40,7 +40,7 @@ func _build_entrance() -> void:
 		_flat_box(Vector3(x, 0.19, 8.76), Vector3(0.09, 0.07, 0.26), Color(0.09, 0.08, 0.07))
 
 	# Umbrella leaning in the corner by the door.
-	_box(Vector3(5.22, 0.45, 9.78), Vector3(0.04, 0.9, 0.04), &"trim_dark", false, Vector3(0.12, 0.0, -0.08))
+	_box(Vector3(4.22, 0.45, 9.78), Vector3(0.04, 0.9, 0.04), &"trim_dark", false, Vector3(0.12, 0.0, -0.08))
 
 
 func _build_hall() -> void:
@@ -58,7 +58,7 @@ func _build_hall() -> void:
 	_box(table + Vector3(0.02, 0.785, 0.36), Vector3(0.12, 0.012, 0.09), &"frame_paint", false, Vector3(0.0, 0.2, 0.0))
 
 	# Pictures on the living-room wall, the second one hanging crooked.
-	var west: float = 5.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5
+	var west: float = 4.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5
 	_picture(Vector3(west + 0.02, 1.62, 4.3), Vector2(0.50, 0.38), true, 0.0, Color(0.20, 0.24, 0.22))
 	_picture(Vector3(west + 0.02, 1.58, 7.5), Vector2(0.34, 0.46), true, deg_to_rad(4.0), Color(0.28, 0.22, 0.16))
 
@@ -70,7 +70,7 @@ func _build_hall() -> void:
 
 func _build_upper_corridor() -> void:
 	# A wooden chair at the far end, beside the storage door.
-	var chair := Vector3(5.32, UPPER, 8.12)
+	var chair := Vector3(4.32, UPPER, 8.12)
 	_box(chair + Vector3(0.0, 0.44, 0.0), Vector3(0.40, 0.04, 0.40), &"wood_stairs", true)
 	_box(chair + Vector3(-0.18, 0.72, 0.0), Vector3(0.04, 0.56, 0.40), &"wood_stairs")
 	for dx: float in [-0.17, 0.17]:
@@ -86,7 +86,7 @@ func _build_upper_corridor() -> void:
 	_picture(Vector3(east - 0.02, UPPER + 1.6, 6.2), Vector2(0.36, 0.48), false, 0.0, Color(0.22, 0.18, 0.16))
 
 	# Small cabinet on the landing, opposite the top of the stairs.
-	var cabinet := Vector3(5.22, UPPER, 2.0)
+	var cabinet := Vector3(4.22, UPPER, 2.0)
 	_box(cabinet + Vector3(0.0, 0.40, 0.0), Vector3(0.36, 0.80, 0.30), &"wood_stairs", true)
 	_box(cabinet + Vector3(0.0, 0.81, 0.0), Vector3(0.40, 0.03, 0.34), &"wood_stairs")
 	_box(cabinet + Vector3(0.185, 0.55, 0.0), Vector3(0.012, 0.03, 0.08), &"brass")
@@ -97,14 +97,22 @@ func _build_upper_corridor() -> void:
 func _table_lamp(base: Vector3) -> void:
 	_box(base + Vector3(0.0, 0.02, 0.0), Vector3(0.10, 0.04, 0.10), &"brass")
 	_box(base + Vector3(0.0, 0.16, 0.0), Vector3(0.025, 0.26, 0.025), &"brass")
-	var shade := _box(base + Vector3(0.0, 0.36, 0.0), Vector3(0.20, 0.17, 0.20), &"lamp_shade") as MeshInstance3D
+	var shade := MeshInstance3D.new()
+	var cover := CylinderMesh.new()
+	cover.top_radius = 0.085
+	cover.bottom_radius = 0.135
+	cover.height = 0.20
+	cover.radial_segments = 40
+	shade.mesh = cover
+	shade.position = base + Vector3(0.0, 0.36, 0.0)
+	add_child(shade)
 	shade.add_to_group("electric_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# A cloth shade glows much less than a bare ceiling fitting.
 	var shade_material := HouseMaterials.get_material(&"lamp_shade").duplicate() as StandardMaterial3D
 	shade_material.emission = Color(0.95, 0.66, 0.36)
 	shade_material.emission_energy_multiplier = 0.55
-	(shade.mesh as BoxMesh).material = shade_material
+	cover.material = shade_material
 
 	var light := OmniLight3D.new()
 	light.add_to_group("electric_lights")
