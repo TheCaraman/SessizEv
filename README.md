@@ -4,14 +4,21 @@ Birinci şahıs, tam 3D psikolojik korku oyunu. Çalışma adı.
 
 ## Durum
 
-Faz 1.2 tamam — birinci şahıs kontrolcü yazıldı ve otomatik testi geçti. F5 ile açılan sahne bir geliştirici test odasıdır; oyun içeriği henüz yok.
+Faz 1.4 tamam — birinci şahıs kontrolcü ve iki katlı evin blockout'u çalışıyor. F5 evi açar; giriş holünde başlarsın. Kapı, pencere, mobilya ve oyun içeriği henüz yok.
 
-Test odasında: WASD yürüme, fare bakış, Shift hızlı yürüme, Esc fareyi bırakır ya da geri alır.
+Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, Esc fareyi bırakır ya da geri alır.
 
-Otomatik test:
+Otomatik testler:
 
 ```
 godot --headless --path . res://tests/player_movement_test.tscn
+godot --headless --path . res://tests/house_layout_test.tscn
+```
+
+Ekran görüntülerini yenilemek (pencere açar):
+
+```
+godot --path . --resolution 1280x720 res://scenes/main/capture_screenshots.tscn
 ```
 
 ## Gereksinim
@@ -24,7 +31,7 @@ Godot **4.7.2 stable**, standart sürüm (.NET değil).
 2. Proje Yöneticisi'nde "İçe Aktar"ı seç ve bu klasördeki `project.godot` dosyasını göster.
 3. F5'e bas.
 
-Beklenen: sarımsı ışıklı, dört duvarlı bir test odası; ortada kapı genişliğinde bir açıklık ve sağda platforma çıkan bir rampa. Çıktı panelinde hata olmamalı.
+Beklenen: sarımsı ışıklı, düz renkli duvarlardan oluşan ev; önünde hole açılan bir geçit. Oda değiştirdikçe çıktı panelinde odanın adı yazılır. Hata olmamalı.
 
 ## Belgeler
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/house_blockout.gd" id="1_blockout"]
+[ext_resource type="PackedScene" path="res://scenes/house/house.tscn" id="2_house"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="3_player"]
+
+[node name="HouseBlockout" type="Node3D"]
+script = ExtResource("1_blockout")
+
+[node name="House" parent="." instance=ExtResource("2_house")]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.05, 9.2)

@@ -44,7 +44,8 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | A-001 | Su kaynağı: sayılan stok mu, "şebeke çalışıyor/arızalı" durumu mu? | Onay gelmedi; şimdilik özgün spesifikasyon geçerli (hafif sayılan stok). |
 | A-002 | Altıncı sonun nihai adı | Çalışma adı THE LONG QUIET. |
 | A-003 | "Maruz kalmış" (exposed) durumunun ilerleme kuralları | GDD §8'de taslak; dengeleme Faz 5'te. |
-| A-006 | Ev kat planı onayı | Taslak `HousePlan.md` içinde. Onaylanmadan blockout başlamaz. |
+| A-006 | ~~Ev kat planı onayı~~ — **Kapandı (2026-11-16)** | Proje sahibi planı olduğu gibi onayladı (önce sadeleştirme istedi, sonra vazgeçti). Blockout kuruldu. |
+| A-007 | Evin sadeleştirilmesi | Proje sahibi bir ara "biraz küçült, sadeleştir" dedi, sonra planı onayladı. İçinde yürüdükten sonra yeniden sorulacak. |
 | A-004 | Animasyon kaynağı | Lisansı uygun (CC0) iskelet animasyon paketi mi, kodla üretilen basit pozlar mı? Faz 3 öncesi karar. |
 | A-005 | ~~Godot ve git kurulu değil~~ — **Kapandı (2026-11-16)** | Godot 4.7.2 `tools/godot-4.7.2/` altında (proje klasörünün dışında). Git 2.56.1 kuruldu; depo başlatıldı. Uzak depo (GitHub vb.) henüz yok. |
 

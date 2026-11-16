@@ -1,8 +1,10 @@
 # THE QUIET HOURS — Ev Kat Planı
 
-Sürüm 0.1 · 2026-11-16 · **Durum: taslak, proje sahibinin onayını bekliyor**
+Sürüm 0.2 · 2026-11-16 · **Durum: onaylı; blockout kuruldu**
 
-Blockout bu plana göre kurulacak. Onaydan sonra ölçüler ancak oyun içinde yürüyerek denendikten sonra değişir ve değişiklik DecisionLog'a yazılır.
+Planın kod karşılığı `scripts/house/house_layout.gd` dosyasıdır; ikisi çelişirse önce bu belge güncellenir. Ölçüler ancak oyun içinde yürüyerek denendikten sonra değişir ve değişiklik DecisionLog'a yazılır.
+
+Uygulamada netleşenler: merdiven iki duvar arasında kapalıdır (korkuluk yok). Zemin kat banyosuna, merdivenin dibindeki holün uzantısından girilir. Dış kapılar şimdilik kapalı panellerdir.
 
 ## Genel ölçüler
 
