@@ -18,7 +18,7 @@ Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. Sahip ART-RE
 
 POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre/maliyet onayı, opak günlük, olay güdümlü elektrikli ışık, saate bağlı pencere, figür/eşya tonu ve en/tr 1080p/1440p mevcut tesisat eylemi sınaması. Otomatik işçi başlatılmadı; ana Codex uyguladı. Görsel yön hâlâ sahibin incelemesinde; ART-REV-003 çizimsel örneği üretime bağlanmadı. Tam elle oynama açık.
 
-Gece nöbeti ilk oynanabilir: v5 saat/kayıt, Gün 3 20:00–23:00 nöbet seçimi, 01/03/05/07 bekleme, kalan geceyi uyuma, enerji ve tek sabah çözümü bağlandı. 14 paket/5504 denetim geçti. Üç gerçek 1080p görüntüsü ve kapsam docs/qa/NightWatchFirstPlayable.md içinde. Genel gece yönetmeni, yeni olaylar, manuel oynama ve yeni nöbet UI'sinin 1440p renderı henüz yok.
+Gece nöbeti ilk oynanabilir: v5 saat/kayıt, Gün 3 20:00–23:00 nöbet seçimi, 01/03/05/07 bekleme, kalan geceyi uyuma, enerji ve tek sabah çözümü bağlandı. 14 paket/5534 denetim geçti. Nöbet UI'si en/tr 1080p/1440p sınandı; 1440p görüntüler incelendi. docs/qa/NightWatchFirstPlayable.md ve NightWatchResolution.md kapsamı kaydeder. Genel gece yönetmeni/yeni olaylar yok. Manuel giriş denemesi Godot pencere erişiminde otomatik izin reddi aldı; elle oynandı denmemeli.
 
 ## Tamamlanmamış alanlar
 

@@ -45,6 +45,28 @@ func _ready() -> void:
 				var path: String = "res://docs/qa/presentation-%s-%d.png" % [locale, resolution.x]
 				check(viewport.get_texture().get_image().save_png(path) == OK, "capture saved")
 			view.close()
+	var director: CampaignDirector = scene.get_node("CampaignDirector")
+	check(director.night.begin_watch(), "presentation fixture starts actual watch")
+	director.perform_room_action("daniel_bedroom", "wait_watch")
+	check(GameState.minutes == 1500, "presentation fixture reaches actual 01:00")
+	for resolution: Vector2i in [Vector2i(1920, 1080), Vector2i(2560, 1440)]:
+		viewport.size = resolution
+		for locale: String in ["en", "tr"]:
+			TranslationServer.set_locale(locale)
+			view.open("daniel_bedroom")
+			view._set_narration(tr("WATCH_WAITED").format({"time": GameState.get_clock_text(), "energy": GameState.player["energy"]}))
+			for frame: int in 6:
+				await get_tree().process_frame
+			var bounds := Rect2(Vector2.ZERO, Vector2(resolution))
+			check(view.get_action_ids().has("wait_watch") and view.get_action_ids().has("sleep"), "night wait and sleep offered " + locale)
+			for control: Control in view._actions.get_children():
+				check(bounds.encloses(control.get_global_rect()), "night action fits " + locale + " " + control.text)
+			check(bounds.encloses(view._narration_panel.get_global_rect()), "night narration fits " + locale)
+			check(bounds.encloses(view._hint.get_global_rect()), "night leave hint fits " + locale)
+			if "--capture-presentation" in OS.get_cmdline_user_args():
+				await RenderingServer.frame_post_draw
+				check(viewport.get_texture().get_image().save_png("res://docs/qa/night-actions-%s-%d.png" % [locale, resolution.x]) == OK, "night capture saved")
+			view.close()
 	view.open("living_room")
 	check((view.get_prop_layer() as RoomProps).get_prop_ids() == PackedStringArray(["media_console"]), "living room loads authored media prop")
 	view.open("kitchen")
