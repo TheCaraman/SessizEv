@@ -11,19 +11,34 @@ Yerel Git ve aktarım adımları `docs/coordination/GIT_WORKFLOW.md` dosyasında
 Gün 1–3 oynanabilir dikey kesit. Koridorlar 3D ve yürünür; odalar kapıdan açılan
 2D sahnelerdir. F5 ana menüyü açar; yeni oyun ve kayıttan devam vardır.
 
+Windows'ta editörü açmadan: `OYUNU_AC.cmd` normal kampanyayı, `NOBETI_DENE.cmd`
+ayrı proje/kayıt alanında taze Gün 3 20:00 denemesini başlatır. İkisi de eşleşen
+Godot 4.7.2 motorunu ve varlık içe aktarımını kontrol eder. Bu başlatıcılar bağımsız
+Windows export/build değildir; kurulu geliştirme motorunu kullanır.
+
 Gün 1: televizyon/radyo, erzak kontrolü ve Elena'nın kabul/ret kararı. Gün 2:
 Marcus/Arthur ziyaretleri, yatak ve iş atama. Gün 3: 23:00 elektrik kesintisi,
 gerçek nedene uygun kanıtlar, onarım veya erteleme, Tab ile günlük. Kesinti ilk
-uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Hikâye içeriği orada biter.
+uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Gün 3 20:00–23:00'te uyanık
+kalma seçilirse 01/03/05/07 bekleme, gece araştırması, kalan geceyi uyuma ve enerji
+hesabı devreye girer. Boru sesi araştırılabilir masum bir olaydır; enfekte fail
+uydurmaz. Kayıt v5 gece yarısını ve tek sabah tüketimini korur. Hikâye içeriği Gün 4
+sabahı kesit sınırında biter.
 Kaynak yetmezse onarım ertelenebilir; ilerleme tek bir NPC'ye bağlı değildir.
 
 13 oda arka planı ve Elena/Marcus/Arthur figürleri var. Yalnızca varsayılan
-pozlar mevcut; animasyon, ses ve özel gece görselleri henüz yok. 3D koridorların
-sanat kalitesi oda görsellerinin gerisindedir ve sonraki görsel işidir.
+pozlar mevcut. Oturma odası sahibin onayladığı sade çizimsel yönde; ayrı TV/radyo
+katmanı ve gündüz/gece/kesinti görselleri var. Diğer 12 oda ve üç karakter eski
+geçici üslupta. Kapı/boru sesleri sentezlenmiş geçiciler; müzik, konuşma kayıtları,
+nihai animasyon/ses ve bütün gecelerin olay bankası yok. 3D koridor sanatı da açık.
 
 Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E etkileşim;
 E/Esc odadan koridora dönüş, Tab günlük, koridorda Esc duraklatma menüsü.
 Barınak yönetimi ve manuel kayıt Daniel'ın odasındaki eylemlerden açılır.
+Ana menüden English/Türkçe seçimi yapılır ve tercih ayrı ayar dosyasında saklanır.
+
+Fare/klavye ile baştan sona elle oynama henüz doğrulanmadı; otomatik pencere erişimi
+reddedildi. Programatik testler ve gerçek motor renderları bu kontrolün yerine geçmez.
 
 Kalıcı kurulumda proje klasörünün yanındaki tools/godot-4.7.2 motoru kullanılır.
 Kaynak ve sanat/günlük/test kayıtları Git'tedir. Otomasyonun dış kuyruk ve çalışma

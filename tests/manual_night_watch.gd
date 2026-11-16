@@ -9,3 +9,4 @@ func _ready() -> void:
 	var session: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
 	add_child(session)
 	session.get_node("RoomView").open("daniel_bedroom")
+	print("MANUAL NIGHT QA: READY day=%d time=%s" % [GameState.day, GameState.get_clock_text()])
