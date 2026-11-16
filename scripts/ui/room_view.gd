@@ -114,7 +114,11 @@ func close() -> void:
 func perform_action(action_id: String) -> void:
 	if _director == null or not visible:
 		return
-	_set_narration(_director.perform_room_action(_room_id, action_id))
+	var narration: String = _director.perform_room_action(_room_id, action_id)
+	var observation: String = _director.night.events.take_observation()
+	if observation != "":
+		narration += ("\n\n" if narration != "" else "") + observation
+	_set_narration(narration)
 	_refresh()
 
 

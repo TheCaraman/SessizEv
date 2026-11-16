@@ -2,7 +2,7 @@
 
 ## Durum
 
-Üretim belgesi başlangıcı; nihai ses bankası değildir. İlk uygulanmış ses kapı çalma geçicisidir. Müzik, konuşma kayıtları, ev ambiyansı ve diğer foley henüz üretilmedi. Oyun bu alanlarda tamamlanmış sayılmaz.
+Üretim belgesi başlangıcı; nihai ses bankası değildir. Kapı çalma ve araştırılabilir boru tıkırtısı özgün sentezlenmiş geçicilerdir. Boru sesi üst banyo kaynaklıdır, altyazı/günlükle desteklenir; kaynak incelemesi aynı sesi yeniden oluşturur. Müzik, konuşma kayıtları, sürekli ev ambiyansı ve diğer foley henüz üretilmedi. Oyun bu alanlarda tamamlanmış sayılmaz.
 
 ## Yön
 

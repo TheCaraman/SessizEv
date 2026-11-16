@@ -20,6 +20,8 @@ POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre
 
 Gece nöbeti ilk oynanabilir: v5 saat/kayıt, Gün 3 20:00–23:00 nöbet seçimi, 01/03/05/07 bekleme, kalan geceyi uyuma, enerji ve tek sabah çözümü bağlandı. 14 paket/5534 denetim geçti. Nöbet UI'si en/tr 1080p/1440p sınandı; 1440p görüntüler incelendi. docs/qa/NightWatchFirstPlayable.md ve NightWatchResolution.md kapsamı kaydeder. Genel gece yönetmeni/yeni olaylar yok. Manuel giriş denemesi Godot pencere erişiminde otomatik izin reddi aldı; elle oynandı denmemeli.
 
+Nöbette ilk masum araştırılabilir olay eklendi: üst kat boru tıkırtısı, duyma/inceleme olguları ve tek sefer ses. İnsan fail seçilmez, yüklemede geçmiş olay üretilmez. 16 paket/5595 denetim geçti; docs/qa/HouseNightPipes.md kapsamı kaydeder. Genel gece olay bankası hâlâ tamamlanmadı.
+
 ## Tamamlanmamış alanlar
 
 Gün 4+ kampanya, kapsamlı gece nöbeti, yargılama, kalan karakterler, ses, nihai sanat ve tam ayarlar tamamlanmadı. Fare/klavye ile baştan sona elle oynama doğrulanmadı. Programatik testler ve gerçek motor görüntüleri bu kontrolün yerine geçmez.

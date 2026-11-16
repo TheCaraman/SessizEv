@@ -15,6 +15,7 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 | POLISH-SLICE-001 | TAMAM | Codex (sahiplik bırakıldı) | Kesin onarım onayı, olay/saat ışığı, katman tonu, opak günlük, 10 paket/2349 denetim; elle tam oynama ayrı açık | 2026-11-16 |
 | ART-REV-001 | TAMAM | Codex (sahiplik bırakıldı) | Sahip ART-REV-003 yönünü onayladı; ilk oda üretime bağlandı, diğer odalar ve TV/radyo katmanı açık | 2026-11-16 |
 | NIGHT-001 | AKTİF | Codex | NightTimeline saf hesap tamam; GameState v5/gece saati/UI entegrasyonu sırada | 2026-11-16 |
+| NIGHT-002 | TAMAM | Codex (sahiplik bırakıldı) | Tek masum boru olayı, ses/altyazı, inceleme ve kayıt; 16 paket/5595 denetim; genel yönetmen değil | 2026-11-16 |
 | ART-ROOM-001 | TAMAM | Codex (sahiplik bırakıldı) | Oturma odası arka planı; Claude kampanya içinde doğruladı. Ayrıntı claims/ART-ROOM-001.md | 2026-11-16 |
 | ART-ROOM-002 | TAMAM | Codex sanatçı | 13 odanın tamamı görselli; e4e9dad, 388dec6 birleşimi; ArtBible ve docs/art | 2026-11-16 |
 | ART-CHAR-001 | TAMAM | Codex sanatçı | Elena, Marcus, Arthur saydam figürleri; oda zemin hizası ve konuşma kadrajı | 2026-11-16 |

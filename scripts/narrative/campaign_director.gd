@@ -58,6 +58,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	if room_id == str(night.events.definition["source_room"]) and night.events.can_inspect():
+		actions.append({"id": "inspect_pipes", "label": night.events.inspection_label()})
 	if GameState.day >= 2 and GameState.day <= 4 and room_id == "daniel_bedroom" and shelter != null:
 		actions.append({"id": "manage", "label": tr("SHELTER_TITLE")})
 	if room_id == "utility" and GameState.power_incident.has("cause"):
@@ -145,6 +147,8 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	_warned_action = ""
 
 	match action_id:
+		"inspect_pipes":
+			return night.events.inspect()
 		"watch":
 			if not _watch_confirmation or _watch_confirmation_time != GameState.minutes:
 				_watch_confirmation = true

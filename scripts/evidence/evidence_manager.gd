@@ -1,9 +1,15 @@
 class_name EvidenceManager
 extends RefCounted
+const CATALOGUES: Array[String] = ["res://resources/evidence/power.json", "res://resources/evidence/night_house.json"]
 
 static func collect(id: String, key: String, kind: String = "fact") -> void:
-	var definition: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://resources/evidence/power.json"))
-	if not kind in definition["types"] or definition["catalogue"].get(key, "") != kind:
+	var allowed: bool = false
+	for path: String in CATALOGUES:
+		var definition: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+		if kind in definition["types"] and definition["catalogue"].get(key, "") == kind:
+			allowed = true
+			break
+	if not allowed:
 		return
 	for entry: Dictionary in GameState.evidence:
 		if entry["id"] == id:

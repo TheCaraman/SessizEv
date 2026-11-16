@@ -1,5 +1,11 @@
 class_name NightSession
 extends Node
+var events: HouseNightEvents
+
+func _ready() -> void:
+	events = HouseNightEvents.new()
+	events.name = "HouseNightEvents"
+	add_child(events)
 ## Scene-local owner of the optional Day 3 watch. Durable data is in GameState.
 
 func can_start() -> bool:

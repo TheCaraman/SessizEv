@@ -187,6 +187,10 @@ WATCH_CONFIRM,"Stay awake from 23:00 until morning. A full watch costs 40 energy
 WATCH_STARTED,"You stay awake. You can walk the corridors and inspect rooms. Return here to wait or sleep.","Uyanık kalıyorsun. Koridorlarda yürüyebilir ve odaları inceleyebilirsin. Beklemek veya uyumak için buraya dön."
 WATCH_WAITED,"It is {time}. Energy: {energy}/100. Waiting alone does not identify who moved through the house.","Saat {time}. Enerji: {energy}/100. Yalnızca beklemek evde kimin dolaştığını belirlemez."
 WATCH_MORNING,Energy after the night: {energy}/100.,Gece sonrası enerji: {energy}/100.
+PIPE_ACTION_INSPECT,Inspect the bathroom pipes (10m),Banyo borularını incele (10dk)
+PIPE_ACTION_REVIEW,Review the pipe findings (free),Boru bulgularını tekrar oku (ücretsiz)
+PIPE_HEARD,"A dull metallic knocking travels through the upstairs walls.","Üst kattaki duvarlardan boğuk metalik bir tıkırtı yayılıyor."
+PIPE_SOURCE,"A loose pipe support vibrates when the pressure shifts. You can reproduce the knocking. There are no fresh tool marks on the support.","Basınç değişince gevşek bir boru desteği titriyor. Aynı tıkırtıyı yeniden oluşturabiliyorsun. Destekte yeni alet izi yok."
 POWER_PANEL_LOOSE,"An aged connection is loose with heat discoloration.","Eskimiş bağlantı gevşek; ısı izi var."
 POWER_PANEL_GRID,"The house breaker has not tripped.","Evin sigortası atmamış."
 POWER_PANEL_TOOL,"A connection was deliberately removed; fresh tool marks remain.","Bağlantı bilerek çıkarılmış; taze alet izleri var."
