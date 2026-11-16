@@ -1,0 +1,7 @@
+{
+  "prepare_minutes": 30,
+  "prepare_repair": 1,
+  "place_minutes": 15,
+  "release_minutes": 10,
+  "first_trust": -10
+}

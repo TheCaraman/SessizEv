@@ -133,3 +133,6 @@ Dayanak 015c8fb. İlk nonlethal kovma akışı, gerçek oda ve iki basışlı an
 
 ## 2026-11-16 / Codex / DAY4-REACTION-001
 Dayanak 2297898. Veriden kişisel sözler ve gerçek aynı-oda dinleyici hatırası; eski kayda geri doldurma yok. 19 paket/5867 denetim; GPU52; TR1440p bakıldı. Sahiplik bırakıldı. Sonraki: izolasyon/gece tanık kaydı; sanat aday onayı hâlâ ayrı.
+
+## 2026-11-16 / Codex / DAY4-ISOLATE-001
+Dayanak c62c66c. İlk tek günlük izolasyon hazırlama/yerleştirme/salıverme, yönetim/kayıt/konum bağlantıları. 20 paket/5946; GPU47 uyarısız son koşu. İlk testte sabit başlangıç güveni varsayımı relatif beklentiyle düzeltildi. Hazırlık dekoru/bakım ve tam Day4 hâlâ açık. Sahiplik bırakıldı.

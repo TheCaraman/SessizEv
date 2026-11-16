@@ -220,6 +220,24 @@ func _valid_state_shape(state: Dictionary) -> bool:
 	for entry: Variant in state.get("evidence", []):
 		if not entry is Dictionary:
 			return false
+	var isolated_count: int = 0
+	for id: String in state["npcs"]:
+		var person: Dictionary = state["npcs"][id]
+		if person.has("isolated") and not person["isolated"] is bool:
+			return false
+		if not person.get("isolated", false):
+			continue
+		isolated_count += 1
+		if person["status"] != "resident" or state.get("jobs", {}).has(id) or not state["flags"].get("isolation_ready", false):
+			return false
+		var reserved: bool = false
+		for bed: String in state.get("beds", {}):
+			if state["beds"][bed] == id and bed in GameState.BEDS and GameState.bed_room(bed) == person["room"]:
+				reserved = true
+		if not reserved:
+			return false
+	if isolated_count > 1:
+		return false
 	return true
 
 

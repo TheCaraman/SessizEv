@@ -150,6 +150,9 @@ func _make_row(npc_id: String) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override(&"separation", 18)
 
+	if GameState.npcs[npc_id].get("isolated", false):
+		row.add_child(_make_label(tr("ISO_RESERVED").format({"name": Roster.get_display_name(npc_id)}), 24, TEXT_COLOR))
+		return row
 	var who := VBoxContainer.new()
 	who.custom_minimum_size = Vector2(360.0, 0.0)
 	who.add_child(_make_label(Roster.get_display_name(npc_id), 28, TEXT_COLOR))

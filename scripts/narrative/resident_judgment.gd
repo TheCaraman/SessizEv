@@ -18,7 +18,7 @@ func targets(room: String) -> Array[String]:
 		if GameState.get_status(id) != "resident" or GameState.get_location(id) != room:
 			continue
 		var eligible: bool = true
-		for flag: String in ["absent", "isolated", "incapacitated", "injured"]:
+		for flag: String in ["absent", "incapacitated", "injured"]:
 			if GameState.npcs[id].get(flag, false):
 				eligible = false
 		if eligible:
@@ -62,6 +62,7 @@ func expel(room: String, id: String) -> String:
 	candidate["minutes"] += minutes
 	candidate["npcs"][id]["status"] = "expelled"
 	candidate["npcs"][id]["room"] = ""
+	candidate["npcs"][id]["isolated"] = false
 	candidate["npcs"][id]["trust"] = maxi(-100, int(candidate["npcs"][id]["trust"]) + int(rules["expel_trust"]))
 	candidate["jobs"].erase(id)
 	for bed: String in candidate["beds"].keys():

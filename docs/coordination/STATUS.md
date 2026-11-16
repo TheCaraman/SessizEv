@@ -47,3 +47,6 @@ Daniel odasında ücretsiz inceleme mevcut; yalnız toplanmış kanıt ve günce
 
 ## Ayrılık tepkileri
 Üç yetişkin için kişisel ayrılık ve dinleyici sözleri; yalnız aynı odada uygun kişi hatırlıyor, sonraki ücretsiz konuşma kayıtla korunuyor. Başka oda haberdar sayılmıyor. 19 paket/5867 denetim; GPU capture 52. docs/qa/ExpulsionReactions.md. Genel ilişki/moral ve izolasyon açık; enfeksiyon teşhisi yok.
+
+## İlk izolasyon
+Hazırlama 30dk/1repair, yerleştirme15dk, salıverme10dk; ayrı onaylar/kayıt. Tek occupant, rezerv yatak, resident tüketimi, iş engeli, izolasyondan kovma var. Bozuk rezerv/ikinci occupant reddediliyor. 20 paket/5946 denetim, GPU47. docs/qa/IsolationFirstPlayable.md. Günlük bakım, hazırlık dekoru, izolasyon diyaloğu ve gece tanığı hâlâ açık; mevcut küçük oda eski sanattır.

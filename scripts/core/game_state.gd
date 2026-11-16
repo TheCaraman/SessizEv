@@ -195,6 +195,8 @@ func get_residents() -> Array[String]:
 func get_location(npc_id: String) -> String:
 	if not npcs.has(npc_id):
 		return ""
+	if npcs[npc_id].get("isolated", false):
+		return "isolation"
 	if jobs.has(npc_id):
 		var job: Dictionary = jobs[npc_id]
 		if (

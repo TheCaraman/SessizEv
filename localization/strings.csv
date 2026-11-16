@@ -247,3 +247,15 @@ EXPEL_ELENA_WITNESS,"I heard you send {name} away. I need to know what happens i
 EXPEL_MARCUS_WITNESS,"I heard the decision about {name}. Make the rules clear before the next person breaks one.","{name} hakkındaki kararı duydum. Sıradaki kişi bir kuralı çiğnemeden önce kuralları açık et."
 EXPEL_ARTHUR_WITNESS,"I heard what you told {name}. A decision can be necessary and still leave people afraid.","{name} için söylediklerini duydum. Bir karar gerekli olabilir ve yine de insanları korkutabilir."
 EXPEL_DISCUSS,Ask {witness} about {name} leaving,{witness} ile {name} ayrılığı hakkında konuş
+ISO_PREPARE,Prepare isolation room,Küçük odayı izolasyon için hazırla
+ISO_RELEASE,Release {name},{name} serbest bırakılsın
+ISO_PLACE,Isolate {name},{name} izole edilsin
+ISO_NO_MATERIALS,One repair material is needed. Nothing changed.,Bir onarım malzemesi gerekli. Hiçbir şey değişmedi.
+ISO_CONFIRM_PREPARE,"Prepare the room? {minutes} minutes and 1 repair material. Nobody moves yet. Press again; another action or leaving cancels.","Oda hazırlansın mı? {minutes} dakika ve 1 onarım malzemesi. Henüz kimse taşınmaz. Tekrar bas; başka eylem veya çıkmak iptal eder."
+ISO_CONFIRM_PLACE,"Isolate {name}? {minutes} minutes. Their work stops and trust suffers. Their original bed stays reserved; food and water are still needed. This is not a diagnosis. Press again; another action or leaving cancels.","{name} izole edilsin mi? {minutes} dakika. İşi durur ve güveni zedelenir. Eski yatağı rezerv kalır; yiyecek ve su ihtiyacı sürer. Bu bir teşhis değildir. Tekrar bas; başka eylem veya çıkmak iptal eder."
+ISO_CONFIRM_RELEASE,"Release {name}? {minutes} minutes. Their reserved bed remains theirs. Previous work and trust are not restored. Press again; another action or leaving cancels.","{name} serbest bırakılsın mı? {minutes} dakika. Rezerv yatağı kendisinde kalır. Önceki iş ve güven geri gelmez. Tekrar bas; başka eylem veya çıkmak iptal eder."
+ISO_DONE_PREPARE,The room is prepared for one resident. No one has been moved.,Oda bir sakin için hazırlandı. Kimse taşınmadı.
+ISO_DONE_PLACE,The resident is now isolated. Their original bed stays reserved.,Sakin artık izolasyonda. Eski yatağı rezerv kalıyor.
+ISO_DONE_RELEASE,The resident has been released. Their previous restrictions remain in effect.,Sakin serbest bırakıldı. Önceden var olan erişim kısıtları sürüyor.
+ISO_PLAN_LOCKED,{name} is isolated. Release them before changing their bed or job.,{name} izolasyonda. İşini veya yatağını değiştirmeden önce serbest bırak.
+ISO_RESERVED,{name} — Isolated; original bed reserved; no work,{name} — İzolasyonda; eski yatağı rezerv; çalışmıyor

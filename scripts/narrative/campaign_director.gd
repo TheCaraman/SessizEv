@@ -18,6 +18,7 @@ var night: NightSession
 var _player_actions: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://resources/events/player_actions.json"))
 var _watch_confirmation: bool = false
 var judgment := ResidentJudgment.new()
+var isolation := Isolation.new()
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
@@ -47,6 +48,7 @@ func setup(dialogue: DialogueRunner) -> void:
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _repair_confirmation = false)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _watch_confirmation = false)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: judgment.cancel())
+	EventBus.room_view_closed.connect(func(_room: StringName) -> void: isolation.cancel())
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
 	# A visitor who ran out of patience during a conversation leaves when it ends.
@@ -61,6 +63,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	for action: Dictionary in isolation.actions(room_id):
+		actions.append({"id": "isolation:" + action["id"], "label": action["label"]})
 	for id: String in judgment.targets(room_id):
 		actions.append({"id": "expel:" + id, "label": tr("JUDGMENT_EXPEL_ACTION").format({"name": Roster.get_display_name(id)})})
 	for entry: Dictionary in judgment.memories(room_id):
@@ -114,6 +118,11 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 		return ""
 	if action_id != "watch":
 		_watch_confirmation = false
+	if action_id.begins_with("isolation:"):
+		judgment.cancel()
+		_repair_confirmation = false
+		return isolation.perform(room_id, action_id.trim_prefix("isolation:"))
+	isolation.cancel()
 	if not action_id.begins_with("expel:"):
 		judgment.cancel()
 	else:

@@ -63,6 +63,8 @@ func check_plan(plan: Dictionary) -> Dictionary:
 	var taken: Dictionary = {}
 	for npc_id: String in residents:
 		var bed_id: String = str(bed_plan.get(npc_id, ""))
+		if GameState.npcs[npc_id].get("isolated", false) and (bed_id != GameState.get_bed_of(npc_id) or str(job_plan.get(npc_id, "")) != ""):
+			return _problem("ISO_PLAN_LOCKED", npc_id)
 		if not GameState.BEDS.has(bed_id):
 			return _problem("PLAN_NO_BED", npc_id)
 		if taken.has(bed_id):
@@ -90,6 +92,8 @@ func check_plan(plan: Dictionary) -> Dictionary:
 ## Why a resident would not take a job right now; empty key if they would.
 ## A refusal costs no time and no supplies.
 func why_refuses(npc_id: String, job_id: String) -> Dictionary:
+	if GameState.npcs.get(npc_id, {}).get("isolated", false):
+		return _problem("ISO_PLAN_LOCKED", npc_id)
 	if not _jobs.has(job_id):
 		return _problem("PLAN_UNKNOWN_JOB", npc_id)
 	if GameState.get_status(npc_id) != "resident":
