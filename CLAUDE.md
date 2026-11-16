@@ -2,6 +2,11 @@
 
 Bu dosya her oturumda yüklenir. Ayrıntılar `docs/` altındadır; çelişki olursa `docs/DecisionLog.md` kazanır.
 
+## Ortak çalışma
+- Her görevin başında `AGENTS.md` ve `docs/coordination/` içindeki durum, görev ve devir günlüklerini oku.
+- Görev ve dosya sahipliğini bildir; aynı klasördeki başka asistanın aktif dosyalarını değiştirme.
+- Kararları asistan kimliğine göre değil, vizyon uyumu, oyuncuya katkı, doğrulanabilirlik ve üretim maliyetine göre karşılaştır.
+
 ## İletişim
 - Proje sahibiyle **Türkçe** konuş. Oyun içi metinler İngilizce yazılır ve çeviri anahtarı kullanır.
 - Bu ticari bir iş. Yaratıcı bir değişiklik, ekleme veya "daha iyi olur" fikri varsa **önce sor**, birlikte karar verilir. Küçük teknik ayrıntılarda makul varsayılanı seç ve DecisionLog'a yaz.

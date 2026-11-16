@@ -1,6 +1,10 @@
 # THE QUIET HOURS
 
-Birinci şahıs, tam 3D psikolojik korku oyunu. Çalışma adı.
+Birinci şahıs psikolojik korku oyunu. 3D koridorlar, katmanlı 2D odalar. Çalışma adı.
+
+Ortak asistan çalışması için önce `AGENTS.md` ve `docs/coordination/STATUS.md` oku.
+Görev paylaşımı `docs/coordination/TASKS.md`, teslim kayıtları `HANDOFF.md` içindedir.
+Yerel Git ve aktarım adımları `docs/coordination/GIT_WORKFLOW.md` dosyasındadır.
 
 ## Durum
 
@@ -12,7 +16,13 @@ Oda ve karakter görselleri henüz yer tutucudur; ses yok.
 
 Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E kapıyı kullanır, E ya da Esc odadan koridora döner. Koridorda Esc fareyi bırakır ya da geri alır.
 
-Otomatik testler:
+Tüm testleri ayrı proje/kayıt alanında çalıştırmak (Windows PowerShell):
+
+```powershell
+powershell -NoProfile -File tools/Run-Tests.ps1 -GodotPath "C:\path\Godot_v4.7.2-stable_win64_console.exe"
+```
+
+Tek tek otomatik testler (kampanya testi kullanıcı verisine kayıt yazabilir):
 
 ```
 godot --headless --path . res://tests/player_movement_test.tscn
@@ -37,7 +47,7 @@ Godot **4.7.2 stable**, standart sürüm (.NET değil).
 2. Proje Yöneticisi'nde "İçe Aktar"ı seç ve bu klasördeki `project.godot` dosyasını göster.
 3. F5'e bas.
 
-Beklenen: sarımsı ışıklı, düz renkli duvarlardan oluşan ev; önünde hole açılan bir geçit. Oda değiştirdikçe çıktı panelinde odanın adı yazılır. Hata olmamalı.
+Beklenen: sabah üst kat koridorunda başlarsın; saat, oda kapıları ve Gün 1 akışı çalışır.
 
 ## Belgeler
 
