@@ -19,6 +19,7 @@ var _player_actions: Dictionary = JSON.parse_string(FileAccess.get_file_as_strin
 var _watch_confirmation: bool = false
 var judgment := ResidentJudgment.new()
 var isolation := Isolation.new()
+var closure := Day4Closure.new()
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
@@ -37,6 +38,7 @@ var _warned_action: String = ""
 
 ## Called once by the session scene before play begins.
 func setup(dialogue: DialogueRunner) -> void:
+	closure.shelter = shelter
 	power = PowerIncident.new()
 	add_child(power)
 	night = NightSession.new()
@@ -49,6 +51,8 @@ func setup(dialogue: DialogueRunner) -> void:
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _watch_confirmation = false)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: judgment.cancel())
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: isolation.cancel())
+	EventBus.room_view_closed.connect(func(_room: StringName) -> void: closure.cancel())
+	EventBus.day_started.connect(func(_day: int) -> void: closure.cancel())
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
 	# A visitor who ran out of patience during a conversation leaves when it ends.
@@ -63,6 +67,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	for action: Dictionary in closure.actions(room_id):
+		actions.append(action)
 	for action: Dictionary in night.witness.actions(room_id):
 		actions.append(action)
 	for action: Dictionary in isolation.actions(room_id):
@@ -118,6 +124,12 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 			break
 	if not available:
 		return ""
+	if action_id.begins_with("day4:"):
+		judgment.cancel()
+		isolation.cancel()
+		_repair_confirmation = false
+		return closure.perform(room_id, action_id.trim_prefix("day4:"))
+	closure.cancel()
 	if action_id.begins_with("witness:"):
 		judgment.cancel()
 		isolation.cancel()

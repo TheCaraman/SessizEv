@@ -243,40 +243,65 @@ func _start_job(npc_id: String, job_id: String) -> void:
 ## Ends a resident's job, records its result once and returns the report
 ## (empty if this exact job had already been completed).
 func _complete(npc_id: String) -> Dictionary:
-	if GameState.get_status(npc_id) != "resident":
-		GameState.jobs.erase(npc_id)
+	# References intentionally point at live containers; the same reducer is
+	# used on an isolated candidate for a saved time skip.
+	var state: Dictionary = {"day": GameState.day, "npcs": GameState.npcs, "jobs": GameState.jobs, "completed_jobs": GameState.completed_jobs, "flags": GameState.flags, "reports": GameState.reports, "resources": GameState.resources, "power_incident": GameState.power_incident}
+	return _complete_in(state, npc_id, GameState.minutes)
+
+## Mutates only the supplied candidate. Pending night watches stay pending.
+func project_daytime(state: Dictionary, until: int) -> void:
+	var finished: Array[String] = []
+	for id: String in state["jobs"].keys():
+		if state["npcs"].get(id, {}).get("status") != "resident":
+			state["jobs"].erase(id)
+	for id: String in state["jobs"]:
+		var entry: Dictionary = state["jobs"][id]
+		var definition: Dictionary = _jobs.get(str(entry["job"]), {})
+		if not definition.is_empty() and not definition.get("at_night", false) and int(entry["day"]) == int(state["day"]) and int(entry["end"]) <= until:
+			finished.append(id)
+	finished.sort_custom(func(a: String, b: String) -> bool:
+		var left: int = int(state["jobs"][a]["end"])
+		var right: int = int(state["jobs"][b]["end"])
+		return a < b if left == right else left < right
+	)
+	for id: String in finished:
+		_complete_in(state, id, int(state["jobs"][id]["end"]))
+
+func _complete_in(state: Dictionary, npc_id: String, at: int) -> Dictionary:
+	if str(state["npcs"].get(npc_id, {}).get("status", "")) != "resident":
+		state["jobs"].erase(npc_id)
 		return {}
-	if GameState.day >= 3:
+	if int(state["day"]) >= 3:
 		for unavailable: String in ["isolated", "injured", "incapacitated", "absent"]:
-			if GameState.npcs[npc_id].get(unavailable, false):
-				GameState.jobs.erase(npc_id)
+			if state["npcs"][npc_id].get(unavailable, false):
+				state["jobs"].erase(npc_id)
 				return {}
-	var entry: Dictionary = GameState.jobs[npc_id]
+	var entry: Dictionary = state["jobs"][npc_id]
 	var job_id: String = str(entry["job"])
 	var job: Dictionary = _jobs[job_id]
-	GameState.jobs.erase(npc_id)
+	state["jobs"].erase(npc_id)
 
 	var completion_id: String = "%d:%s:%s:%d" % [int(entry["day"]), npc_id, job_id, int(entry["start"])]
 	var daily_id: String = "%d:%s" % [int(entry["day"]), job_id]
-	if GameState.completed_jobs.has(completion_id) or GameState.completed_jobs.has(daily_id):
+	if state["completed_jobs"].has(completion_id) or state["completed_jobs"].has(daily_id):
 		return {}
-	GameState.completed_jobs.append(completion_id)
-	GameState.completed_jobs.append(daily_id)
+	state["completed_jobs"].append(completion_id)
+	state["completed_jobs"].append(daily_id)
 
 	if job.has("sets_flag"):
-		GameState.set_flag(str(job["sets_flag"]).format({"day": GameState.day}))
+		state["flags"][str(job["sets_flag"]).format({"day": int(state["day"])})] = true
 
 	# A character with the right background gives a fuller report, if one has
 	# been written for them. Skill changes the detail, never who may do the job.
-	var key: String = "POWER_WATCH" if GameState.day == 3 and job.get("at_night", false) and GameState.power_incident.has("cause") else str(job["report"])
+	var key: String = "POWER_WATCH" if int(state["day"]) == 3 and job.get("at_night", false) and state["power_incident"].has("cause") else str(job["report"])
 	var personal: String = "%s_%s" % [key, npc_id.get_slice("_", 0).to_upper()]
 	if tr(personal) != personal:
 		key = personal
 	var report: Dictionary = {
-		"day": GameState.day, "minutes": GameState.minutes, "npc": npc_id,
-		"key": key, "args": GameState.resources.duplicate(),
+		"day": int(state["day"]), "minutes": at, "npc": npc_id,
+		"key": key, "args": state["resources"].duplicate(),
 	}
-	GameState.reports.append(report)
+	state["reports"].append(report)
 	return report
 
 

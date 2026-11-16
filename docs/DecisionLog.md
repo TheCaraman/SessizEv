@@ -109,3 +109,6 @@ Onaylı ses erişilebilirliği kapsamının ilk adımı ana ses düzeyidir (0–
 
 ## K-NIGHT-WITNESS-002 / 2026-11-17
 Day4Design içindeki masum banyo ziyareti canlı nöbete bağlanır. Yeni nöbet opt-in, gerçek kilit/koridor ölçümü, tüm hareket Daniel odasında beklerken; eski kayda tanık ekleme yok. İki uygun yetişkin seçimi enfeksiyondan bağımsız ID sırasıdır. İfadeler claim ve ilk10dk/tekrarücretsiz; kovma/izolasyon zaten mevcut. Onaylı kapsam uygulanır, yeni mekanik önerisi değildir. Bkz docs/qa/LiveNightWitness.md; tam Gün4 veya bütün gece AI'sı tamamlanmış sayılmaz.
+
+## K-DAY4-CLOSURE-001 / 2026-11-17
+Day4Design'daki ücretsiz erteleme ve20:00tamamlama uygulanır. Var olan bekleme deneyimini tek onaylı akşam beklemesiyle bağlamak için gündüz işlerinin aynı kayıtta saf projeksiyonu gerekir; mevcut iş çözümü ortak reducer'a ayrılır. Enerji/erzak vergisi, NPC zorunluluğu, teşhis ve yeni gece olayı eklenmez. Kapanış kesit sonudur; Gün4'ün eksik açık suçlama/yayın içeriği varmış gibi anlatılmaz. bkz docs/qa/Day4Closure.md.

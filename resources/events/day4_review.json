@@ -3,5 +3,6 @@
   "day": 4,
   "opening_keys": ["DAY4_REVIEW_TITLE", "DAY4_REVIEW_INTRO", "DAY4_REVIEW_LIMIT"],
   "action_cost_minutes": 0,
+  "closing_minute": 1200,
   "fallback": "No residents or collected evidence are required. Never invent testimony."
 }

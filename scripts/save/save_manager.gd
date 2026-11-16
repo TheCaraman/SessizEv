@@ -238,6 +238,19 @@ func _valid_state_shape(state: Dictionary) -> bool:
 			return false
 	if isolated_count > 1:
 		return false
+	for key: String in ["day4_review_deferred", "day4_review_completed"]:
+		if state["flags"].has(key) and not state["flags"][key] is bool:
+			return false
+		if state["flags"].get(key, false) and (int(state["day"]) < 4 or state["flags"].get("day4_reviewed") != true):
+			return false
+	if state["flags"].has("day4_review_completed_at"):
+		var at: Variant = state["flags"]["day4_review_completed_at"]
+		if state["flags"].get("day4_review_completed") != true or not _whole_number(at) or float(at) < 1200 or float(at) > 1439:
+			return false
+		if int(state["day"]) == 4 and int(at) > int(state["minutes"]):
+			return false
+	elif state["flags"].get("day4_review_completed", false):
+		return false
 	if state["flags"].has("night_witness_enabled") and not state["flags"]["night_witness_enabled"] is bool:
 		return false
 	if state["flags"].has("night_witness_record"):

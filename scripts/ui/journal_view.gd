@@ -2,6 +2,7 @@ class_name JournalView
 extends CanvasLayer
 signal closed
 var text: Label
+var _close_hint: Label
 func _ready() -> void:
 	layer = 15
 	# Cover lower HUD layers as well as the world. The journal is modal.
@@ -34,7 +35,20 @@ func _ready() -> void:
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.add_theme_font_size_override("font_size", 24)
 	scroll.add_child(text)
+	_close_hint = Label.new()
+	_close_hint.name = "JournalCloseHint"
+	_close_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_close_hint.offset_left = 80
+	_close_hint.offset_right = -80
+	_close_hint.offset_top = -64
+	_close_hint.offset_bottom = -24
+	_close_hint.add_theme_font_size_override("font_size", 20)
+	_close_hint.text = tr("JOURNAL_CLOSE_HINT")
+	add_child(_close_hint)
 	visible = false
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(_close_hint):
+		_close_hint.text = tr("JOURNAL_CLOSE_HINT")
 func open(content: String = "") -> void:
 	text.text = EvidenceManager.journal_text() if content.is_empty() else content
 	visible = true

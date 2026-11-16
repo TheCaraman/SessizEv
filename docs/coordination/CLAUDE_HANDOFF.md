@@ -1,8 +1,8 @@
 # Güncel ek — 2026-11-17 / ayrı aktif deneme dalı
 
-Aşağıdaki0.1.1 ve salt doğrulayıcı bilgileri tarihsel devirdir. Aktif oynanabilir kaynak workers/codex-house-atmosphere-v3, dalcodex/house-atmosphere-v3; sürüm0.1.5-dev.20261117.1. Kök/masaüstü başlatıcı bu worktree'yi açar; ana proje koduyla birleştirilmiş sayılmaz. Claude003 adayı ayrı korunur, otomatik taşınmadı.
+Aşağıdaki0.1.1 ve salt doğrulayıcı bilgileri tarihsel devirdir. Aktif oynanabilir kaynak workers/codex-house-atmosphere-v3, dalcodex/house-atmosphere-v3; sürüm0.1.6-dev.20261117.2. Kök/masaüstü başlatıcı bu worktree'yi açar; ana proje koduyla birleştirilmiş sayılmaz. Claude003 adayı ayrı korunur, otomatik taşınmadı.
 
-Yeni: HOUSE-ATMOS-004 tam üst hol ve kaynaklı ışık; kalıcı parlaklık/fare/FOV/ana ses; NIGHT-WITNESS-002 yeni Gün3 nöbetinde ölçülmüş masum hareket ve Gün4 çelişkili ifadeler. docs/qa/LiveNightWitness.md kapsam/test/sınır kaynağıdır. Eski aktif nöbete geçmiş tanık eklenmez; tümü sağlıklı evde de olay geçerli. Genel gece yönetmeni ve tam Gün4/kampanya eksik; sanat kabulü/elle tam oyun hâlâ açık. Güncel test sonuçları live-night-witness-last-run.json içinde kaydedilir.
+Yeni: HOUSE-ATMOS-004 tam üst hol ve kaynaklı ışık; kalıcı parlaklık/fare/FOV/ana ses; NIGHT-WITNESS-002 yeni Gün3 nöbetinde ölçülmüş masum hareket ve Gün4 çelişkili ifadeler. docs/qa/LiveNightWitness.md kapsam/test/sınır kaynağıdır. Eski aktif nöbete geçmiş tanık eklenmez; tümü sağlıklı evde de olay geçerli. DAY4-CLOSURE-001 ücretsiz erteleme, onaylı20:00bekleme, ortak aday iş çözümü ve güncel özet ekler (QA: Day4Closure.md). Genel gece yönetmeni ve tam Gün4/kampanya eksik; sanat kabulü/elle tam oyun hâlâ açık. Güncel test sonuçları live-night-witness-last-run.json içinde kaydedilir.
 
 ---
 

@@ -94,3 +94,6 @@ Ana ses düzeyi0–100% ve sıfırda mute uygulandı; kalıcılık/legacy/defaul
 
 ## NIGHT-WITNESS-002 / canlı olay
 Aktif ayrı dal0.1.5-dev.20261117.1. Yeni Gün3 nöbetinde boru sonrası Danielodasında beklerken ikiuygun yetişkinden masum banyo ziyareti; gerçek kapı/koridor ölçümü ve zamanlı gözlemci dönüşü. Gün4'te gerçek odada ikiiddia ve çelişki/fear açıklaması, ilk10dk/tekrarücretsiz; commitcandidate ile önce kayıt. Sağlıklı/enfekte eşdeğer, eski aktifgece backfill yok.25paket/6291 WASAPI, sonetiket/UI hedefli83 veGPU85PASS, EN/TR incelendi. TamGün4/geceAI/sanat onayı/elleoyun açık. QA:LiveNightWitness.md.
+
+## DAY4-CLOSURE-001
+0.1.6-dev.20261117.2: inceleme sonrası ücretsiz erteleme, iki onaylı20:00bekleme ve kapanış, güncel özet. Ortak saf işreducer adayda gündüz işlerini çözer, nightwatchpending; kayıthatasında saat/iş/rapor değişmez. Leave/load/stalestate onay iptali; quote save edilmez. Summary gizliinfectionokumaz, Gün5gece/tüketim yok. JournalCloseHint EN/TR görünür.26paket/, GPU238PASS. TamGün4 açık suçlama/yayın hâlâ eksik; sanat ve elleoyun açık. QA:Day4Closure.md.
