@@ -23,7 +23,7 @@ uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Gün 3 20:00–23:00'te
 kalma seçilirse 01/03/05/07 bekleme, gece araştırması, kalan geceyi uyuma ve enerji
 hesabı devreye girer. Boru sesi araştırılabilir masum bir olaydır; enfekte fail
 uydurmaz. Kayıt v5 gece yarısını ve tek sabah tüketimini korur. Hikâye içeriği Gün 4
-sabahı ana kesit sınırına ulaşır. Gün4 için ilk kanıt incelemesi, kovma/izolasyon ve uygun yeni gecede gerçek harekete dayanan çelişkili ifadeler vardır; tam Gün4 senaryosu henüz tamamlanmadı. İncelemeden sonra ücretsiz erteleme, 20:00 saatine onaylı bekleme ve kayıtlı kapanış özeti vardır. Kapanıştan sonra keşif/kararlar devam eder; Gün5 açılmaz.
+sabahı ana kesit sınırına ulaşır. Gün4 için ilk kanıt incelemesi, kovma/izolasyon ve uygun yeni gecede gerçek harekete dayanan çelişkili ifadeler vardır; tam Gün4 senaryosu henüz tamamlanmadı. İncelemeden sonra ücretsiz erteleme, 20:00 saatine onaylı bekleme ve kayıtlı kapanış özeti vardır. Kapanıştan sonra keşif/kararlar devam eder; Gün5 açılmaz. Üç yetişkine ayrı suçlama ekranında toplanmış kayıtlarla veya boş dayanakla suçlama yöneltilebilir. Genel elektrik bulgusu kişiyi belirlemez; gerçek tanık iddiası da enfeksiyon kanıtı değildir.
 Kaynak yetmezse onarım ertelenebilir; ilerleme tek bir NPC'ye bağlı değildir.
 
 13 oda arka planı ve Elena/Marcus/Arthur figürleri var. Yalnızca varsayılan

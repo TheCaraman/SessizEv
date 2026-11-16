@@ -59,3 +59,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | NIGHT-WITNESS-002 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | scripts/narrative/night_witness.gd, scripts/house/night_route_access.gd, NightSession/CampaignDirector/HouseBlockout/SaveManager/EvidenceManager, metin/veri/test; yeni nöbette gerçek erişimden masum banyo hareketi ve Gün4 ifadeleri | 2026-11-16 |
 
 | DAY4-CLOSURE-001 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | day4_closure.gd, Day4Review/CampaignDirector/SaveManager, ShelterManager ortak saf iş çözümü, event/metin/test/QA; erteleme,20:00bekleme,onaylı kesit özeti | 2026-11-17 |
+
+| DAY4-ACCUSATION-001 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | accusation.gd/json, AccusationView, CampaignDirector/HouseBlockout/EventBus/RoomView/GameState/SaveManager, evidence/metin/test/QA; seçilen gerçek kayıt dayanağı, desteklenmeyen suçlama, kişisel cevap,10dk/ilk-5güven | 2026-11-17 |

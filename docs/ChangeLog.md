@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.1.7-dev.20261117.3
+- Üç yetişkine açık suçlama: toplanmış kayıt seçimi, desteklenmeyen suçlama ayrımı, açık Review/Confirm ve varsayılan Cancel.
+- İlk10dk/güven bedeli, hedefe özel cevap, ücretsiz tekrar; önce kayıt, sonra canlı uygulama. Dayanak/karar hafızası v5 optional alanda korunur.
+- Gerçek hareket tanığı yalnız kendi subject kişisine bağlanır; iddia tanı veya sabotaj ispatı değildir. Genel elektrik bulgusu kişiyi belirlemez.
+- EN/TR modal, Tab/Escape, okunur özgün SVG seçim ikonları. QA: Accusation.md.
+- Gün4 tahliye radyo yayını ve kalan kampanya henüz tamamlanmadı.
+
 ## 0.1.6-dev.20261117.2
 - Gün4 incelemesinden sonra ücretsiz erteleme,20:00 saatine onaylı bekleme, onaylı kapanış ve tekrar açılabilen güncel özet.
 - Bekleme sırasında gündüz işlerinin tek kayıt adayında çözümü; ortak iş reducer ve pending gece işlerini koruma.

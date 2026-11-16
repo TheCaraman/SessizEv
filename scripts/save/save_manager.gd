@@ -238,6 +238,8 @@ func _valid_state_shape(state: Dictionary) -> bool:
 			return false
 	if isolated_count > 1:
 		return false
+	if not Accusation.valid_state(state):
+		return false
 	for key: String in ["day4_review_deferred", "day4_review_completed"]:
 		if state["flags"].has(key) and not state["flags"][key] is bool:
 			return false

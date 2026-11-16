@@ -20,6 +20,7 @@ var _watch_confirmation: bool = false
 var judgment := ResidentJudgment.new()
 var isolation := Isolation.new()
 var closure := Day4Closure.new()
+var accusation := Accusation.new()
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
@@ -39,6 +40,7 @@ var _warned_action: String = ""
 ## Called once by the session scene before play begins.
 func setup(dialogue: DialogueRunner) -> void:
 	closure.shelter = shelter
+	accusation.shelter = shelter
 	power = PowerIncident.new()
 	add_child(power)
 	night = NightSession.new()
@@ -69,6 +71,8 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
 	for action: Dictionary in closure.actions(room_id):
 		actions.append(action)
+	for id: String in accusation.targets(room_id):
+		actions.append({"id": "accuse:" + id, "label": tr("ACC_REREAD" if accusation.recorded(id) else "ACC_ACTION").format({"name": Roster.get_display_name(id)})})
 	for action: Dictionary in night.witness.actions(room_id):
 		actions.append(action)
 	for action: Dictionary in isolation.actions(room_id):
@@ -130,6 +134,15 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 		_repair_confirmation = false
 		return closure.perform(room_id, action_id.trim_prefix("day4:"))
 	closure.cancel()
+	if action_id.begins_with("accuse:"):
+		judgment.cancel()
+		isolation.cancel()
+		_repair_confirmation = false
+		var id: String = action_id.trim_prefix("accuse:")
+		if accusation.recorded(id):
+			return accusation.response(id)
+		EventBus.accusation_requested.emit(room_id, id)
+		return ""
 	if action_id.begins_with("witness:"):
 		judgment.cancel()
 		isolation.cancel()

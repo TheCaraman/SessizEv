@@ -16,6 +16,7 @@ extends Node3D
 @onready var _shelter_view: ShelterView = $ShelterView
 
 var _journal: JournalView
+var _accusation: AccusationView
 var _night_access: NightRouteAccess
 var _door_transition: bool = false
 
@@ -53,6 +54,15 @@ func _ready() -> void:
 	EventBus.shelter_view_opened.connect(_update_control)
 	EventBus.shelter_view_closed.connect(_update_control)
 	_director.setup(_dialogue)
+	_accusation = AccusationView.new()
+	_accusation.controller = _director.accusation
+	add_child(_accusation)
+	_accusation.closed.connect(_update_control)
+	_accusation.completed.connect(_room_view.show_response)
+	EventBus.accusation_requested.connect(func(room: String, id: String) -> void:
+		if _room_view.is_open() and str(_room_view.get_room_id()) == room:
+			_accusation.open(room, id)
+	)
 	_night_access = NightRouteAccess.new(self)
 	_director.night.witness.access = _night_access.measure
 	_director.night.witness.offscreen = func() -> bool:
@@ -177,7 +187,7 @@ func get_current_room() -> StringName:
 func _update_control() -> void:
 	# Ask the runner, not the view: the view hides a moment after the runner
 	# finishes.
-	var busy: bool = _door_transition or _journal.visible or _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
+	var busy: bool = _door_transition or _journal.visible or _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open() or (_accusation != null and _accusation.is_open())
 	# Assigning also re-applies the mouse mode, which the pause menu changes.
 	_player.control_enabled = not busy
 

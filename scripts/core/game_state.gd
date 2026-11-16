@@ -359,6 +359,8 @@ func from_dict(data: Dictionary, announce_day: bool = true) -> void:
 	flags = (data.get("flags", {}) as Dictionary).duplicate(true)
 	if flags.get("night_witness_record") is Dictionary:
 		flags["night_witness_record"] = _restore_numbers(flags["night_witness_record"])
+	if flags.get("day4_accusations") is Dictionary:
+		flags["day4_accusations"] = _restore_numbers(flags["day4_accusations"])
 	# JSON turns whole numbers into floats; flags hold counts as integers.
 	for key: String in flags:
 		if flags[key] is float and float(int(flags[key])) == flags[key]:

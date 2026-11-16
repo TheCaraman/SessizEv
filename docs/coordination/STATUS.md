@@ -97,3 +97,10 @@ Aktif ayrı dal0.1.5-dev.20261117.1. Yeni Gün3 nöbetinde boru sonrası Danielo
 
 ## DAY4-CLOSURE-001
 0.1.6-dev.20261117.2: inceleme sonrası ücretsiz erteleme, iki onaylı20:00bekleme ve kapanış, güncel özet. Ortak saf işreducer adayda gündüz işlerini çözer, nightwatchpending; kayıthatasında saat/iş/rapor değişmez. Leave/load/stalestate onay iptali; quote save edilmez. Summary gizliinfectionokumaz, Gün5gece/tüketim yok. JournalCloseHint EN/TR görünür.26paket/, GPU238PASS. TamGün4 açık suçlama/yayın hâlâ eksik; sanat ve elleoyun açık. QA:Day4Closure.md.
+
+## DAY4-ACCUSATION-001
+Sürüm 0.1.7-dev.20261117.3. Üç yetişkin için gerçek odada veya izolasyon kapısında açık suçlama: toplanmış kayıt seçimi, desteklenmeyen suçlama / hareket tanıklığı ayrımı, varsayılan İptal ve ayrı gözden geçirme/onay.
+
+İlk kez 10 dakika ve güven −5 (−100 tabanı); veri dosyasındaki geçici dengeleme değeri. Kişisel yanıtı tekrar okumak ücretsiz. Enfeksiyon, kovma ve izolasyon otomatik değişmez. Aktif gündüz işindeki hedef konuşmaya çekilmez; gelecek gece nöbeti ataması gündüz konuşmasını engellemez. Diğer biten işler aynı kayıt adayında çözülür. Yükleme, seçim ve durum değişikliği eski onayı iptal eder. Geçmiş kayıt kovulma sonrasında korunur.
+
+27 paket / 6809 denetim WASAPI ile geçti; gerçek GPU testi 141 denetim. EN/TR, 720p/1080p/1440p ve klavye odağı doğrulandı. Seçim ikonları okunur SVG kaynaklarıdır. Birleşik ikon/test komutu otomatik incelemede reddedildi; ayrı apply_patch düzenlemesi ve standart test aracıyla iş tamamlandı. QA: Accusation.md. Tam Gün4 radyo yayını, sonraki kampanya, nihai sanat ve elle tam oynama açık.

@@ -112,3 +112,6 @@ Day4Design içindeki masum banyo ziyareti canlı nöbete bağlanır. Yeni nöbet
 
 ## K-DAY4-CLOSURE-001 / 2026-11-17
 Day4Design'daki ücretsiz erteleme ve20:00tamamlama uygulanır. Var olan bekleme deneyimini tek onaylı akşam beklemesiyle bağlamak için gündüz işlerinin aynı kayıtta saf projeksiyonu gerekir; mevcut iş çözümü ortak reducer'a ayrılır. Enerji/erzak vergisi, NPC zorunluluğu, teşhis ve yeni gece olayı eklenmez. Kapanış kesit sonudur; Gün4'ün eksik açık suçlama/yayın içeriği varmış gibi anlatılmaz. bkz docs/qa/Day4Closure.md.
+
+## K-DAY4-ACCUSATION-001 / 2026-11-17
+Mevcut Day4Design açık suçlama seçimi, dayanak ve kişisel yanıt uygulanır.10dk/ilk-5trust D4-V2 küçük dengeleme varsayımı veri dosyasında; nihai denge onayı değildir. Genel fiziksel ipucu kişiyi belirlemez; yalnız gerçek görüşülmüş tanıklık kendi subject kişisine bağlanır ve hâlâclaim kalır. Boş dayanak açıkçaunsupported; teşhis/kovma/izolasyon otomatik değil. VarsayılanCancel, Review→Confirm, savebeforelive ve tekrarda ücretsizyanıt. Gelecek nöbeti görevi gündüz konuşmasını engellemez; aktif iş farklıdır. bkz Accusation.md.

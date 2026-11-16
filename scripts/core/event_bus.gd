@@ -76,3 +76,6 @@ signal shelter_view_closed
 
 @warning_ignore("unused_signal")
 signal review_requested(text: String)
+
+@warning_ignore("unused_signal")
+signal accusation_requested(room_id: String, npc_id: String)

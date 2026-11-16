@@ -146,11 +146,17 @@ func perform_action(action_id: String) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if get_parent().has_node("AccusationView") and get_parent().get_node("AccusationView").is_open():
+		return
 	if not visible or (get_parent().has_node("ShelterView") and get_parent().get_node("ShelterView").is_open()):
 		return
 	if event.is_action_pressed(&"pause") or event.is_action_pressed(&"interact"):
 		close()
 		get_viewport().set_input_as_handled()
+
+func show_response(content: String) -> void:
+	_set_narration(content)
+	_refresh()
 
 
 ## Rebuilds everything that depends on campaign state: who is here, what can

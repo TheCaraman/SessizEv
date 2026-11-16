@@ -189,3 +189,10 @@ Dayanak4de7e6c. NightSessionwitness+NightRouteAccess ölçümü, offscreenCallab
 
 ## 2026-11-17 / Codex / DAY4-CLOSURE-001
 Dayanak50cdc75 ayrıaktifdal. Day4Closure RefCounted/CampaignDirector injectedShelterManager; optionalflags,defer/wait/complete/summary. Öncekicomplete mantığı _complete_in(state,id,at) ortakreducer, project_daytime safcandidate; mevcutnormal/nightcomplete kuralları korunur. Onayquote tümstatecompare,roomclose/day_startedloadcancel, savedbeforelive. Timestampsemantics; summary currentpublicstate, fixedcompletiontime. JournalCloseHint ve actualpauseeventtest.26paket/; closure236 veGPU238, EN/TR720p/1080p/1440p. Kaynak/kampanya ayarları korunur. GüncelChangeLog oluşturuldu, README/CLAUDE_HANDOFF güncellendi. Görev bırakıldı; tamGün4/yayın/açık suçlama/ilişkiler eksik.
+
+## 2026-11-17 / Codex / DAY4-ACCUSATION-001
+Dayanak 5b75b02, ayrı aktif dal. Accusation (RefCounted), AccusationView (CanvasLayer24), EventBus isteği ve aynı RoomView içinde kişisel yanıt eklendi. Kurallar/yanıtlar/basis kataloğu veri dosyasında. Save v5 optional flags/day4_accusations[id] karar ve belleği tutar; record/claim eşliği, kaynak ve zaman doğrulanır, iç içe sayılar normalize edilir.
+
+Gerçek NightWitness.subject ile eşleşen görüşülmüş iddia hareket dayanağıdır; enfeksiyon veya sabotaj kanıtı değildir. Genel güç bulgusu kişiyi belirlemez. Varsayılan Cancel, Review→Confirm, kayıttan önce canlı değişiklik yok; ilk10dk/güven−5, tekrarda ücretsiz yanıt. Hedef konumu/konuşabilirliği/işi kontrol edilir, izolasyonda kapıdan konuşulur. Diğer biten işler aynı adayda ortak reducer ile çözülür.
+
+27 paket / 6809 denetim WASAPI, suçlama139 ve GPU141 geçti. EN/TR üç çözünürlük ve gerçek Tab/Escape eylemi doğrulandı. SVG ikon kontrastı iyileştirildi. Birleşik komutun policy reddi yürütülmüş test sayılmaz; ayrı apply_patch ve Run-Tests başarılı. Ayrıntı QA: Accusation.md, accusation-last-run.json. Görev sahipliği bırakıldı. Sonraki bağımlılık Gün4 tahliye yayınıdır; genel ilişkiler/tam kampanya ve sanat kabulü eksik.
