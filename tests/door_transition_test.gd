@@ -36,9 +36,24 @@ func _ready() -> void:
 	await get_tree().create_timer(0.7).timeout
 	check(room.is_open() and room.get_room_id() == "living_room" and not player.control_enabled, "opening resolves to correct room")
 	check(is_equal_approx(room._root.modulate.a, 1.0), "room fade finishes")
+	var open_angle: float = absf(door.get_node("Hinge").rotation.y)
 	room.close()
-	check(player.control_enabled and is_zero_approx(door.get_node("Hinge").rotation.y), "close returns control and resets leaf")
+	check(player.control_enabled, "leaving the room returns control at once")
+	check(door.is_closing() and absf(door.get_node("Hinge").rotation.y) > open_angle * 0.9, "door is still open when the corridor reappears")
+	check(door.get_node("RoomThreshold").visible, "dark recess stays behind the open leaf while it closes")
+	door.interact(player)
+	check(not room.is_open() and player.control_enabled, "a closing door cannot be reopened mid-swing")
+	await get_tree().create_timer(0.2).timeout
+	var mid: float = absf(door.get_node("Hinge").rotation.y)
+	check(mid > 0.01 and mid < open_angle, "leaf visibly swings shut")
+	await get_tree().create_timer(RoomDoor.CLOSE_SECONDS).timeout
+	check(not door.is_closing() and is_zero_approx(door.get_node("Hinge").rotation.y), "leaf ends fully closed")
 	check(not door.get_node("RoomThreshold").visible and GameState.to_dict() == before, "threshold hides and transition consumes no campaign time")
+	door.interact(player)
+	check(not player.control_enabled, "a closed door can be opened again")
+	await get_tree().create_timer(1.0).timeout
+	check(room.is_open() and room.get_room_id() == "living_room", "reopening reaches the same room")
+	room.close()
 	scene.free()
 	await get_tree().process_frame
 	if failures == 0:

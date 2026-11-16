@@ -14,9 +14,13 @@ var room_id: StringName = &""
 var locked: bool = false
 ## True for the house's front door.
 var is_front: bool = false
+## How long the leaf takes to swing shut after the player leaves the room.
+const CLOSE_SECONDS: float = 0.45
+
 var _hinge: Node3D
 var _opening: bool = false
 var _held_open: bool = false
+var _closing: bool = false
 var _tween: Tween
 var _portal: MeshInstance3D
 var _width: float = 0.9
@@ -38,13 +42,31 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	_cover.visible = false
 	transition.add_child(_cover)
 	leaf.reparent(_hinge, true)
-	EventBus.room_view_closed.connect(func(_room: StringName) -> void:
-		if _held_open:
-			_hinge.rotation.y = 0.0
-			_held_open = false
-			if _portal != null:
-				_portal.visible = false
+	EventBus.room_view_closed.connect(_on_room_view_closed)
+
+
+## Back in the corridor the door is still standing open where the player left
+## it, and swings shut behind them. Control returns at once; the door cannot
+## be reopened until it has closed. (DOOR-CLOSE-001)
+func _on_room_view_closed(_room: StringName) -> void:
+	if not _held_open:
+		return
+	_held_open = false
+	_closing = true
+	if _tween != null and _tween.is_valid():
+		_tween.kill()
+	_tween = create_tween()
+	_tween.tween_property(_hinge, "rotation:y", 0.0, CLOSE_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_callback(func() -> void:
+		_closing = false
+		if _portal != null:
+			_portal.visible = false
 	)
+
+
+## True while the leaf is swinging shut after leaving a room.
+func is_closing() -> bool:
+	return _closing
 
 func _show_room_threshold() -> void:
 	# A dark recess instead of a miniature copy of the fullscreen room.
@@ -89,7 +111,7 @@ func interact(player: Node) -> void:
 		return
 	if locked or room_id == &"":
 		return
-	if _opening or _held_open:
+	if _opening or _held_open or _closing:
 		return
 	if _hinge == null:
 		return

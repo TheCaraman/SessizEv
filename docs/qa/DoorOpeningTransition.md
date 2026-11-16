@@ -9,3 +9,10 @@ Dosyalar: scripts/house/room_door.gd, house_builder.gd; scripts/ui/room_view.gd;
 Doğrulama: 22 paket/6033 denetim geçti; gerçek Forward+ DOOR TRANSITION TEST 9 denetim ve door-opening.png görüntüsü açılıp incelendi. Menteşe, oda görünmeden önce hareket, geçişte kontrol kilidi, eşik görüntüsü, doğru odaya tek açılış, fade, çıkışta reset ve kampanya saatinin değişmemesi sınandı. Mevcut Interaction testi açılış süresine göre güncellendi; anlık açılışı varsaymıyor. Başlangıç başlığı ekran görüntüsünde test kampanyası açılış bildirimi olarak hâlâ görünüyor; oda resminin parçası değil.
 
 Bilinen sınırlar: Kamera kapıya otomatik yaklaşmıyor; oda içi 2D bağlantılar animasyonsuz. Kapatma sırasında ters menteşe animasyonu yok. Eşik resminde NPC/prop katmanı henüz yok; tam oda açılınca katmanlar mevcut düzenle yüklenir. Koridor geometri/paleti ve diğer odaların gerçekçi geçici sanatı henüz düzeltilmedi. Bunlar sıradaki ana görsel iştir, bitmiş diye sunulmaz.
+
+## Kapanış — DOOR-CLOSE-001 (2026-11-16, Claude)
+Odadan çıkınca kanat artık anında sıfırlanmıyor: koridor açık kapıyla geri gelir, kanat 0,45 sn'de
+kapanır (`RoomDoor.CLOSE_SECONDS`). Kontrol hemen oyuncuya döner; kapanırken kapı yeniden açılmaz,
+koyu eşik kanat kapanana kadar görünür kalır. Oyun zamanı harcanmaz. Kapanış sesi yok.
+Test: door_transition_test 15 denetim (önce 8); tam regresyon 22 paket PASS.
+Elle oynanışta hissi denenmedi.

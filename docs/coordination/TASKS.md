@@ -46,3 +46,4 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | ART-LIGHT-UTILITY-001 | TAMAM | Codex (sahiplik bırakıldı) | assets/rooms/variants/utility_*.png, room_visuals.json, room_lighting_test, provenance ve QA | 2026-11-16 |
 | CORRIDOR-REFERENCE-002 | DEVİR | Claude (sahip incelemesi; sahiplik bırakıldı) | Perde/çerçeve/küçük eşya ve üst koridor tamamlandı; docs/qa/CorridorProps.md. Nihai kabul sahibinde | 2026-11-16 |
 | QA-AUDIO-EXIT-001 | BEKLİYOR | — | presentation_test kapanışındaki AudioStreamWAV/PlaybackWAV ObjectDB uyarısının yaşam döngüsünü çöz; işlev testleri geçiyor | 2026-11-16 |
+| DOOR-CLOSE-001 | TAMAM | Claude (sahiplik bırakıldı) | Odadan çıkışta kapının kapanarak dönmesi (CLAUDE_HANDOFF madde 2): scripts/house/room_door.gd, tests/door_transition_test.*, docs/qa/DoorOpeningTransition.md | 2026-11-16 |

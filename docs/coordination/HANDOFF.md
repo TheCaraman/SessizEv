@@ -164,3 +164,5 @@ Yapılan: perdeler tek parça kıvrımlı, ışık geçiren kumaş; resimlerde d
 Gerçek GPU 1920×1080 koridor/giriş/üst kat gündüz-gece ve yakın çekim görüntüleri alınıp incelendi. Elle fare/klavye oynanışı YOK. Sahibin estetik kabulü YOK; görev DEVİR (sahip incelemesi).
 Eski oturum klasöründeki yarım DAY2-003 dosyalarım geçersiz ve dokunulmadı; o işi Codex işçisi 1b3ee8f ile bitirmişti.
 Sonraki: devir notu madde 2 (kapı kapanış animasyonu) veya 3 (QA-AUDIO-EXIT-001); NIGHT-001 ve ART-CHAR-002 Codex'te AKTİF görünüyor, dokunulmadı.
+## 2026-11-16 / Claude / DOOR-CLOSE-001
+Dayanak 253d1da. CLAUDE_HANDOFF madde 2: çıkışta ters kapanış animasyonu. room_door.gd ve door_transition_test (8→15 denetim). Tam regresyon 22 paket PASS (tqh-tests-47a5d7470bd84bc3b2fbab05662f31bd). Yeni kart/zoom yok; giriş kilidi ve oyun zamanı korunuyor. Kapanış sesi ve elle his denemesi açık. Sahiplik bırakıldı.
