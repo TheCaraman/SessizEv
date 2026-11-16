@@ -62,3 +62,6 @@ Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim d
 
 ## Koridor ilk yeniden yapım
 3m dolaşım, batı sınırıx4, yeni mat yüzey/alt yeşil boya/döşeme ve yuvarlak armatürler bağlandı. 22 paket/6036; alt/üst kat gerçek render incelendi. docs/qa/CorridorRebuild.md. VISUAL-REBUILD-001 AKTİF: kalan 11oda stil dönüşümü ve son ortak görsel kontrol gerekli; kullanıcı bitince bildirim istiyor, ara sürümü bitti diye sunma.
+
+## Mekân testi için bütün ev revizyonu
+13 ana oda ortak çizim dilinde, koridor 3m ve yeni malzeme/ışık, fiziksel kapı geçişi mevcut. 22 paket/6036 denetim; gerçek GPU galeri 13oda görüntüsü PASS. 11 yeni kaynak ayrı ayrı incelendi. docs/art/WholeHouseGraphicRevision.md. VISUAL-REBUILD-001 DEVİR: sahibi koridor/odaları test edebilir; nihai sanat kabulü değildir. Karakterler, ayrı gece/elektriksiz varyantlar ve bazı koridor eşyaları ayrıca açık. Kullanıcıya hazır bildirimi artık yapılabilir.

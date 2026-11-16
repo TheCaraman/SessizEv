@@ -2,7 +2,7 @@
 
 Sürüm 0.2 · 2026-11-16 · K-011 ve K-012'ye göre yeniden yazıldı. Önceki "kirli PS1" yönü geçersizdir.
 
-Güncel sahip onayı: ART-REV-003 çizimsel yönü koru ve ilk odayı oyunda göster. Oturma odası ve mutfak artık bu örneğin çizim dilini kullanır; kalan 11 oda eski geçici sanattır. Koridorda ilk 3m dolaşım/geometri ve mat sıva-yeşil alt boya geçişi uygulandı; nihai sanat kabulü değildir. Kalın/koyu konturlar, sade biçimler, yeşil gölgeler ve hafif çarpık perspektif esas; önceki boyanmış gerçekçilik yönü geçersizdir. Referanslar yalnızca atmosfer/biçim içindir; sahneler kopyalanmaz.
+Güncel sahip onayı: ART-REV-003 çizimsel yönü koru ve ilk odayı oyunda göster. 13 ana oda artık bu örneğin aynı çizim diline taşındı. Koridorda 3m dolaşım/geometri ve mat sıva-yeşil alt boya geçişi uygulandı. Mekân test sürümü hazır; sahibin nihai görsel kabulü beklenir. Ayrıntı docs/art/WholeHouseGraphicRevision.md; karakter üslubu ve ayrı gece/elektriksiz varyantlar açık. Kalın/koyu konturlar, sade biçimler, yeşil gölgeler ve hafif çarpık perspektif esas; önceki boyanmış gerçekçilik yönü geçersizdir. Referanslar yalnızca atmosfer/biçim içindir; sahneler kopyalanmaz.
 
 ## 1. Sunum biçimi (K-011)
 

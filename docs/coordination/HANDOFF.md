@@ -145,3 +145,6 @@ Dayanak dc311d5. Yalnız veri/rota doğrulayıcısı; oyun olay üretimi tamamla
 
 ## 2026-11-16 / Codex / VISUAL-REBUILD-001 ilk dilim
 Sahip odaların tutarsızlığını, koridorun darlığını/atmosferini ve anlık resim geçişini reddetti; koridorun tamamen yeniden yapımına izin verdi. Menteşe ve eşik/fade çalışıyor, 22 paket/6033, GPU9. Mutfak yeni çizimsel üslupta gerçek RoomView'da incelendi. Görev AKTİF: koridor ve diğer odalar devam. Gece tanığı üretimine başlamadan öncelik değişti; o kod yazılmadı.
+
+## 2026-11-16 / Codex / VISUAL-REBUILD-001 mekân teslimi
+Dayanak a9b376b. Kalan11oda çizimsel yeniden üretildi ve bağlandı; 13anaoda artık ortak master. Özgün eski kaynaklar ve prompt/provenans saklandı, manifest temizlendi. 22paket/6036, GPUgaleri13 PASS. Kaynaklar incelendi, örnek gerçek RoomView'lar kontrol edildi. Kullanıcı bitince test edeceğini söyledi; bu revizyon test için hazırdır. Genel oyun hedefi devam eder. Nihai grafik kabulü ve ayrı gece/güç varyantları/karakterler açık.
