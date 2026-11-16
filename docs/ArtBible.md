@@ -66,14 +66,21 @@ No text, no logos, no people. 16:9.
 
 ## 5. 2D karakter görselleri — üretim kuralları
 
-- **Biçim:** saydam arka planlı PNG, ayakta tam boy; yükseklik yaklaşık 900 piksel.
-- **Dosya yolu (planlanan):** `assets/characters/<karakter_kimliği>/<poz>.png`.
+- **Biçim:** saydam arka planlı PNG, ayakta tam boy; ilk üç kaynak 1024×1536.
+- **Dosya yolu:** `assets/characters/<karakter_kimliği>/default.png`.
 - **Tekinsizlik herkese uygulanır.** Yüzler hafifçe "yanlış" durur; bu, enfekte olanı ele veren bir işaret olamaz.
 - Aynı karakterin farklı pozlarında yüz ve giysi tutarlı kalmalıdır. Yapay zekâ araçlarında bu zordur; her karakter için önce tek bir referans görsel onaylanır, diğer pozlar ondan türetilir.
-- Karakter katmanını dolduracak sistem henüz yazılmadı.
+- Karakter katmanı gerçek sakin durumundan doldurulur. İlk üç figür Elena, Marcus
+  ve Arthur'dur. Oda ekranında ayaklar ortak zemin çizgisine oturur; konuşmada aynı
+  kaynağın üst bölgesi yakın kadrajda gösterilir. Enfekte/sağlıklı ayrı resim yok.
 
 ## 6. Dürüst sınırlar
 
 - Koridor dokuları kodla üretildiği için yapay ve tekrarlı görünür; boyanmış dokular gelince değişecek.
-- Hiçbir oda ve karakter görseli henüz yok.
+- 13 adet 2D odanın tamamında insan içermeyen arka plan var. Kaynaklar 1672×941;
+  1920×1080 önizlemelerde yumuşak ölçeklenir, yapay büyütme kaynak dosyaya işlenmez.
+- İlk üç karakterin yalnızca varsayılan pozu var; konuşma animasyonu ve ifade varyantları yok.
+- Gece ve kesinti için ayrı boyanmış varyantlar henüz yok. Tek resmin modülasyonla
+  karartılması, pencere ve lambaların ayrı fiziksel ışık katmanları olduğu anlamına gelmez.
+- Tam üretim istemleri docs/art/prompts/, ölçü/saydamlık/SHA256 kayıtları asset_manifest.json içinde.
 - Yapay zekâyla üretilen görsellerin ticari kullanım hakları, kullanılan aracın şartlarına bağlıdır; yayından önce lisans denetimi yapılacak.

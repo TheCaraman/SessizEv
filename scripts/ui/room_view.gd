@@ -17,6 +17,7 @@ extends CanvasLayer
 const TEXT_COLOR := Color(0.86, 0.84, 0.72)
 const ROOM_IMAGE_PATH: String = "res://assets/rooms/%s.png"
 const CHARACTER_IMAGE_PATH: String = "res://assets/characters/%s/default.png"
+const RoomFigureScript = preload("res://scripts/art/room_figure.gd")
 
 var _director: CampaignDirector
 var _room_id: StringName = &""
@@ -177,12 +178,8 @@ func _make_button(text: String) -> Button:
 func _make_figure(npc_id: String) -> Control:
 	var path: String = CHARACTER_IMAGE_PATH % npc_id
 	if ResourceLoader.exists(path):
-		var picture := TextureRect.new()
+		var picture := RoomFigureScript.new()
 		picture.texture = load(path) as Texture2D
-		picture.custom_minimum_size = Vector2(300.0, 560.0)
-		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		return picture
 	var silhouette := Panel.new()
 	silhouette.custom_minimum_size = Vector2(220.0, 520.0)
@@ -231,8 +228,8 @@ func _build_interface() -> void:
 	_character_layer.name = "Characters"
 	_character_layer.anchor_left = 0.2
 	_character_layer.anchor_right = 0.8
-	_character_layer.anchor_top = 0.16
-	_character_layer.anchor_bottom = 0.72
+	_character_layer.anchor_top = 0.42
+	_character_layer.anchor_bottom = 0.90
 	_character_layer.alignment = BoxContainer.ALIGNMENT_CENTER
 	_character_layer.add_theme_constant_override(&"separation", 40)
 	_character_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
