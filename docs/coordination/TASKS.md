@@ -14,11 +14,13 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 | DAY3-001 | TAMAM | Codex otomatik işçi | b39c60d: koşullu kesinti, kanıt, günlük; 2250 denetim | 2026-11-16 |
 | POLISH-SLICE-001 | TAMAM | Codex (sahiplik bırakıldı) | Kesin onarım onayı, olay/saat ışığı, katman tonu, opak günlük, 10 paket/2349 denetim; elle tam oynama ayrı açık | 2026-11-16 |
 | ART-REV-001 | TAMAM | Codex (sahiplik bırakıldı) | Sahip ART-REV-003 yönünü onayladı; ilk oda üretime bağlandı, diğer odalar ve TV/radyo katmanı açık | 2026-11-16 |
-| NIGHT-001 | AKTİF | Codex | NightTimeline saf hesap tamam; GameState v5/gece saati/UI entegrasyonu sırada | 2026-11-16 |
+| NIGHT-001 | AKTİF | Codex | Saat/kayıt/UI bağlı ve 1440p sınandı; fiziksel giriş QA'sı izin reddi aldı, geceye sonradan katılma sınırı açık | 2026-11-16 |
 | NIGHT-002 | TAMAM | Codex (sahiplik bırakıldı) | Tek masum boru olayı, ses/altyazı, inceleme ve kayıt; 16 paket/5595 denetim; genel yönetmen değil | 2026-11-16 |
 | ART-ROOM-001 | TAMAM | Codex (sahiplik bırakıldı) | Oturma odası arka planı; Claude kampanya içinde doğruladı. Ayrıntı claims/ART-ROOM-001.md | 2026-11-16 |
 | ART-ROOM-002 | TAMAM | Codex sanatçı | 13 odanın tamamı görselli; e4e9dad, 388dec6 birleşimi; ArtBible ve docs/art | 2026-11-16 |
 | ART-CHAR-001 | TAMAM | Codex sanatçı | Elena, Marcus, Arthur saydam figürleri; oda zemin hizası ve konuşma kadrajı | 2026-11-16 |
+| ART-CHAR-002 | AKTİF | Codex | Elena çizimsel aday örneği ve konuşma önizlemesi; mevcut default.png korunur | 2026-11-16 |
+| DAY4-DESIGN-001 | AKTİF | Tasarım alt ajanı; koordinasyon Codex | Yalnız docs/Day4Design.md; mevcut kanon ve 0–3 sakin için sonraki gün şartnamesi, uygulama değil | 2026-11-16 |
 
 Yeni kayıt: ID, sahip, durum, düzenlenecek tam göreli yollar, başlama zamanı,
 dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
