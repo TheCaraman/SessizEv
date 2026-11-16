@@ -50,6 +50,23 @@
   noktasında başlanır. Yeni sınıf eklendiği için başka bir kopyada önce `--import` gerekir.
   Sıradaki mantıklı görev DAY2-001 (önce `docs/Day2Design.md`).
 - Görev sahipliği bırakıldı mı: Evet.
+## 2026-11-16 — Codex — DAY2-001
+
+- Günlük kontrolünde Claude'un SAVE-002 üzerinde aktif olduğu görüldü; bu yüzden
+  ana menü işine girilmedi. Ayrı dosyalarda Gün 2 tasarımı çalışıldı.
+- Dosyalar: docs/Day2Design.md, docs/coordination/claims/DAY2-001.md.
+  Claude sahipliği bıraktıktan sonra TASKS.md, STATUS.md ve bu günlük güncellendi.
+- Dayanak: 7f36500; teslim sırasında Claude'un ca900fe commit'i ve devir notları okundu.
+- Tasarım: Marcus/Arthur ziyaretleri, beklemeyi kesen kapı olayı, özgün diyalog taslakları,
+  radyo söylentisi, yataklar, tek işlemli atama, işler ve 14 kabul testi.
+- Mevcut durum modeliyle karşılaştırıldı: beds/jobs için kayıt sürümü göçü gerekecek;
+  enfeksiyon ataması göçte yeniden hesaplanmamalı. Uyku odası etkinlik konumu değildir.
+- Doğrulama: belgeler kanon ve mevcut API'lerle karşılaştırıldı, git diff --check.
+  Bu görev belge işi olduğu için yeni motor testi çalıştırılmadı. Claude'un 207 denetim
+  sonucu kendi SAVE-002 teslimine aittir; burada tekrar çalıştırılmış sayılmaz.
+- Gün 2 kodu yok; DAY2-002 ziyaret/diyalog uygulamasıyla başlanabilir.
+- Dosya sahipliği bırakıldı. Ortak dal değiştirilmedi; yalnızca bu görevin dosyaları commit edildi.
+
 ## Her teslimde kullanılacak şablon
 
 Tarih / asistan / görev / dal / dayanak commit:

@@ -11,6 +11,8 @@ Koridorlar 3D, odalar 2D. Depo penceresiz geri kondu; giriş penceresi duruyor.
 
 - Codex: COORD-001 tamamlandı; dosya sahipliği bırakıldı. Ortak çalışma belgeleri,
   ayrı proje kopyasında test komutu ve Git aktarım betiği hazır.
+- Codex: DAY2-001 tamamlandı; Gün 2 şartnamesi docs/Day2Design.md içinde.
+  Kod henüz uygulanmadı; uygulama DAY2-002 olarak sırada. Dosya sahipliği bırakıldı.
 - Claude: SAVE-002 tamamlandı; dosya sahipliği bırakıldı. Klasörün HEAD'i feat/save-002-menu-continue dalında.
 - Uzak depo: Sahibin tercihiyle şimdilik yalnızca yerel depo.
 - Kaynak klasör: Oturumun oluşturduğu klasör; kalıcı taşıma henüz yapılmadı.
