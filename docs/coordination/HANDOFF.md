@@ -139,3 +139,6 @@ Dayanak c62c66c. İlk tek günlük izolasyon hazırlama/yerleştirme/salıverme,
 
 ## 2026-11-16 / Codex / DAY4-CARE-001
 Dayanak d558a2d. Temel kontrol ve kişisel bakım yanıtları, ücretsiz aynı gün tekrar. 20 paket/5986; GPU73. Masaüstü kısayolu da kullanıcı isteğiyle gerçek Desktop dizinine yazıldı ve hedefi doğrulandı. Sahiplik bırakıldı; gerçek gece tanığı/nihai sanat/ileri gün bakımı açık.
+
+## 2026-11-16 / Codex / NIGHT-WITNESS-001
+Dayanak dc311d5. Yalnız veri/rota doğrulayıcısı; oyun olay üretimi tamamlanmadı. 21 paket/6024; observation38. Gelecek üretici gerçek kaynaklardan snapshot almalı, görünür teleport ve geçmiş tanık yok. Sahiplik bırakıldı.

@@ -53,3 +53,6 @@ Hazırlama 30dk/1repair, yerleştirme15dk, salıverme10dk; ayrı onaylar/kayıt.
 
 ## İzolasyon temel kontrolü
 Yerleştirmede temel kontrol kaydı ve üç kişisel yanıt; aynı gün ücretsiz tekrar. Eski işaretsiz geçerli izolasyonda 15dk/iki basış. Teşhis/tedavi yok. 20 paket/5986, GPU73. docs/qa/IsolationCare.md. Sahibin isteğiyle masaüstüne THE QUIET HOURS.lnk eklendi, hedefi doğrulandı. Genel günlük bakım/ihmal ve ileri günler açık.
+
+## Tanıklık veri sözleşmesi
+NightObservation saf doğrulayıcı ve üç gerçek üst kat rotası hazır. 21 paket/6024 denetim geçti. docs/qa/NightObservation.md. Bu modül canlı oyunda henüz tanık üretmez; sahne-yerel olay üretimi, gerçek erişim/uyanıklık ölçümü ve kayıt bağlantısı sonraki iştir. Eski kayda tanık eklenmez.

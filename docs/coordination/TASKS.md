@@ -38,3 +38,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | DAY4-ISOLATE-001 | TAMAM | Codex (sahiplik bırakıldı) | isolation.gd/json, GameState konum, SaveManager doğrulama, ShelterManager/View, CampaignDirector, localization ve isolation test/QA | 2026-11-16 |
 
 | DAY4-CARE-001 | TAMAM | Codex (sahiplik bırakıldı) | isolation.gd/json, localization, isolation_test ve QA | 2026-11-16 |
+
+| NIGHT-WITNESS-001 | TAMAM | Codex (sahiplik bırakıldı; yalnız doğrulayıcı) | scripts/narrative/night_observation.gd, resources/events/night_observation.json, tests/night_observation_test.*, tools/Run-Tests.ps1, docs/qa/NightObservation.md | 2026-11-16 |

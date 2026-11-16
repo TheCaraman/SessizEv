@@ -1,0 +1,14 @@
+{
+  "day": 3,
+  "earliest": 1501,
+  "latest": 1859,
+  "allowed_adults": ["elena_ward", "marcus_hale", "arthur_bell"],
+  "routes": {
+    "guest_a": ["guest_a", "corridor", "bathroom_upper", "corridor", "guest_a"],
+    "guest_b": ["guest_b", "landing", "corridor", "bathroom_upper", "corridor", "landing", "guest_b"],
+    "multipurpose": ["multipurpose", "landing", "corridor", "bathroom_upper", "corridor", "landing", "multipurpose"]
+  },
+  "subject_reason": "bathroom_visit",
+  "observer_reason": "checking_after_pipe_noise",
+  "denial_reason": "fear_of_accusation"
+}
