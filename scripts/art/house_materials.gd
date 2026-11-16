@@ -52,6 +52,14 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 	return _flat(Color.MAGENTA, 1.0)
 
 
+## A plain-coloured material for small props (coats, books, shoes). Cached by colour.
+static func get_flat(color: Color) -> StandardMaterial3D:
+	var key: String = "flat_" + color.to_html()
+	if not _cache.has(key):
+		_cache[key] = _flat(color, 1.0)
+	return _cache[key]
+
+
 static func _flat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color

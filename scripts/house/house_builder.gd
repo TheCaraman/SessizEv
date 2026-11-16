@@ -32,6 +32,10 @@ func build() -> void:
 	_build_lamps()
 	_build_runners()
 
+	var dressing := CorridorDressing.new()
+	dressing.name = "CorridorDressing"
+	add_child(dressing)
+
 
 func _build_slabs() -> void:
 	var w: float = HouseLayout.WIDTH
@@ -189,6 +193,12 @@ func _add_door(
 		_add_mesh(door, Vector3(handle_x - 0.055, 1.06, face + side * 0.042), Vector3(0.13, 0.018, 0.018), &"brass")
 		_add_mesh(door, Vector3(handle_x, 0.96, face + side * 0.013), Vector3(0.018, 0.03, 0.006), &"trim_dark")
 
+	# Light switch beside the door, on both faces of the wall.
+	for face_side: float in [-1.0, 1.0]:
+		var switch_z: float = face_side * (wall_thickness * 0.5 + 0.008)
+		_add_mesh(door, Vector3(width * 0.5 + 0.28, 1.15, switch_z), Vector3(0.085, 0.085, 0.016), &"frame_paint")
+		_add_mesh(door, Vector3(width * 0.5 + 0.28, 1.155, switch_z + face_side * 0.01), Vector3(0.022, 0.04, 0.012), &"frame_paint")
+
 	# Architrave: a wide flat casing with a narrower raised bead on top of it,
 	# on both sides of the wall, plus the lining inside the opening.
 	var lining_depth: float = wall_thickness + 0.02
@@ -236,6 +246,43 @@ func _build_stairs() -> void:
 		Vector3(angle, 0.0, 0.0)
 	)
 	ramp.name = "Stairs"
+	# The ramp is only what the player walks on; the visible stairs are steps.
+	(ramp.get_child(1) as MeshInstance3D).visible = false
+
+	var steps := Node3D.new()
+	steps.name = "Steps"
+	add_child(steps)
+	var count: int = 16
+	var step_rise: float = rise / float(count)
+	var step_run: float = run / float(count)
+	var inner_width: float = stairs.size.x - HouseLayout.INTERIOR_WALL_THICKNESS
+	for i: int in count:
+		var top: float = step_rise * float(i + 1)
+		var z: float = stairs.end.y - step_run * (float(i) + 0.5)
+		# Solid block up to this step, a paler riser, and a tread with a nosing.
+		_add_mesh(steps, Vector3(center.x, top * 0.5, z), Vector3(inner_width, top, step_run), &"wood_stairs")
+		_add_mesh(
+			steps, Vector3(center.x, top - step_rise * 0.5, z + step_run * 0.5 + 0.004),
+			Vector3(inner_width, step_rise - 0.03, 0.008), &"frame_paint"
+		)
+		_add_mesh(
+			steps, Vector3(center.x, top - 0.012, z + 0.014),
+			Vector3(inner_width, 0.03, step_run + 0.03), &"wood_stairs"
+		)
+
+	# Handrail on the hall-side wall, following the slope, on four brackets.
+	var rail_x: float = stairs.position.x + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + 0.07
+	var rail: MeshInstance3D = _add_mesh(
+		steps, Vector3(rail_x, rise * 0.5 + 0.95, center.y),
+		Vector3(0.05, 0.05, sqrt(rise * rise + run * run) - 0.3), &"wood_stairs"
+	)
+	rail.rotation.x = angle
+	for i: int in 4:
+		var t: float = (float(i) + 0.5) / 4.0
+		_add_mesh(
+			steps, Vector3(rail_x - 0.035, rise * t + 0.92, stairs.end.y - run * t),
+			Vector3(0.07, 0.02, 0.02), &"brass"
+		)
 
 
 ## Pale plaster ceiling panels over the corridors and the stairwell.

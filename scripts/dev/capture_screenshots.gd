@@ -11,11 +11,11 @@ const OUTPUT_DIR: String = "res://docs/screenshots"
 ## name, position (x, y, z), yaw in degrees (positive turns left), pitch in
 ## degrees. An optional "room" opens that room's 2D view for the shot.
 const SHOTS: Array[Dictionary] = [
-	{"name": "01_upper_corridor_to_window", "position": Vector3(6.0, 2.8, 3.4), "yaw": 180.0, "pitch": -4.0},
-	{"name": "02_upper_window_close", "position": Vector3(7.4, 2.8, 8.0), "yaw": 145.0, "pitch": 0.0},
-	{"name": "03_upper_corridor_from_window", "position": Vector3(6.6, 2.8, 9.4), "yaw": 8.0, "pitch": -6.0},
-	{"name": "04_entrance_window", "position": Vector3(5.4, 0.0, 8.9), "yaw": -118.0, "pitch": 0.0},
-	{"name": "05_hall_looking_south", "position": Vector3(6.0, 0.0, 3.4), "yaw": 180.0, "pitch": -6.0},
+	{"name": "01_hall_from_entrance", "position": Vector3(6.0, 0.0, 9.5), "yaw": 0.0, "pitch": -4.0},
+	{"name": "02_entrance_coats_window", "position": Vector3(5.5, 0.0, 9.5), "yaw": -70.0, "pitch": -4.0},
+	{"name": "03_hall_table_lamp", "position": Vector3(5.5, 0.0, 4.3), "yaw": -140.0, "pitch": -10.0},
+	{"name": "04_stairs_from_foot", "position": Vector3(7.6, 0.0, 8.3), "yaw": 0.0, "pitch": 12.0},
+	{"name": "05_upper_corridor", "position": Vector3(6.0, 2.8, 3.4), "yaw": 180.0, "pitch": -6.0},
 	{"name": "06_room_view_placeholder", "position": Vector3(6.4, 0.0, 6.6), "yaw": 65.0, "pitch": 0.0, "room": &"kitchen"},
 ]
 
