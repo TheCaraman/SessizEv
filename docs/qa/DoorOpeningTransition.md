@@ -1,0 +1,11 @@
+# Kapı açılışı — görsel yeniden yapımın ilk dilimi
+
+Sahibin son geri bildirimi görsel tutarlılık, geniş ve atmosferli koridor ve kapının fiziksel açılışıdır. Gece tanıklığı üretimi ertelendi. Bu teslim koridor yeniden yapımının tamamı değildir.
+
+RoomDoor artık Hinge → DoorLeaf altındaki panel/kol geometrisini 0.65 saniyede 82 derece açar; çerçeve ve ışık anahtarı sabit kalır. Oyuncunun hangi tarafta olduğuna göre uzak tarafa açılır. Sabit çarpışma korunur; oyuncu animasyonda yürüyemez ve boş 3D odaya girmez. Açılan aralıkta RoomVisuals'ın gün/saat/elektrik durumuna uygun gerçek oda resmi görünür. Görüntü kapıya sıkıştırılmaz: merkezden en-boy oranı korunarak kırpılır. Sonra RoomView 0.25 saniyede görünür olur. Tekrar basma ikinci geçiş oluşturmaz. Oda kapandığında yaprak ve eşik görüntüsü sıfırlanır. Ön kapı/ziyaretçi konuşması ve kilitli kapı davranışı korunur.
+
+Dosyalar: scripts/house/room_door.gd, house_builder.gd; scripts/ui/room_view.gd; scripts/core/event_bus.gd; scripts/dev/house_blockout.gd; tests/interaction_test.gd; tests/door_transition_test.gd/.tscn; tools/Run-Tests.ps1. Hiyerarşi HouseBuilder → RoomDoor(StaticBody3D) → CollisionShape3D + Hinge/DoorLeaf + sabit çerçeve/anahtar + gerektiğinde RoomThreshold. Yeni autoload yok. Godot 4.7.2 içe aktar; koridorda E ile oda kapısını kullan. Programatik RoomView.open ve iç oda bağlantıları doğrudan açılır; 3D kapı etkileşimi animasyonlu yoldur. Ses tasarımı bu teslimde eklenmedi.
+
+Doğrulama: 22 paket/6033 denetim geçti; gerçek Forward+ DOOR TRANSITION TEST 9 denetim ve door-opening.png görüntüsü açılıp incelendi. Menteşe, oda görünmeden önce hareket, geçişte kontrol kilidi, eşik görüntüsü, doğru odaya tek açılış, fade, çıkışta reset ve kampanya saatinin değişmemesi sınandı. Mevcut Interaction testi açılış süresine göre güncellendi; anlık açılışı varsaymıyor. Başlangıç başlığı ekran görüntüsünde test kampanyası açılış bildirimi olarak hâlâ görünüyor; oda resminin parçası değil.
+
+Bilinen sınırlar: Kamera kapıya otomatik yaklaşmıyor; oda içi 2D bağlantılar animasyonsuz. Kapatma sırasında ters menteşe animasyonu yok. Eşik resminde NPC/prop katmanı henüz yok; tam oda açılınca katmanlar mevcut düzenle yüklenir. Koridor geometri/paleti ve diğer odaların gerçekçi geçici sanatı henüz düzeltilmedi. Bunlar sıradaki ana görsel iştir, bitmiş diye sunulmaz.

@@ -1,0 +1,12 @@
+{
+    "asset":  "assets/rooms/kitchen.png",
+    "width":  1672,
+    "height":  941,
+    "sha256":  "E11B5A3D7508EE8D6F43860619D3828B430D122FD619E651D9E697899522A8BD",
+    "source":  "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-e10f3661-d67a-477b-8808-48926bf28914.png",
+    "style_reference":  "assets/rooms/living_room.png",
+    "composition_reference":  "docs/art/concepts/previous-kitchen.png",
+    "status":  "integrated_under_owner_style_correction",
+    "lighting_variants":  "not_yet_authored",
+    "preview":  "docs/art/previews/kitchen_in_game.png"
+}

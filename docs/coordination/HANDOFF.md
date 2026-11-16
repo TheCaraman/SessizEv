@@ -142,3 +142,6 @@ Dayanak d558a2d. Temel kontrol ve kişisel bakım yanıtları, ücretsiz aynı g
 
 ## 2026-11-16 / Codex / NIGHT-WITNESS-001
 Dayanak dc311d5. Yalnız veri/rota doğrulayıcısı; oyun olay üretimi tamamlanmadı. 21 paket/6024; observation38. Gelecek üretici gerçek kaynaklardan snapshot almalı, görünür teleport ve geçmiş tanık yok. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / VISUAL-REBUILD-001 ilk dilim
+Sahip odaların tutarsızlığını, koridorun darlığını/atmosferini ve anlık resim geçişini reddetti; koridorun tamamen yeniden yapımına izin verdi. Menteşe ve eşik/fade çalışıyor, 22 paket/6033, GPU9. Mutfak yeni çizimsel üslupta gerçek RoomView'da incelendi. Görev AKTİF: koridor ve diğer odalar devam. Gece tanığı üretimine başlamadan öncelik değişti; o kod yazılmadı.

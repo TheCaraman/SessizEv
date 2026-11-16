@@ -171,7 +171,10 @@ func _add_door(
 	collision.position = Vector3(0.0, height * 0.5, 0.0)
 	door.add_child(collision)
 
-	_add_mesh(door, Vector3(0.0, height * 0.5, 0.0), Vector3(width, height, DOOR_THICKNESS), &"door_paint")
+	var leaf := Node3D.new()
+	leaf.name = "DoorLeaf"
+	door.add_child(leaf)
+	_add_mesh(leaf, Vector3(0.0, height * 0.5, 0.0), Vector3(width, height, DOOR_THICKNESS), &"door_paint")
 	# Panels: a wide one at the top, two tall ones below, a low one at the foot.
 	# Each is three stepped layers (moulding, field, raised centre).
 	var panels: Array[Rect2] = [
@@ -184,15 +187,16 @@ func _add_door(
 		var face: float = side * DOOR_THICKNESS * 0.5
 		for panel: Rect2 in panels:
 			var c: Vector2 = panel.get_center()
-			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.004), Vector3(panel.size.x, panel.size.y, 0.008), &"trim_door")
-			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.007), Vector3(panel.size.x - 0.05, panel.size.y - 0.05, 0.014), &"door_panel_paint")
-			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.012), Vector3(panel.size.x - 0.13, panel.size.y - 0.13, 0.024), &"door_paint")
+			_add_mesh(leaf, Vector3(c.x, c.y, face + side * 0.004), Vector3(panel.size.x, panel.size.y, 0.008), &"trim_door")
+			_add_mesh(leaf, Vector3(c.x, c.y, face + side * 0.007), Vector3(panel.size.x - 0.05, panel.size.y - 0.05, 0.014), &"door_panel_paint")
+			_add_mesh(leaf, Vector3(c.x, c.y, face + side * 0.012), Vector3(panel.size.x - 0.13, panel.size.y - 0.13, 0.024), &"door_paint")
 		# Handle: backplate, spindle boss, lever and keyhole cover.
 		var handle_x: float = width * 0.5 - 0.075
-		_add_mesh(door, Vector3(handle_x, 1.02, face + side * 0.006), Vector3(0.04, 0.20, 0.012), &"brass")
-		_add_mesh(door, Vector3(handle_x, 1.06, face + side * 0.022), Vector3(0.028, 0.028, 0.032), &"brass")
-		_add_mesh(door, Vector3(handle_x - 0.055, 1.06, face + side * 0.042), Vector3(0.13, 0.018, 0.018), &"brass")
-		_add_mesh(door, Vector3(handle_x, 0.96, face + side * 0.013), Vector3(0.018, 0.03, 0.006), &"trim_dark")
+		_add_mesh(leaf, Vector3(handle_x, 1.02, face + side * 0.006), Vector3(0.04, 0.20, 0.012), &"brass")
+		_add_mesh(leaf, Vector3(handle_x, 1.06, face + side * 0.022), Vector3(0.028, 0.028, 0.032), &"brass")
+		_add_mesh(leaf, Vector3(handle_x - 0.055, 1.06, face + side * 0.042), Vector3(0.13, 0.018, 0.018), &"brass")
+		_add_mesh(leaf, Vector3(handle_x, 0.96, face + side * 0.013), Vector3(0.018, 0.03, 0.006), &"trim_dark")
+	door.configure_leaf(leaf, width)
 
 	# Light switch beside the door, on both faces of the wall.
 	for face_side: float in [-1.0, 1.0]:

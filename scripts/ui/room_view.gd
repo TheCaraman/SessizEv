@@ -37,6 +37,7 @@ var _placeholder_texture: Texture2D
 var _visuals := RoomVisuals.new()
 var _visual_variant: String = ""
 var _visual_path: String = ""
+var _reveal_tween: Tween
 
 
 func get_visual_variant() -> String:
@@ -47,7 +48,7 @@ func _ready() -> void:
 	layer = 5
 	_build_interface()
 	visible = false
-	EventBus.room_view_requested.connect(open)
+	EventBus.room_view_requested.connect(_reveal_from_door)
 	EventBus.residents_changed.connect(_refresh)
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _refresh())
 	EventBus.dialogue_ended.connect(func(_id: String) -> void: _refresh())
@@ -87,6 +88,9 @@ func get_narration_text() -> String:
 
 
 func open(room_id: StringName) -> void:
+	if _reveal_tween != null and _reveal_tween.is_running():
+		_reveal_tween.kill()
+	_root.modulate.a = 1.0
 	var room: Dictionary = HouseLayout.get_room(room_id)
 	if room.is_empty() or HouseLayout.WALKABLE_ROOMS.has(room_id):
 		push_warning("RoomView: '%s' is not a 2D room" % room_id)
@@ -102,11 +106,20 @@ func open(room_id: StringName) -> void:
 	_refresh()
 	EventBus.room_view_opened.emit(_room_id)
 
+func _reveal_from_door(room_id: StringName) -> void:
+	open(room_id)
+	_root.modulate.a = 0.0
+	_reveal_tween = create_tween()
+	_reveal_tween.tween_property(_root, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_SINE)
+
 
 func close() -> void:
 	if not visible:
 		return
 	visible = false
+	if _reveal_tween != null:
+		_reveal_tween.kill()
+	_root.modulate.a = 1.0
 	EventBus.room_view_closed.emit(_room_id)
 
 

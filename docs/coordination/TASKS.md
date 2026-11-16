@@ -40,3 +40,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | DAY4-CARE-001 | TAMAM | Codex (sahiplik bırakıldı) | isolation.gd/json, localization, isolation_test ve QA | 2026-11-16 |
 
 | NIGHT-WITNESS-001 | TAMAM | Codex (sahiplik bırakıldı; yalnız doğrulayıcı) | scripts/narrative/night_observation.gd, resources/events/night_observation.json, tests/night_observation_test.*, tools/Run-Tests.ps1, docs/qa/NightObservation.md | 2026-11-16 |
+
+| VISUAL-REBUILD-001 | AKTİF | Codex | Sahibin geri bildirimi: koridor baştan, tüm odalarda çizimsel tutarlılık; ilk dilim room_door/house_builder, RoomView, EventBus, HouseBlockout ve etkileşim testi | 2026-11-16 |

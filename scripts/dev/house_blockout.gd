@@ -16,6 +16,7 @@ extends Node3D
 @onready var _shelter_view: ShelterView = $ShelterView
 
 var _journal: JournalView
+var _door_transition: bool = false
 
 var _current_room: StringName = &""
 var _electric_lights: Array[Node3D] = []
@@ -29,6 +30,10 @@ func _ready() -> void:
 	_journal = JournalView.new()
 	add_child(_journal)
 	_journal.closed.connect(_update_control)
+	EventBus.door_transition_changed.connect(func(active: bool) -> void:
+		_door_transition = active
+		_update_control()
+	)
 	EventBus.review_requested.connect(func(content: String) -> void:
 		_room_view.close()
 		_journal.open(content)
@@ -70,6 +75,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _door_transition:
+		get_viewport().set_input_as_handled()
+		return
 	# Rooms and conversations take the pause key first; this only runs while
 	# the player is walking the corridors.
 	if event.is_action_pressed("journal") and not (_room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open() or _pause_menu.is_open()):
@@ -147,7 +155,7 @@ func get_current_room() -> StringName:
 func _update_control() -> void:
 	# Ask the runner, not the view: the view hides a moment after the runner
 	# finishes.
-	var busy: bool = _journal.visible or _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
+	var busy: bool = _door_transition or _journal.visible or _room_view.is_open() or _dialogue.is_active() or _shelter_view.is_open()
 	# Assigning also re-applies the mouse mode, which the pause menu changes.
 	_player.control_enabled = not busy
 

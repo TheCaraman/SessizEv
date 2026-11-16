@@ -85,3 +85,6 @@ Güncel dengeleme varsayımı (DAYTIME-REST): gündüz 60 dakika dinlenme 15 ene
 |---|---|
 | 2026-11-16 | Proje iskeleti ve ilk belge seti oluşturuldu. |
 | 2026-11-16 | Faz 1.1 doğrulandı: proje Godot 4.7.2'de başsız içe aktarıldı ve açılış sahnesi hatasız, uyarısız çalıştı; dokuz girdi eylemi kaydedildi. Pencereli (görsel) çalıştırma henüz yapılmadı. |
+
+## Sahip geri bildirimi — koridor ve oda tutarlılığı
+Sahip oturma odasını hedefe yakın buldu, diğer odaların gerçekçi geçici üslubunu reddetti. Koridorun dar, atmosferden uzak ve harita açısından başarısız olduğunu belirtti; tamamen baştan yapılmasına açıkça izin verdi. Kapıya etkileşimde fiziksel açılış animasyonu istedi. Bu yön mevcut onaylı çizimsel oda stilinin bütün eve taşınmasıdır; PS1/pikselleştirme geri getirilmeyecek. İlk teknik dilim kapı açılışıdır; diğer görsel işler devam eder.

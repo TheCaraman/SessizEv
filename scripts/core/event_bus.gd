@@ -22,6 +22,9 @@ signal room_view_opened(room_id: StringName)
 @warning_ignore("unused_signal")
 signal room_view_closed(room_id: StringName)
 
+@warning_ignore("unused_signal")
+signal door_transition_changed(active: bool)
+
 ## The campaign clock moved. [param minutes] is minutes since midnight.
 @warning_ignore("unused_signal")
 signal time_changed(day: int, minutes: int)

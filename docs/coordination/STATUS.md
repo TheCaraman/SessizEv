@@ -56,3 +56,6 @@ Yerleştirmede temel kontrol kaydı ve üç kişisel yanıt; aynı gün ücretsi
 
 ## Tanıklık veri sözleşmesi
 NightObservation saf doğrulayıcı ve üç gerçek üst kat rotası hazır. 21 paket/6024 denetim geçti. docs/qa/NightObservation.md. Bu modül canlı oyunda henüz tanık üretmez; sahne-yerel olay üretimi, gerçek erişim/uyanıklık ölçümü ve kayıt bağlantısı sonraki iştir. Eski kayda tanık eklenmez.
+
+## Görsel yeniden yapım — sahibin yeni önceliği
+Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim diline taşınacak. İlk dilim: fiziksel menteşe/oda eşiği/fade kapı geçişi, 22 paket/6033 denetim, GPU9. Mutfak aynı referansla yeniden çizilip bağlandı, gerçek RoomView görüntüsü incelendi. Koridor geometri/malzeme yenilemesi ve kalan 11 oda henüz yapılmadı. Mutfakta ayrı gece/elektriksiz görseller de açık. Gece tanığı üretimi öncelik dışına alındı. docs/qa/DoorOpeningTransition.md; docs/art/kitchen-graphic-revision.json.
