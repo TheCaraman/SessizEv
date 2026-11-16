@@ -1,3 +1,5 @@
+Güncel ek: gece araştırmasından sonra katılma uygulandı; docs/qa/LateNightWatch.md son davranışı ve doğrulamayı kaydeder. Aşağıdaki erken sürüm sınırları tarihseldir.
+
 # NIGHT-001 — ilk oynanabilir nöbet
 
 ## Amaç ve teslim

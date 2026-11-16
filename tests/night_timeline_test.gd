@@ -47,6 +47,15 @@ func _ready() -> void:
 		invalid.merge(broken, true)
 		check(not mixed.from_dict(invalid) and mixed.to_dict() == state, "malformed night rejected atomically")
 	check(GameState.to_dict() == original, "pure module never consumes or changes infection")
+	for late_start: int in [1400, 1439, 1500, 1740, 1859]:
+		var late := NightTimeline.new()
+		check(late.begin(3, 100, late_start) and late.energy() == 100, "late start has no retroactive cost")
+		late.advance_to(1860)
+		var late_copy := NightTimeline.new()
+		check(late_copy.from_dict(JSON.parse_string(JSON.stringify(late.to_dict()))), "late start JSON boundaries valid")
+		check(late_copy.to_dict()["awake_minutes"] == 1860 - late_start, "only remaining minutes accounted")
+	var invalid_start := NightTimeline.new()
+	check(not invalid_start.begin(3, 100, 1379) and not invalid_start.begin(3, 100, 1860), "out-of-night start rejected")
 	if failures == 0:
 		print("NIGHT TIMELINE TEST: PASS (%d checks)" % checks)
 	get_tree().quit(0 if failures == 0 else 1)

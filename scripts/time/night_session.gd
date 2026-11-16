@@ -9,13 +9,13 @@ func _ready() -> void:
 ## Scene-local owner of the optional Day 3 watch. Durable data is in GameState.
 
 func can_start() -> bool:
-	return GameState.active and GameState.day == 3 and GameState.minutes >= 1200 and GameState.minutes <= 1380 and GameState.visitor == "" and GameState.night_session.is_empty()
+	return GameState.active and GameState.day == 3 and GameState.minutes >= 1200 and GameState.minutes <= GameState.LAST_MINUTE and GameState.visitor == "" and GameState.night_session.is_empty()
 
 func begin_watch() -> bool:
 	if not can_start():
 		return false
 	var timeline := NightTimeline.new()
-	if not timeline.begin(GameState.day, int(GameState.player["energy"])):
+	if not timeline.begin(GameState.day, int(GameState.player["energy"]), maxi(GameState.minutes, GameState.NIGHT_START)):
 		return false
 	GameState.night_session = timeline.to_dict()
 	GameState.advance_minutes(maxi(0, 1380 - GameState.minutes))

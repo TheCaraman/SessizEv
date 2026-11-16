@@ -68,6 +68,36 @@ func _ready() -> void:
 			room.close()
 			session.free()
 			await get_tree().process_frame
+	# A player who first slept and investigated can still choose to stay awake.
+	GameState.new_campaign(42)
+	GameState.day = 3
+	GameState.minutes = 1200
+	var late_session: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
+	add_child(late_session)
+	late_session.get_node("Player").set_physics_process(false)
+	var late_room: RoomView = late_session.get_node("RoomView")
+	late_room.open("daniel_bedroom")
+	late_room.perform_action("sleep")
+	late_room.close()
+	late_room.open("utility")
+	for action: String in ["power:panel", "power:access", "power:outside"]:
+		late_room.perform_action(action)
+	var incident_before: Dictionary = GameState.power_incident.duplicate(true)
+	late_room.close()
+	late_room.open("daniel_bedroom")
+	check(GameState.minutes == 1400 and late_room.get_action_ids().has("watch"), "late watch offered after twenty minutes investigation")
+	late_room.perform_action("watch")
+	late_room.perform_action("watch")
+	check(GameState.minutes == 1400 and GameState.player["energy"] == 100, "late choice adds no retroactive time or energy")
+	check(GameState.night_session["start_minute"] == 1400 and GameState.power_incident == incident_before, "late watch records real start and preserves incident")
+	late_room.perform_action("wait_watch")
+	check(GameState.minutes == 1500 and GameState.player["energy"] == 92, "first late interval charges actual hundred minutes")
+	check(SaveManager.save_game("night_watch") == OK and SaveManager.load_game("night_watch"), "late watch loads through v5 validation")
+	for step: int in 3:
+		late_room.perform_action("wait_watch")
+	check(GameState.day == 4 and GameState.player["energy"] == 62 and GameState.resources["food"] == 11, "remaining watch resolves once without fictitious earlier fatigue")
+	late_room.close()
+	late_session.free()
 	SaveManager.delete_save("night_watch")
 	if failures == 0:
 		print("NIGHT WATCH TEST: PASS (%d checks)" % checks)

@@ -29,3 +29,6 @@ Gün 4+ kampanya, kapsamlı gece nöbeti, yargılama, kalan karakterler, ses, ni
 ## Koordinasyon
 
 Görev sahipliği TASKS.md, devir HANDOFF.md, ayrıntılı kararlar DecisionLog.md içinde tutulur. Mesaj dosyası diğer asistanı kendiliğinden uyandırmaz; okuma onayı olmadan okundu denmez.
+
+## Son teknik ek — geç nöbet
+Gün 3 nöbetine 23:59'a kadar katılma, gerçek başlangıca göre enerji ve v5 yükleme uygulandı. Tam regresyon 16 paket/5632 denetim; son metinle gerçek GPU sunumu 100 denetim. docs/qa/LateNightWatch.md. Manuel oynama açık. Elena v2 adaydır; üretim default değişmedi. Gün 4 yalnızca incelenmiş tasarım, kod değil.

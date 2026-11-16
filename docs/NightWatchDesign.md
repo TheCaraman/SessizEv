@@ -1,3 +1,5 @@
+Güncel ek: gece araştırmasından sonra katılma uygulandı; docs/qa/LateNightWatch.md son davranışı ve doğrulamayı kaydeder. Aşağıdaki erken sürüm sınırları tarihseldir.
+
 # Aktif gece — NIGHT-001 uygulama şartnamesi
 
 Durum: Uygulama öncesi teknik tasarım. Bu belge oynanabilir gece nöbeti değildir. Mevcut Gün 1–3 sürümü korunur; üretim kodunda henüz gece saati genişletilmedi.

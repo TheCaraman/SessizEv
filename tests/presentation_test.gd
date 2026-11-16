@@ -46,6 +46,21 @@ func _ready() -> void:
 				check(viewport.get_texture().get_image().save_png(path) == OK, "capture saved")
 			view.close()
 	var director: CampaignDirector = scene.get_node("CampaignDirector")
+	for resolution: Vector2i in [Vector2i(1920, 1080), Vector2i(2560, 1440)]:
+		viewport.size = resolution
+		for locale: String in ["en", "tr"]:
+			TranslationServer.set_locale(locale)
+			view.open("daniel_bedroom")
+			view.perform_action("watch")
+			for frame: int in 6:
+				await get_tree().process_frame
+			var confirm_bounds := Rect2(Vector2.ZERO, Vector2(resolution))
+			check(confirm_bounds.encloses(view._narration_panel.get_global_rect()), "full watch confirmation fits " + locale)
+			check(not GameState.night_in_progress(), "layout preview cannot confirm by accident")
+			if "--capture-presentation" in OS.get_cmdline_user_args():
+				await RenderingServer.frame_post_draw
+				check(viewport.get_texture().get_image().save_png("res://docs/qa/watch-confirmation-%s-%d.png" % [locale, resolution.x]) == OK, "confirmation capture saved")
+			view.close()
 	check(director.night.begin_watch(), "presentation fixture starts actual watch")
 	director.perform_room_action("daniel_bedroom", "wait_watch")
 	check(GameState.minutes == 1500, "presentation fixture reaches actual 01:00")

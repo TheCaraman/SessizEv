@@ -5,10 +5,13 @@ const RULES_PATH: String = "res://resources/events/night_watch.json"
 var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RULES_PATH))
 var _state: Dictionary = {}
 
-func begin(day: int, energy: int) -> bool:
+func begin(day: int, energy: int, start_minute: int = -1) -> bool:
 	if not _state.is_empty() or day != int(rules["day"]) or energy < 0 or energy > 100:
 		return false
-	_state = {"day": day, "state": "awake", "start_minute": int(rules["start"]), "cursor_minute": int(rules["start"]), "awake_minutes": 0, "asleep_minutes": 0, "initial_energy": energy, "resolved_boundaries": [], "morning_resolved": false}
+	var start: int = int(rules["start"]) if start_minute == -1 else start_minute
+	if start < int(rules["start"]) or start >= int(rules["end"]):
+		return false
+	_state = {"day": day, "state": "awake", "start_minute": start, "cursor_minute": start, "awake_minutes": 0, "asleep_minutes": 0, "initial_energy": energy, "resolved_boundaries": [], "morning_resolved": false}
 	return true
 
 func to_dict() -> Dictionary:
@@ -74,14 +77,14 @@ func valid(data: Dictionary) -> bool:
 		var value: Variant = data.get(key)
 		if not (value is int or value is float) or not is_finite(float(value)) or float(value) != floorf(float(value)):
 			return false
-	if int(data["day"]) != int(rules["day"]) or int(data["start_minute"]) != int(rules["start"]):
+	if int(data["day"]) != int(rules["day"]) or int(data["start_minute"]) < int(rules["start"]) or int(data["start_minute"]) >= int(rules["end"]):
 		return false
 	var cursor: int = int(data["cursor_minute"])
-	if cursor < int(rules["start"]) or cursor > int(rules["end"]):
+	if cursor < int(data["start_minute"]) or cursor > int(rules["end"]):
 		return false
 	if int(data["initial_energy"]) < 0 or int(data["initial_energy"]) > 100 or int(data["awake_minutes"]) < 0 or int(data["asleep_minutes"]) < 0:
 		return false
-	if int(data["awake_minutes"]) + int(data["asleep_minutes"]) != cursor - int(rules["start"]):
+	if int(data["awake_minutes"]) + int(data["asleep_minutes"]) != cursor - int(data["start_minute"]):
 		return false
 	if data.get("state") not in ["awake", "sleeping", "resolved"] or not data.get("morning_resolved") is bool or not data.get("resolved_boundaries") is Array:
 		return false
@@ -90,7 +93,8 @@ func valid(data: Dictionary) -> bool:
 	var expected: Array = []
 	var boundary: int = int(rules["start"]) + int(rules["boundary_minutes"])
 	while boundary <= cursor:
-		expected.append(boundary)
+		if boundary > int(data["start_minute"]):
+			expected.append(boundary)
 		boundary += int(rules["boundary_minutes"])
 	var actual: Array = data["resolved_boundaries"]
 	if actual.size() != expected.size():
