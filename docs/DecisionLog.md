@@ -55,6 +55,7 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-022 | Diyaloglar esources/dialogue/*.json dosyalarındadır; metinler çeviri anahtarıdır ve İngilizce ile Türkçe birlikte yazılır. | V-007 |
 | V-023 | Otomatik kayıt her yeni günün başında alınır (user://saves/autosave.json). Kayıttan devam etme ekranı henüz yok. | V-006 |
 | V-024 | Elena'nın 1. gündeki konuşması enfekte olsa da olmasa da aynıdır; enfeksiyon ilk gün hiçbir işaret vermez. Kardeşi hakkındaki cümlesi her iki durumda da yalandır (kişisel sır), enfeksiyon belirtisi değildir. | Kanonik kural 13, 14 |
+| V-025 | Tek kayıt yuvası vardır. Otomatik kayıt (her sabah) ve elle kayıt (Daniel'ın odası; kapıda biri yokken ve konuşma sürmüyorken) aynı yuvaya yazar. Oyuncunun konumu kaydedilmez. Bozuk ya da daha yeni sürümden kayıt "yok" sayılır. | SAVE-002 |
 
 ## Açık konular
 | A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |

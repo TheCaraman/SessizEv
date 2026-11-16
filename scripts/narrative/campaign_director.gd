@@ -41,6 +41,8 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 				actions.append({"id": "rest", "label": tr("ACTION_REST")})
 			if can_sleep():
 				actions.append({"id": "sleep", "label": tr("ACTION_SLEEP")})
+			if can_save():
+				actions.append({"id": "save", "label": tr("ACTION_SAVE")})
 	for npc_id: String in GameState.get_room_occupants(room_id):
 		if _dialogue_for(npc_id) != "":
 			actions.append({
@@ -78,7 +80,18 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 			return tr("NARR_REST")
 		"sleep":
 			return _resolve_night()
+		"save":
+			var error: Error = SaveManager.save_game()
+			if error != OK:
+				return tr("NARR_SAVE_FAILED")
+			return tr("NARR_SAVED").format({"day": GameState.day, "time": GameState.get_clock_text()})
 	return ""
+
+
+## Daniel can save in his own room at any quiet moment: not while someone is
+## at the door and not in the middle of a conversation (V-006).
+func can_save() -> bool:
+	return GameState.visitor == "" and not _dialogue.is_active()
 
 
 func can_sleep() -> bool:

@@ -1,18 +1,18 @@
 extends Node3D
 ## The play session: the house, the player, the campaign director and the
-## interface layers, wired together. (The file keeps its early name; a main
-## menu and proper scene flow come later.)
+## interface layers, wired together. (The file keeps its early name.)
 ##
-## Until a pause menu exists, the pause key releases or recaptures the mouse.
+## Normally entered from the main menu, which starts or loads the campaign
+## first. Run directly, it starts a new campaign itself.
 
 @onready var _player: PlayerController = $Player
+@onready var _pause_menu: PauseMenu = $PauseMenu
 @onready var _dialogue: DialogueRunner = $DialogueRunner
 @onready var _director: CampaignDirector = $CampaignDirector
 @onready var _room_view: RoomView = $RoomView
 @onready var _dialogue_view: DialogueView = $DialogueView
 
 var _current_room: StringName = &""
-var _mouse_released: bool = false
 
 
 func _ready() -> void:
@@ -32,12 +32,16 @@ func _ready() -> void:
 	EventBus.room_view_closed.connect(func(_id: StringName) -> void: _update_control())
 	EventBus.dialogue_started.connect(func(_id: String) -> void: _update_control())
 	EventBus.dialogue_ended.connect(func(_id: String) -> void: _update_control())
+	_pause_menu.closed.connect(_update_control)
+	_update_control()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Rooms and conversations take the pause key first; this only runs while
+	# the player is walking the corridors.
 	if event.is_action_pressed(&"pause"):
-		_mouse_released = not _mouse_released
-		_update_control()
+		_pause_menu.open()
+		get_viewport().set_input_as_handled()
 
 
 func _physics_process(_delta: float) -> void:
@@ -52,9 +56,8 @@ func _update_control() -> void:
 	# Ask the runner, not the view: the view hides a moment after the runner
 	# finishes.
 	var busy: bool = _room_view.is_open() or _dialogue.is_active()
-	if busy:
-		_mouse_released = false
-	_player.control_enabled = not busy and not _mouse_released
+	# Assigning also re-applies the mouse mode, which the pause menu changes.
+	_player.control_enabled = not busy
 
 
 func _build_environment() -> void:

@@ -37,22 +37,40 @@ func save_game(slot: String = AUTOSAVE_SLOT) -> Error:
 ## Loads a campaign into GameState. Returns false if the file is missing,
 ## unreadable, or from a newer version of the game.
 func load_game(slot: String = AUTOSAVE_SLOT) -> bool:
+	var state: Dictionary = _read_state(slot)
+	if state.is_empty():
+		return false
+	GameState.from_dict(state)
+	return true
+
+
+## A few facts about a save for menus, without loading it: {"day", "minutes"}.
+## Returns an empty dictionary if there is no usable save in the slot.
+func get_summary(slot: String = AUTOSAVE_SLOT) -> Dictionary:
+	var state: Dictionary = _read_state(slot)
+	if state.is_empty():
+		return {}
+	return {"day": int(state.get("day", 1)), "minutes": int(state.get("minutes", 0))}
+
+
+## Reads and validates a save, returning its state dictionary, or an empty
+## dictionary if the file is missing, damaged or from a newer version.
+## A damaged file is an expected situation, not a program error, so it is
+## handled quietly.
+func _read_state(slot: String) -> Dictionary:
 	var path: String = get_path_for(slot)
 	if not FileAccess.file_exists(path):
-		return false
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
-	if not parsed is Dictionary:
-		push_warning("SaveManager: %s is not a valid save" % path)
-		return false
-	var payload: Dictionary = parsed
+		return {}
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(path)) != OK or not json.data is Dictionary:
+		return {}
+	var payload: Dictionary = json.data
 	var version: int = int(payload.get("save_version", 0))
 	if version < 1 or version > GameState.SAVE_VERSION:
-		push_warning("SaveManager: %s has unsupported version %d" % [path, version])
-		return false
+		return {}
 	if not payload.get("state") is Dictionary:
-		return false
-	GameState.from_dict(payload["state"])
-	return true
+		return {}
+	return payload["state"]
 
 
 func delete_save(slot: String = AUTOSAVE_SLOT) -> void:

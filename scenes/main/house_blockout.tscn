@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/dialogue/dialogue_runner.gd" id="7_runner"]
 [ext_resource type="Script" path="res://scripts/narrative/campaign_director.gd" id="8_director"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_view.gd" id="9_dialogue_view"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="10_pause"]
 
 [node name="HouseBlockout" type="Node3D"]
 script = ExtResource("1_blockout")
@@ -34,3 +35,6 @@ script = ExtResource("9_dialogue_view")
 
 [node name="Hud" type="CanvasLayer" parent="."]
 script = ExtResource("6_hud")
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+script = ExtResource("10_pause")

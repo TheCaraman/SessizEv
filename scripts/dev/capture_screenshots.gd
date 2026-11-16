@@ -55,4 +55,17 @@ func _ready() -> void:
 		var path: String = "%s/%s.png" % [OUTPUT_DIR, shot["name"]]
 		var error: Error = image.save_png(ProjectSettings.globalize_path(path))
 		print("%s -> %s" % [path, error_string(error)])
+
+	# Finally the title screen, on its own.
+	scene.queue_free()
+	var menu: Node = (load("res://scenes/main/main_menu.tscn") as PackedScene).instantiate()
+	add_child(menu)
+	for i: int in 4:
+		await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var menu_path: String = "%s/08_main_menu.png" % OUTPUT_DIR
+	var menu_error: Error = get_viewport().get_texture().get_image().save_png(
+		ProjectSettings.globalize_path(menu_path)
+	)
+	print("%s -> %s" % [menu_path, error_string(menu_error)])
 	get_tree().quit(0)
