@@ -465,23 +465,29 @@ func _add_window(
 	daylight.light_volumetric_fog_energy = 2.2
 	window.add_child(daylight)
 
-## A hanging curtain between two X positions, built from narrow vertical
-## strips that alternate in depth so it reads as folded cloth, not a board.
+## A hanging curtain between two X positions: one continuous sheet of cloth
+## with soft vertical folds, gathered on rings under the rail. Thin enough
+## that daylight behind it glows through (CORRIDOR-REFERENCE-002).
 func _add_curtain(
 	window: Node3D, from_x: float, to_x: float, bottom: float, height: float, z: float
 ) -> void:
-	var strip: float = 0.055
-	var count: int = maxi(int(round((to_x - from_x) / strip)), 1)
-	var step: float = (to_x - from_x) / float(count)
-	for i: int in count:
-		var fold: float = 0.014 if i % 2 == 0 else -0.014
-		# Hems hang at slightly different lengths.
-		var drop: float = 0.02 * float((i * 7) % 3)
-		_add_mesh(
-			window,
-			Vector3(from_x + step * (float(i) + 0.5), bottom + (height - drop) * 0.5 + drop, z + fold),
-			Vector3(step + 0.004, height - drop, 0.02),
-			&"curtain"
+	var width: float = to_x - from_x
+	var folds: int = maxi(int(round(width / 0.075)), 2)
+	# Seed from the position so every curtain in the house hangs differently.
+	var seed_value: int = int(absf(window.position.x * 37.0 + window.position.z * 101.0 + from_x * 13.0))
+	var cloth := MeshInstance3D.new()
+	cloth.name = "Curtain"
+	cloth.mesh = PropMeshes.cloth_mesh(width, width * 1.04, height, folds, 0.028, seed_value)
+	cloth.mesh.surface_set_material(0, HouseMaterials.get_material(&"curtain_cloth"))
+	cloth.position = Vector3((from_x + to_x) * 0.5, bottom + height, z)
+	window.add_child(cloth)
+	# Curtain rings along the rail.
+	var ring_material: Material = HouseMaterials.get_material(&"brass")
+	for i: int in folds + 1:
+		var ring_x: float = from_x + width * float(i) / float(folds)
+		PropMeshes.cylinder(
+			window, Vector3(ring_x, bottom + height + 0.012, z), 0.014, 0.014, 0.006,
+			ring_material, Vector3(PI * 0.5, 0.0, 0.0), 10
 		)
 
 

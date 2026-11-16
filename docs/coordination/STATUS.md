@@ -71,3 +71,6 @@ Koridor baştan yapılmasına izin verildi; diğer odalar oturma odası çizim d
 
 ## Kullanıcı isteğiyle kayıt ve Claude devri
 0.1.1-dev.20261116.2 ana menü sürümü eklendi; config/name ve save schema korunur. Güncel tek başlangıç: docs/coordination/CLAUDE_HANDOFF.md. CORRIDOR-REFERENCE-002 sahipliği bırakıldı, yeni perde/çerçeve düzenlemesi başlatılmadı. Ayrı Claude mesajı yazıldı; okunma/ACK henüz yok. Kısayol kanonik projeye bağlıdır; bu paket standalone export değildir. Yerel Git checkpoint/etiket ve bundle yedeği hazırlanır.
+
+## Koridor eşyaları — Claude devraldı
+Codex'ten devir alındı (ACK yazıldı). Perdeler kıvrımlı ve ışık geçiren kumaş, resimler gerçek görüntülü çerçeveli, palto/ayakkabı/şemsiye/telefon/saat biçimli, üst koridor döşendi. 22 paket/6063 PASS; gerçek GPU görüntüleri incelendi. docs/qa/CorridorProps.md. CORRIDOR-REFERENCE-002 DEVİR: sahip incelemesi; nihai sanat kabulü değildir. Elle oynama yine açık.

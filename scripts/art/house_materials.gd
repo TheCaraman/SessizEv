@@ -48,6 +48,24 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 			return _flat(Color(0.62, 0.60, 0.51), 1.0)
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
+		&"curtain_cloth":
+			# Thin cream cloth seen from both sides; daylight behind it shows
+			# through as a warm glow rather than stopping dead.
+			var cloth: StandardMaterial3D = _flat(Color(0.66, 0.61, 0.49), 1.0)
+			cloth.cull_mode = BaseMaterial3D.CULL_DISABLED
+			cloth.backlight_enabled = true
+			cloth.backlight = Color(0.42, 0.38, 0.28)
+			return cloth
+		&"coat_cloth":
+			var wool: StandardMaterial3D = _flat(Color(0.2, 0.2, 0.2), 1.0)
+			wool.cull_mode = BaseMaterial3D.CULL_DISABLED
+			return wool
+		&"picture_frame":
+			return _flat(Color(0.20, 0.13, 0.07), 0.55)
+		&"painting_landscape", &"painting_still_life", &"photo_house":
+			var picture: StandardMaterial3D = _uv_mapped(kind)
+			picture.roughness = 0.75
+			return picture
 		&"window_sky":
 			return _emissive(Color(0.74, 0.80, 0.84), 0.9)
 		&"brass":

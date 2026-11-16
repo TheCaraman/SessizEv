@@ -156,3 +156,11 @@ Sahibin son eleştirisi önceliklidir: önceki koridor kabul edilmedi. Resmî re
 Geliştirme sürümü 0.1.1-dev.20261116.2. docs/coordination/CLAUDE_HANDOFF.md güncel ayrıntılı kaynak; yapılanlar, eksikler, testler, gerçek dosyalar ve sınırlar listeli. START_HERE içindeki eski Gün2 yok bilgisi düzeltildi. CORRIDOR-REFERENCE-002 DEVİR, Codex sahipliği bıraktı. docs/coordination/messages/20261116-codex-to-claude-checkpoint.md Claude'a yöneltilen dosya mesajıdır; okunduğu iddia edilmez. Kullanıcının denemesi için ana menüde gerçek version alanı gösterilir; mevcut kampanya kayıtlarına dokunulmaz.
 
 Devir sürüm doğrulaması: menu80PASS, Start-Game -PrepareOnly PASS, masaüstü kısayolu hedefi doğrulandı; gerçek menü sürüm görüntüsü alındı. Normal kampanya kayıtları değiştirilmedi.
+
+## 2026-11-16 / Claude / CORRIDOR-REFERENCE-002 eşya ve kumaş devamı
+Dayanak 2e760d1 (automation/integration). Devir okundu, ACK: messages/20261116-claude-to-codex-ack.md.
+Devralınan sürümde ve değişiklik sonrasında tam regresyon: 22 paket / 6063 denetim PASS (son koşu tqh-tests-d07854bd7fb34191ad42b66e1cc6cba0).
+Yapılan: perdeler tek parça kıvrımlı, ışık geçiren kumaş; resimlerde derinlikli çerçeve, paspartu ve üç özgün kodla üretilmiş görüntü; kumaş paltolar, atkı, biçimli ayakkabılar, kapalı şemsiye; çevirmeli telefon, masa saati, silindir masa ayakları; üst koridora iki resim, kitaplık, battaniye ve testi. Ayrıntı ve sınırlar docs/qa/CorridorProps.md.
+Gerçek GPU 1920×1080 koridor/giriş/üst kat gündüz-gece ve yakın çekim görüntüleri alınıp incelendi. Elle fare/klavye oynanışı YOK. Sahibin estetik kabulü YOK; görev DEVİR (sahip incelemesi).
+Eski oturum klasöründeki yarım DAY2-003 dosyalarım geçersiz ve dokunulmadı; o işi Codex işçisi 1b3ee8f ile bitirmişti.
+Sonraki: devir notu madde 2 (kapı kapanış animasyonu) veya 3 (QA-AUDIO-EXIT-001); NIGHT-001 ve ART-CHAR-002 Codex'te AKTİF görünüyor, dokunulmadı.
