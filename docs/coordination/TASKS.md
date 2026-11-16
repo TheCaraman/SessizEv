@@ -12,7 +12,7 @@ Bir görev yalnızca açıkça listelenen dosyalarda yazma hakkı bildirir; ger�
 | DAY2-003 | TAMAM | Codex otomatik işçi | İş/oda yönetimi, kayıt v3, 968 denetim; commit 1b3ee8f | 2026-11-16 |
 | QA-DAY1-2 | TAMAM | Codex otomatik işçi | Gerçek menü geçişi/kayıt/gece tüketimi entegrasyonu; toplam 1524 denetim; b3590ae | 2026-11-16 |
 | DAY3-001 | TAMAM | Codex otomatik işçi | b39c60d: koşullu kesinti, kanıt, günlük; 2250 denetim | 2026-11-16 |
-| POLISH-SLICE-001 | AKTİF | Ana Codex oturumu | Yardım uygunluğu ve opak günlük tamam; zaman/güç ışığı ve taşma kontrolü açık; otomatik işçi yok | 2026-11-16 |
+| POLISH-SLICE-001 | TAMAM | Codex (sahiplik bırakıldı) | Kesin onarım onayı, olay/saat ışığı, katman tonu, opak günlük, 10 paket/2349 denetim; elle tam oynama ayrı açık | 2026-11-16 |
 | ART-REV-001 | AKTİF | Codex | docs/art/AtmosphereRevision.md ve inceleme örneği; üretim PNG dosyaları korunur | 2026-11-16 |
 | ART-ROOM-001 | TAMAM | Codex (sahiplik bırakıldı) | Oturma odası arka planı; Claude kampanya içinde doğruladı. Ayrıntı claims/ART-ROOM-001.md | 2026-11-16 |
 | ART-ROOM-002 | TAMAM | Codex sanatçı | 13 odanın tamamı görselli; e4e9dad, 388dec6 birleşimi; ArtBible ve docs/art | 2026-11-16 |

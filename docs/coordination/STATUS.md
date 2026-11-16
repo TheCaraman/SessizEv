@@ -9,14 +9,14 @@ Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
 - Gün 2 Marcus/Arthur ziyaretleri, yatak/iş yönetimi, kaynak çözümü.
 - Gün 3 koşullu elektrik kesintisi, inceleme, kanıt/günlük, onarım/erteleme ve kayıt v4.
 - Menü, duraklatma, elle kayıt ve devam.
-- Son birleşik regresyon: 9 paket, 2250 denetim; ayrıntılar docs/qa/DAY3-001.md.
+- Son birleşik regresyon: 10 paket, 2349 denetim; güncel ekler docs/qa/RepairConfirmation.md ve PresentationResolution.md.
 - 13 oda arka planı ve 3 karakter figürü dosya olarak mevcut. Bunlar nihai görsel kabul değildir.
 
 ## Sahibin son geri bildirimi ve mevcut iş
 
 Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. ART-REV-001 kapsamında yalnızca tek oda için çizimsel gündüz/gece karşılaştırması hazırlanıyor. Üretim görselleri şimdilik korunur. docs/art/AtmosphereRevision.md ve messages/2026-11-16-ArtRevision.md esas alınır; eski ART-001 üslup kabulüne dayanarak yeni oda üretilmez.
 
-POLISH-SLICE-001 ana Codex oturumunda kısmen ilerledi; otomatik işçi başlatılmadı. Marcus yardım istekliliği/enerjisi ve opak günlük tamamlandı. Son tam regresyon: 9 paket, 2272 denetim. Gerçek 1080p günlük görüntüsü docs/qa/JournalModal-1080.png içinde. Kalan: zamana bağlı ışık, figür aydınlığı ve geniş ekran/dil taşma denetimi.
+POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre/maliyet onayı, opak günlük, olay güdümlü elektrikli ışık, saate bağlı pencere, figür/eşya tonu ve en/tr 1080p/1440p mevcut tesisat eylemi sınaması. Otomatik işçi başlatılmadı; ana Codex uyguladı. Görsel yön hâlâ sahibin incelemesinde; ART-REV-003 çizimsel örneği üretime bağlanmadı. Tam elle oynama açık.
 
 ## Tamamlanmamış alanlar
 

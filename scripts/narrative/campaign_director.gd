@@ -15,6 +15,7 @@ const LAST_AUTHORED_DAY: int = 3
 
 var power: PowerIncident
 var _repair_confirmation: bool = false
+var _repair_offer: Dictionary = {}
 var _confirmation_day: int = 0
 var _confirmation_minute: int = 0
 var shelter: ShelterManager
@@ -54,7 +55,7 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 		actions.append({"id": "manage", "label": tr("SHELTER_TITLE")})
 	if room_id == "utility" and GameState.power_incident.has("cause"):
 		for id: String in ["panel", "access", "outside", "card", "repair", "defer"]:
-			actions.append({"id": "power:" + id, "label": tr("POWER_ACTION_" + id.to_upper()) if id != "repair" else tr("POWER_GENERATOR" if GameState.power_incident["cause"] == "grid_outage" else "POWER_ACTION_REPAIR")})
+			actions.append({"id": "power:" + id, "label": tr("POWER_ACTION_" + id.to_upper()) if id != "repair" else power.repair_label()})
 	if room_id == "utility" and GameState.power_incident.has("cause") and power.eligible("marcus_hale"):
 		actions.append({"id": "power:explain", "label": tr("POWER_ACTION_EXPLAIN")})
 	match room_id:
@@ -93,10 +94,13 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	if action_id.begins_with("power:"):
 		var choice: String = action_id.trim_prefix("power:")
 		if choice == "repair":
-			var result: String = power.repair(_repair_confirmation and _confirmation_day == GameState.day and _confirmation_minute == GameState.minutes)
+			var current_offer: Dictionary = power.repair_quote()
+			var confirmed: bool = _repair_confirmation and _repair_offer == current_offer and _confirmation_day == GameState.day and _confirmation_minute == GameState.minutes
+			var result: String = power.repair(confirmed)
+			_repair_offer = current_offer
 			_confirmation_day = GameState.day
 			_confirmation_minute = GameState.minutes
-			_repair_confirmation = not _repair_confirmation
+			_repair_confirmation = not confirmed
 			return result
 		_repair_confirmation = false
 		if choice == "explain" and power.eligible("marcus_hale"):

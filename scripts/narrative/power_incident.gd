@@ -72,14 +72,27 @@ func inspect(which: String) -> String:
 		SaveManager.save_game()
 	return tr(key) + "\n" + tr("POWER_LIMIT")
 
+func repair_quote() -> Dictionary:
+	if is_powered():
+		return {}
+	var helper: String = "marcus_hale" if can_help_repair("marcus_hale") else ""
+	return {"resource": definition["causes"][GameState.power_incident["cause"]]["resource"], "helper": helper, "minutes": int(definition["helper_minutes"] if helper != "" else definition["solo_minutes"])}
+
+func repair_label() -> String:
+	var quote: Dictionary = repair_quote()
+	if quote.is_empty():
+		return tr("POWER_ALREADY")
+	return tr("POWER_EXACT_FUEL" if quote["resource"] == "fuel" else "POWER_EXACT_REPAIR").format(quote)
+
 func repair(confirmed: bool = false) -> String:
 	if is_powered():
 		return tr("POWER_ALREADY")
 	if not confirmed:
-		return tr("POWER_CONFIRM")
-	var resource: String = definition["causes"][GameState.power_incident["cause"]]["resource"]
-	var helper: String = "marcus_hale" if can_help_repair("marcus_hale") else ""
-	var duration: int = int(definition["helper_minutes"] if helper != "" else definition["solo_minutes"])
+		return repair_label() + "\n" + tr("POWER_HELPER_MARCUS" if can_help_repair("marcus_hale") else "POWER_HELPER_SOLO") + "\n" + tr("POWER_CONFIRM")
+	var quote: Dictionary = repair_quote()
+	var resource: String = quote["resource"]
+	var helper: String = quote["helper"]
+	var duration: int = quote["minutes"]
 	if GameState.minutes + duration > GameState.LAST_MINUTE:
 		return tr("POWER_TOO_LATE")
 	if int(GameState.resources.get(resource, 0)) < 1:

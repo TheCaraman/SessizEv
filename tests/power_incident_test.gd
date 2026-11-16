@@ -163,6 +163,24 @@ func _ready() -> void:
 	check(SaveManager.load_game("power_test"), "manual load")
 	check(GameState.to_dict() == data, "manual roundtrip preserves all data")
 	SaveManager.delete_save("power_test")
+	for cause: String in ["loose_connection", "grid_outage"]:
+		prepare(91)
+		GameState.admit("marcus_hale", "guest_a_1")
+		power.trigger()
+		GameState.power_incident["cause"] = cause
+		var quote: Dictionary = director.power.repair_quote()
+		check(quote["minutes"] == 25 and quote["helper"] == "marcus_hale", "exact helper quote")
+		var confirmation: String = director.perform_room_action("utility", "power:repair")
+		check(confirmation.contains("25") and GameState.minutes == 1380, "first press shows exact cost without spending")
+		GameState.npcs["marcus_hale"]["tired"] = true
+		var before_requote: Dictionary = GameState.to_dict()
+		confirmation = director.perform_room_action("utility", "power:repair")
+		check(confirmation.contains("35") and GameState.to_dict() == before_requote, "changed helper requires new confirmation")
+		var cost_resource: String = director.power.repair_quote()["resource"]
+		var before_resource: int = GameState.resources[cost_resource]
+		director.perform_room_action("utility", "power:repair")
+		check(GameState.minutes == 1415 and GameState.resources[cost_resource] == before_resource - 1, "confirmed quote spends exact resource and time")
+		check(GameState.power_incident["repair"]["helper"] == "", "declined helper never attributed")
 	for version: int in [1, 2, 3]:
 		prepare(version)
 		GameState.minutes = 1200

@@ -189,6 +189,10 @@ POWER_OUTSIDE_DARK,"The street and neighbouring lights are out.","Sokak ve komş
 POWER_LIMIT,"Observations are facts; allegations are claims; suspicions remain uncertain. Technical findings prove neither identity nor infection.","Gözlemler olgudur; iddialar söylenendir; şüpheler belirsizdir. Teknik bulgu kimliği veya enfeksiyonu kanıtlamaz."
 POWER_CARD,"Fuse card: heat and a loose end suggest wear; a removed connection with fresh tool marks suggests interference; an intact breaker with a dark street suggests a grid outage. None identifies a person.","Sigorta kartı: ısı ve gevşek uç aşınmayı; çıkarılmış bağlantı ve taze iz müdahaleyi; sağlam sigorta ve karanlık sokak şebeke kesintisini düşündürür. Hiçbiri kişiyi belirlemez."
 POWER_CONFIRM,"Press repair again to confirm the displayed cost. Defer cancels with no cost.","Gösterilen bedeli onaylamak için onarıma tekrar bas. Ertele ücretsiz iptal eder."
+POWER_EXACT_REPAIR,Repair (1 repair; {minutes}m),Onar (1 onarım; {minutes}dk)
+POWER_EXACT_FUEL,Generator (1 fuel; {minutes}m),Jeneratör (1 yakıt; {minutes}dk)
+POWER_HELPER_MARCUS,Marcus will help with the repair.,Onarımda Marcus yardım edecek.
+POWER_HELPER_SOLO,Daniel will handle the repair alone.,Daniel onarımı tek başına yapacak.
 POWER_TOO_LATE,"Not enough time before 23:59. Continue tomorrow morning.","23:59 öncesinde yeterli süre yok. Yarın sabah devam et."
 POWER_NO_RESOURCE,"Required supply unavailable. Defer; the fuse card remains free.","Gerekli kaynak yok. Ertele; sigorta kartı ücretsiz kalır."
 POWER_RESTORED,"Local power restored. House lights work again.","Yerel güç sağlandı. Ev ışıkları yeniden çalışıyor."

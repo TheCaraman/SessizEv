@@ -3,6 +3,8 @@
 Sahip: ana Codex oturumu; otomatik işçi başlatılmadı. Başlangıç: Gün 3 + sanat birleşimi, 2250 test geçti.
 Bu görev yeni hikâye veya mekanik eklemez; var olan ışık ve arayüzü sağlamlaştırır.
 
+Son teslim: teknik kapsam tamam, sahiplik bırakıldı. Kesin onarım teklifi ve koşul değişiminde yeniden onay eklendi. 10 paket/2349 denetim geçti; docs/qa/RepairConfirmation.md. Aşağıdaki ara teslimler tarihsel kayıttır; açık kalan teknik maddeleri son teslim kapatır. Nihai sanat onayı ve elle tam oynama bu kapanışa dahil değildir.
+
 Ara teslim 4: presentation_test eklendi, test çalıştırıcısına bağlandı. 1080p/1440p ve en/tr mevcut yedi tesisat eylemi denetlendi; dört gerçek render alındı. HUD dil yenilemesi düzeltildi. 10 paket, 2327 denetim geçti. docs/qa/PresentationResolution.md kapsamı ve sınırları kaydeder. Onarım etiketinde kesin süre yerine 25–35dk aralığı kalıyor; kesin yardım/maliyet onayı ayrı düzeltme gerektiriyor. Bu görev henüz tamamen kapanmadı.
 
 Ara teslim 3: saate bağlı pencere ışığı ve yerel sky malzemesi uygulandı; sis azaltıldı. 2279 denetim geçti. Gerçek 1080p render ve 60 karelik yerleşme incelemesi docs/qa/DaylightClock.md içinde. Geniş ekran/dil taşması ve ayrı sunum paketi henüz açık.
