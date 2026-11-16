@@ -1,0 +1,55 @@
+{
+	"start": "doorstep",
+	"nodes": {
+		"doorstep": {"speaker": "", "text": "D2_ARTHUR_DOORSTEP", "next": "hello"},
+		"hello": {"speaker": "arthur_bell", "text": "D2_ARTHUR_HELLO", "next": "hub"},
+		"hub": {
+			"speaker": "",
+			"text": "D2_ARTHUR_HUB",
+			"choices": [
+				{"id": "origin", "text": "D2_ARTHUR_ASK_ORIGIN", "next": "origin", "if_not_flag": "d2_arthur_asked_origin",
+					"effects": [{"type": "flag", "key": "d2_arthur_asked_origin"}, {"type": "time", "minutes": 5}]},
+				{"id": "work", "text": "D2_ARTHUR_ASK_WORK", "next": "work", "if_not_flag": "d2_arthur_asked_work",
+					"effects": [{"type": "flag", "key": "d2_arthur_asked_work"}, {"type": "time", "minutes": 5}]},
+				{"id": "rules", "text": "D2_ARTHUR_ASK_RULES", "next": "rules", "if_not_flag": "d2_arthur_asked_rules",
+					"effects": [{"type": "flag", "key": "d2_arthur_asked_rules"}, {"type": "time", "minutes": 5}]},
+				{"id": "admit", "text": "D2_ARTHUR_ADMIT", "next": "beds", "requires_free_bed": true, "else_next": "no_room"},
+				{"id": "reject", "text": "D2_ARTHUR_REJECT", "next": "reject_confirm"},
+				{"id": "wait", "text": "D2_CHOICE_WAIT", "next": "waiting"}
+			]
+		},
+		"origin": {"speaker": "arthur_bell", "text": "D2_ARTHUR_ORIGIN", "next": "hub"},
+		"work": {"speaker": "arthur_bell", "text": "D2_ARTHUR_WORK", "next": "hub",
+			"enter": [{"type": "flag", "key": "known_skill_arthur_records"}]},
+		"rules": {"speaker": "arthur_bell", "text": "D2_ARTHUR_RULES", "next": "hub"},
+		"no_room": {"speaker": "", "text": "D2_NO_ROOM", "next": "hub"},
+		"beds": {
+			"speaker": "",
+			"text": "D2_CHOOSE_BED",
+			"bed_choices": {
+				"npc": "arthur_bell", "next": "admitted", "back": "hub",
+				"effects": [
+					{"type": "trust", "npc": "arthur_bell", "delta": 10},
+					{"type": "flag", "key": "arthur_admitted"},
+					{"type": "clear_visitor"}
+				]
+			}
+		},
+		"admitted": {"speaker": "arthur_bell", "text": "D2_ARTHUR_ADMITTED", "next": "end"},
+		"reject_confirm": {
+			"speaker": "",
+			"text": "D2_REJECT_CONFIRM",
+			"choices": [
+				{"id": "confirm", "text": "D2_REJECT_YES", "next": "rejected",
+					"effects": [
+						{"type": "remove", "npc": "arthur_bell", "status": "rejected"},
+						{"type": "flag", "key": "arthur_rejected"},
+						{"type": "clear_visitor"}
+					]},
+				{"id": "back", "text": "DLG_BACK", "next": "hub"}
+			]
+		},
+		"rejected": {"speaker": "arthur_bell", "text": "D2_ARTHUR_REJECTED", "next": "end"},
+		"waiting": {"speaker": "", "text": "D2_WAITING", "next": "end"}
+	}
+}

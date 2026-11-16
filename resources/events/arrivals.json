@@ -1,0 +1,7 @@
+{
+	"arrivals": [
+		{"id": "d1_elena", "npc": "elena_ward", "day": 1, "start": 1080, "end": 1290, "dialogue": "elena_arrival"},
+		{"id": "d2_marcus", "npc": "marcus_hale", "day": 2, "start": 600, "end": 780, "dialogue": "marcus_arrival"},
+		{"id": "d2_arthur", "npc": "arthur_bell", "day": 2, "start": 900, "end": 1080, "dialogue": "arthur_arrival"}
+	]
+}

@@ -1,29 +1,39 @@
 class_name CampaignDirector
 extends Node
-## Runs the authored campaign day by day. At present it covers Day 1,
-## "The First Knock": the broadcasts, Elena's arrival in the evening, the
-## first night and the morning of Day 2.
+## Runs the authored campaign day by day. It covers Day 1 ("The First Knock")
+## and the visits of Day 2 ("Strangers"; docs/Day2Design.md).
 ##
-## It decides what can be done in each 2D room (room actions), reacts to the
-## clock, and resolves the night. All lasting state goes through GameState.
+## It decides what can be done in each 2D room (room actions), brings
+## visitors to the door from resources/events/arrivals.json, and resolves the
+## night. All lasting state goes through GameState.
 
-const ELENA: String = "elena_ward"
-## Elena knocks once it is evening on Day 1.
-const ELENA_ARRIVAL_MINUTE: int = GameState.EVENING_START
-## If nobody answers by then she gives up and leaves.
-const ELENA_GIVES_UP_MINUTE: int = 21 * 60 + 30
+const ARRIVALS_PATH: String = "res://resources/events/arrivals.json"
 ## Daniel will not go to bed before this.
 const EARLIEST_SLEEP_MINUTE: int = 20 * 60
+## The last day with authored content; later mornings say so on screen.
+const LAST_AUTHORED_DAY: int = 2
 
 var _dialogue: DialogueRunner
+## Visits, sorted by day, then start time, then id.
+var _arrivals: Array[Dictionary] = []
+## "room|action" of a timed action the player has been warned about once
+## because it would outlast the visitor's patience. Pressing it again goes
+## ahead.
+var _warned_action: String = ""
 
 
 ## Called once by the session scene before play begins.
 func setup(dialogue: DialogueRunner) -> void:
 	_dialogue = dialogue
-	EventBus.time_changed.connect(_on_time_changed)
+	_load_arrivals()
+	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
+	# A visitor who ran out of patience during a conversation leaves when it ends.
+	_dialogue.ended.connect(func(_id: String) -> void: _update_arrivals())
+	_update_arrivals()
 
+
+# --- Room actions -----------------------------------------------------------
 
 ## What the player can do in [param room_id] right now.
 ## Each entry is {"id": String, "label": String} with the label already
@@ -64,20 +74,27 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 		return ""
 
 	if action_id.begins_with("talk:"):
+		_warned_action = ""
 		_dialogue.start(_dialogue_for(action_id.trim_prefix("talk:")))
 		return ""
 
+	# Warn once before an action that would outlast the person at the door.
+	var duration: int = _duration_of(action_id)
+	var key: String = "%s|%s" % [room_id, action_id]
+	if duration > 0 and _would_lose_visitor(duration) and _warned_action != key:
+		_warned_action = key
+		return tr("NARR_VISITOR_MAY_LEAVE").format({"name": Roster.get_display_name(GameState.visitor)})
+	_warned_action = ""
+
 	match action_id:
 		"watch_tv":
-			return _once_per_day("tv", 20, "NARR_TV_DAY1", "NARR_TV_AGAIN")
+			return _broadcast("tv", "NARR_TV_DAY1" if GameState.day == 1 else "NARR_TV_LATER", "NARR_TV_AGAIN")
 		"radio":
-			return _once_per_day("radio", 15, "NARR_RADIO_DAY1", "NARR_RADIO_AGAIN")
+			return _radio()
 		"check_supplies":
-			GameState.advance_minutes(10)
-			return tr("NARR_SUPPLIES").format(GameState.resources)
+			return _with_knock(_spend(10), _supplies_text())
 		"rest":
-			GameState.advance_minutes(60)
-			return tr("NARR_REST")
+			return _with_knock(_spend(60), tr("NARR_REST"))
 		"sleep":
 			return _resolve_night()
 		"save":
@@ -98,66 +115,218 @@ func can_sleep() -> bool:
 	return GameState.minutes >= EARLIEST_SLEEP_MINUTE and GameState.visitor == ""
 
 
-## Narrates something the first time each day and a shorter line afterwards.
-## Only the first time costs the full amount of time.
-func _once_per_day(key: String, minutes: int, first_text: String, again_text: String) -> String:
-	var flag: String = "%s_day_%d" % [key, GameState.day]
-	if GameState.get_flag(flag):
-		GameState.advance_minutes(5)
-		return tr(again_text)
+## How long an action takes if nothing interrupts it; 0 for untimed actions.
+func _duration_of(action_id: String) -> int:
+	match action_id:
+		"watch_tv":
+			return 5 if GameState.get_flag(_day_flag("tv")) else 20
+		"radio":
+			return 5 if GameState.get_flag(_day_flag("radio")) else 15
+		"check_supplies":
+			return 10
+		"rest":
+			return 60
+	return 0
+
+
+func _day_flag(key: String) -> String:
+	return "%s_day_%d" % [key, GameState.day]
+
+
+## Spends up to [param minutes]. If someone is due at the door before that,
+## the action stops at their knock and the rest of the time is not spent
+## (docs/Day2Design.md, section 2). Returns true if a knock cut it short.
+func _spend(minutes: int) -> bool:
+	var spend: int = minutes
+	var interrupted: bool = false
+	if GameState.visitor == "":
+		for arrival: Dictionary in _arrivals:
+			if not _is_upcoming(arrival):
+				continue
+			var until: int = int(arrival["start"]) - GameState.minutes
+			if until > 0 and until < spend:
+				spend = until
+				interrupted = true
+			break
+	GameState.advance_minutes(spend)
+	return interrupted
+
+
+func _with_knock(interrupted: bool, text: String) -> String:
+	return text + ("\n\n" + tr("NARR_KNOCK_INTERRUPTS") if interrupted else "")
+
+
+## A broadcast is told in full the first time each day and briefly after.
+func _broadcast(key: String, first_text: String, again_text: String) -> String:
+	var flag: String = _day_flag(key)
+	var first: bool = not GameState.get_flag(flag)
+	var interrupted: bool = _spend(_duration_of("watch_tv" if key == "tv" else "radio"))
+	if interrupted:
+		# Cut off before the end: it can be heard properly later.
+		return tr("NARR_KNOCK_INTERRUPTS")
 	GameState.set_flag(flag)
-	GameState.advance_minutes(minutes)
-	return tr(first_text)
+	return tr(first_text) if first else tr(again_text)
+
+
+## Day 1 carries the "vessels are down" report. From Day 2 the radio carries
+## the memory-loss report until it has been heard once.
+func _radio() -> String:
+	if GameState.day == 1:
+		return _broadcast("radio", "NARR_RADIO_DAY1", "NARR_RADIO_AGAIN")
+	if GameState.get_flag("heard_memory_loss_report"):
+		return _broadcast("radio", "NARR_RADIO_AGAIN", "NARR_RADIO_AGAIN")
+	var text: String = _broadcast("radio", "RADIO_D2_MEMORY_LOSS", "RADIO_D2_MEMORY_LOSS")
+	if GameState.get_flag(_day_flag("radio")):
+		GameState.set_flag("heard_memory_loss_report")
+	return text
+
+
+## Stock on hand, tonight's expected use, and a warning a day ahead if it
+## will not stretch.
+func _supplies_text() -> String:
+	var people: int = GameState.get_headcount()
+	var values: Dictionary = GameState.resources.duplicate()
+	values["people"] = people
+	var text: String = tr("NARR_SUPPLIES").format(values)
+	text += "\n\n" + tr("NARR_SUPPLIES_TONIGHT").format({"people": people})
+	if int(GameState.resources["food"]) < people or int(GameState.resources["water"]) < people:
+		text += " " + tr("NARR_SUPPLIES_SHORT_TONIGHT")
+	elif int(GameState.resources["food"]) < people * 2 or int(GameState.resources["water"]) < people * 2:
+		text += " " + tr("NARR_SUPPLIES_SHORT_TOMORROW")
+	return text
 
 
 ## Which conversation a resident has today, or "" if they have nothing to say.
 func _dialogue_for(npc_id: String) -> String:
-	if npc_id == ELENA and GameState.day == 1:
-		return "elena_resident_day1"
-	return ""
+	var short_name: String = npc_id.get_slice("_", 0)
+	var dialogue_id: String = "%s_resident_day%d" % [short_name, GameState.day]
+	return dialogue_id if DialogueRunner.exists(dialogue_id) else ""
 
 
-func _on_time_changed(day: int, minutes: int) -> void:
-	if day != 1:
+# --- Visits -----------------------------------------------------------------
+
+func _load_arrivals() -> void:
+	_arrivals = []
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(ARRIVALS_PATH)) != OK or not json.data is Dictionary:
+		push_error("CampaignDirector: %s could not be read" % ARRIVALS_PATH)
 		return
-	if (
-		minutes >= ELENA_ARRIVAL_MINUTE
-		and not GameState.get_flag("elena_arrived")
-		and GameState.get_status(ELENA) == "unknown"
-	):
-		GameState.set_flag("elena_arrived")
-		GameState.set_visitor(ELENA)
+	for entry: Dictionary in json.data.get("arrivals", []):
+		_arrivals.append({
+			"id": str(entry["id"]), "npc": str(entry["npc"]), "day": int(entry["day"]),
+			"start": int(entry["start"]), "end": int(entry["end"]), "dialogue": str(entry["dialogue"]),
+		})
+	_arrivals.sort_custom(_arrival_comes_first)
+
+
+## Order of visits: earlier day, then earlier start, then id alphabetically.
+static func _arrival_comes_first(a: Dictionary, b: Dictionary) -> bool:
+	if a["day"] != b["day"]:
+		return a["day"] < b["day"]
+	if a["start"] != b["start"]:
+		return a["start"] < b["start"]
+	return a["id"] < b["id"]
+
+
+func _get_arrival(arrival_id: String) -> Dictionary:
+	for arrival: Dictionary in _arrivals:
+		if arrival["id"] == arrival_id:
+			return arrival
+	return {}
+
+
+## A visit that is still to come today: not yet begun or missed, and its
+## character has not already been met, turned away or lost.
+func _is_upcoming(arrival: Dictionary) -> bool:
+	return (
+		arrival["day"] == GameState.day
+		and not GameState.is_arrival_resolved(arrival["id"])
+		and GameState.get_status(arrival["npc"]) == "unknown"
+		and GameState.minutes < int(arrival["end"])
+	)
+
+
+## True if spending [param minutes] now would run past the moment the person
+## at the door gives up.
+func _would_lose_visitor(minutes: int) -> bool:
+	if GameState.visitor == "":
+		return false
+	var arrival: Dictionary = _get_arrival(GameState.visitor_arrival)
+	return not arrival.is_empty() and GameState.minutes + minutes >= int(arrival["end"])
+
+
+## Brings the clock and the doorstep into agreement: the waiting visitor
+## leaves once their time is up, the next due visitor knocks, and a visit
+## whose whole window was skipped is recorded as missed. One person at most
+## is at the door, and no visit ever happens twice.
+func _update_arrivals() -> void:
+	if not GameState.active or _dialogue == null:
 		return
-	# Nobody answered: she leaves, and the campaign goes on without her.
-	if (
-		GameState.visitor == ELENA
-		and minutes >= ELENA_GIVES_UP_MINUTE
-		and not _dialogue.is_active()
-	):
-		GameState.remove_npc(ELENA, "left")
-		GameState.set_flag("elena_left_unanswered")
+	if GameState.visitor != "":
+		var current: Dictionary = _get_arrival(GameState.visitor_arrival)
+		var out_of_time: bool = (
+			not current.is_empty()
+			and (GameState.day > int(current["day"]) or GameState.minutes >= int(current["end"]))
+		)
+		if not out_of_time or _dialogue.is_active():
+			return
+		GameState.remove_npc(GameState.visitor, "left")
+		GameState.set_flag("%s_left_unanswered" % current["id"])
 		GameState.set_visitor("")
 		EventBus.notice_requested.emit(tr("HUD_KNOCKING_STOPPED"))
 
+	for arrival: Dictionary in _arrivals:
+		if arrival["day"] != GameState.day or GameState.is_arrival_resolved(arrival["id"]):
+			continue
+		if GameState.minutes < int(arrival["start"]):
+			continue
+		GameState.resolve_arrival(arrival["id"])
+		# Someone already met, turned away, dead or gone never comes back.
+		if GameState.get_status(arrival["npc"]) != "unknown":
+			continue
+		if GameState.minutes >= int(arrival["end"]):
+			# The whole window passed unseen: they came, waited and went.
+			GameState.remove_npc(arrival["npc"], "left")
+			GameState.set_flag("%s_left_unanswered" % arrival["id"])
+			continue
+		GameState.set_visitor(arrival["npc"], arrival["id"])
+		return
+
 
 func _on_front_door_used() -> void:
-	if _dialogue.is_active():
+	if _dialogue.is_active() or GameState.visitor == "":
 		return
-	if GameState.visitor == ELENA:
-		_dialogue.start("elena_arrival")
+	var arrival: Dictionary = _get_arrival(GameState.visitor_arrival)
+	if not arrival.is_empty():
+		_dialogue.start(arrival["dialogue"])
 
 
-## Ends the day. The first night is quiet by design (GDD: Day 1). Returns the
-## morning narration.
+# --- Night ------------------------------------------------------------------
+
+## Ends the day. The first two nights are quiet by design: no authored attack
+## or sabotage (docs/Day2Design.md, section 8). Returns the morning narration.
 func _resolve_night() -> String:
 	GameState.start_next_day()
 	SaveManager.save_game()
 
+	var others: int = GameState.get_residents().size()
 	var text: String
 	if GameState.day == 2:
-		var elena_here: bool = GameState.get_status(ELENA) == "resident"
+		var elena_here: bool = GameState.get_status("elena_ward") == "resident"
 		text = tr("NARR_MORNING_D2_ELENA") if elena_here else tr("NARR_MORNING_D2_ALONE")
+	elif others == 0:
+		text = tr("NARR_MORNING_ALONE").format({"day": GameState.day})
 	else:
-		text = tr("NARR_MORNING_GENERIC").format({"day": GameState.day})
-	# Nothing is authored past the first morning yet.
-	return text + "\n\n" + tr("NARR_END_OF_BUILD")
+		text = tr("NARR_MORNING_OTHERS").format({"day": GameState.day, "count": others})
+
+	# A shortfall is always reported, never hidden.
+	var short: PackedStringArray = []
+	for resource: String in ["food", "water"]:
+		if GameState.get_flag("shortage_%s_day_%d" % [resource, GameState.day], 0):
+			short.append(tr("RESOURCE_" + resource.to_upper()))
+	if not short.is_empty():
+		text += "\n\n" + tr("NARR_MORNING_SHORTAGE").format({"what": ", ".join(short)})
+
+	if GameState.day > LAST_AUTHORED_DAY:
+		text += "\n\n" + tr("NARR_END_OF_BUILD")
+	return text

@@ -56,6 +56,7 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-023 | Otomatik kayıt her yeni günün başında alınır (user://saves/autosave.json). Kayıttan devam etme ekranı henüz yok. | V-006 |
 | V-024 | Elena'nın 1. gündeki konuşması enfekte olsa da olmasa da aynıdır; enfeksiyon ilk gün hiçbir işaret vermez. Kardeşi hakkındaki cümlesi her iki durumda da yalandır (kişisel sır), enfeksiyon belirtisi değildir. | Kanonik kural 13, 14 |
 | V-025 | Tek kayıt yuvası vardır. Otomatik kayıt (her sabah) ve elle kayıt (Daniel'ın odası; kapıda biri yokken ve konuşma sürmüyorken) aynı yuvaya yazar. Oyuncunun konumu kaydedilmez. Bozuk ya da daha yeni sürümden kayıt "yok" sayılır. | SAVE-002 |
+| V-026 | Gün 2 uygulamasında docs/Day2Design.md'den sapmalar: yatak, kabul konuşmasının içinde seçilir (ayrı yönetim ekranı DAY2-003'te); Elena Gün 1'de seçim yaptırmadan orta yatak odasının ilk yatağını alır; ziyaretçiyi kaçıracak eylem ayrı pencere yerine ilk basışta uyarı metni döndürür. Ziyaret saatleri: Marcus 10:00–13:00, Arthur 15:00–18:00 (Codex'in dengeleme varsayımı). | DAY2-002 |
 
 ## Açık konular
 | A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |

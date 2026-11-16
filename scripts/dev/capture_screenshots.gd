@@ -18,6 +18,7 @@ const SHOTS: Array[Dictionary] = [
 	{"name": "05_upper_corridor", "position": Vector3(6.0, 2.8, 3.4), "yaw": 180.0, "pitch": -6.0},
 	{"name": "06_living_room_actions", "position": Vector3(6.4, 0.0, 6.6), "yaw": 65.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
 	{"name": "07_elena_at_the_door", "position": Vector3(6.0, 0.0, 8.9), "yaw": 180.0, "pitch": 0.0, "answer_door": true},
+	{"name": "09_marcus_bed_choice", "position": Vector3(6.0, 0.0, 8.9), "yaw": 180.0, "pitch": 0.0, "day2_bed_choice": true},
 ]
 
 
@@ -32,6 +33,7 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT_DIR))
 	for shot: Dictionary in SHOTS:
 		room_view.close()
+		(scene.get_node("DialogueRunner") as DialogueRunner).cancel()
 		player.global_position = shot["position"]
 		player.rotation = Vector3(0.0, deg_to_rad(shot["yaw"]), 0.0)
 		head.rotation = Vector3(deg_to_rad(shot["pitch"]), 0.0, 0.0)
@@ -48,6 +50,17 @@ func _ready() -> void:
 			var runner := scene.get_node("DialogueRunner") as DialogueRunner
 			runner.choose(0)
 			runner.choose(0)
+		if shot.get("day2_bed_choice", false):
+			# Day 2 with Elena already living here: let Marcus in and reach the bed list.
+			GameState.new_campaign(7)
+			GameState.admit("elena_ward", "guest_a_1")
+			GameState.start_next_day()
+			GameState.advance_minutes(3 * 60)
+			EventBus.front_door_used.emit()
+			var day2_runner := scene.get_node("DialogueRunner") as DialogueRunner
+			day2_runner.choose(0)
+			day2_runner.choose(0)
+			day2_runner.choose_by_id("admit")
 		for i: int in 4:
 			await get_tree().process_frame
 		await RenderingServer.frame_post_draw

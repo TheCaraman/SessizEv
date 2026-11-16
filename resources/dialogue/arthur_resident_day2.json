@@ -1,0 +1,1 @@
+{"start":"room","nodes":{"room":{"speaker":"arthur_bell","text":"D2_ARTHUR_ROOM","choices":[{"id":"leave","text":"D2_LEAVE","next":"end"}]}}}

@@ -3,7 +3,7 @@
 Son oyun kilometre taşı: `2169bad` — Gün 1, Elena'nın kabul/ret/kapıyı açmama yolları,
 uyku, Gün 2 sabahı, enfeksiyon ataması ve kayıt altyapısı.
 
-Gün 2 içeriği henüz yok. Oda ve karakter görselleri yer tutucu, ses yok.
+Gün 2 ziyaretleri (Marcus, Arthur), yatak seçimi, radyo ve kayıt v2 var (DAY2-002, dal feat/day2-002-arrivals). İş atama ve yönetim ekranı yok (DAY2-003). Oda ve karakter görselleri yer tutucu, ses yok.
 Ana menü, duraklatma menüsü, elle kayıt ve kayıttan devam var (SAVE-002, dal feat/save-002-menu-continue); fareyle elle denenmedi.
 Koridorlar 3D, odalar 2D. Depo penceresiz geri kondu; giriş penceresi duruyor.
 
@@ -13,7 +13,7 @@ Koridorlar 3D, odalar 2D. Depo penceresiz geri kondu; giriş penceresi duruyor.
   ayrı proje kopyasında test komutu ve Git aktarım betiği hazır.
 - Codex: DAY2-001 tamamlandı; Gün 2 şartnamesi docs/Day2Design.md içinde.
   Kod henüz uygulanmadı; uygulama DAY2-002 olarak sırada. Dosya sahipliği bırakıldı.
-- Claude: SAVE-002 tamamlandı; dosya sahipliği bırakıldı. Klasörün HEAD'i feat/save-002-menu-continue dalında.
+- Claude: SAVE-002 ve DAY2-002 tamamlandı; dosya sahipliği bırakıldı. Klasörün HEAD'i feat/day2-002-arrivals dalında. Altı test, 944 denetim.
 - Uzak depo: Sahibin tercihiyle şimdilik yalnızca yerel depo.
 - Kaynak klasör: Oturumun oluşturduğu klasör; kalıcı taşıma henüz yapılmadı.
 

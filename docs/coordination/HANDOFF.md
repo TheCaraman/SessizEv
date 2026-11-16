@@ -67,6 +67,49 @@
 - Gün 2 kodu yok; DAY2-002 ziyaret/diyalog uygulamasıyla başlanabilir.
 - Dosya sahipliği bırakıldı. Ortak dal değiştirilmedi; yalnızca bu görevin dosyaları commit edildi.
 
+## 2026-11-16 — Claude — DAY2-002
+
+- Tarih / asistan / görev / dal / dayanak commit: 2026-11-16 / Claude / DAY2-002 /
+  feat/day2-002-arrivals / 81bef27. Klasörün HEAD'i bu dalda.
+- Kapsam: docs/Day2Design.md bölüm 2–6, 8, 9 ve 10'un ziyaret/yatak/kayıt kısmı.
+  **Bölüm 7 (iş atama, activity_room) ve yönetim ekranı yapılmadı**; DAY2-003 olarak tabloda.
+- Değişen dosyalar ve davranış:
+  - `resources/events/arrivals.json` (yeni): ziyaretler veri olarak. Elena'nın Gün 1 ziyareti de
+    buraya taşındı; yöneticide NPC adına özel kod kalmadı.
+  - `scripts/narrative/campaign_director.gd`: veri güdümlü ziyaretler; aynı anda en çok bir kişi;
+    ziyaret asla tekrarlanmaz; süresi dolan `left` olur. Süre harcayan eylem, gelecek ilk kapı
+    çalınışında kesilir. Kapıda biri varken onu kaçıracak eylem önce uyarır, süre harcamaz;
+    ikinci basışta uygulanır. Radyo Gün 2'den itibaren hafıza kaybı bildirimini bir kez verir
+    (kaçırılırsa sonraki gün yine duyulur). Erzak sayımı bu gecenin tüketimini ve bir gün
+    önceden kıtlık uyarısını gösterir. Son yazılı gün sabiti `LAST_AUTHORED_DAY = 2`.
+  - `scripts/core/game_state.gd`: `beds`, `resolved_arrivals`, `visitor_arrival`; `admit(npc, bed)`
+    artık yatak kimliği alır ve dolu yatağı reddeder; kıtlık bayrakla kaydedilir;
+    `SAVE_VERSION = 2` ve v1 göçü.
+  - `scripts/dialogue/dialogue_runner.gd`: `bed_choices` düğümü (boş yatakları listeler),
+    `requires_free_bed`/`else_next`, seçeneklerde `args`, `cancel()`, `exists()`.
+  - `scripts/ui/dialogue_view.gd`: seçenek metnini `args` ile biçimlendirir.
+  - Yeni diyaloglar: `marcus_arrival`, `arthur_arrival`, `elena_resident_day2`,
+    `marcus_resident_day2`, `arthur_resident_day2`. Ret onay ister; "Bana bir dakika ver"
+    konuşmayı kapatır ama ziyaretçiyi göndermez. `elena_arrival` kabulü `guest_a_1` yatağını verir.
+  - `localization/strings.csv`: Gün 2 metinleri, İngilizce ve Türkçe. Codex'in tablosundaki
+    İngilizce satırlar aynen kullanıldı; kapı önü betimlemeleri, bekleme ve oda konuşmaları eklendi.
+  - `tests/day2_test.gd`, `.tscn` (yeni); `tools/Run-Tests.ps1` altı testi çalıştırır.
+- Doğrulama komutu ve gerçek sonucu: `powershell -NoProfile -File tools/Run-Tests.ps1` —
+  kampanya 69, Gün 2 737, menü 29, etkileşim 13, ev 90, hareket 6 denetim geçti.
+  Gün 2 testi tasarımın kabul maddelerinden 1–6, 10, 11 ve 12'yi kapsar (27 kabul/ret/kaçırma
+  bileşimi dahil). Yatak seçimi ekranı gerçek pencerede render edildi:
+  `docs/screenshots/09_marcus_bed_choice.png`.
+- Çalıştırılmayan kontroller: kabul maddeleri 7–9 (yönetim ekranı ve işler; kod yok),
+  13 (1080p/1440p taşma; yalnızca 720p görüntüye bakıldı) ve 14 (elle oynama).
+  Gün 2 fare ve klavyeyle baştan sona oynanmadı.
+- Tasarımdan bilinçli sapmalar (DecisionLog V-026):
+  - Yatak, kabul konuşmasının içinde seçiliyor; ayrı yönetim ekranı yok.
+  - Elena Gün 1'de yatak seçtirmeden `guest_a_1` alır (mevcut davranış korundu).
+  - Uyarı ayrı bir onay penceresi değil: eylem ilk basışta uyarı metni döndürür.
+- Bilinen sorunlar ve sonraki bağımlılık: Diyalog JSON'ları `res://` altında ham dosya olarak
+  okunuyor; dışa aktarımda `*.json` filtresi gerekecek. Sakinler yalnızca yatak odalarında
+  görünür (activity_room yok). Sıradaki: DAY2-003.
+- Görev sahipliği bırakıldı mı: Evet.
 ## Her teslimde kullanılacak şablon
 
 Tarih / asistan / görev / dal / dayanak commit:

@@ -55,7 +55,7 @@ func _show_node(node: Dictionary) -> void:
 	var choices: Array = node.get("choices", [])
 	for i: int in choices.size():
 		var button := Button.new()
-		button.text = "%d.  %s" % [i + 1, tr(choices[i]["text"])]
+		button.text = "%d.  %s" % [i + 1, tr(choices[i]["text"]).format(choices[i].get("args", {}))]
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.focus_mode = Control.FOCUS_NONE
 		button.add_theme_font_size_override(&"font_size", 24)

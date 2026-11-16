@@ -25,7 +25,7 @@
 					"effects": [{"type": "flag", "key": "d1_elena_asked_proof"}, {"type": "time", "minutes": 5}]},
 				{"id": "admit", "text": "D1_CHOICE_ADMIT", "next": "admitted",
 					"effects": [
-						{"type": "admit", "npc": "elena_ward", "room": "guest_a"},
+						{"type": "admit", "npc": "elena_ward", "bed": "guest_a_1"},
 						{"type": "trust", "npc": "elena_ward", "delta": 15},
 						{"type": "flag", "key": "elena_admitted"},
 						{"type": "clear_visitor"}

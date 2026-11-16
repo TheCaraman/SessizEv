@@ -1,0 +1,56 @@
+{
+	"start": "doorstep",
+	"nodes": {
+		"doorstep": {"speaker": "", "text": "D2_MARCUS_DOORSTEP", "next": "hello"},
+		"hello": {"speaker": "marcus_hale", "text": "D2_MARCUS_HELLO", "next": "hub"},
+		"hub": {
+			"speaker": "",
+			"text": "D2_MARCUS_HUB",
+			"choices": [
+				{"id": "origin", "text": "D2_MARCUS_ASK_ORIGIN", "next": "origin", "if_not_flag": "d2_marcus_asked_origin",
+					"effects": [{"type": "flag", "key": "d2_marcus_asked_origin"}, {"type": "time", "minutes": 5}]},
+				{"id": "work", "text": "D2_MARCUS_ASK_WORK", "next": "work", "if_not_flag": "d2_marcus_asked_work",
+					"effects": [{"type": "flag", "key": "d2_marcus_asked_work"}, {"type": "time", "minutes": 5}]},
+				{"id": "alone", "text": "D2_MARCUS_ASK_ALONE", "next": "alone", "if_not_flag": "d2_marcus_asked_alone",
+					"effects": [{"type": "flag", "key": "d2_marcus_asked_alone"}, {"type": "time", "minutes": 5}]},
+				{"id": "admit", "text": "D2_MARCUS_ADMIT", "next": "beds", "requires_free_bed": true, "else_next": "no_room"},
+				{"id": "reject", "text": "D2_MARCUS_REJECT", "next": "reject_confirm"},
+				{"id": "wait", "text": "D2_CHOICE_WAIT", "next": "waiting"}
+			]
+		},
+		"origin": {"speaker": "marcus_hale", "text": "D2_MARCUS_ORIGIN", "next": "hub"},
+		"work": {"speaker": "marcus_hale", "text": "D2_MARCUS_WORK", "next": "hub",
+			"enter": [{"type": "flag", "key": "known_skill_marcus_electrical"}]},
+		"alone": {"speaker": "marcus_hale", "text": "D2_MARCUS_ALONE", "next": "alone_beat"},
+		"alone_beat": {"speaker": "", "text": "D2_MARCUS_ALONE_BEAT", "next": "hub"},
+		"no_room": {"speaker": "", "text": "D2_NO_ROOM", "next": "hub"},
+		"beds": {
+			"speaker": "",
+			"text": "D2_CHOOSE_BED",
+			"bed_choices": {
+				"npc": "marcus_hale", "next": "admitted", "back": "hub",
+				"effects": [
+					{"type": "trust", "npc": "marcus_hale", "delta": 10},
+					{"type": "flag", "key": "marcus_admitted"},
+					{"type": "clear_visitor"}
+				]
+			}
+		},
+		"admitted": {"speaker": "marcus_hale", "text": "D2_MARCUS_ADMITTED", "next": "end"},
+		"reject_confirm": {
+			"speaker": "",
+			"text": "D2_REJECT_CONFIRM",
+			"choices": [
+				{"id": "confirm", "text": "D2_REJECT_YES", "next": "rejected",
+					"effects": [
+						{"type": "remove", "npc": "marcus_hale", "status": "rejected"},
+						{"type": "flag", "key": "marcus_rejected"},
+						{"type": "clear_visitor"}
+					]},
+				{"id": "back", "text": "DLG_BACK", "next": "hub"}
+			]
+		},
+		"rejected": {"speaker": "marcus_hale", "text": "D2_MARCUS_REJECTED", "next": "end"},
+		"waiting": {"speaker": "", "text": "D2_WAITING", "next": "end"}
+	}
+}
