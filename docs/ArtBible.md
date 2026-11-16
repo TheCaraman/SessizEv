@@ -19,16 +19,16 @@ Bu yapı sayesinde aynı oda görseli, içine kim girerse girsin ve ne değişir
 - Ana renkler: koyu kirli yeşil ve hafif turkuaz.
 - Vurgu: kirli sarı (kapılar, desen, ışık).
 - Tavanlar ve köşeler neredeyse siyah; ekran kenarlarında belirgin kararma.
-- Görüntü net ve doygun. Dokular düşük çözünürlüklü ama ekran bulanık ya da ağır pikselli değil.
-- Gren ve renk kademelenmesi çok hafif; ayarlardan kapatılabilecek.
+- Görüntü pürüzsüz ve doygun (K-013): dokular 512–1024 piksel, yumuşak süzmeli; pikselleştirme ve renk kademelenmesi kapalı; kenar yumuşatma açık.
+- Çok hafif gren ve kenar kararması var; ayarlardan kapatılabilecek.
 
 **Esin ve sınır:** *No, I'm Not a Human* yalnızca yapı ve ton esinidir (3D koridor, 2D oda, tekinsiz çizim). O oyunun renk düzeni (turuncu duvar, mavi kapı), odaları, karakterleri, arayüzü ve görselleri kopyalanmaz. Bizim paletimiz yeşil/sarıdır.
 
 ## 3. 3D koridorlar
 
-Koddan kurulur (`scripts/house/house_builder.gd`); dokular şimdilik kodla üretilir (`scripts/art/house_materials.gd`) ve her biri sonradan boyanmış bir dokuyla değiştirilebilir.
+Koddan kurulur (`scripts/house/house_builder.gd`). Dokular `assets/textures/` altında PNG dosyalarıdır; şimdilik `scripts/art/texture_generator.gd` üretir. Aynı adla boyanmış bir doku koyulursa oyun onu kullanır.
 
-Mevcut öğeler: desenli yeşil duvar kâğıdı ve süpürgelik, koyu parke, panelli kirli sarı kapılar ve soluk kasalar, pirinç kapı kolları, desenli yolluk halı, düz tavan lambaları.
+Mevcut öğeler: yaprak desenli yeşil duvar kâğıdı, çıkıntılı süpürgelik ve tavan altı koyu çıta, koyu parke, kademeli panelli kirli sarı kapılar, kademeli kapı kasaları, pirinç kapı kolları, desenli yolluk halı, düz tavan lambaları.
 
 Eksikler: gerçek basamaklı merdiven, pencere, koridor eşyaları (portmanto, ayna, telefon sehpası), kapı açılma sesi ve geçiş efekti.
 

@@ -1,0 +1,244 @@
+class_name TextureGenerator
+extends RefCounted
+## Generates the corridor textures as PNG files (developer tool).
+##
+## Shapes are computed in resolution-independent units and anti-aliased, so
+## the results are smooth rather than blocky. The files are ordinary assets:
+## replace any of them with a painted texture of the same name and the game
+## uses it. Run through scenes/main/generate_textures.tscn.
+##
+## Palette (docs/DecisionLog.md, K-012): dark dirty green and teal with dirty
+## yellow accents.
+
+const WALLPAPER_SIZE: int = 1024
+const DETAIL_SIZE: int = 512
+
+
+static func generate_all(output_dir: String) -> void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
+	_save(_wallpaper(), output_dir, "wallpaper_green")
+	_save(_parquet(), output_dir, "parquet")
+	_save(_painted_wood(Color(0.47, 0.41, 0.19), 61), output_dir, "door_paint")
+	_save(_painted_wood(Color(0.55, 0.48, 0.23), 62), output_dir, "door_panel_paint")
+	_save(_painted_wood(Color(0.60, 0.60, 0.50), 63), output_dir, "frame_paint")
+	_save(_painted_wood(Color(0.06, 0.13, 0.11), 64), output_dir, "trim_dark")
+	_save(_varnished_wood(Color(0.22, 0.16, 0.09), 42), output_dir, "wood_stairs")
+	_save(_runner(), output_dir, "runner")
+
+
+static func _save(image: Image, output_dir: String, file_name: String) -> void:
+	var path: String = "%s/%s.png" % [output_dir, file_name]
+	var error: Error = image.save_png(ProjectSettings.globalize_path(path))
+	print("%s -> %s" % [path, error_string(error)])
+
+
+## Seamlessly tiling greyscale noise; read values with get_pixel(x, y).r.
+static func _noise(size: int, noise_seed: int, frequency: float) -> Image:
+	var noise := FastNoiseLite.new()
+	noise.seed = noise_seed
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	noise.frequency = frequency
+	noise.fractal_octaves = 4
+	return noise.get_seamless_image(size, size)
+
+
+static func _hash(a: int, b: int, c: int) -> float:
+	var x: float = sin(float(a) * 127.1 + float(b) * 311.7 + float(c) * 74.7) * 43758.5453
+	return x - floorf(x)
+
+
+## Dense foliage wallpaper: dirty-yellow and olive leaves scattered over dark
+## green, with soft damp patches. Tiles seamlessly; one tile covers 2 m.
+static func _wallpaper() -> Image:
+	var size: int = WALLPAPER_SIZE
+	var cells: int = 16
+	var cell: float = float(size) / float(cells)
+	var leaves_per_cell: int = 3
+
+	# Leaf parameters per cell: centre x, centre y, cos, sin, half length,
+	# half width, colour index.
+	var leaves: Array[PackedFloat32Array] = []
+	leaves.resize(cells * cells)
+	for cy: int in cells:
+		for cx: int in cells:
+			var data := PackedFloat32Array()
+			for i: int in leaves_per_cell:
+				var k: int = i * 10
+				var angle: float = _hash(cx, cy, k + 2) * TAU
+				data.append((float(cx) + _hash(cx, cy, k)) * cell)
+				data.append((float(cy) + _hash(cx, cy, k + 1)) * cell)
+				data.append(cos(angle))
+				data.append(sin(angle))
+				data.append(cell * (0.34 + 0.22 * _hash(cx, cy, k + 3)))
+				data.append(cell * (0.10 + 0.07 * _hash(cx, cy, k + 4)))
+				data.append(_hash(cx, cy, k + 5))
+			leaves[cy * cells + cx] = data
+
+	var mottle: Image = _noise(size, 11, 0.02)
+	var damp: Image = _noise(size, 12, 0.004)
+	var ground_dark := Color(0.05, 0.16, 0.13)
+	var ground_light := Color(0.09, 0.24, 0.19)
+	var leaf_yellow := Color(0.62, 0.50, 0.16)
+	var leaf_ochre := Color(0.46, 0.36, 0.11)
+	var leaf_olive := Color(0.24, 0.30, 0.12)
+	var half: float = float(size) * 0.5
+
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		var cell_y: int = int(float(y) / cell)
+		for x: int in size:
+			var color: Color = ground_dark.lerp(ground_light, mottle.get_pixel(x, y).r)
+			var cell_x: int = int(float(x) / cell)
+			for oy: int in range(-1, 2):
+				for ox: int in range(-1, 2):
+					var data: PackedFloat32Array = leaves[
+						posmod(cell_y + oy, cells) * cells + posmod(cell_x + ox, cells)
+					]
+					for i: int in leaves_per_cell:
+						var b: int = i * 7
+						# Shortest offset on the torus keeps the tile seamless.
+						var dx: float = float(x) - data[b]
+						var dy: float = float(y) - data[b + 1]
+						if dx > half:
+							dx -= size
+						elif dx < -half:
+							dx += size
+						if dy > half:
+							dy -= size
+						elif dy < -half:
+							dy += size
+						var along: float = dx * data[b + 2] + dy * data[b + 3]
+						var half_length: float = data[b + 4]
+						if absf(along) >= half_length:
+							continue
+						var across: float = absf(-dx * data[b + 3] + dy * data[b + 2])
+						var ratio: float = along / half_length
+						# A pointed leaf: widest in the middle, zero at both tips.
+						var edge: float = data[b + 5] * (1.0 - ratio * ratio) - across
+						if edge <= 0.0:
+							continue
+						var tone: float = data[b + 6]
+						var leaf: Color = leaf_olive
+						if tone > 0.66:
+							leaf = leaf_yellow
+						elif tone > 0.33:
+							leaf = leaf_ochre
+						# Darker midrib, lighter toward the rim.
+						leaf = leaf.darkened(0.35 * clampf(1.0 - across / 1.6, 0.0, 1.0))
+						color = color.lerp(leaf, clampf(edge / 1.5, 0.0, 1.0))
+			# Large soft damp patches.
+			color = color.darkened(clampf((damp.get_pixel(x, y).r - 0.45) * 1.1, 0.0, 0.45))
+			image.set_pixel(x, y, color)
+	return image
+
+
+## Dark block parquet. One tile covers 1 m: four squares across, each made of
+## four strips, alternating direction.
+static func _parquet() -> Image:
+	var size: int = DETAIL_SIZE
+	var grain: Image = _noise(size, 21, 0.05)
+	var wear: Image = _noise(size, 22, 0.006)
+	var base := Color(0.17, 0.13, 0.07)
+	var gap := Color(0.02, 0.03, 0.02)
+	var unit: float = 128.0 / float(size)
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		var ly: float = float(y) * unit
+		for x: int in size:
+			var lx: float = float(x) * unit
+			var block_x: int = int(lx / 32.0)
+			var block_y: int = int(ly / 32.0)
+			var horizontal: bool = (block_x + block_y) % 2 == 0
+			var along: float = fmod(lx, 32.0) if horizontal else fmod(ly, 32.0)
+			var across: float = fmod(ly, 32.0) if horizontal else fmod(lx, 32.0)
+			var strip: int = int(across / 8.0)
+			var color: Color = base.lightened(_hash(block_x, block_y, strip) * 0.16)
+			# Grain runs along the strip: squash the sampling coordinate across it.
+			var grain_x: int = x if horizontal else int(float(x) * 0.18) % size
+			var grain_y: int = int(float(y) * 0.18) % size if horizontal else y
+			color = color.darkened(grain.get_pixel(grain_x, grain_y).r * 0.30)
+			color = color.darkened(clampf((wear.get_pixel(x, y).r - 0.5) * 1.2, 0.0, 0.35))
+			# Soft dark joints between strips and at block edges.
+			var joint: float = minf(fmod(across, 8.0), along)
+			color = color.lerp(gap, clampf(1.0 - joint / 0.45, 0.0, 1.0))
+			image.set_pixel(x, y, color)
+	return image
+
+
+## Old gloss paint over wood: faint vertical brush streaks and grubby patches.
+static func _painted_wood(base: Color, noise_seed: int) -> Image:
+	var size: int = DETAIL_SIZE
+	var streaks: Image = _noise(size, noise_seed, 0.06)
+	var dirt: Image = _noise(size, noise_seed + 100, 0.006)
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		for x: int in size:
+			var streak: float = streaks.get_pixel(x, int(float(y) * 0.06) % size).r
+			var color: Color = base.darkened(streak * 0.16)
+			color = color.darkened(clampf((dirt.get_pixel(x, y).r - 0.42) * 1.0, 0.0, 0.40))
+			image.set_pixel(x, y, color)
+	return image
+
+
+## Dark varnished wood with long grain.
+static func _varnished_wood(base: Color, noise_seed: int) -> Image:
+	var size: int = DETAIL_SIZE
+	var grain: Image = _noise(size, noise_seed, 0.05)
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		for x: int in size:
+			var streak: float = grain.get_pixel(x, int(float(y) * 0.08) % size).r
+			image.set_pixel(x, y, base.darkened(streak * 0.40))
+	return image
+
+
+## Carpet runner. U runs across the runner, V along it; the tile repeats along
+## the length. Dark green border, ochre field, a diamond medallion per tile.
+static func _runner() -> Image:
+	var size: int = DETAIL_SIZE
+	var pile: Image = _noise(size, 71, 0.25)
+	var wear: Image = _noise(size, 72, 0.008)
+	var border := Color(0.05, 0.14, 0.11)
+	var line := Color(0.56, 0.46, 0.17)
+	var field := Color(0.33, 0.25, 0.09)
+	var figure := Color(0.07, 0.18, 0.14)
+	var unit: float = 64.0 / float(size)
+	var image := Image.create_empty(size, size, false, Image.FORMAT_RGB8)
+	for y: int in size:
+		var ly: float = float(y) * unit
+		for x: int in size:
+			var lx: float = float(x) * unit
+			var edge: float = minf(lx, 64.0 - lx)
+			var color: Color = field
+			if edge < 2.0:
+				color = border
+			elif edge < 5.0:
+				# A row of small diamonds in the border band.
+				var t: float = absf(fmod(ly, 4.0) - 2.0) + absf(edge - 3.5)
+				color = line if t < 1.3 else border
+			elif edge < 6.0:
+				color = line
+			elif edge < 8.0:
+				color = border
+			elif edge < 8.6:
+				color = line
+			else:
+				var d: float = absf(lx - 32.0) + absf(ly - 32.0)
+				if d < 4.0:
+					color = line
+				elif d < 13.0:
+					color = figure
+				elif d < 14.2:
+					color = line
+				elif d < 17.0:
+					color = field.darkened(0.3)
+				else:
+					# Faint lattice in the field.
+					var a: float = absf(fmod(lx + ly, 8.0) - 4.0)
+					var b: float = absf(fmod(lx - ly + 64.0, 8.0) - 4.0)
+					if minf(a, b) < 0.35:
+						color = field.darkened(0.28)
+			color = color.darkened(pile.get_pixel(x, y).r * 0.18)
+			color = color.darkened(clampf((wear.get_pixel(x, y).r - 0.45) * 1.0, 0.0, 0.35))
+			image.set_pixel(x, y, color)
+	return image

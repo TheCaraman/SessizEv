@@ -12,6 +12,8 @@ const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNES
 const DOOR_THICKNESS: float = 0.05
 const LAMP_COLOR := Color(1.0, 0.90, 0.66)
 const RUNNER_WIDTH: float = 1.1
+const SKIRTING_HEIGHT: float = 0.13
+const CEILING_RAIL_HEIGHT: float = 0.09
 
 
 func _ready() -> void:
@@ -107,13 +109,30 @@ func _add_wall_piece(
 	var mid: float = (from + to) * 0.5
 	var length: float = to - from
 	var center_y: float = bottom_y + height * 0.5
-	if wall["axis"] == "x":
-		return _add_box(
-			parent, Vector3(mid, center_y, wall["at"]), Vector3(length, height, thickness), &"wallpaper_green"
-		)
-	return _add_box(
-		parent, Vector3(wall["at"], center_y, mid), Vector3(thickness, height, length), &"wallpaper_green"
-	)
+	var along_x: bool = wall["axis"] == "x"
+	var center := Vector3(mid, center_y, wall["at"]) if along_x else Vector3(wall["at"], center_y, mid)
+	var size := Vector3(length, height, thickness) if along_x else Vector3(thickness, height, length)
+	var piece: StaticBody3D = _add_box(parent, center, size, &"wallpaper_green")
+
+	# Full-height pieces get a skirting board and a dark rail under the ceiling,
+	# both standing proud of the wall on either side.
+	if is_equal_approx(height, WALL_HEIGHT):
+		var trims: Array[Array] = [
+			[SKIRTING_HEIGHT * 0.5, SKIRTING_HEIGHT, 0.036, &"frame_paint"],
+			[SKIRTING_HEIGHT + 0.012, 0.024, 0.05, &"frame_paint"],
+			[WALL_HEIGHT - CEILING_RAIL_HEIGHT * 0.5, CEILING_RAIL_HEIGHT, 0.04, &"trim_dark"],
+		]
+		for trim: Array in trims:
+			var trim_center := center
+			trim_center.y = bottom_y + (trim[0] as float)
+			var trim_size := size
+			trim_size.y = trim[1]
+			if along_x:
+				trim_size.z = thickness + (trim[2] as float)
+			else:
+				trim_size.x = thickness + (trim[2] as float)
+			_add_mesh(parent, trim_center, trim_size, trim[3])
+	return piece
 
 
 ## Adds a closed panelled door with its frame in an opening. Doors with a
@@ -144,28 +163,56 @@ func _add_door(
 	door.add_child(collision)
 
 	_add_mesh(door, Vector3(0.0, height * 0.5, 0.0), Vector3(width, height, DOOR_THICKNESS), &"door_paint")
+	# Panels: a wide one at the top, two tall ones below, a low one at the foot.
+	# Each is three stepped layers (moulding, field, raised centre).
+	var panels: Array[Rect2] = [
+		Rect2(-0.33, 1.52, 0.66, 0.44),
+		Rect2(-0.33, 0.50, 0.30, 0.92),
+		Rect2(0.03, 0.50, 0.30, 0.92),
+		Rect2(-0.33, 0.12, 0.66, 0.28),
+	]
 	for side: float in [-1.0, 1.0]:
-		var face_z: float = side * (DOOR_THICKNESS * 0.5 + 0.008)
-		# Three raised panels: one wide at the top, two tall below.
-		_add_mesh(door, Vector3(0.0, 1.72, face_z), Vector3(width - 0.22, 0.46, 0.016), &"door_panel_paint")
-		_add_mesh(door, Vector3(-0.19, 0.78, face_z), Vector3(0.27, 1.22, 0.016), &"door_panel_paint")
-		_add_mesh(door, Vector3(0.19, 0.78, face_z), Vector3(0.27, 1.22, 0.016), &"door_panel_paint")
-		# Handle plate and lever.
-		var handle_z: float = side * (DOOR_THICKNESS * 0.5 + 0.012)
-		_add_mesh(door, Vector3(width * 0.5 - 0.07, 1.02, handle_z), Vector3(0.035, 0.16, 0.012), &"brass")
-		_add_mesh(
-			door, Vector3(width * 0.5 - 0.12, 1.04, side * (DOOR_THICKNESS * 0.5 + 0.035)),
-			Vector3(0.12, 0.02, 0.02), &"brass"
-		)
+		var face: float = side * DOOR_THICKNESS * 0.5
+		for panel: Rect2 in panels:
+			var c: Vector2 = panel.get_center()
+			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.004), Vector3(panel.size.x, panel.size.y, 0.008), &"trim_door")
+			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.007), Vector3(panel.size.x - 0.05, panel.size.y - 0.05, 0.014), &"door_panel_paint")
+			_add_mesh(door, Vector3(c.x, c.y, face + side * 0.012), Vector3(panel.size.x - 0.13, panel.size.y - 0.13, 0.024), &"door_paint")
+		# Handle: backplate, spindle boss, lever and keyhole cover.
+		var handle_x: float = width * 0.5 - 0.075
+		_add_mesh(door, Vector3(handle_x, 1.02, face + side * 0.006), Vector3(0.04, 0.20, 0.012), &"brass")
+		_add_mesh(door, Vector3(handle_x, 1.06, face + side * 0.022), Vector3(0.028, 0.028, 0.032), &"brass")
+		_add_mesh(door, Vector3(handle_x - 0.055, 1.06, face + side * 0.042), Vector3(0.13, 0.018, 0.018), &"brass")
+		_add_mesh(door, Vector3(handle_x, 0.96, face + side * 0.013), Vector3(0.018, 0.03, 0.006), &"trim_dark")
 
-	# Frame, standing slightly proud of the wall on both sides.
-	var frame_depth: float = wall_thickness + 0.04
+	# Architrave: a wide flat casing with a narrower raised bead on top of it,
+	# on both sides of the wall, plus the lining inside the opening.
+	var lining_depth: float = wall_thickness + 0.02
 	for side: float in [-1.0, 1.0]:
 		_add_mesh(
-			door, Vector3(side * (width * 0.5 + 0.035), height * 0.5 + 0.035, 0.0),
-			Vector3(0.07, height + 0.07, frame_depth), &"frame_paint"
+			door, Vector3(side * (width * 0.5 + 0.01), height * 0.5, 0.0),
+			Vector3(0.02, height, lining_depth), &"frame_paint"
 		)
-	_add_mesh(door, Vector3(0.0, height + 0.035, 0.0), Vector3(width, 0.07, frame_depth), &"frame_paint")
+	_add_mesh(door, Vector3(0.0, height + 0.01, 0.0), Vector3(width + 0.04, 0.02, lining_depth), &"frame_paint")
+	for face_side: float in [-1.0, 1.0]:
+		var wall_face: float = face_side * wall_thickness * 0.5
+		for side: float in [-1.0, 1.0]:
+			_add_mesh(
+				door, Vector3(side * (width * 0.5 + 0.06), (height + 0.10) * 0.5, wall_face + face_side * 0.009),
+				Vector3(0.10, height + 0.10, 0.018), &"frame_paint"
+			)
+			_add_mesh(
+				door, Vector3(side * (width * 0.5 + 0.085), (height + 0.10) * 0.5, wall_face + face_side * 0.022),
+				Vector3(0.035, height + 0.10, 0.012), &"frame_paint"
+			)
+		_add_mesh(
+			door, Vector3(0.0, height + 0.06, wall_face + face_side * 0.009),
+			Vector3(width + 0.22, 0.10, 0.018), &"frame_paint"
+		)
+		_add_mesh(
+			door, Vector3(0.0, height + 0.125, wall_face + face_side * 0.016),
+			Vector3(width + 0.28, 0.035, 0.032), &"frame_paint"
+		)
 
 
 ## The staircase is a single ramp: bottom at the south edge on floor 0, top at

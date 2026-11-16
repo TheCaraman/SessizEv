@@ -9,12 +9,13 @@ shader_type canvas_item;
 uniform sampler2D screen_texture : hint_screen_texture, filter_nearest, repeat_disable;
 
 // Height of the simulated low-resolution image, in pixels.
-// The look is crisp (docs/DecisionLog.md, K-012): only mild pixelation.
-uniform float vertical_resolution : hint_range(120.0, 1080.0, 1.0) = 540.0;
-// Number of steps per colour channel.
-uniform float color_levels : hint_range(4.0, 64.0, 1.0) = 40.0;
-uniform float dither_strength : hint_range(0.0, 1.0) = 0.6;
-uniform float grain_strength : hint_range(0.0, 0.3) = 0.03;
+// The look is smooth (docs/DecisionLog.md, K-013): no pixelation by default.
+// A value at or above the screen height leaves the image untouched.
+uniform float vertical_resolution : hint_range(120.0, 4320.0, 1.0) = 4320.0;
+// Number of steps per colour channel; high enough that no banding shows.
+uniform float color_levels : hint_range(4.0, 256.0, 1.0) = 255.0;
+uniform float dither_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float grain_strength : hint_range(0.0, 0.3) = 0.025;
 uniform float vignette_strength : hint_range(0.0, 1.0) = 0.55;
 // Multiplied into the image; a slight green cast.
 uniform vec3 tint : source_color = vec3(0.95, 1.0, 0.94);

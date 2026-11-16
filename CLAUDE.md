@@ -18,8 +18,10 @@ Bu dosya her oturumda yüklenir. Ayrıntılar `docs/` altındadır; çelişki ol
 
 ## Sunum (K-011, K-012)
 - Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D katmanlı sahnelerdir; karakterler 2D çizimdir.
-- Renk teması koyu kirli yeşil/turkuaz, vurgu kirli sarı. Net görüntü; ağır pikselleşme yok.
-- Görsel işe referans görmeden başlama. Proje sahibinin beğenmediği yön: kirletilmiş PS1 görünümü.
+- Renk teması koyu kirli yeşil/turkuaz, vurgu kirli sarı.
+- Görüntü pürüzsüz (K-013): yüksek çözünürlüklü doku, yumuşak süzme, pikselleştirme yok. "PS1", "retro", "düşük poligon" görünümü proje sahibi tarafından iki kez reddedildi; önerme.
+- Görsel işe referans görmeden başlama; her görsel değişiklikten sonra gerçek ekran görüntüsü alıp bak.
+- Dokular `assets/textures/` altında PNG'dir; `scenes/main/generate_textures.tscn` ile üretilir.
 
 ## Değişmez tasarım kuralları
 - FPS dövüşü, nişan alma, açık dünya, crafting ağacı, çok oyunculu yok.
