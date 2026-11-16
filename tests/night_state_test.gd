@@ -59,6 +59,37 @@ func _ready() -> void:
 		check(SaveManager.load_game("night_clock"), "legacy load " + str(version))
 		check(GameState.night_session.is_empty() and GameState.npcs == infected, "legacy migration never invents watch or rerolls infection")
 	SaveManager.delete_save("night_clock")
+	var dialogue := DialogueRunner.new()
+	add_child(dialogue)
+	var director := CampaignDirector.new()
+	add_child(director)
+	director.setup(dialogue)
+	GameState.new_campaign(42)
+	GameState.day = 4
+	GameState.player["energy"] = 60
+	var rest_supplies: Dictionary = GameState.resources.duplicate()
+	director.perform_room_action("daniel_bedroom", "rest")
+	check(GameState.minutes == 480 and GameState.player["energy"] == 75, "daytime rest restores fifteen energy per hour")
+	check(GameState.resources == rest_supplies, "rest never invents resources")
+	GameState.player["energy"] = 98
+	director.perform_room_action("daniel_bedroom", "rest")
+	check(GameState.player["energy"] == 100, "rest recovery capped")
+	GameState.new_campaign(42)
+	GameState.day = 2
+	GameState.minutes = 590
+	GameState.player["energy"] = 60
+	var rest_text: String = director.perform_room_action("daniel_bedroom", "rest")
+	check(GameState.minutes == 600 and GameState.player["energy"] == 62, "visitor interruption recovers actual ten minutes only")
+	check(rest_text.contains("10") and GameState.visitor == "marcus_hale", "interrupted rest text and visitor accurate")
+	GameState.new_campaign(42)
+	GameState.day = 3
+	GameState.minutes = 1370
+	GameState.player["energy"] = 60
+	director.perform_room_action("daniel_bedroom", "rest")
+	check(GameState.minutes == 1380 and GameState.player["energy"] == 62, "power interruption rest accounting")
+	check(SaveManager.load_game() and GameState.player["energy"] == 62, "interruption autosave includes finished rest recovery")
+	director.free()
+	dialogue.free()
 	power.free()
 	if failures == 0:
 		print("NIGHT STATE TEST: PASS (%d checks)" % checks)

@@ -64,6 +64,8 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-028 | İlk dengeleme: tam nöbet 40 enerji; uyanık saat başına 5 kayıp, uykuda saat başına 8.125 geri kazanım; üst sınır 100. Nöbet seçimi ilk kesitte Gün 3 20:00–23:00 aralığındadır. Kesin üretim dengesi değil, playtest varsayımıdır. | NightWatchDesign |
 
 ## Açık konular
+
+Güncel dengeleme varsayımı (DAYTIME-REST): gündüz 60 dakika dinlenme 15 enerji verir; gerçek süreye oranlanır ve kısmi kazanım aşağı yuvarlanır. Üst sınır 100; kaynak üretmez. Gece nöbetinden sonraki enerji döngüsünü tamamlar; gerçek oyuncu dengelemesi sonrası değişebilir.
 | A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |
 | A-009 | 2D oda ve karakter görsellerinin üretimi | Proje sahibi yapay zekâ görsel aracıyla üretecek; tutarlılık için istem şablonu ve ölçü kuralları ArtBible'a yazılacak. |
 

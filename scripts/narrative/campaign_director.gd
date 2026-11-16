@@ -15,6 +15,7 @@ const LAST_AUTHORED_DAY: int = 3
 
 var power: PowerIncident
 var night: NightSession
+var _player_actions: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://resources/events/player_actions.json"))
 var _watch_confirmation: bool = false
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
@@ -79,7 +80,7 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 			if GameState.night_in_progress():
 				actions.append({"id": "wait_watch", "label": tr("WATCH_WAIT_ACTION").format({"time": night.next_clock_text()})})
 			if GameState.minutes < GameState.NIGHT_START:
-				actions.append({"id": "rest", "label": tr("ACTION_REST")})
+				actions.append({"id": "rest", "label": tr("ACTION_REST").format({"energy": _player_actions["rest"]["energy_per_hour"]})})
 			if can_sleep():
 				actions.append({"id": "sleep", "label": tr("ACTION_SLEEP")})
 			if can_save():
@@ -176,7 +177,16 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 		"check_supplies":
 			return _with_knock(_spend(10), _supplies_text())
 		"rest":
-			return _with_knock(_spend(60), tr("NARR_REST"))
+			var started: int = GameState.minutes
+			var interrupted: bool = _spend(_duration_of("rest"))
+			var elapsed: int = GameState.minutes - started
+			var before_energy: int = int(GameState.player["energy"])
+			var recovery: int = int(float(_player_actions["rest"]["energy_per_hour"]) * elapsed / 60.0)
+			GameState.player["energy"] = mini(100, before_energy + recovery)
+			# Power interruption already autosaved inside _spend; finish its snapshot.
+			if interrupted and GameState.day == 3 and not power.pending():
+				SaveManager.save_game()
+			return _with_knock(interrupted, tr("NARR_REST").format({"minutes": elapsed, "energy": int(GameState.player["energy"]) - before_energy}))
 		"sleep":
 			return _resolve_night()
 		"save":
@@ -207,7 +217,7 @@ func _duration_of(action_id: String) -> int:
 		"check_supplies":
 			return 10
 		"rest":
-			return 60
+			return int(_player_actions["rest"]["minutes"])
 	return 0
 
 
