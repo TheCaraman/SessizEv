@@ -57,6 +57,13 @@ func _ready() -> void:
 		_show_title(GameState.day)
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and _clock != null:
+		_update_clock()
+		_update_subtitle()
+		_title.text = tr("TITLE_DAY_1") if GameState.day == 1 else tr("TITLE_DAY_N").format({"day": GameState.day})
+
+
 func _process(delta: float) -> void:
 	if _notice_time_left > 0.0:
 		_notice_time_left -= delta

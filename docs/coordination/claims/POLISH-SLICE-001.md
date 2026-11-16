@@ -3,6 +3,8 @@
 Sahip: ana Codex oturumu; otomatik işçi başlatılmadı. Başlangıç: Gün 3 + sanat birleşimi, 2250 test geçti.
 Bu görev yeni hikâye veya mekanik eklemez; var olan ışık ve arayüzü sağlamlaştırır.
 
+Ara teslim 4: presentation_test eklendi, test çalıştırıcısına bağlandı. 1080p/1440p ve en/tr mevcut yedi tesisat eylemi denetlendi; dört gerçek render alındı. HUD dil yenilemesi düzeltildi. 10 paket, 2327 denetim geçti. docs/qa/PresentationResolution.md kapsamı ve sınırları kaydeder. Onarım etiketinde kesin süre yerine 25–35dk aralığı kalıyor; kesin yardım/maliyet onayı ayrı düzeltme gerektiriyor. Bu görev henüz tamamen kapanmadı.
+
 Ara teslim 3: saate bağlı pencere ışığı ve yerel sky malzemesi uygulandı; sis azaltıldı. 2279 denetim geçti. Gerçek 1080p render ve 60 karelik yerleşme incelemesi docs/qa/DaylightClock.md içinde. Geniş ekran/dil taşması ve ayrı sunum paketi henüz açık.
 
 Ara teslim: onarım yardımcısı isteklilik/enerji kontrolü 400ee1a ile tamamlandı; opak günlük 0bb7509 ile tamamlandı. Son tam regresyon 2272 denetim geçti. JournalModal.md gerçek 1080p görüntüsünü ve sınırları kaydeder. Oda eylemleri zaten HFlowContainer kullanıyor; geniş ekran/dil taşma testi henüz yapılmadı. Işık maddeleri ve figür aydınlığı açık.
