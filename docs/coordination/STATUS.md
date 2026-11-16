@@ -38,3 +38,6 @@ SAVE-SAFE-001 tamam: doğrulanmış pending dosya, backup rotasyonu, başarısı
 
 ## Aday durum işlemi
 SAVE-TXN-001 tamam: beklenen durum kontrolü, adayın kaydı, ardından canlı uygulama; işlem kimliği ve çift uygulama engeli. Sahte gün başlangıcı yok. 17 paket/5690 denetim geçti (save write 58). docs/qa/CandidateTransactions.md. Gün 4'e henüz bağlanmadı; hedef/oda/tanık semantik doğrulaması ayrıca gerekli.
+
+## Gün 4 ilk değerlendirme
+Daniel odasında ücretsiz inceleme mevcut; yalnız toplanmış kanıt ve güncel sakin sayısı, kayıt yokluğu açık. Güvenli aday işlemle açılış kaydedilir. 18 paket/5787 denetim, GPU capture 74 geçti. docs/qa/Day4Review.md. Tam suçlama/izolasyon/kovma ve gerçek tanık sistemi henüz yok; kesit sınırı korunur.

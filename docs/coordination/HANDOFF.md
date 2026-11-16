@@ -124,3 +124,6 @@ Dayanak 1555f81. SaveManager güvenli dosya yayın temeli, test paketi ve QA bel
 
 ## 2026-11-16 / Codex / SAVE-TXN-001
 Dayanak 4b2887d. Aday kayıt ve ardından canlı uygulama API'si eklendi; yükleme davranışı varsayılanda korundu. 17 paket/5690 denetim geçti; tqh-tests-58a475ade0f2425c9583c0aebbd43cda. Mevcut eylemler topluca dönüştürülmedi. Gün 4 gerçek tanık/karar doğrulaması sonraki iş. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / DAY4-REVIEW-001
+Dayanak 44578a2. İlk ücretsiz sabah değerlendirme eylemi/JournalView bağlantısı ve legacy fallback. 18 paket/5787 denetim; GPU capture 74. Tam Day4 sayılmaz. Sonraki: gerçek tanık ve nonlethal karar doğrulaması. Sahiplik bırakıldı.

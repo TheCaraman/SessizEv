@@ -70,3 +70,6 @@ signal shelter_view_requested
 signal shelter_view_opened
 @warning_ignore("unused_signal")
 signal shelter_view_closed
+
+@warning_ignore("unused_signal")
+signal review_requested(text: String)

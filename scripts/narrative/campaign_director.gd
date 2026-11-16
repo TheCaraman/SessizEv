@@ -59,6 +59,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	if room_id == "daniel_bedroom" and Day4Review.available():
+		actions.append({"id": "review_last_night", "label": tr("DAY4_REVIEW_ACTION")})
 	if room_id == str(night.events.definition["source_room"]) and night.events.can_inspect():
 		actions.append({"id": "inspect_pipes", "label": night.events.inspection_label()})
 	if GameState.day >= 2 and GameState.day <= 4 and room_id == "daniel_bedroom" and shelter != null:
@@ -148,6 +150,11 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	_warned_action = ""
 
 	match action_id:
+		"review_last_night":
+			if Day4Review.record_open() != OK:
+				return tr("DAY4_REVIEW_SAVE_FAILED")
+			EventBus.review_requested.emit(Day4Review.text())
+			return ""
 		"inspect_pipes":
 			return night.events.inspect()
 		"watch":

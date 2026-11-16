@@ -28,3 +28,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | SAVE-SAFE-001 | TAMAM | Codex (sahiplik bırakıldı) | scripts/save/save_manager.gd; tests/save_write_test.*; tools/Run-Tests.ps1; docs/qa/SafeSaveWrite.md | 2026-11-16 |
 
 | SAVE-TXN-001 | TAMAM | Codex (sahiplik bırakıldı) | save_manager.gd commit_candidate, game_state.gd bildirim seçeneği, save_write_test.gd ve docs/qa/CandidateTransactions.md | 2026-11-16 |
+
+| DAY4-REVIEW-001 | TAMAM | Codex (sahiplik bırakıldı) | day4_review.gd/json, CampaignDirector eylemi, EventBus/HouseBlockout/JournalView bağlantısı, localization, day4_review_test ve QA | 2026-11-16 |

@@ -29,6 +29,11 @@ func _ready() -> void:
 	_journal = JournalView.new()
 	add_child(_journal)
 	_journal.closed.connect(_update_control)
+	EventBus.review_requested.connect(func(content: String) -> void:
+		_room_view.close()
+		_journal.open(content)
+		_update_control()
+	)
 
 	_director.shelter = _shelter
 	_shelter_view.setup(_shelter)

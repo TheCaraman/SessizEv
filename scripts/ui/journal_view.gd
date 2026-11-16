@@ -35,8 +35,8 @@ func _ready() -> void:
 	text.add_theme_font_size_override("font_size", 24)
 	scroll.add_child(text)
 	visible = false
-func open() -> void:
-	text.text = EvidenceManager.journal_text()
+func open(content: String = "") -> void:
+	text.text = EvidenceManager.journal_text() if content.is_empty() else content
 	visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 func close() -> void:
