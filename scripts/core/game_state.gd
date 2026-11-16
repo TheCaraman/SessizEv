@@ -12,9 +12,10 @@ extends Node
 
 enum Phase { MORNING, AFTERNOON, EVENING, NIGHT }
 
-## Version 2 added beds, resolved_arrivals and visitor_arrival
-## (docs/Day2Design.md, section 10). Version 1 saves are migrated on load.
-const SAVE_VERSION: int = 2
+## Version 2 added beds, resolved_arrivals and visitor_arrival; version 3 added
+## jobs, completed_jobs and reports (docs/Day2Design.md, section 10).
+## Older saves are migrated on load.
+const SAVE_VERSION: int = 3
 ## The day starts at 07:00. Times are minutes since midnight.
 const DAY_START: int = 7 * 60
 const AFTERNOON_START: int = 12 * 60
@@ -50,6 +51,13 @@ var beds: Dictionary = {}
 ## Ids of the visits (resources/events/arrivals.json) that have already
 ## begun or been missed. A visit never happens twice.
 var resolved_arrivals: Array[String] = []
+## Work in progress: character id -> {"job", "day", "start", "end", "room"}.
+## One job per character. "room" is where they are while working, or "".
+var jobs: Dictionary = {}
+## Ids of finished jobs ("day:character:job:start"), so none is rewarded twice.
+var completed_jobs: Array[String] = []
+## What residents have reported: [{"day", "minutes", "npc", "key", "args"}].
+var reports: Array[Dictionary] = []
 ## Id of whoever is waiting at the front door, or "".
 var visitor: String = ""
 ## Id of the visit the waiting person belongs to, or "".
@@ -70,6 +78,9 @@ func new_campaign(seed_value: int = -1) -> void:
 	visitor_arrival = ""
 	beds = {}
 	resolved_arrivals = []
+	jobs = {}
+	completed_jobs = []
+	reports = []
 	resources = STARTING_RESOURCES.duplicate()
 	player = {"energy": 100, "stress": 10, "infection": "healthy"}
 	npcs = {}
@@ -156,13 +167,37 @@ func get_residents() -> Array[String]:
 	return residents
 
 
-## Ids of the residents who sleep in [param room_id].
+## Where a resident is right now: at their job while it lasts, otherwise in
+## the room they sleep in. Nobody is ever in two rooms at once.
+func get_location(npc_id: String) -> String:
+	if not npcs.has(npc_id):
+		return ""
+	if jobs.has(npc_id):
+		var job: Dictionary = jobs[npc_id]
+		if (
+			str(job["room"]) != "" and int(job["day"]) == day
+			and minutes >= int(job["start"]) and minutes < int(job["end"])
+		):
+			return str(job["room"])
+	return str(npcs[npc_id]["room"])
+
+
+## Ids of the residents who are in [param room_id] right now.
 func get_room_occupants(room_id: String) -> Array[String]:
 	var occupants: Array[String] = []
 	for id: String in get_residents():
-		if npcs[id]["room"] == room_id:
+		if get_location(id) == room_id:
 			occupants.append(id)
 	return occupants
+
+
+## Ids of the residents whose bed is in [param room_id], wherever they are now.
+func get_room_sleepers(room_id: String) -> Array[String]:
+	var sleepers: Array[String] = []
+	for id: String in get_residents():
+		if npcs[id]["room"] == room_id:
+			sleepers.append(id)
+	return sleepers
 
 
 # --- Beds -------------------------------------------------------------------
@@ -217,6 +252,8 @@ func remove_npc(npc_id: String, status: String) -> void:
 	var bed_id: String = get_bed_of(npc_id)
 	if bed_id != "":
 		beds.erase(bed_id)
+	# Unfinished work is abandoned and produces nothing.
+	jobs.erase(npc_id)
 	npcs[npc_id]["status"] = status
 	npcs[npc_id]["room"] = ""
 	EventBus.residents_changed.emit()
@@ -245,6 +282,8 @@ func start_next_day() -> void:
 			set_flag("shortage_%s_day_%d" % [resource, day + 1], people - have)
 		resources[resource] = maxi(have - people, 0)
 	player["energy"] = 100
+	# Work not finished by the end of the day is dropped.
+	jobs = {}
 	day += 1
 	minutes = DAY_START
 	EventBus.resources_changed.emit()
@@ -266,6 +305,9 @@ func to_dict() -> Dictionary:
 		"npcs": npcs.duplicate(true),
 		"beds": beds.duplicate(true),
 		"resolved_arrivals": resolved_arrivals.duplicate(),
+		"jobs": jobs.duplicate(true),
+		"completed_jobs": completed_jobs.duplicate(),
+		"reports": reports.duplicate(true),
 		"visitor": visitor,
 		"visitor_arrival": visitor_arrival,
 	}
@@ -314,6 +356,29 @@ func from_dict(data: Dictionary) -> void:
 			resolved_arrivals.append(str(arrival_id))
 	else:
 		_migrate_from_version_1()
+
+	# Version 3 fields; absent in older saves, where nobody had a job yet.
+	jobs = {}
+	for id: String in data.get("jobs", {}):
+		var job: Dictionary = data["jobs"][id]
+		jobs[id] = {
+			"job": str(job.get("job", "")), "day": int(job.get("day", 0)),
+			"start": int(job.get("start", 0)), "end": int(job.get("end", 0)),
+			"room": str(job.get("room", "")),
+		}
+	completed_jobs = []
+	for job_id: Variant in data.get("completed_jobs", []):
+		completed_jobs.append(str(job_id))
+	reports = []
+	for report: Dictionary in data.get("reports", []):
+		var args: Dictionary = (report.get("args", {}) as Dictionary).duplicate(true)
+		for key: String in args:
+			if args[key] is float and float(int(args[key])) == args[key]:
+				args[key] = int(args[key])
+		reports.append({
+			"day": int(report.get("day", 0)), "minutes": int(report.get("minutes", 0)),
+			"npc": str(report.get("npc", "")), "key": str(report.get("key", "")), "args": args,
+		})
 
 	active = true
 	EventBus.day_started.emit(day)

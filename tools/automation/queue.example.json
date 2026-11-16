@@ -1,0 +1,26 @@
+{
+  "project": "SETUP_WRITES_ABSOLUTE_PROJECT_PATH",
+  "git": "C:/Program Files/Git/cmd/git.exe",
+  "godot": "SETUP_WRITES_GODOT_PATH",
+  "agent_timeout_seconds": 1500,
+  "test_timeout_seconds": 600,
+  "max_attempts_per_task": 4,
+  "max_run_seconds": 14400,
+  "providers": [],
+  "tasks": [
+    {
+      "id": "DAY2-003",
+      "depends_on": [],
+      "allowed_paths": ["scripts/*", "scenes/*", "resources/*", "localization/*", "tests/*", "docs/qa/*", "tools/Run-Tests.ps1"],
+      "required_test_markers": ["CAMPAIGN TEST: PASS", "DAY 2 TEST: PASS", "MENU TEST: PASS", "INTERACTION TEST: PASS", "HOUSE LAYOUT TEST: PASS", "PLAYER MOVEMENT TEST: PASS", "SHELTER TEST: PASS"],
+      "instruction": "Complete the paused DAY2-003 shelter jobs and management screen implementation. Read docs/Day2Design.md and docs/coordination/claims/DAY2-003.md. The working tree snapshot includes Claude's partial implementation; preserve and finish it. Implement jobs, bed reassignment, activity-room consistency, transactional 15-minute management confirmation, cancellations and refusal reasons, idempotent job outcomes, localization and save migration without infection rerolls. Add meaningful shelter tests and include them in tools/Run-Tests.ps1. Verify existing Day 1, Day 2 and menu flows still work. Record actual results in docs/qa/DAY2-003.md. Do not expand into Day 3 events yet."
+    },
+    {
+      "id": "QA-DAY1-2",
+      "depends_on": ["DAY2-003"],
+      "allowed_paths": ["scripts/*", "scenes/*", "resources/*", "localization/*", "tests/*", "docs/qa/*", "tools/Run-Tests.ps1"],
+      "required_test_markers": ["CAMPAIGN TEST: PASS", "DAY 2 TEST: PASS", "MENU TEST: PASS", "INTERACTION TEST: PASS", "HOUSE LAYOUT TEST: PASS", "PLAYER MOVEMENT TEST: PASS", "SHELTER TEST: PASS"],
+      "instruction": "Review and validate the implemented Day 1–2 slice. Check actual main-menu scene transition, continue after a visitor is waiting, restart without duplicate arrivals, management cancellation and day transition without double resource consumption. Add integration tests where gaps are real, fix discovered bugs without changing creative direction. Check available English/Turkish strings. Save a concise factual report to docs/qa/DAY1-2-Integration.md. Do not claim manual visual testing if you only ran headless tests. Stop at the existing Day 3 content boundary."
+    }
+  ]
+}

@@ -155,7 +155,7 @@ func _build_choices(node: Dictionary) -> Array[Dictionary]:
 				"n": GameState.bed_number(bed_id),
 			}
 			var text: String = "BED_CHOICE"
-			var roommates: Array[String] = GameState.get_room_occupants(room_id)
+			var roommates: Array[String] = GameState.get_room_sleepers(room_id)
 			if not roommates.is_empty():
 				text = "BED_CHOICE_SHARED"
 				args["name"] = Roster.get_display_name(roommates[0])
