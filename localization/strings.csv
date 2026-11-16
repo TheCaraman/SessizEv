@@ -180,7 +180,13 @@ TRUST_DISTRUSTFUL,"Distrustful","Güvensiz"
 TRUST_NEUTRAL,"Neutral","Tarafsız"
 TRUST_COOPERATIVE,"Cooperative","İşbirlikçi"
 TRUST_LOYAL,"Loyal","Sadık"
-POWER_WAKE,"At 23:00 the house lights go out. You wake up. Check the utility room. Tab in corridor: journal.","Saat 23:00: ev ışıkları söndü. Uyandın. Tesisat odasını kontrol et. Koridorda Tab: günlük."
+POWER_WAKE,"At 23:00 the house lights go out. Check the utility room. Tab in corridor: journal.","Saat 23:00: ev ışıkları söndü. Tesisat odasını kontrol et. Koridorda Tab: günlük."
+WATCH_ACTION,Stay awake tonight (up to 40 energy),Bu gece uyanık kal (en çok 40 enerji)
+WATCH_WAIT_ACTION,Wait until {time},Saat {time} olana kadar bekle
+WATCH_CONFIRM,"Stay awake from 23:00 until morning. A full watch costs 40 energy. You can investigate or sleep for the remaining hours. Press again to begin; another action or leaving this room cancels.","23:00'ten sabaha kadar uyanık kal. Tam nöbet 40 enerjiye mal olur. Araştırabilir veya kalan saatleri uyuyabilirsin. Başlamak için tekrar bas; başka eylem veya odadan çıkmak iptal eder."
+WATCH_STARTED,"You stay awake. You can walk the corridors and inspect rooms. Return here to wait or sleep.","Uyanık kalıyorsun. Koridorlarda yürüyebilir ve odaları inceleyebilirsin. Beklemek veya uyumak için buraya dön."
+WATCH_WAITED,"It is {time}. Energy: {energy}/100. Waiting alone does not identify who moved through the house.","Saat {time}. Enerji: {energy}/100. Yalnızca beklemek evde kimin dolaştığını belirlemez."
+WATCH_MORNING,Energy after the night: {energy}/100.,Gece sonrası enerji: {energy}/100.
 POWER_PANEL_LOOSE,"An aged connection is loose with heat discoloration.","Eskimiş bağlantı gevşek; ısı izi var."
 POWER_PANEL_GRID,"The house breaker has not tripped.","Evin sigortası atmamış."
 POWER_PANEL_TOOL,"A connection was deliberately removed; fresh tool marks remain.","Bağlantı bilerek çıkarılmış; taze alet izleri var."

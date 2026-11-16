@@ -82,7 +82,25 @@ func _valid_state_shape(state: Dictionary) -> bool:
 	for key: String in ["campaign_seed", "day", "minutes"]:
 		if not _whole_number(state.get(key)):
 			return false
-	if int(state["day"]) < 1 or int(state["minutes"]) < 0 or int(state["minutes"]) > 1439:
+	if int(state["day"]) < 1 or int(state["minutes"]) < 0:
+		return false
+	var night: Variant = state.get("night_session", {})
+	if not night is Dictionary:
+		return false
+	var extended_night: bool = false
+	if not night.is_empty():
+		var timeline := NightTimeline.new()
+		if not timeline.valid(night):
+			return false
+		var night_day: int = int(night["day"])
+		if night["morning_resolved"]:
+			if int(state["day"]) <= night_day:
+				return false
+		else:
+			if int(state["day"]) != night_day or int(state["minutes"]) != int(night["cursor_minute"]):
+				return false
+			extended_night = true
+	if int(state["minutes"]) > (1860 if extended_night else 1439):
 		return false
 	for key: String in ["flags", "resources", "player", "npcs"]:
 		if not state.get(key) is Dictionary:

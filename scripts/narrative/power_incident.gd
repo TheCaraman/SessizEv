@@ -62,7 +62,7 @@ func inspect(which: String) -> String:
 	var key: String = definition["causes"][record["cause"]][which]
 	if not which in record["inspected"]:
 		var duration: int = int(definition["costs"][which])
-		if GameState.minutes + duration > GameState.LAST_MINUTE:
+		if GameState.minutes + duration > GameState.get_action_time_limit():
 			return tr("POWER_TOO_LATE")
 		record["inspected"].append(which)
 		GameState.advance_minutes(duration)
@@ -93,7 +93,7 @@ func repair(confirmed: bool = false) -> String:
 	var resource: String = quote["resource"]
 	var helper: String = quote["helper"]
 	var duration: int = quote["minutes"]
-	if GameState.minutes + duration > GameState.LAST_MINUTE:
+	if GameState.minutes + duration > GameState.get_action_time_limit():
 		return tr("POWER_TOO_LATE")
 	if int(GameState.resources.get(resource, 0)) < 1:
 		return tr("POWER_NO_RESOURCE")

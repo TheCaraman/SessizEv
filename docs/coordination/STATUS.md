@@ -18,7 +18,7 @@ Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. Sahip ART-RE
 
 POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre/maliyet onayı, opak günlük, olay güdümlü elektrikli ışık, saate bağlı pencere, figür/eşya tonu ve en/tr 1080p/1440p mevcut tesisat eylemi sınaması. Otomatik işçi başlatılmadı; ana Codex uyguladı. Görsel yön hâlâ sahibin incelemesinde; ART-REV-003 çizimsel örneği üretime bağlanmadı. Tam elle oynama açık.
 
-Gece nöbeti: NightTimeline saf hesap modülü ve veri tanımı hazır; 2905 yeni denetim dahil 12 paket/5321 geçti. Henüz GameState/oyuncu nöbet akışına bağlanmadı. docs/NightWatchDesign.md ve docs/qa/NightTimeline.md sonraki entegrasyonu tanımlar.
+Gece nöbeti ilk oynanabilir: v5 saat/kayıt, Gün 3 20:00–23:00 nöbet seçimi, 01/03/05/07 bekleme, kalan geceyi uyuma, enerji ve tek sabah çözümü bağlandı. 14 paket/5504 denetim geçti. Üç gerçek 1080p görüntüsü ve kapsam docs/qa/NightWatchFirstPlayable.md içinde. Genel gece yönetmeni, yeni olaylar, manuel oynama ve yeni nöbet UI'sinin 1440p renderı henüz yok.
 
 ## Tamamlanmamış alanlar
 

@@ -35,8 +35,8 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     if ($Expected) { $log -split "`n" | Where-Object { $_ -match 'TEST: PASS' } | Write-Output }
 }
 Invoke-GodotCheck @('--headless', '--path', $testProject, '--import')
-foreach ($test in @('night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')) {
+foreach ($test in @('night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')) {
     Invoke-GodotCheck @('--headless', '--path', $testProject, "res://tests/$test.tscn") 'TEST: PASS'
 }
-Write-Output "All twelve test suites passed. Logs and project copy: $testData"
+Write-Output "All fourteen test suites passed. Logs and project copy: $testData"
 Write-Output "Isolated user data: $userDirName (under the platform application-data directory)"

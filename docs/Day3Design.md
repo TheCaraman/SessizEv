@@ -1,5 +1,7 @@
 # Gün 3 — Power Failure
 
+Güncel ek: NIGHT-001 seçildiğinde saat sınırı ertesi 07:00'ye uzar; onarım/inceleme gece yarısından sonra da çalışır. Kayıt v5 ve gerçek uygulama docs/qa/NightWatchFirstPlayable.md içinde. Aşağıdaki 23:59/v4 sınırları eski varsayılan uyku yolunu ve tarihsel ilk teslimi anlatır; aktif nöbetin sınırı değildir.
+
 Uygulama şartnamesi, 2026-11-16. DAY3-001. Kapsam: üç günlük dikey kesit.
 Day2Design ve kanonik enfeksiyon kuralları korunur. Yeni ziyaretçiler bu kesitte yok;
 yalnızca Elena, Marcus ve Arthur kullanılır. Noah/Lily sonraki içerik genişletmesidir.

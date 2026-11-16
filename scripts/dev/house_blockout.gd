@@ -123,6 +123,7 @@ func _update_electric_lighting(powered: bool) -> void:
 ## Weak exterior light remains at night, independent of household power.
 ## Always multiply cached originals; repeated clock events cannot darken them again.
 static func daylight_factor(minutes: int) -> float:
+	minutes = posmod(minutes, 1440)
 	if minutes < 420:
 		return 0.08
 	if minutes < 480:

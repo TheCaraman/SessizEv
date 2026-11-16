@@ -2,6 +2,8 @@
 
 Durum: Uygulama öncesi teknik tasarım. Bu belge oynanabilir gece nöbeti değildir. Mevcut Gün 1–3 sürümü korunur; üretim kodunda henüz gece saati genişletilmedi.
 
+Güncelleme: ilk oynanabilir uygulama artık mevcut; bu ilk durum satırı tarihsel taslak bilgisidir. docs/qa/NightWatchFirstPlayable.md gerçek teslimi ve kalanları kaydeder. v5 saat/kayıt, uyanık kalma, bekleme, kalan geceyi uyuma ve tek sabah çözümü bağlandı. Manuel oynama, 1440p ve geceye sonradan katılma hâlâ açık.
+
 ## Amaç ve kapsam
 
 Özgün tasarımın uyuma/uyanık kalma seçimini üç günlük kesitte gerçek kılmak: Daniel koridorda yürür, kapıdan 2D odalara bakar, mevcut elektrik olayını inceler ve isterse kalan geceyi uyuyarak bitirir. Yeni saldırı, rastgele canavar, yeni suçlu veya yeni ziyaretçi eklenmez. Gün 1–2 sessiz gece çözümü başlangıçta korunur; ilk aktif gece Gün 3'tür. Oyuncu tüm sakinleri reddetse de akış çalışır.

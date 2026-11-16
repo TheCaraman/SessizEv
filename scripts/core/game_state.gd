@@ -15,7 +15,7 @@ enum Phase { MORNING, AFTERNOON, EVENING, NIGHT }
 ## Version 2 added beds, resolved_arrivals and visitor_arrival; version 3 added
 ## jobs, completed_jobs and reports (docs/Day2Design.md, section 10).
 ## Older saves are migrated on load.
-const SAVE_VERSION: int = 4
+const SAVE_VERSION: int = 5
 ## The day starts at 07:00. Times are minutes since midnight.
 const DAY_START: int = 7 * 60
 const AFTERNOON_START: int = 12 * 60
@@ -36,6 +36,7 @@ const BEDS: Array[String] = [
 
 ## True once a campaign has been started or loaded.
 var power_incident: Dictionary = {}
+var night_session: Dictionary = {}
 var evidence: Array[Dictionary] = []
 var active: bool = false
 var campaign_seed: int = 0
@@ -73,6 +74,7 @@ func new_campaign(seed_value: int = -1) -> void:
 		picker.randomize()
 		seed_value = picker.randi()
 	power_incident = {}
+	night_session = {}
 	evidence = []
 	campaign_seed = seed_value
 	day = 1
@@ -104,6 +106,7 @@ func get_phase() -> Phase:
 
 
 static func phase_for(minute_of_day: int) -> Phase:
+	minute_of_day = posmod(minute_of_day, 1440)
 	if minute_of_day >= NIGHT_START or minute_of_day < DAY_START:
 		return Phase.NIGHT
 	if minute_of_day >= EVENING_START:
@@ -115,7 +118,16 @@ static func phase_for(minute_of_day: int) -> Phase:
 
 ## Clock text such as "18:05".
 func get_clock_text() -> String:
-	return "%02d:%02d" % [minutes / 60, minutes % 60]
+	var clock_minute: int = posmod(minutes, 1440)
+	return "%02d:%02d" % [clock_minute / 60, clock_minute % 60]
+
+
+func night_in_progress() -> bool:
+	return not night_session.is_empty() and int(night_session.get("day", 0)) == day and not night_session.get("morning_resolved", false)
+
+
+func get_action_time_limit() -> int:
+	return 1860 if night_in_progress() else LAST_MINUTE
 
 
 ## Moves the clock forward. The day only changes through start_next_day();
@@ -124,8 +136,14 @@ func advance_minutes(amount: int) -> void:
 	if amount <= 0:
 		return
 	var before: Phase = get_phase()
-	var ceiling: int = NIGHT_START if day == 3 and power_incident.is_empty() and minutes <= NIGHT_START else LAST_MINUTE
+	var ceiling: int = NIGHT_START if day == 3 and power_incident.is_empty() and minutes <= NIGHT_START else get_action_time_limit()
 	minutes = mini(minutes + amount, ceiling)
+	if night_in_progress():
+		var timeline := NightTimeline.new()
+		if timeline.from_dict(night_session):
+			timeline.advance_to(minutes)
+			night_session = timeline.to_dict()
+			player["energy"] = timeline.energy()
 	EventBus.time_changed.emit(day, minutes)
 	if get_phase() != before:
 		EventBus.phase_changed.emit(get_phase())
@@ -279,14 +297,17 @@ func get_headcount() -> int:
 ## Daily upkeep and the move to 07:00 of the next day. Everyone in the house
 ## uses one unit of food and one of water. A shortfall is never hidden: it is
 ## recorded in flags as "shortage_<resource>_day_<new day>".
-func start_next_day() -> void:
+func start_next_day(restored_energy: int = 100) -> void:
+	# Active nights must be resolved by their owner before consuming supplies.
+	if night_in_progress():
+		return
 	var people: int = get_headcount()
 	for resource: String in ["food", "water"]:
 		var have: int = int(resources[resource])
 		if have < people:
 			set_flag("shortage_%s_day_%d" % [resource, day + 1], people - have)
 		resources[resource] = maxi(have - people, 0)
-	player["energy"] = 100
+	player["energy"] = clampi(restored_energy, 0, 100)
 	# Work not finished by the end of the day is dropped.
 	jobs = {}
 	day += 1
@@ -301,6 +322,7 @@ func start_next_day() -> void:
 
 func to_dict() -> Dictionary:
 	return {
+		"night_session": night_session.duplicate(true),
 		"power_incident": power_incident.duplicate(true), "evidence": evidence.duplicate(true), "campaign_seed": campaign_seed,
 		"day": day,
 		"minutes": minutes,
@@ -322,6 +344,7 @@ func to_dict() -> Dictionary:
 ## been through JSON (where every number comes back as a float) and one from
 ## save version 1 (which had no beds or visit records).
 func from_dict(data: Dictionary) -> void:
+	night_session = _restore_numbers(data.get("night_session", {}))
 	power_incident = _restore_numbers(data.get("power_incident", {}))
 	evidence = []
 	for entry: Dictionary in data.get("evidence", []):

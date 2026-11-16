@@ -14,6 +14,9 @@ const EARLIEST_SLEEP_MINUTE: int = 20 * 60
 const LAST_AUTHORED_DAY: int = 3
 
 var power: PowerIncident
+var night: NightSession
+var _watch_confirmation: bool = false
+var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
 var _confirmation_day: int = 0
@@ -33,10 +36,14 @@ var _warned_action: String = ""
 func setup(dialogue: DialogueRunner) -> void:
 	power = PowerIncident.new()
 	add_child(power)
+	night = NightSession.new()
+	night.name = "NightSession"
+	add_child(night)
 	_dialogue = dialogue
 	_load_arrivals()
 	EventBus.time_changed.connect(_check_power_time)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _repair_confirmation = false)
+	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _watch_confirmation = false)
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_arrivals())
 	EventBus.front_door_used.connect(_on_front_door_used)
 	# A visitor who ran out of patience during a conversation leaves when it ends.
@@ -65,6 +72,10 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 		"pantry":
 			actions.append({"id": "check_supplies", "label": tr("ACTION_CHECK_SUPPLIES")})
 		"daniel_bedroom":
+			if night.can_start():
+				actions.append({"id": "watch", "label": tr("WATCH_ACTION")})
+			if GameState.night_in_progress():
+				actions.append({"id": "wait_watch", "label": tr("WATCH_WAIT_ACTION").format({"time": night.next_clock_text()})})
 			if GameState.minutes < GameState.NIGHT_START:
 				actions.append({"id": "rest", "label": tr("ACTION_REST")})
 			if can_sleep():
@@ -90,6 +101,8 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 			break
 	if not available:
 		return ""
+	if action_id != "watch":
+		_watch_confirmation = false
 
 	if action_id.begins_with("power:"):
 		var choice: String = action_id.trim_prefix("power:")
@@ -123,7 +136,7 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	if action_id == "watch_tv" and not power.is_powered():
 		return tr("POWER_TV_OFF")
 	var duration: int = _duration_of(action_id)
-	if GameState.day >= 3 and not power.pending() and GameState.minutes + duration > GameState.LAST_MINUTE:
+	if GameState.day >= 3 and not power.pending() and GameState.minutes + duration > GameState.get_action_time_limit():
 		return tr("POWER_TOO_LATE")
 	var key: String = "%s|%s" % [room_id, action_id]
 	if duration > 0 and _would_lose_visitor(duration) and _warned_action != key:
@@ -132,6 +145,23 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	_warned_action = ""
 
 	match action_id:
+		"watch":
+			if not _watch_confirmation or _watch_confirmation_time != GameState.minutes:
+				_watch_confirmation = true
+				_watch_confirmation_time = GameState.minutes
+				return tr("WATCH_CONFIRM")
+			_watch_confirmation = false
+			if night.begin_watch():
+				if power.pending() and GameState.minutes >= GameState.NIGHT_START:
+					power.trigger()
+				return tr("WATCH_STARTED") + ("\n\n" + tr("POWER_WAKE") if not power.is_powered() else "")
+			return ""
+		"wait_watch":
+			if night.wait_until_boundary():
+				if GameState.minutes >= 1860:
+					return _resolve_night()
+				return tr("WATCH_WAITED").format({"time": GameState.get_clock_text(), "energy": GameState.player["energy"]})
+			return ""
 		"manage":
 			EventBus.shelter_view_requested.emit()
 			return ""
@@ -365,7 +395,12 @@ func _resolve_night() -> String:
 	if GameState.day >= 4:
 		return tr("NARR_END_OF_BUILD")
 	var watch_reports: PackedStringArray = shelter.resolve_night() if shelter != null else PackedStringArray()
-	GameState.start_next_day()
+	var used_watch: bool = GameState.night_in_progress()
+	if used_watch:
+		if not night.sleep_remaining() or not night.finish():
+			return ""
+	else:
+		GameState.start_next_day()
 	SaveManager.save_game()
 
 	var others: int = GameState.get_residents().size()
@@ -380,6 +415,8 @@ func _resolve_night() -> String:
 
 	if not watch_reports.is_empty():
 		text += "\n\n" + "\n".join(watch_reports)
+	if used_watch:
+		text += "\n\n" + tr("WATCH_MORNING").format({"energy": GameState.player["energy"]})
 
 	# A shortfall is always reported, never hidden.
 	var short: PackedStringArray = []

@@ -25,6 +25,8 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | K-014 | 2026-11-16 | **Atmosfer ışıkla kurulur, desenle değil.** Duvarlar tek renk ya da çok sade desenli; görünümü turkuaz hacimli sis, ışık huzmeleri, yumuşak gölgeler ve zayıf sıcak lambalar taşır. Uygulanan palet: kirli sarı duvar, koyu turkuaz kapı, turkuaz pus (K-012 ile uyumlu). | Proje sahibinin üçüncü referans görseli ve tarifi. |
 | K-015 | 2026-11-16 | **Pencereler ve dengeli palet.** Koridorlarda gerçek, perdeli pencereler vardır; gün ışığı perde aralığından içeri sızar. Palet tek renge boğulmaz: kirli sarı duvar, koyu turkuaz kapı, koyu kırmızı yolluk, kahverengi parke, kirli beyaz tavan ve kasalar; ortam ışığı nötrdür. Pencere yalnızca giriş holündedir (ön kapının yanında); üst kattaki depo dolabı yerinde kalır ve orada pencere yoktur (proje sahibi: "depoda pencere olmasına gerek yok"). K-014'teki "turkuaz pus" yerine soluk, nötr bir pus kullanılır. | Proje sahibinin isteği: pencere, perdeden sızan ışık, halının duvardan ayrı rengi, mavi olmayan tavan. |
 
+| K-016 | 2026-11-16 | **Çizimsel oda yönü ve ilk oda entegrasyonu onaylandı.** ART-REV-003: sade biçimler, koyu konturlar, kirli yeşil gölgeler, hafif tekinsiz perspektif. Oturma odası gerçek oyuna bağlanır; diğer odalar henüz görsel kabul almış değildir. Önceki boyanmış gerçekçilik üslubu geçersizdir. | Sahip: “Bu yönü koru, ilk odayı oyunda göster.” |
+
 ## Varsayımlar
 
 | No | Varsayım | Kaynak sorun |
@@ -57,6 +59,9 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-024 | Elena'nın 1. gündeki konuşması enfekte olsa da olmasa da aynıdır; enfeksiyon ilk gün hiçbir işaret vermez. Kardeşi hakkındaki cümlesi her iki durumda da yalandır (kişisel sır), enfeksiyon belirtisi değildir. | Kanonik kural 13, 14 |
 | V-025 | Tek kayıt yuvası vardır. Otomatik kayıt (her sabah) ve elle kayıt (Daniel'ın odası; kapıda biri yokken ve konuşma sürmüyorken) aynı yuvaya yazar. Oyuncunun konumu kaydedilmez. Bozuk ya da daha yeni sürümden kayıt "yok" sayılır. | SAVE-002 |
 | V-026 | Gün 2 uygulamasında docs/Day2Design.md'den sapmalar: yatak, kabul konuşmasının içinde seçilir (ayrı yönetim ekranı DAY2-003'te); Elena Gün 1'de seçim yaptırmadan orta yatak odasının ilk yatağını alır; ziyaretçiyi kaçıracak eylem ayrı pencere yerine ilk basışta uyarı metni döndürür. Ziyaret saatleri: Marcus 10:00–13:00, Arthur 15:00–18:00 (Codex'in dengeleme varsayımı). | DAY2-002 |
+
+| V-027 | Gece kaydı v5: aktif Gün 3 nöbetinde 23:00–ertesi 07:00 mutlak dakika, ekran/faz/ışık modulo 1440. Kampanya günü ve tüketim yalnızca sabah bir kez artar. Nöbet seçilmezse eski uyku akışı korunur; v1–v4 kayıtlara nöbet uydurulmaz. | NIGHT-001 teknik uygulaması |
+| V-028 | İlk dengeleme: tam nöbet 40 enerji; uyanık saat başına 5 kayıp, uykuda saat başına 8.125 geri kazanım; üst sınır 100. Nöbet seçimi ilk kesitte Gün 3 20:00–23:00 aralığındadır. Kesin üretim dengesi değil, playtest varsayımıdır. | NightWatchDesign |
 
 ## Açık konular
 | A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |
