@@ -93,6 +93,7 @@ func open(room_id: StringName) -> void:
 	var path: String = ROOM_IMAGE_PATH % room_id
 	var has_image: bool = ResourceLoader.exists(path)
 	_background.texture = load(path) as Texture2D if has_image else _get_placeholder()
+	(_prop_layer as RoomProps).show_room(str(room_id), _background.texture.get_size())
 	_placeholder_note.visible = not has_image
 
 	_set_narration("")
@@ -221,7 +222,7 @@ func _build_interface() -> void:
 	_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_background)
 
-	_prop_layer = Control.new()
+	_prop_layer = RoomProps.new()
 	_prop_layer.name = "Props"
 	_prop_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_prop_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE

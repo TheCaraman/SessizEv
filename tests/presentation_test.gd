@@ -45,6 +45,10 @@ func _ready() -> void:
 				var path: String = "res://docs/qa/presentation-%s-%d.png" % [locale, resolution.x]
 				check(viewport.get_texture().get_image().save_png(path) == OK, "capture saved")
 			view.close()
+	view.open("living_room")
+	check((view.get_prop_layer() as RoomProps).get_prop_ids() == PackedStringArray(["media_console"]), "living room loads authored media prop")
+	view.open("kitchen")
+	check((view.get_prop_layer() as RoomProps).get_prop_ids().is_empty(), "room changes clear prior props")
 	viewport.queue_free()
 	if failures == 0:
 		print("PRESENTATION TEST: PASS (%d checks)" % checks)
