@@ -1,31 +1,27 @@
-# Ortak durum — 2026-11-16
+﻿# Ortak durum — 2026-11-16
 
-Son oyun kilometre taşı: `2169bad` — Gün 1, Elena'nın kabul/ret/kapıyı açmama yolları,
-uyku, Gün 2 sabahı, enfeksiyon ataması ve kayıt altyapısı.
+Kalıcı proje: TheQuietHours/project. Yerel Git dalı automation/integration; uzak depo yok.
+Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
 
-Gün 2 ziyaretleri (Marcus, Arthur), yatak seçimi, radyo ve kayıt v2 var (DAY2-002, dal feat/day2-002-arrivals). İş atama ve yönetim ekranı yok (DAY2-003). Oda ve karakter görselleri yer tutucu, ses yok.
-Ana menü, duraklatma menüsü, elle kayıt ve kayıttan devam var (SAVE-002, dal feat/save-002-menu-continue); fareyle elle denenmedi.
-Koridorlar 3D, odalar 2D. Depo penceresiz geri kondu; giriş penceresi duruyor.
+## Uygulanan ve doğrulanan
 
-## Mevcut çalışma
+- Gün 1 Elena ziyareti, kabul/ret/kaçırma, ilk gece.
+- Gün 2 Marcus/Arthur ziyaretleri, yatak/iş yönetimi, kaynak çözümü.
+- Gün 3 koşullu elektrik kesintisi, inceleme, kanıt/günlük, onarım/erteleme ve kayıt v4.
+- Menü, duraklatma, elle kayıt ve devam.
+- Son birleşik regresyon: 9 paket, 2250 denetim; ayrıntılar docs/qa/DAY3-001.md.
+- 13 oda arka planı ve 3 karakter figürü dosya olarak mevcut. Bunlar nihai görsel kabul değildir.
 
-- Codex: COORD-001 tamamlandı; dosya sahipliği bırakıldı. Ortak çalışma belgeleri,
-  ayrı proje kopyasında test komutu ve Git aktarım betiği hazır.
-- Codex: DAY2-001 tamamlandı; Gün 2 şartnamesi docs/Day2Design.md içinde.
-  Kod henüz uygulanmadı; uygulama DAY2-002 olarak sırada. Dosya sahipliği bırakıldı.
-- Claude: SAVE-002 ve DAY2-002 tamamlandı; dosya sahipliği bırakıldı. Klasörün HEAD'i feat/day2-002-arrivals dalında. Altı test, 944 denetim.
-- Uzak depo: Sahibin tercihiyle şimdilik yalnızca yerel depo.
-- Kaynak klasör: Oturumun oluşturduğu klasör; kalıcı taşıma henüz yapılmadı.
+## Sahibin son geri bildirimi ve mevcut iş
 
-Doğrulama: yeni test betiğiyle kampanya 69, etkileşim 13, ev 90 ve hareket 6
-denetim geçti (toplam 178). SAVE-002 sonrası: beş test, 207 denetim. Test kayıtlarının ayrı kullanıcı dizininde oluştuğu görüldü.
+Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. ART-REV-001 kapsamında yalnızca tek oda için çizimsel gündüz/gece karşılaştırması hazırlanıyor. Üretim görselleri şimdilik korunur. docs/art/AtmosphereRevision.md ve messages/2026-11-16-ArtRevision.md esas alınır; eski ART-001 üslup kabulüne dayanarak yeni oda üretilmez.
 
-- Ortak kararlar (2026-11-16, sahibin "siz karar verin" talimatıyla): ART-001, ART-002, TECH-001;
-  ayrıntı DECISIONS.md. `main` artık doğrulanmış son durumu gösteriyor.
-- İletişim: messages/ klasörü. Claude, C2C-001 ve C2C-002'yi K2C-001 ile yanıtladı.
+POLISH-SLICE-001 bekliyor; otomatik işçi henüz başlatılmadı. Kalan teknik maddeler: zamana bağlı ışık, eylem satırı taşması, günlük arkasındaki HUD ve onarım yardımcısının uygunluğu.
 
-## Sonraki işler
+## Tamamlanmamış alanlar
 
-Önce Gün 1'i ve menüleri kullanıcıyla elle doğrula.
-Ardından Gün 2: Marcus/Arthur gelişleri, oda ve iş atama. Aktif görev dosyalarını
-kontrol etmeden aynı sistemleri paralel düzenleme.
+Gün 4+ kampanya, kapsamlı gece nöbeti, yargılama, kalan karakterler, ses, nihai sanat ve tam ayarlar tamamlanmadı. Fare/klavye ile baştan sona elle oynama doğrulanmadı. Programatik testler ve gerçek motor görüntüleri bu kontrolün yerine geçmez.
+
+## Koordinasyon
+
+Görev sahipliği TASKS.md, devir HANDOFF.md, ayrıntılı kararlar DecisionLog.md içinde tutulur. Mesaj dosyası diğer asistanı kendiliğinden uyandırmaz; okuma onayı olmadan okundu denmez.
