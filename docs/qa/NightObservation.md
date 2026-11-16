@@ -21,3 +21,6 @@ NIGHT OBSERVATION TEST 38 denetim geçti: üç rota, JSON sayıları, iki enfeks
 Bitti ölçütü bu hazırlık modülünün testli veri sözleşmesidir; kapsamlı gece tanığı değildir. Sıradaki bağımlılık: sahne-yerel yönetmende gerçek zaman aralığı ve görünürlük koşullarına uyan masum hareket; ardından kayıt göçü, oyuncuya sunulan iddia ve sağlıklı/enfekte/absent fallback konuşmaları.
 
 Tam regresyon: 21 paket/6024 denetim geçti; tqh-tests-5db9f898b9334f3eb876b25f80fe2279. Mevcut oyun kaydı ve UI akışı korunur.
+
+## 2026-11-17 güncel ek
+Yukarıdaki saltvalid modül teslimi tarihseldir. NightWitness ve NightRouteAccess artık canlı nöbete bağlandı; üretim için valid_completed, kayıt, args'lıclaim ve Gün4 ifadeleri mevcut. Eski aktif nöbete backfill yok. Güncel kapsam/sınır/test: LiveNightWitness.md ve live-night-witness-last-run.json. Genel geceAI ve tamGün4 tamamlanmadı.

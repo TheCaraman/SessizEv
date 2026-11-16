@@ -183,3 +183,6 @@ Dayanaka4fdffa. Üç temel tercih ve ana/pause modalSettingsView, Settingsload/c
 
 ## 2026-11-16 / Codex / SETTINGS-AUDIO-001
 Dayanak8034a5f. Mevcut Settings üzerinden Master gain/mute; yeniautoload yok. Ana/pause dördüncüslider, CSVEN/TR; settings90 ve tam24/6219 PASS, GPU92;720p/1080p/1440p sınırları/gerçekTab6kontrol ve pauseESC korundu. docs/qa/MasterVolume.md ve master-volume-last-run.json kanıtı. Eski ses miksajı varsayılan100%, kampanyadan ayrı. Sürüm0.1.4-dev.20261116.5; sahiplik bırakıldı. Nihai sesmikseri tamamlanmış sayılmaz.
+
+## 2026-11-17 / Codex / NIGHT-WITNESS-002
+Dayanak4de7e6c. NightSessionwitness+NightRouteAccess ölçümü, offscreenCallable, yeni protocolflag, valid_completedtrace ve args'lıclaimkataloğu. Eski aktifgece protokolsüz kalır. Subjectbathroom/observerpipechecking, enfeksiyonseçimdemaz; first10dk ve ücretsizreread. Flagrecord iç içe tam sayı ve konummm ile JSON eşitliği düzeltildi; SaveManagerevidenceargs sözlükvalidasyonu ve pipebeforewake.25/; finaldakikaetiketi/UI genişletme83target/85GPU, EN/TR720p/1080p/1440p. Tümkomutlar izoleuserdata. Olay yalnızDanielodasında tamamlanan beklemeye bağlı; genelNPCnavdeğil, partialGün4. YeniUIDler ve importedtranslations Git'e alınmalı. Görev bırakıldı.

@@ -106,3 +106,6 @@ GDD temel PC ayarları ilk dilim: parlaklık, fare hassasiyeti, FOV. Varsayılan
 
 ## K-SETTINGS-AUDIO-001 / 2026-11-16
 Onaylı ses erişilebilirliği kapsamının ilk adımı ana ses düzeyidir (0–100%). Settings mevcut Master bus kazancını uygular; sıfırda mute, pozitif değerde unmute. Yeni autoload veya yeni ses varlığı yok. Varsayılan 100% mevcut miksajı korur. Tercih kampanya dışındaki settings.cfg dosyasında; eksik eski değer 100%. Ayrı müzik/efekt/diyalog/ambiyans kontrolleri bu adımda tamamlanmış sayılmaz.
+
+## K-NIGHT-WITNESS-002 / 2026-11-17
+Day4Design içindeki masum banyo ziyareti canlı nöbete bağlanır. Yeni nöbet opt-in, gerçek kilit/koridor ölçümü, tüm hareket Daniel odasında beklerken; eski kayda tanık ekleme yok. İki uygun yetişkin seçimi enfeksiyondan bağımsız ID sırasıdır. İfadeler claim ve ilk10dk/tekrarücretsiz; kovma/izolasyon zaten mevcut. Onaylı kapsam uygulanır, yeni mekanik önerisi değildir. Bkz docs/qa/LiveNightWitness.md; tam Gün4 veya bütün gece AI'sı tamamlanmış sayılmaz.

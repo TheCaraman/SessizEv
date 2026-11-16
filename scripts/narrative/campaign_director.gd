@@ -63,6 +63,8 @@ func setup(dialogue: DialogueRunner) -> void:
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
+	for action: Dictionary in night.witness.actions(room_id):
+		actions.append(action)
 	for action: Dictionary in isolation.actions(room_id):
 		actions.append({"id": "isolation:" + action["id"], "label": action["label"]})
 	for id: String in judgment.targets(room_id):
@@ -116,6 +118,11 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 			break
 	if not available:
 		return ""
+	if action_id.begins_with("witness:"):
+		judgment.cancel()
+		isolation.cancel()
+		_repair_confirmation = false
+		return night.witness.interview(room_id, action_id.trim_prefix("witness:"))
 	if action_id != "watch":
 		_watch_confirmation = false
 	if action_id.begins_with("isolation:"):

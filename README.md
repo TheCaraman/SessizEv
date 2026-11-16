@@ -23,19 +23,18 @@ uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Gün 3 20:00–23:00'te
 kalma seçilirse 01/03/05/07 bekleme, gece araştırması, kalan geceyi uyuma ve enerji
 hesabı devreye girer. Boru sesi araştırılabilir masum bir olaydır; enfekte fail
 uydurmaz. Kayıt v5 gece yarısını ve tek sabah tüketimini korur. Hikâye içeriği Gün 4
-sabahı kesit sınırında biter.
+sabahı ana kesit sınırına ulaşır. Gün4 için ilk kanıt incelemesi, kovma/izolasyon ve uygun yeni gecede gerçek harekete dayanan çelişkili ifadeler vardır; tam Gün4 senaryosu henüz tamamlanmadı.
 Kaynak yetmezse onarım ertelenebilir; ilerleme tek bir NPC'ye bağlı değildir.
 
 13 oda arka planı ve Elena/Marcus/Arthur figürleri var. Yalnızca varsayılan
 pozlar mevcut. Oturma odası sahibin onayladığı sade çizimsel yönde; ayrı TV/radyo
-katmanı ve gündüz/gece/kesinti görselleri var. Diğer 12 oda ve üç karakter eski
-geçici üslupta. Kapı/boru sesleri sentezlenmiş geçiciler; müzik, konuşma kayıtları,
-nihai animasyon/ses ve bütün gecelerin olay bankası yok. 3D koridor sanatı da açık.
+katmanı ve gündüz/gece/kesinti görselleri var. Diğer12 oda da çizimsel yönde yeniden üretildi; nihai estetik kabul açık. Üç karakterin varsayılan figürleri eski geçici üsluptadır. Kapı/boru sesleri sentezlenmiş geçiciler; müzik, konuşma kayıtları,
+nihai animasyon/ses ve bütün gecelerin olay bankası yok. 3D koridorun HOUSE-ATMOS-004 revizyonu aktif denemede; sahibin nihai görsel kabulü açık.
 
 Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E etkileşim;
 E/Esc odadan koridora dönüş, Tab günlük, koridorda Esc duraklatma menüsü.
 Barınak yönetimi ve manuel kayıt Daniel'ın odasındaki eylemlerden açılır.
-Ana menüden English/Türkçe seçimi yapılır ve tercih ayrı ayar dosyasında saklanır.
+Ana menüden English/Türkçe seçilir. Ana/pause ayarlarında parlaklık, fare hassasiyeti, FOV ve ana ses düzeyi vardır; tercihler kampanyadan ayrı saklanır.
 
 Fare/klavye ile baştan sona elle oynama henüz doğrulanmadı; otomatik pencere erişimi
 reddedildi. Programatik testler ve gerçek motor renderları bu kontrolün yerine geçmez.
@@ -47,7 +46,7 @@ durumu bir üst klasördeki queue.json, runtime/ ve DURUM.txt içindedir.
 Tüm testleri ayrı proje/kayıt alanında çalıştırmak (Windows PowerShell):
 
 ```powershell
-powershell -NoProfile -File tools/Run-Tests.ps1 -GodotPath "C:\path\Godot_v4.7.2-stable_win64_console.exe"
+powershell -NoProfile -File tools/Run-Tests.ps1 -GodotPath "C:\path\Godot_v4.7.2-stable_win64_console.exe" -AudioDriver WASAPI
 ```
 
 Tek tek otomatik testler (kampanya testi kullanıcı verisine kayıt yazabilir):

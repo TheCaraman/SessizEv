@@ -16,6 +16,7 @@ extends Node3D
 @onready var _shelter_view: ShelterView = $ShelterView
 
 var _journal: JournalView
+var _night_access: NightRouteAccess
 var _door_transition: bool = false
 
 var _current_room: StringName = &""
@@ -52,6 +53,10 @@ func _ready() -> void:
 	EventBus.shelter_view_opened.connect(_update_control)
 	EventBus.shelter_view_closed.connect(_update_control)
 	_director.setup(_dialogue)
+	_night_access = NightRouteAccess.new(self)
+	_director.night.witness.access = _night_access.measure
+	_director.night.witness.offscreen = func() -> bool:
+		return _room_view.is_open() and _room_view.get_room_id() == &"daniel_bedroom" and not _dialogue.is_active() and not _pause_menu.is_open()
 	_room_view.setup(_director)
 	_dialogue_view.setup(_dialogue)
 

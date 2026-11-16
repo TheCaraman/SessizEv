@@ -1,0 +1,112 @@
+{
+  "version": "0.1.5-dev.20261117.1",
+  "full_suites": 25,
+  "full_checks": 6291,
+  "audio_driver": "WASAPI",
+  "final_witness_checks": 83,
+  "final_witness_gpu_checks": 85,
+  "full_run_scope": "Before final integer-minute label formatting and additional layout assertions; final relevant files retested separately with layout and GPU passes",
+  "log_directory": "C:\\Users\\eyups\\AppData\\Local\\Temp\\tqh-tests-69700b48acbb4dd7bc050d6d0c7068b0",
+  "results": [
+    {
+      "suite": "AUDIO LIFECYCLE TEST",
+      "checks": 35
+    },
+    {
+      "suite": "CAMPAIGN TEST",
+      "checks": 69
+    },
+    {
+      "suite": "DAY12 INTEGRATION TEST",
+      "checks": 850
+    },
+    {
+      "suite": "DAY 2 TEST",
+      "checks": 737
+    },
+    {
+      "suite": "DAY4 REVIEW TEST",
+      "checks": 70
+    },
+    {
+      "suite": "DOOR AUDIO TEST",
+      "checks": 10
+    },
+    {
+      "suite": "DOOR TRANSITION TEST",
+      "checks": 15
+    },
+    {
+      "suite": "HOUSE LAYOUT TEST",
+      "checks": 99
+    },
+    {
+      "suite": "HOUSE NIGHT EVENTS TEST",
+      "checks": 16
+    },
+    {
+      "suite": "INTERACTION TEST",
+      "checks": 14
+    },
+    {
+      "suite": "ISOLATION TEST",
+      "checks": 65
+    },
+    {
+      "suite": "MENU TEST",
+      "checks": 80
+    },
+    {
+      "suite": "NIGHT OBSERVATION TEST",
+      "checks": 38
+    },
+    {
+      "suite": "NIGHT STATE TEST",
+      "checks": 32
+    },
+    {
+      "suite": "NIGHT TIMELINE TEST",
+      "checks": 2921
+    },
+    {
+      "suite": "NIGHT WATCH TEST",
+      "checks": 144
+    },
+    {
+      "suite": "NIGHT WITNESS TEST",
+      "checks": 57
+    },
+    {
+      "suite": "PLAYER MOVEMENT TEST",
+      "checks": 6
+    },
+    {
+      "suite": "POWER INCIDENT TEST",
+      "checks": 669
+    },
+    {
+      "suite": "PRESENTATION TEST",
+      "checks": 89
+    },
+    {
+      "suite": "RESIDENT JUDGMENT TEST",
+      "checks": 47
+    },
+    {
+      "suite": "ROOM LIGHTING TEST",
+      "checks": 56
+    },
+    {
+      "suite": "SAVE WRITE TEST",
+      "checks": 58
+    },
+    {
+      "suite": "SETTINGS TEST",
+      "checks": 90
+    },
+    {
+      "suite": "SHELTER TEST",
+      "checks": 24
+    }
+  ]
+}

@@ -218,7 +218,7 @@ func _valid_state_shape(state: Dictionary) -> bool:
 		if not entry is Dictionary or not entry.get("args", {}) is Dictionary:
 			return false
 	for entry: Variant in state.get("evidence", []):
-		if not entry is Dictionary:
+		if not entry is Dictionary or not entry.get("args", {}) is Dictionary:
 			return false
 	var isolated_count: int = 0
 	for id: String in state["npcs"]:
@@ -238,6 +238,20 @@ func _valid_state_shape(state: Dictionary) -> bool:
 			return false
 	if isolated_count > 1:
 		return false
+	if state["flags"].has("night_witness_enabled") and not state["flags"]["night_witness_enabled"] is bool:
+		return false
+	if state["flags"].has("night_witness_record"):
+		var record: Variant = state["flags"]["night_witness_record"]
+		if not record is Dictionary or not NightObservation.valid_completed(record):
+			return false
+		if state["flags"].get("night_witness_enabled") != true or int(state["day"]) < 3:
+			return false
+		if state["flags"].get("night_pipes_day3_heard") != true:
+			return false
+		if not _whole_number(state["flags"].get("night_pipes_day3_minute")) or int(state["flags"]["night_pipes_day3_minute"]) > int(record["start"]):
+			return false
+		if int(state["day"]) == 3 and maxi(int(record["end"]), int(record["observer_returned_at"])) > int(state["minutes"]):
+			return false
 	return true
 
 

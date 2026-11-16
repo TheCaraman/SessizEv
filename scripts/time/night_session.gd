@@ -1,6 +1,7 @@
 class_name NightSession
 extends Node
 var events: HouseNightEvents
+var witness := NightWitness.new()
 
 func _ready() -> void:
 	events = HouseNightEvents.new()
@@ -18,6 +19,8 @@ func begin_watch() -> bool:
 	if not timeline.begin(GameState.day, int(GameState.player["energy"]), maxi(GameState.minutes, GameState.NIGHT_START)):
 		return false
 	GameState.night_session = timeline.to_dict()
+	# Only fresh nights opt in; loading an older active night never backfills a witness.
+	GameState.set_flag(NightWitness.PROTOCOL, true)
 	GameState.advance_minutes(maxi(0, 1380 - GameState.minutes))
 	SaveManager.save_game()
 	return true
@@ -35,7 +38,10 @@ func wait_until_boundary() -> bool:
 	var timeline := NightTimeline.new()
 	if not timeline.from_dict(GameState.night_session):
 		return false
+	var record: Dictionary = witness.propose(timeline.next_boundary())
 	GameState.advance_minutes(maxi(0, timeline.next_boundary() - GameState.minutes))
+	if witness.publish(record) != OK:
+		EventBus.notice_requested.emit(tr("NARR_SAVE_FAILED"))
 	SaveManager.save_game()
 	return true
 

@@ -55,3 +55,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | SETTINGS-PLAYTEST-001 | TAMAM | Codex (ayrı worktree; sahiplik bırakıldı) | Ana/pause ayar ekranı; parlaklık/fare/FOV; ayrı kalıcı tercihler, EN/TR, test/render | 2026-11-16 |
 
 | SETTINGS-AUDIO-001 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | scripts/core/settings.gd, scripts/ui/settings_view.gd, localization/strings.csv, tests/settings_test.gd; ana ses düzeyi ve mute, mevcut tercihler/kampanya korunur | 2026-11-16 |
+
+| NIGHT-WITNESS-002 | TAMAM | Codex ayrı worktree (sahiplik bırakıldı) | scripts/narrative/night_witness.gd, scripts/house/night_route_access.gd, NightSession/CampaignDirector/HouseBlockout/SaveManager/EvidenceManager, metin/veri/test; yeni nöbette gerçek erişimden masum banyo hareketi ve Gün4 ifadeleri | 2026-11-16 |

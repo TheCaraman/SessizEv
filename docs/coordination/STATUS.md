@@ -1,4 +1,4 @@
-﻿# Ortak durum — 2026-11-16
+# Ortak durum — 2026-11-16
 
 Kalıcı proje: TheQuietHours/project. Yerel Git dalı automation/integration; uzak depo yok.
 Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
@@ -91,3 +91,6 @@ Sürüm0.1.3-dev.20261116.4: ana/pause menüsünde Ayarlar; parlaklık/fare/FOV,
 
 ## SETTINGS-AUDIO-001
 Ana ses düzeyi0–100% ve sıfırda mute uygulandı; kalıcılık/legacy/defaults ve6kontrol Tab zinciri.24paket/6219 WASAPIPASS; GPU92 ve EN/TR incelendi. Sürüm0.1.4-dev.20261116.5, aynı aktifworktree. Kategori sesleri ve öznel dinleme kontrolü açık.
+
+## NIGHT-WITNESS-002 / canlı olay
+Aktif ayrı dal0.1.5-dev.20261117.1. Yeni Gün3 nöbetinde boru sonrası Danielodasında beklerken ikiuygun yetişkinden masum banyo ziyareti; gerçek kapı/koridor ölçümü ve zamanlı gözlemci dönüşü. Gün4'te gerçek odada ikiiddia ve çelişki/fear açıklaması, ilk10dk/tekrarücretsiz; commitcandidate ile önce kayıt. Sağlıklı/enfekte eşdeğer, eski aktifgece backfill yok.25paket/6291 WASAPI, sonetiket/UI hedefli83 veGPU85PASS, EN/TR incelendi. TamGün4/geceAI/sanat onayı/elleoyun açık. QA:LiveNightWitness.md.

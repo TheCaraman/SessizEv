@@ -1,5 +1,7 @@
 {
   "day": 3,
+  "step_minutes": 2,
+  "interview_minutes": 10,
   "earliest": 1501,
   "latest": 1859,
   "allowed_adults": ["elena_ward", "marcus_hale", "arthur_bell"],

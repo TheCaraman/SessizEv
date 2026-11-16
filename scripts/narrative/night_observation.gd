@@ -61,3 +61,55 @@ static func valid(record: Dictionary) -> bool:
 
 static func whole(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and floorf(float(value)) == float(value)
+
+## Production records additionally prove the observer's timed return and wake interval.
+static func valid_completed(record: Dictionary) -> bool:
+	if not valid(record) or not whole(record.get("observer_returned_at")):
+		return false
+	var trace: Variant = record.get("observer_steps")
+	var snapshot: Dictionary = record["snapshot"]
+	var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RULES))
+	var subject_room: Variant = snapshot[record["subject"]].get("room")
+	var observer_room: Variant = snapshot[record["observer"]].get("room")
+	if subject_room != record["steps"][0]["room"] or not rules["routes"].has(observer_room):
+		return false
+	var outward: Array = []
+	for room: String in rules["routes"][observer_room]:
+		outward.append(room)
+		if room == "corridor":
+			break
+	var expected: Array = outward.duplicate()
+	for index: int in range(outward.size() - 2, -1, -1):
+		expected.append(outward[index])
+	if not trace is Array or trace.size() != expected.size():
+		return false
+	var previous: int = -1
+	var observing: bool = false
+	for index: int in trace.size():
+		var step: Variant = trace[index]
+		if not step is Dictionary or step.get("room") != expected[index] or not whole(step.get("minute")):
+			return false
+		var minute: int = int(step["minute"])
+		if minute <= previous or minute < record["start"] or minute > 1859:
+			return false
+		previous = minute
+		if step["room"] == "corridor" and index + 1 < trace.size():
+			var next: Variant = trace[index + 1]
+			if next is Dictionary and whole(next.get("minute")):
+				observing = minute <= record["seen_at"] and record["seen_at"] < next["minute"]
+	var sight: Dictionary = record["observation"]
+	if not observing or trace[0]["minute"] != record["start"] or trace[-1]["minute"] != record["observer_returned_at"]:
+		return false
+	if not whole(sight.get("awake_from")) or not whole(sight.get("awake_until")) or sight["awake_from"] != record["start"] or sight["awake_until"] != record["observer_returned_at"]:
+		return false
+	var positions: Variant = sight.get("positions")
+	if not positions is Dictionary or positions.get("route_access") != true or positions.get("sightline") != true:
+		return false
+	for key: String in ["observer_position_mm", "subject_position_mm"]:
+		var point: Variant = positions.get(key)
+		if not point is Array or point.size() != 3:
+			return false
+		for axis: Variant in point:
+			if not whole(axis):
+				return false
+	return true
