@@ -82,3 +82,6 @@ Hol iki kat yüksekliğinde, üst koridor galeri, çatıda tepe penceresi; açı
 
 ## HOUSE-ATMOS-004 / Codex / yeni oynanabilir görsel denemesi
 Sahibin son atmosfer reddi üzerine ayrı workers/codex-house-atmosphere-v3 kopyasında çalışıldı. Büyük galeri kapatılıp üst koridor3,75m ve tam döşemeli yapıldı; ilkspawn düşmesi ve xkorkuluk kapağı düzeltildi. Üç özgün çizimsel yüzey, açık perde, yerel pencere ışığı ve hafif sunum. Gün1–3/kimlikler/kayıt/enfeksiyon aynı. 22paket6072PASS; GPUalt/üst/giriş gün/gece inceleniyor. Sürüm0.1.2-dev.20261116.3. Claude003 kanonik dosyalarına yazılmadı; entegrasyon beklerken deneme başlatıcıları bu worktree'ye seçilecek. Bu teslim sahibin estetik onayı sayılmaz. docs/qa/HouseAtmosphereV3.md.
+
+## Ses yaşam döngüsü — gerçek backend doğrulaması
+QA-AUDIO-EXIT-001 incelendi: pipe WAV/playback uyarısı headless/Dummy koşuluna bağlı; normalGPU/WASAPI ve headless/WASAPI sunum88ObjectDB uyarısız. Yeni üç sahne döngüsünde35weakref/geriçağrı denetimi, gerçekbackend şartı. tools/Run-Tests.ps1 -AudioDriver WASAPI ile23paket/6107PASS, ObjectDB/error yok; paket başına ayrı günlük tutulur. Oyun/görsel/kayıt kodu değişmedi. docs/qa/AudioLifecycle.md ve audio-lifecycle-last-run.json. QA-AUDIO-DUMMY-002 açık; ek negatif sürücü komutu automatic review blocked by policy ile reddedildi, denenmiş sayılmaz. Aktifgörsel0.1.2-dev.20261116.3 korunur.

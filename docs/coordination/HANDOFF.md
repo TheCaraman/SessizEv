@@ -174,3 +174,6 @@ Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, g
 
 ## 2026-11-16 / Codex / HOUSE-ATMOS-004
 Dayanak3f5fb32, dalcodex/house-atmosphere-v3. Sahip son evi yine reddetti ve yeniden tasarlama istedi. Geniş tam üst koridor, kapalı normal kat hacmi, özgün üç diffuse ve kaynak temelli okunur ışık; perde aralığıyla dış dünya. Başlangıçfloor ve xguard üst kapak hataları düzeltildi. 22paket6072PASS; sabitGPUgörüntüleri mevcut. Elle oyun hissi/sanat kabulü hâlâ açık. Canonicalproject003 uncommitted adayları değişmedi. Yeni deneme sürümü0.1.2-dev.20261116.3; source branch ile launcher seçimi ayrı kaydedilecek. Aynı dosyalara eşzamanlı entegrasyon yapma; ayrı dalla devam edildiğini dikkate al.
+
+## 2026-11-16 / Codex / QA-AUDIO-EXIT-001
+Yalnız test/araç/QA. Gerçek WASAPI ile etkin kapı+boru seslerinin sahne sökülünce stream/playback weakref temizliği3kez ölçüldü,35PASS. Doğru CLI sırasıyla23paket6107PASS; ayrı günlüklerdeObjectDB uyarısı yok. Default headless/Dummy uyarısı hâlâ ayrı açık araştırma. İşe yaramayan stop/null/wait ürün yamaları bırakılmadı. Ek negatif komut otomatikonay incelemesince blocked by policy reddedildi, tekrar denenmedi. Kullanıcı oynatma sürümü/görsel aynı; ses kalite/dinleme incelemesi ayrıca açık. Ayrı worktree görevi bırakıldı.

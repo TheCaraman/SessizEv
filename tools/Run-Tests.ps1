@@ -1,4 +1,4 @@
-param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90)
+param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90, [string]$AudioDriver = '')
 $ErrorActionPreference = 'Stop'
 $project = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if (-not $GodotPath) {
@@ -17,8 +17,12 @@ $userDirName = 'TheQuietHours-Tests/' + (Split-Path $testData -Leaf)
 $override = "[application]`nconfig/use_custom_user_dir=true`nconfig/custom_user_dir_name=`"$userDirName`"`n"
 [IO.File]::WriteAllText((Join-Path $testProject 'override.cfg'), $override, (New-Object Text.UTF8Encoding $false))
 function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
-    $outFile = Join-Path $testData 'stdout.log'
-    $errFile = Join-Path $testData 'stderr.log'
+    $caseName = 'import'
+    foreach ($argument in $Arguments) {
+        if ($argument -like 'res://tests/*.tscn') { $caseName = [IO.Path]::GetFileNameWithoutExtension($argument) }
+    }
+    $outFile = Join-Path $testData "$caseName.stdout.log"
+    $errFile = Join-Path $testData "$caseName.stderr.log"
     # Start-Process needs explicit quotes around arguments containing spaces.
     $quoted = @($Arguments | ForEach-Object { '"' + $_ + '"' })
     $process = Start-Process -FilePath $GodotPath -ArgumentList $quoted -WindowStyle Hidden -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
@@ -31,12 +35,27 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     $process.Refresh()
     $log = (Get-Content -LiteralPath $outFile -Raw) + (Get-Content -LiteralPath $errFile -Raw)
     if ($process.ExitCode -ne 0 -or $log -match '(?m)(SCRIPT ERROR:|ERROR:|FAIL:)') { throw $log }
+    if ($log -match 'ObjectDB instances were leaked|Leaked instance:') {
+        if ($AudioDriver) { throw "Audio-backed check leaked objects: $caseName`n$log" }
+        Write-Warning "Object lifetime warning in $caseName; inspect $errFile. This run does not prove hardware audio cleanup."
+    }
     if ($Expected -and -not $log.Contains($Expected)) { throw "Missing result: $Expected`n$log" }
     if ($Expected) { $log -split "`n" | Where-Object { $_ -match 'TEST: PASS' } | Write-Output }
 }
 Invoke-GodotCheck @('--headless', '--path', $testProject, '--import')
 foreach ($test in @('door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')) {
-    Invoke-GodotCheck @('--headless', '--path', $testProject, "res://tests/$test.tscn") 'TEST: PASS'
+    $arguments = @('--headless')
+    # Godot processes these switches in order: headless sets Dummy, so the
+    # explicit audio driver must follow it.
+    if ($AudioDriver) { $arguments += @('--audio-driver', $AudioDriver) }
+    $arguments += @('--path', $testProject, "res://tests/$test.tscn")
+    Invoke-GodotCheck $arguments 'TEST: PASS'
 }
-Write-Output "All twenty-two test suites passed. Logs and project copy: $testData"
+if ($AudioDriver) {
+    Invoke-GodotCheck @('--headless', '--audio-driver', $AudioDriver, '--path', $testProject, 'res://tests/audio_lifecycle_test.tscn', '--', "--expected-driver=$AudioDriver") 'AUDIO LIFECYCLE TEST: PASS'
+    Write-Output 'All twenty-three test suites passed (including hardware audio lifecycle).'
+} else {
+    Write-Output 'All twenty-two core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows.'
+}
+Write-Output "Logs and project copy: $testData"
 Write-Output "Isolated user data: $userDirName (under the platform application-data directory)"

@@ -1,0 +1,103 @@
+{
+  "driver": "WASAPI",
+  "suites": 23,
+  "checks": 6107,
+  "object_leak_warnings": 0,
+  "log_directory": "C:\\Users\\eyups\\AppData\\Local\\Temp\\tqh-tests-e2a99cb10ee04d0cb4e67acea4534ead",
+  "test_sha256": "32BD5B5E3797778898F8F82C40A60AB449F9BB1BC64282D18AC19E14DD41F015",
+  "negative_backend_command": "not run: automatic approval review rejected blocked by policy",
+  "results": [
+    {
+      "suite": "AUDIO LIFECYCLE TEST",
+      "checks": 35
+    },
+    {
+      "suite": "CAMPAIGN TEST",
+      "checks": 69
+    },
+    {
+      "suite": "DAY12 INTEGRATION TEST",
+      "checks": 814
+    },
+    {
+      "suite": "DAY 2 TEST",
+      "checks": 737
+    },
+    {
+      "suite": "DAY4 REVIEW TEST",
+      "checks": 70
+    },
+    {
+      "suite": "DOOR AUDIO TEST",
+      "checks": 10
+    },
+    {
+      "suite": "DOOR TRANSITION TEST",
+      "checks": 15
+    },
+    {
+      "suite": "HOUSE LAYOUT TEST",
+      "checks": 99
+    },
+    {
+      "suite": "HOUSE NIGHT EVENTS TEST",
+      "checks": 16
+    },
+    {
+      "suite": "INTERACTION TEST",
+      "checks": 14
+    },
+    {
+      "suite": "ISOLATION TEST",
+      "checks": 65
+    },
+    {
+      "suite": "MENU TEST",
+      "checks": 80
+    },
+    {
+      "suite": "NIGHT OBSERVATION TEST",
+      "checks": 38
+    },
+    {
+      "suite": "NIGHT STATE TEST",
+      "checks": 32
+    },
+    {
+      "suite": "NIGHT TIMELINE TEST",
+      "checks": 2921
+    },
+    {
+      "suite": "NIGHT WATCH TEST",
+      "checks": 144
+    },
+    {
+      "suite": "PLAYER MOVEMENT TEST",
+      "checks": 6
+    },
+    {
+      "suite": "POWER INCIDENT TEST",
+      "checks": 669
+    },
+    {
+      "suite": "PRESENTATION TEST",
+      "checks": 88
+    },
+    {
+      "suite": "RESIDENT JUDGMENT TEST",
+      "checks": 47
+    },
+    {
+      "suite": "ROOM LIGHTING TEST",
+      "checks": 56
+    },
+    {
+      "suite": "SAVE WRITE TEST",
+      "checks": 58
+    },
+    {
+      "suite": "SHELTER TEST",
+      "checks": 24
+    }
+  ]
+}
