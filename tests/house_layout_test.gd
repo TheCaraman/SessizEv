@@ -51,6 +51,10 @@ func _physics_process(_delta: float) -> void:
 	match _frame:
 		5:
 			_space = _player.get_world_3d().direct_space_state
+			# The scene's start position must stand on a floor, not over the hall void.
+			var spawn: Vector3 = _player.global_position
+			_check(not HouseLayout.is_in_void(Vector2(spawn.x, spawn.z)), "player start must not be over the open hall void")
+			_check(not _raycast(spawn + Vector3(0.0, 0.5, 0.0), spawn - Vector3(0.0, 0.6, 0.0)).is_empty(), "player start must have a floor beneath it")
 			_check_rooms()
 			_check_openings()
 			_check_solid_walls()

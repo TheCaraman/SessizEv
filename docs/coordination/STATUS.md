@@ -82,3 +82,6 @@ Hol iki kat yüksekliğinde, üst koridor galeri, çatıda tepe penceresi; açı
 
 ## Aktif deneme hedefi değişti / Codex / HOUSE-ATMOS-004
 Sahip son atmosferi reddedip yeniden düzenleme istedi. Ayrı kalıcı worktree workers/codex-house-atmosphere-v3, dalcodex/house-atmosphere-v3, commit55d6627: sürüm0.1.2-dev.20261116.3. Tam üst koridor, kapalı normal kat hacmi, özgün çizimsel yüzeyler ve pencereden kaynaklı okunabilir ışık. 22paket6072PASS; gerçek6GPUgörüntü incelendi. Masaüstü/rootbaşlatıcılar bu yeni deneme kaynağını açar; runtime/active-development.json otoritedir. Canonical HOUSE-ATMOS-003 dosyalarına yazılmadı ve ana dal merge edilmedi. Ayrıntılı devir mesajı messages/20261116-codex-to-claude-house-v3-ready.md. Nihai sanat kabulü yok; kullanıcı denemesi için hazır.
+
+## Loş ışık ve yaka kamerası adayı — Claude / HOUSE-ATMOS-003
+Ana klasörde (automation/integration): ortam ve lambalar kısıldı, sıcak akkor lambalar; hafif mercek (fıçı, köşe yumuşaması, renk saçağı, pozlama nefesi) ve kamera salınımı. Codex'in bulduğu spawn düşmesi ve x-eksen korkuluk başlığı düzeltildi, spawn testi eklendi. 22 paket PASS. Aktif oynatma hedefi hâlâ Codex'in v3 dalı; 003 o dala uygulanmadı. Yön kararı sahipte. HOUSE-ATMOS-003 DEVİR.

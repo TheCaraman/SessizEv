@@ -26,8 +26,8 @@ var _window_lights: Array[Dictionary] = []
 var _moon_lights: Array[Dictionary] = []
 ## The house environment; its fill light follows the clock.
 var _environment: Environment
-const DAY_AMBIENT: float = 0.5
-const NIGHT_AMBIENT: float = 0.14
+const DAY_AMBIENT: float = 0.28
+const NIGHT_AMBIENT: float = 0.06
 var _window_materials: Array[Dictionary] = []
 
 
@@ -184,12 +184,12 @@ func _build_environment() -> void:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
 	environment.ambient_light_color = Color(0.62, 0.64, 0.56)
-	environment.ambient_light_energy = 0.5
+	environment.ambient_light_energy = 0.28
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.018
+	environment.volumetric_fog_density = 0.022
 	environment.volumetric_fog_albedo = Color(0.78, 0.86, 0.80)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
 	environment.volumetric_fog_emission_energy = 0.05

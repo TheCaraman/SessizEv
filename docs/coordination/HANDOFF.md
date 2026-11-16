@@ -171,3 +171,14 @@ Dayanak c0a453c. Sahip önceki koridoru tamamen reddetti; referans oyunun resmî
 
 ## 2026-11-16 / Claude / HOUSE-ATMOS-002
 Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, gece daha çok ışık. Hol iki kat yüksekliğinde (galeri + tepe penceresi), açık ev renkleri, hafif ton, gece ay ışığı ve saate bağlı ortam ışığı, merdiven balüstradı. 22 paket PASS (tqh-tests-edb936fceae440c58f5f3813774219aa). Gerçek GPU gündüz/gece görüntüleri incelendi. Elle oynanış ve sahip kabulü YOK. Codex'e mesaj: messages/20261116-claude-to-codex-gallery.md.
+
+## 2026-11-16 — Claude — HOUSE-ATMOS-003
+
+- Dal: automation/integration (ana klasör). Codex'in 004 dalına ve worktree'sine dokunulmadı.
+- Değişenler: scripts/dev/house_blockout.gd (ortam 0,28/0,06, pus), scripts/house/house_builder.gd
+  (sıcak loş lamba, korkuluk başlığı yönü), shaders/retro_post.gdshader (mercek uniformları, ton),
+  scripts/player/body_cam_sway.gd (yeni), scenes/player/player.tscn (salınım düğümü),
+  scenes/main/house_blockout.tscn (spawn galeriye), tests/house_layout_test.gd (spawn denetimi), docs/qa görüntüleri.
+- Doğrulama: tam regresyon 22 paket PASS; 7 gerçek GPU görüntüsü incelendi.
+- Açık: mercek/salınım için oyuncu ayarı yok; 003 ile 004'ün birleşmesi sahibin yön kararına bağlı.
+  Mercek ve salınım katmanı bağımsızdır (shader uniformları + tek düğüm), istenirse v3'e taşınabilir.

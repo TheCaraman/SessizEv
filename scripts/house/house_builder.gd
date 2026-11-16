@@ -10,7 +10,8 @@ extends Node3D
 
 const WALL_HEIGHT: float = HouseLayout.STOREY_HEIGHT - HouseLayout.SLAB_THICKNESS
 const DOOR_THICKNESS: float = 0.05
-const LAMP_COLOR := Color(0.88, 0.91, 0.78)
+## Old incandescent bulbs: warm and weak (HOUSE-ATMOS-003).
+const LAMP_COLOR := Color(1.0, 0.82, 0.58)
 const RUNNER_WIDTH: float = 1.3
 const SKIRTING_HEIGHT: float = 0.13
 const CEILING_RAIL_HEIGHT: float = 0.09
@@ -165,7 +166,13 @@ func _build_wall(wall: Dictionary) -> void:
 	if wall.get("guard", false):
 		# Solid 1.1m guard preserves safe stair separation, opens the sightline.
 		_add_wall_piece(holder, wall, wall["from"], wall["to"], base_y, 1.1, thickness)
-		_add_mesh(holder, Vector3(wall["at"], base_y + 1.12, (wall["from"] + wall["to"]) * 0.5), Vector3(0.16, 0.06, wall["to"] - wall["from"]), &"wood_stairs")
+		# Handrail cap, oriented along the wall's own axis.
+		var mid: float = (wall["from"] + wall["to"]) * 0.5
+		var length: float = wall["to"] - wall["from"]
+		if wall["axis"] == "x":
+			_add_mesh(holder, Vector3(mid, base_y + 1.12, wall["at"]), Vector3(length, 0.06, 0.16), &"wood_stairs")
+		else:
+			_add_mesh(holder, Vector3(wall["at"], base_y + 1.12, mid), Vector3(0.16, 0.06, length), &"wood_stairs")
 		return
 
 	var openings: Array = (wall["openings"] as Array).duplicate()
@@ -482,7 +489,7 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.7
+	lamp.light_energy = 0.42
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5

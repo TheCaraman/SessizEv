@@ -24,7 +24,7 @@ script = ExtResource("1_blockout")
 script = ExtResource("13_audio")
 
 [node name="Player" parent="." instance=ExtResource("3_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 3.35, 8.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 3.35, 8.0)
 
 [node name="DialogueRunner" type="Node" parent="."]
 script = ExtResource("7_runner")

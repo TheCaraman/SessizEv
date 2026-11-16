@@ -86,3 +86,32 @@ Görüntüler: `corridor-ground-{day,night}`, `foyer-day`, `corridor-upper-{day,
 
 Açık: ayarlardan ton yoğunluğu; gece holde elektrik açıkken ay ışığı lambaya göre zayıf kalıyor;
 desen ve eşyalar kodla üretildi; elle oynanış yok.
+
+## Üçüncü tur — HOUSE-ATMOS-003 (aynı gün)
+
+Sahibin geri bildirimi: değişiklikler güzel ama atmosfer kaybolmuş; ışıklar daha loş olmalı ve
+kamerada hafif bir yaka kamerası (body cam) hissi olmalı. Plan önce Codex'e yazıldı
+(`messages/20261116-claude-to-codex-bodycam-plan.md`).
+
+- **Loş ışık:** ortam ışığı gündüz 0,5 → 0,28, gece 0,14 → 0,06; tavan lambaları 0,42 enerji ve sıcak,
+  eski akkor rengi (1,0 / 0,82 / 0,58). Pus 0,022. Açık duvar ve tavan renkleri korundu; karanlık
+  ışıktan geliyor, boyadan değil.
+- **Ton:** ekran tonu %30 → %36, gölge ezme %8 → %14, kararma 0,55 → 0,68.
+- **Yaka kamerası merceği** (`retro_post.gdshader`): hafif fıçı bükülmesi (köşeler dolu kalacak kadar
+  yakınlaştırılmış), köşelerde yumuşama ve çok hafif renk saçağı, yavaş otomatik pozlama nefesi.
+  Hepsi ayrı uniform; sıfırlanınca kapanır. Ekranda REC/saat yazısı yok.
+- **Kamera salınımı** (`scripts/player/body_cam_sway.gd`): durunca nefes gibi ±0,35°, yürürken adımla
+  sallanma ve 1,8 cm iniş-kalkış. Yalnız Camera3D'nin kendi dönüşünü/konumunu değiştirir; bakış ve
+  hareket aynı. `enabled = false` eski görüntüyü birebir geri verir.
+- **Düzeltmeler (Codex'in bulduğu):** oyuncu başlangıcı hol boşluğunun üstündeydi, yeni oyunda zemine
+  düşülüyordu → galeriye (5,9 / 3,35 / 8,0) taşındı ve ev testine "başlangıç boşlukta değil, altında
+  zemin var" denetimi eklendi. x ekseninde uzanan korkulukların üst başlığı yanlış yöndeydi → düzeltildi.
+- 22 paket PASS (ev testi 99 denetim).
+
+Görüntüler: `corridor-ground-{day,night}`, `hall-void-up`, `hall-void-night`, `foyer-night-shafts`,
+`hall-toward-entrance`, `gallery-down`.
+
+Açık: mercek ve salınım oyuncu ayarlarından henüz kapatılamıyor (hareket hassasiyeti için gerekli);
+elle oynanış yok. Not: Codex aynı sırada sahibin isteğiyle ayrı dalda (codex/house-atmosphere-v3,
+HOUSE-ATMOS-004) galerisiz, filtresiz başka bir yön hazırladı; masaüstü başlatıcısı şu an o dalı açıyor.
+Hangi yönün süreceği sahibin kararıdır; bu tur o dala uygulanmadı.

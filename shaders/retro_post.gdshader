@@ -25,16 +25,21 @@ uniform float color_levels : hint_range(4.0, 256.0, 1.0) = 255.0;
 uniform float dither_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
 
-uniform float grade_strength : hint_range(0.0, 1.0) = 0.30;
+uniform float grade_strength : hint_range(0.0, 1.0) = 0.36;
 uniform vec3 grade_shadow : source_color = vec3(0.03, 0.05, 0.04);
 uniform vec3 grade_mid : source_color = vec3(0.34, 0.42, 0.33);
 uniform vec3 grade_light : source_color = vec3(0.92, 0.93, 0.80);
-uniform float crush : hint_range(0.0, 1.0) = 0.08;
+uniform float crush : hint_range(0.0, 1.0) = 0.14;
 uniform float ink_strength : hint_range(0.0, 1.0) = 0.38;
-uniform float vignette_strength : hint_range(0.0, 1.0) = 0.55;
+uniform float vignette_strength : hint_range(0.0, 1.0) = 0.68;
 // Fraction of the screen height covered by each black bar.
 uniform float letterbox : hint_range(0.0, 0.2) = 0.04;
 uniform float grain_strength : hint_range(0.0, 0.3) = 0.035;
+// Body-cam lens, light by default; all zero turns it off.
+uniform float lens_barrel : hint_range(0.0, 0.6) = 0.22;
+uniform float lens_fringe : hint_range(0.0, 0.05) = 0.012;
+uniform float lens_softness : hint_range(0.0, 4.0) = 1.6;
+uniform float exposure_drift : hint_range(0.0, 0.1) = 0.025;
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
@@ -46,8 +51,19 @@ float luma(vec3 c) {
 
 void fragment() {
 	vec2 px = SCREEN_PIXEL_SIZE;
-	vec2 uv = SCREEN_UV;
-	vec3 color = texture(screen_texture, uv).rgb * tint;
+	// Body-cam lens (HOUSE-ATMOS-003): a slight barrel bulge, zoomed so the
+	// corners stay filled; corners softer and with a hint of colour fringe.
+	vec2 centred = SCREEN_UV - 0.5;
+	float r2 = dot(centred * vec2(1.0, 0.75), centred * vec2(1.0, 0.75));
+	vec2 uv = 0.5 + centred * (1.0 + lens_barrel * r2) / (1.0 + lens_barrel * 0.2);
+	float edge_soft = lens_softness * smoothstep(0.08, 0.35, r2);
+	vec3 color;
+	color.r = textureLod(screen_texture, 0.5 + (uv - 0.5) * (1.0 + lens_fringe * r2), edge_soft).r;
+	color.g = textureLod(screen_texture, uv, edge_soft).g;
+	color.b = textureLod(screen_texture, 0.5 + (uv - 0.5) * (1.0 - lens_fringe * r2), edge_soft).b;
+	color *= tint;
+	// Slow automatic-exposure breathing.
+	color *= 1.0 + exposure_drift * (sin(TIME * 0.61) * 0.6 + sin(TIME * 1.73) * 0.4);
 
 	// 1. Ink outlines from a Sobel filter on brightness, measured a little wider
 	// than one pixel so fine texture noise does not turn into scribble.
