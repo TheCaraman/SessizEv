@@ -34,6 +34,13 @@ var _actions: HFlowContainer
 var _links: HBoxContainer
 var _hint: Label
 var _placeholder_texture: Texture2D
+var _visuals := RoomVisuals.new()
+var _visual_variant: String = ""
+var _visual_path: String = ""
+
+
+func get_visual_variant() -> String:
+	return _visual_variant
 
 
 func _ready() -> void:
@@ -90,12 +97,6 @@ func open(room_id: StringName) -> void:
 		"key": "%s / %s" % [InputSetup.get_key_label(&"interact"), InputSetup.get_key_label(&"pause")],
 	})
 
-	var path: String = ROOM_IMAGE_PATH % room_id
-	var has_image: bool = ResourceLoader.exists(path)
-	_background.texture = load(path) as Texture2D if has_image else _get_placeholder()
-	(_prop_layer as RoomProps).show_room(str(room_id), _background.texture.get_size())
-	_placeholder_note.visible = not has_image
-
 	_set_narration("")
 	visible = true
 	_refresh()
@@ -130,10 +131,19 @@ func _input(event: InputEvent) -> void:
 func _refresh() -> void:
 	if not visible:
 		return
-	_background.modulate = Color(0.43, 0.46, 0.49) if _director != null and not _director.power.is_powered() else (Color(0.65, 0.67, 0.70) if GameState.minutes >= 1200 else Color.WHITE)
+	var powered: bool = _director == null or _director.power.is_powered()
+	var visual: Dictionary = _visuals.resolve(str(_room_id), GameState.minutes, powered)
+	_visual_variant = visual["variant"]
+	if _visual_path != visual["path"]:
+		_visual_path = visual["path"]
+		var has_image: bool = ResourceLoader.exists(_visual_path)
+		_background.texture = load(_visual_path) as Texture2D if has_image else _get_placeholder()
+		(_prop_layer as RoomProps).show_room(str(_room_id), _background.texture.get_size())
+		_placeholder_note.visible = not has_image
+	_background.modulate = visual["background_tint"]
 	# Only world layers share the temporary lighting tint; UI remains readable.
-	_character_layer.modulate = _background.modulate
-	_prop_layer.modulate = _background.modulate
+	_character_layer.modulate = visual["actor_tint"]
+	_prop_layer.modulate = visual["actor_tint"]
 	_clear(_character_layer)
 	var names := PackedStringArray()
 	for npc_id: String in GameState.get_room_occupants(_room_id):

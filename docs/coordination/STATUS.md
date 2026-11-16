@@ -14,7 +14,7 @@ Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.
 
 ## Sahibin son geri bildirimi ve mevcut iş
 
-Mevcut odalar fazla gerçekçi ve korku atmosferinden uzak bulundu. Sahip ART-REV-003 çizimsel yönünü korumayı ve ilk odayı oyunda göstermeyi onayladı. Oturma odası yeni görsele bağlandı; TV/radyo dolabı ayrı saydam eşya katmanı olarak eklendi. Güncel gerçek kampanya görüntüsü docs/qa/RoomMediaProps-1080.png. 12 paket/5323 denetim geçti. Diğer 12 oda eski geçici sanatta; ayrı gece resmi ve yayın ekran animasyonu açık.
+Sahip ART-REV-003 çizimsel yönünü ve ilk oda entegrasyonunu onayladı. Oturma odası yeni kaynak ve ayrı TV/radyo katmanı kullanıyor. Gündüz/gece ve her ikisinin elektrik kesintisi görselleri bağlandı; 15 paket/5567 denetim geçti. Güncel örnekler docs/qa/living-lighting-*.png ve LivingRoomLightingVariants.md. Diğer 12 oda eski geçici sanatta; yayın ekran animasyonu ve karakter üslup uyumu açık.
 
 POLISH-SLICE-001 teknik uygulaması tamamlandı: istekli yardımcı, kesin süre/maliyet onayı, opak günlük, olay güdümlü elektrikli ışık, saate bağlı pencere, figür/eşya tonu ve en/tr 1080p/1440p mevcut tesisat eylemi sınaması. Otomatik işçi başlatılmadı; ana Codex uyguladı. Görsel yön hâlâ sahibin incelemesinde; ART-REV-003 çizimsel örneği üretime bağlanmadı. Tam elle oynama açık.
 

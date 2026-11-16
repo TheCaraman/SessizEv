@@ -83,7 +83,8 @@ No text, no logos, no people. 16:9.
 - 13 adet 2D odanın tamamında insan içermeyen arka plan var. Kaynaklar 1672×941;
   1920×1080 önizlemelerde yumuşak ölçeklenir, yapay büyütme kaynak dosyaya işlenmez.
 - İlk üç karakterin yalnızca varsayılan pozu var; konuşma animasyonu ve ifade varyantları yok.
-- Gece ve kesinti için ayrı boyanmış varyantlar henüz yok. Tek resmin modülasyonla
-  karartılması, pencere ve lambaların ayrı fiziksel ışık katmanları olduğu anlamına gelmez.
+- Oturma odasında gündüz, gece, gündüz-kesinti ve gece-kesinti için ayrı arka planlar var.
+  Bunlar yazılmış 2D ışık durumlarıdır; oda içi gerçek 3D ışık değildir. Diğer 12 oda
+  hâlâ tek resim modülasyonu kullanır. docs/qa/LivingRoomLightingVariants.md kapsamı kaydeder.
 - Tam üretim istemleri docs/art/prompts/, ölçü/saydamlık/SHA256 kayıtları asset_manifest.json içinde.
 - Yapay zekâyla üretilen görsellerin ticari kullanım hakları, kullanılan aracın şartlarına bağlıdır; yayından önce lisans denetimi yapılacak.
