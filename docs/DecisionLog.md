@@ -18,6 +18,8 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | K-008 | 2026-11-16 | **Görsel yön revizyonu:** PS1 düşük poligon temeli korunur, ama ton "temiz retro" değil; kirli, bunaltıcı, tekinsiz. Ayrıntı: ArtBible.md §2. | Proje sahibinin isteği. |
 | K-009 | 2026-11-16 | **3D varlık üretimi:** Blender kullanılmıyor. Ev ve eşyalar motor içinde (kod ve CSG ile) üretilir; karakterler modüler ilkel parça kitinden kurulur. Dokular için yapay zekâ görsel araçları kullanılabilir; her doku için tam istem metni verilir. | Proje sahibi Blender kullanmıyor. |
 
+| K-010 | 2026-11-16 | **Görsel hedef öne alındı.** Oturma odası, oyunun görünümünün referans odasıdır; retro görüntü geçişi, kodla üretilen dokular ve eşyalar kapı sisteminden önce yapıldı. | Proje sahibi blockout'u ruhsuz buldu; görsel yönü erken doğrulamak riski azaltır. |
+
 ## Varsayımlar
 
 | No | Varsayım | Kaynak sorun |
@@ -36,6 +38,10 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 
 | V-012 | Merdivenlerde basamak çıkma mantığı yok; merdiven çarpışması rampa biçimindedir. Basamaklar yalnızca görseldir. | Kontrolcü sadeliği, NPC yol bulma |
 | V-013 | Yürüme hızı 2,4 m/s, hızlı yürüme 3,8 m/s, göz yüksekliği 1,6 m, görüş açısı 70°. Dengeleme değerleridir. | Faz 1.2 |
+
+| V-014 | Retro görüntü, tam çözünürlükte çizilen kareyi kaba bir ızgarada örnekleyen tek bir ekran gölgelendiricisidir (`shaders/retro_post.gdshader`); düşük çözünürlüklü ayrı görüntü alanı kullanılmıyor. Daha basit ve fare girdisini etkilemiyor; performans gerekirse Faz 7'de değiştirilir. TechnicalDesign §2'deki şemanın yerini alır. | Faz 1.6 |
+| V-015 | Dokular şimdilik kodla üretiliyor (`scripts/art/house_materials.gd`). Her biri sonradan boyanmış bir dokuyla değiştirilebilir. | K-009 |
+| V-016 | Oturma odasındaki pencere gerçek bir açıklık değil, duvara asılı ışıklı bir paneldir. Gerçek pencereler kapı ve pencere geçişinde gelecek. | K-010 |
 
 ## Açık konular
 

@@ -27,7 +27,7 @@ Ses yönü ve kalite planı şimdilik bu belgede tutulur; içerik büyüdüğün
 | 1.3 | Etkileşim sistemi (ışın, `Interactable`, ipucu) | Bekliyor |
 | 1.4 | Ev blockout'u | **Tamam** — kat planı onaylandı; ev koddan kuruluyor; 79 denetimli otomatik test geçti; ekran görüntüleri `docs/screenshots/`. Pencere, mobilya ve basamak görseli yok |
 | 1.5 | Kapılar, kilitler, ışık anahtarları | Bekliyor |
-| 1.6 | Retro görüntü hattı, temel gösterge, `Settings` | Bekliyor |
+| 1.6 | Retro görüntü hattı, temel gösterge, `Settings` | **Kısmen** — ekran gölgelendiricisi, sis ve dokulu malzemeler tüm evde; oturma odası eşyalı referans oda (K-010). Ayarlardan açıp kapatma, gösterge ve `Settings` yok |
 | 1.7 | `TimeManager`, `GameState`, `SaveManager` temeli | Bekliyor |
 
 **Not:** Sürüm kontrolü başladı (yerel depo, `main` dalı). Uzak yedek henüz yok.
