@@ -1,0 +1,30 @@
+# POLISH-SLICE-001 — doğrulanmış kesitin sunum düzeltmeleri
+
+Sahip: otomatik Codex işçisi. Başlangıç: Gün 3 + sanat birleşimi, 2250 test geçti.
+Bu görev yeni hikâye veya mekanik eklemez; var olan ışık ve arayüzü sağlamlaştırır.
+
+1. Elektrikli lamba/emission güncellemelerini her physics frame'de grup taramak
+   yerine olay güdümlü, sahne-yerel bir sunum denetleyicisine taşı. Kaynak malzemeleri
+   çoğalt; başka sahneleri/global cache'i değiştirme. Güç olayı tetiklemesi ve onarımı
+   için gerekirse açık power_changed sinyali ekle; eski testleri koru.
+2. Gün ışığı ve pencere sky materyali saate uysun: gündüz normal, akşam yumuşak
+   azalır, gece zayıf nötr/serin ay ışığı. Tavanı maviye boyama. Güç kesintisi
+   pencereyi kapatmaz; acil ışıkta koridor hâlâ okunur. İlk enerji değerlerini
+   referans al, her güncellemede tekrar çarpıp kademeli karartma hatası yapma.
+3. Oda figürleri güç/saat aydınlığına uysun; başlık ve eylem yazıları okunur kalsın.
+4. Oda eylemlerini gerekince satır kıran FlowContainer ile sun; uzun İngilizce/Türkçe
+   etiketler ekran dışına taşmasın. Modal günlük paneli tutarlı koyu/okunaklı olsun,
+   arkasındaki HUD başlık/altyazı okumayı bozmasın. Gerçek 1080p/1440p görüntü al.
+5. Onarıma yardımın uygunluğu sabotaj faili uygunluğundan ayrıdır: Marcus sağlıklı
+   veya enfekteyken yardım edebilir; ölü/yok/izole/meşgul/yaralı/yorgun/erişimsizse
+   veya güveni -40 ve altındaysa zorla yardım ettirilmez. Yardım yoksa Daniel yolu
+   çalışır ve bedel/süre açık gösterilir. Doğrulama atomiklik/idempotansını koru.
+6. tests/presentation_test.gd/.tscn ve mevcut suite'lerde anlamlı regresyon ekle;
+   PRESENTATION TEST: PASS bas ve test çalıştırıcısına bağla. Gerçek renderlarda
+   gece-kesinti/onarım ve uzun eylem satırını kontrol et. docs/qa/POLISH-SLICE-001.md
+   içine gerçekte yapılanları yaz; manuel oynamadıysan oynadım deme.
+
+Dosyalar: scripts/*, scenes/*, localization/*, resources/*, tests/*,
+tools/Run-Tests.ps1, docs/qa/*. Sanat PNG'leri, tasarım/koordinasyon kayıtları ve
+otomasyon dosyaları bu görevin kapsamı dışındadır. Kaydı yeniden başlatma veya
+enfeksiyonu yeniden atama yok. Kayıt şeması yalnızca gerçekten gerekirse göçle değişir.

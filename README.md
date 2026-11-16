@@ -8,13 +8,26 @@ Yerel Git ve aktarım adımları `docs/coordination/GIT_WORKFLOW.md` dosyasında
 
 ## Durum
 
-Gün 1 baştan sona oynanıyor. Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D sahnelerdir. F5 ile başlarsın: üst kat koridorunda, sabah 07:00.
+Gün 1–3 oynanabilir dikey kesit. Koridorlar 3D ve yürünür; odalar kapıdan açılan
+2D sahnelerdir. F5 ana menüyü açar; yeni oyun ve kayıttan devam vardır.
 
-Gün 1'de yapılabilecekler: oturma odasında televizyon ve radyo, kilerde erzak sayımı, Daniel'ın odasında dinlenme. Saat 18:00'i geçince biri ön kapıyı çalar; kapıya gidip E ile aç, konuş, içeri al ya da reddet. 20:00'den sonra Daniel'ın odasında uyuyup 2. güne geçersin. İçerik şimdilik 2. günün sabahında biter.
+Gün 1: televizyon/radyo, erzak kontrolü ve Elena'nın kabul/ret kararı. Gün 2:
+Marcus/Arthur ziyaretleri, yatak ve iş atama. Gün 3: 23:00 elektrik kesintisi,
+gerçek nedene uygun kanıtlar, onarım veya erteleme, Tab ile günlük. Kesinti ilk
+uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Hikâye içeriği orada biter.
+Kaynak yetmezse onarım ertelenebilir; ilerleme tek bir NPC'ye bağlı değildir.
 
-Oda ve karakter görselleri henüz yer tutucudur; ses yok.
+13 oda arka planı ve Elena/Marcus/Arthur figürleri var. Yalnızca varsayılan
+pozlar mevcut; animasyon, ses ve özel gece görselleri henüz yok. 3D koridorların
+sanat kalitesi oda görsellerinin gerisindedir ve sonraki görsel işidir.
 
-Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E kapıyı kullanır, E ya da Esc odadan koridora döner. Koridorda Esc fareyi bırakır ya da geri alır.
+Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E etkileşim;
+E/Esc odadan koridora dönüş, Tab günlük, koridorda Esc duraklatma menüsü.
+Barınak yönetimi ve manuel kayıt Daniel'ın odasındaki eylemlerden açılır.
+
+Kalıcı kurulumda proje klasörünün yanındaki tools/godot-4.7.2 motoru kullanılır.
+Kaynak ve sanat/günlük/test kayıtları Git'tedir. Otomasyonun dış kuyruk ve çalışma
+durumu bir üst klasördeki queue.json, runtime/ ve DURUM.txt içindedir.
 
 Tüm testleri ayrı proje/kayıt alanında çalıştırmak (Windows PowerShell):
 
