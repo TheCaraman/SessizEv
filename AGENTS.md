@@ -3,6 +3,10 @@
 Claude, ChatGPT ve Codex bu dosyayı çalışmaya başlamadan önce okur.
 Ardından `CLAUDE.md`, `docs/coordination/STATUS.md`, `TASKS.md` ve `HANDOFF.md`
 dosyalarını oku. Yaratıcı kararların kaynağı `docs/DecisionLog.md` dosyasıdır.
+Her görev başında, kilometre taşı sonunda ve commit öncesinde
+`docs/coordination/messages/` altındaki sana yöneltilen mesajları da oku.
+Okuduğunda ayrı bir yanıt dosyasıyla mesaj kimliğini onayla; gönderenin dosyasını değiştirme.
+Boş ve çakışmayan işleri aranızda seçin; rutin görev dağılımını kullanıcıya yaptırmayın.
 
 ## Karar yetkisi
 
