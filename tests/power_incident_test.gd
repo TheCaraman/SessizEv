@@ -202,6 +202,11 @@ func _ready() -> void:
 	check(not scene.get_node("Player").control_enabled, "journal blocks movement")
 	var journal: JournalView = scene._journal
 	check(journal.visible, "journal opens")
+	var journal_backdrop: ColorRect = journal.get_node("ModalBackdrop")
+	check(journal_backdrop.color.a == 1.0 and journal_backdrop.mouse_filter == Control.MOUSE_FILTER_STOP, "journal fully covers lower HUD and blocks clicks")
+	check(journal_backdrop.anchor_left == 0.0 and journal_backdrop.anchor_top == 0.0 and journal_backdrop.anchor_right == 1.0 and journal_backdrop.anchor_bottom == 1.0, "journal backdrop fills viewport")
+	var journal_panel: PanelContainer = journal.get_node("JournalPanel")
+	check((journal_panel.get_theme_stylebox("panel") as StyleBoxFlat).bg_color.a == 1.0, "journal panel opaque")
 	journal.close()
 	check(scene.get_node("Player").control_enabled, "journal restores control")
 	scene.get_node("RoomView").open("utility")

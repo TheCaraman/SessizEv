@@ -14,6 +14,12 @@ Kaynak: sahibin 2026-11-16 tarihinde paylaştığı `images (1).jpg`. Yalnızca 
 
 İlk karşılaştırma örneğinin eleştirisi: aşırı dökülmüş duvarlar, kahverengi baskınlığı ve terk edilmiş bina hissi hedefi kaçırıyor. Yeni tek oda örneğinde yüzeyler sağlam ve yaşanmış olacak; dokular fotoğraf gerçekçiliğine dönüşmeyecek. Tavan nötr kalır; turkuaz tüm nesnelere düz filtre gibi uygulanmaz.
 
+## İkinci referans: biçim dili
+
+Sahibin `images.jpg` referansı daha güçlü bir sadeleştirme gerektiriyor: geniş düz renk alanları, kontura yakın koyu kenarlar, hafif orantısız perspektif ve nesne ayrıntılarını yutan grafik gölgeler. Önceki ART-REV-002 örneğindeki ayrıntılı yağlı boya yüzeyler ve dekoratif ev hissi bu hedefi hâlâ karşılamıyor.
+
+Örnek üretiminde dantel, çiçek, dekoratif tablo ve ayrıntılı duvar desenleri kaldırılır. Bu, korkuyu dökülmüş sıva veya terk edilmiş ev klişesiyle artırmak anlamına gelmez. İlk referans renk/ışık, ikinci referans biçim/sadeleştirme dayanağıdır. Referanstaki insan, dini simge, HUD ve eşya dizilimi kopyalanmaz. Yeni örnek yine inceleme içindir; üretime kabul edilmiş sayılmaz.
+
 ## Korunan yapı
 
 Koridorlarda 3D yürüyüş; kapıdan açılan katmanlı 2D oda ve karakterler. Odaların içinde serbest 3D hareket yok. PS1/pikselleştirme geri getirilmez. Referans oyunun sahneleri, karakterleri veya varlıkları kopyalanmaz.

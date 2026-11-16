@@ -4,7 +4,22 @@ signal closed
 var text: Label
 func _ready() -> void:
 	layer = 15
+	# Cover lower HUD layers as well as the world. The journal is modal.
+	var backdrop := ColorRect.new()
+	backdrop.name = "ModalBackdrop"
+	backdrop.color = Color(0.025, 0.032, 0.031, 1.0)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(backdrop)
 	var panel := PanelContainer.new()
+	panel.name = "JournalPanel"
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.055, 0.065, 0.06, 1.0)
+	style.content_margin_left = 28.0
+	style.content_margin_right = 28.0
+	style.content_margin_top = 24.0
+	style.content_margin_bottom = 24.0
+	panel.add_theme_stylebox_override("panel", style)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.offset_left = 80
 	panel.offset_right = -80
@@ -12,6 +27,7 @@ func _ready() -> void:
 	panel.offset_bottom = -80
 	add_child(panel)
 	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	panel.add_child(scroll)
 	text = Label.new()
 	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
