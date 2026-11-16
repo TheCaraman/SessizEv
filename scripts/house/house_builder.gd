@@ -154,6 +154,7 @@ func _add_door(
 	var door := RoomDoor.new()
 	door.room_id = opening.get("to", &"")
 	door.locked = opening.get("sealed", false)
+	door.is_front = opening.get("front", false)
 	door.name = "Door_%s" % (opening.get("id", door.room_id))
 	if wall["axis"] == "x":
 		door.position = Vector3(opening["pos"], base_y, wall["at"])

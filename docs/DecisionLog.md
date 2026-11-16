@@ -50,6 +50,11 @@ Durumlar: **Onaylı** (proje sahibi onayladı) · **Varsayım** (itiraz gelene k
 | V-017 | Koridordan kapısı olmayan odalara (yemek alanı, kiler, tesisat odası) komşu odanın 2D sahnesindeki geçiş düğmeleriyle gidilir. | K-011 |
 | V-018 | Oda görselleri `assets/rooms/<oda_kimliği>.png` yolundan yüklenir. Dosya yoksa kodla üretilen bir yer tutucu gösterilir ve ekranda "yer tutucu" yazar. | K-011 |
 | V-019 | Etkileşim ördek tiplemesiyle çalışır: `interact()` yöntemi olan her çarpışma gövdesi etkileşilebilirdir; `get_interaction_prompt()` varsa ipucu yazısını o verir. | Faz 1.3 |
+| V-020 | Gün 1 zamanlaması: Elena 18:00'de kapıyı çalar; 21:30'a kadar açılmazsa gider (durumu "left"). Daniel 20:00'den önce ve kapıda biri varken uyuyamaz. Kapıdaki her soru 5 dakika sürer. Dengeleme değerleridir. | Faz 2 |
+| V-021 | Başlangıç erzağı: yiyecek 12, su 14, tıbbi 2, onarım 3, yakıt 4. Evdeki herkes (Daniel dahil) günde 1 yiyecek ve 1 su tüketir. Dengeleme değerleridir. | Faz 2 |
+| V-022 | Diyaloglar esources/dialogue/*.json dosyalarındadır; metinler çeviri anahtarıdır ve İngilizce ile Türkçe birlikte yazılır. | V-007 |
+| V-023 | Otomatik kayıt her yeni günün başında alınır (user://saves/autosave.json). Kayıttan devam etme ekranı henüz yok. | V-006 |
+| V-024 | Elena'nın 1. gündeki konuşması enfekte olsa da olmasa da aynıdır; enfeksiyon ilk gün hiçbir işaret vermez. Kardeşi hakkındaki cümlesi her iki durumda da yalandır (kişisel sır), enfeksiyon belirtisi değildir. | Kanonik kural 13, 14 |
 
 ## Açık konular
 | A-008 | Gece nöbetinin yeni tasarımı | K-011 ile odaların içi gece doğrudan görülemez. Öneri: koridorda yürüyüp sesleri dinlemek ve kapıları açıp bakmak; ayrıntı Faz 4 öncesi birlikte kararlaştırılacak. |

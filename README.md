@@ -4,7 +4,11 @@ Birinci şahıs, tam 3D psikolojik korku oyunu. Çalışma adı.
 
 ## Durum
 
-Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D sahnelerdir. F5 evi açar; giriş holünde başlarsın. Oda görselleri henüz yer tutucu; karakter ve oyun içeriği yok.
+Gün 1 baştan sona oynanıyor. Koridorlar 3D ve yürünür; odalar kapıdan açılan 2D sahnelerdir. F5 ile başlarsın: üst kat koridorunda, sabah 07:00.
+
+Gün 1'de yapılabilecekler: oturma odasında televizyon ve radyo, kilerde erzak sayımı, Daniel'ın odasında dinlenme. Saat 18:00'i geçince biri ön kapıyı çalar; kapıya gidip E ile aç, konuş, içeri al ya da reddet. 20:00'den sonra Daniel'ın odasında uyuyup 2. güne geçersin. İçerik şimdilik 2. günün sabahında biter.
+
+Oda ve karakter görselleri henüz yer tutucudur; ses yok.
 
 Kontroller: WASD yürüme, fare bakış, Shift hızlı yürüme, E kapıyı kullanır, E ya da Esc odadan koridora döner. Koridorda Esc fareyi bırakır ya da geri alır.
 
@@ -14,6 +18,7 @@ Otomatik testler:
 godot --headless --path . res://tests/player_movement_test.tscn
 godot --headless --path . res://tests/house_layout_test.tscn
 godot --headless --path . res://tests/interaction_test.tscn
+godot --headless --path . res://tests/campaign_test.tscn
 ```
 
 Ekran görüntülerini yenilemek (pencere açar):

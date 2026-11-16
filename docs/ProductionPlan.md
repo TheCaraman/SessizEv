@@ -29,7 +29,8 @@ Ses yönü ve kalite planı şimdilik bu belgede tutulur; içerik büyüdüğün
 | 1.4 | Ev blockout'u | **Tamam** — kat planı onaylandı; ev koddan kuruluyor; 79 denetimli otomatik test geçti; ekran görüntüleri `docs/screenshots/`. Pencere, mobilya ve basamak görseli yok |
 | 1.5 | Kapılar, kilitler, ışık anahtarları | Bekliyor |
 | 1.6 | Retro görüntü hattı, temel gösterge, `Settings` | **Kısmen** — ekran gölgelendiricisi, sis ve dokulu malzemeler tüm evde; oturma odası eşyalı referans oda (K-010). Ayarlardan açıp kapatma, gösterge ve `Settings` yok |
-| 1.7 | `TimeManager`, `GameState`, `SaveManager` temeli | Bekliyor |
+| 1.7 | Saat, `GameState`, `SaveManager` | **Tamam** — saat ve fazlar, enfeksiyon ataması (K-005), sürümlü JSON kayıt; otomatik testli |
+| 2 | Gün 1: yayınlar, Elena'nın gelişi, diyalog, kabul/ret, ilk gece, 2. güne geçiş | **Tamam** — baştan sona oynanıyor; üç yol (kabul, ret, kapıyı açmama) otomatik testli (`tests/campaign_test.tscn`, 69 denetim). Ana menü, kayıttan devam, ses ve gerçek görseller yok |
 
 **Not:** Sürüm kontrolü başladı (yerel depo, `main` dalı). Uzak yedek henüz yok.
 

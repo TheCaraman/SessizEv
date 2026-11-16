@@ -1,0 +1,20 @@
+{
+	"start": "room",
+	"nodes": {
+		"room": {
+			"speaker": "elena_ward",
+			"text": "D1_ELENA_ROOM",
+			"choices": [
+				{"id": "need", "text": "D1_ASK_NEED", "next": "need", "if_not_flag": "d1_elena_asked_need",
+					"effects": [
+						{"type": "flag", "key": "d1_elena_asked_need"},
+						{"type": "trust", "npc": "elena_ward", "delta": 3},
+						{"type": "time", "minutes": 10}
+					]},
+				{"id": "goodnight", "text": "D1_SAY_GOODNIGHT", "next": "goodnight"}
+			]
+		},
+		"need": {"speaker": "elena_ward", "text": "D1_ELENA_NEED", "next": "room"},
+		"goodnight": {"speaker": "elena_ward", "text": "D1_ELENA_GOODNIGHT", "next": "end"}
+	}
+}

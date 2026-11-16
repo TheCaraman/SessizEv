@@ -16,7 +16,8 @@ const SHOTS: Array[Dictionary] = [
 	{"name": "03_hall_table_lamp", "position": Vector3(5.5, 0.0, 4.3), "yaw": -140.0, "pitch": -10.0},
 	{"name": "04_stairs_from_foot", "position": Vector3(7.6, 0.0, 8.3), "yaw": 0.0, "pitch": 12.0},
 	{"name": "05_upper_corridor", "position": Vector3(6.0, 2.8, 3.4), "yaw": 180.0, "pitch": -6.0},
-	{"name": "06_room_view_placeholder", "position": Vector3(6.4, 0.0, 6.6), "yaw": 65.0, "pitch": 0.0, "room": &"kitchen"},
+	{"name": "06_living_room_actions", "position": Vector3(6.4, 0.0, 6.6), "yaw": 65.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
+	{"name": "07_elena_at_the_door", "position": Vector3(6.0, 0.0, 8.9), "yaw": 180.0, "pitch": 0.0, "answer_door": true},
 ]
 
 
@@ -38,6 +39,15 @@ func _ready() -> void:
 			await get_tree().physics_frame
 		if shot.has("room"):
 			room_view.open(shot["room"])
+			if shot.has("action"):
+				room_view.perform_action(shot["action"])
+		if shot.get("answer_door", false):
+			# Jump to the evening so Elena knocks, open the door, hear her out.
+			GameState.advance_minutes(GameState.EVENING_START - GameState.minutes + 5)
+			EventBus.front_door_used.emit()
+			var runner := scene.get_node("DialogueRunner") as DialogueRunner
+			runner.choose(0)
+			runner.choose(0)
 		for i: int in 4:
 			await get_tree().process_frame
 		await RenderingServer.frame_post_draw

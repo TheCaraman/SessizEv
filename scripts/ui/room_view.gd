@@ -6,26 +6,32 @@ extends CanvasLayer
 ##   Background  - the painted room, from assets/rooms/<room_id>.png
 ##   Props       - things that change over the campaign (beds, damage, evidence)
 ##   Characters  - 2D figures of whoever is in the room
-##   Interface   - room name, passages to linked rooms, "leave" hint
+##   Interface   - room name, narration, actions, passages, "leave" hint
 ##
-## The prop and character layers are empty containers for now; the systems
-## that fill them (residents, room state) do not exist yet.
+## What can be done in a room comes from the CampaignDirector: this view only
+## draws the buttons and shows the narration the director returns.
 ##
 ## Opens on EventBus.room_view_requested and announces itself with
 ## room_view_opened / room_view_closed.
 
 const TEXT_COLOR := Color(0.86, 0.84, 0.72)
 const ROOM_IMAGE_PATH: String = "res://assets/rooms/%s.png"
+const CHARACTER_IMAGE_PATH: String = "res://assets/characters/%s/default.png"
 
+var _director: CampaignDirector
 var _room_id: StringName = &""
 var _root: Control
 var _background: TextureRect
 var _prop_layer: Control
-var _character_layer: Control
+var _character_layer: HBoxContainer
 var _title: Label
 var _placeholder_note: Label
-var _hint: Label
+var _present: Label
+var _narration: Label
+var _narration_panel: PanelContainer
+var _actions: HBoxContainer
 var _links: HBoxContainer
+var _hint: Label
 var _placeholder_texture: Texture2D
 
 
@@ -34,6 +40,15 @@ func _ready() -> void:
 	_build_interface()
 	visible = false
 	EventBus.room_view_requested.connect(open)
+	EventBus.residents_changed.connect(_refresh)
+	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _refresh())
+	EventBus.dialogue_ended.connect(func(_id: String) -> void: _refresh())
+
+
+## Called once by the session scene. Without a director the view still works
+## but offers no actions.
+func setup(director: CampaignDirector) -> void:
+	_director = director
 
 
 func is_open() -> bool:
@@ -44,14 +59,22 @@ func get_room_id() -> StringName:
 	return _room_id
 
 
-## Layer that resident figures are added to.
-func get_character_layer() -> Control:
-	return _character_layer
-
-
 ## Layer that changeable room props are added to.
 func get_prop_layer() -> Control:
 	return _prop_layer
+
+
+## Ids of the actions currently offered; used by tests.
+func get_action_ids() -> PackedStringArray:
+	var ids := PackedStringArray()
+	for button: Node in _actions.get_children():
+		if not button.is_queued_for_deletion():
+			ids.append(button.get_meta(&"action_id", ""))
+	return ids
+
+
+func get_narration_text() -> String:
+	return _narration.text
 
 
 func open(room_id: StringName) -> void:
@@ -70,17 +93,9 @@ func open(room_id: StringName) -> void:
 	_background.texture = load(path) as Texture2D if has_image else _get_placeholder()
 	_placeholder_note.visible = not has_image
 
-	for child: Node in _links.get_children():
-		child.queue_free()
-	for linked_id: StringName in HouseLayout.ROOM_LINKS.get(room_id, []):
-		var button := Button.new()
-		button.text = tr("ROOMVIEW_GO").format({"room": tr(HouseLayout.get_room(linked_id)["name_key"])})
-		button.add_theme_font_size_override(&"font_size", 26)
-		button.focus_mode = Control.FOCUS_NONE
-		button.pressed.connect(open.bind(linked_id))
-		_links.add_child(button)
-
+	_set_narration("")
 	visible = true
+	_refresh()
 	EventBus.room_view_opened.emit(_room_id)
 
 
@@ -91,12 +106,100 @@ func close() -> void:
 	EventBus.room_view_closed.emit(_room_id)
 
 
+## Performs one of the room's actions, as its button would.
+func perform_action(action_id: String) -> void:
+	if _director == null or not visible:
+		return
+	_set_narration(_director.perform_room_action(_room_id, action_id))
+	_refresh()
+
+
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
 	if event.is_action_pressed(&"pause") or event.is_action_pressed(&"interact"):
 		close()
 		get_viewport().set_input_as_handled()
+
+
+## Rebuilds everything that depends on campaign state: who is here, what can
+## be done, where one can go.
+func _refresh() -> void:
+	if not visible:
+		return
+	_clear(_character_layer)
+	var names := PackedStringArray()
+	for npc_id: String in GameState.get_room_occupants(_room_id):
+		names.append(Roster.get_display_name(npc_id))
+		_character_layer.add_child(_make_figure(npc_id))
+	_present.visible = not names.is_empty()
+	_present.text = tr("ROOMVIEW_PRESENT").format({"names": ", ".join(names)})
+
+	_clear(_actions)
+	if _director != null:
+		for action: Dictionary in _director.get_room_actions(_room_id):
+			var button: Button = _make_button(action["label"])
+			button.set_meta(&"action_id", action["id"])
+			button.pressed.connect(perform_action.bind(action["id"]))
+			_actions.add_child(button)
+
+	_clear(_links)
+	for linked_id: StringName in HouseLayout.ROOM_LINKS.get(_room_id, []):
+		var button: Button = _make_button(
+			tr("ROOMVIEW_GO").format({"room": tr(HouseLayout.get_room(linked_id)["name_key"])})
+		)
+		button.pressed.connect(open.bind(linked_id))
+		_links.add_child(button)
+
+
+func _set_narration(text: String) -> void:
+	_narration.text = text
+	_narration_panel.visible = text != ""
+
+
+func _clear(container: Node) -> void:
+	for child: Node in container.get_children():
+		container.remove_child(child)
+		child.queue_free()
+
+
+func _make_button(text: String) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.add_theme_font_size_override(&"font_size", 24)
+	button.focus_mode = Control.FOCUS_NONE
+	return button
+
+
+## A resident's figure: their picture if it exists, otherwise a silhouette
+## with their name.
+func _make_figure(npc_id: String) -> Control:
+	var path: String = CHARACTER_IMAGE_PATH % npc_id
+	if ResourceLoader.exists(path):
+		var picture := TextureRect.new()
+		picture.texture = load(path) as Texture2D
+		picture.custom_minimum_size = Vector2(300.0, 560.0)
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return picture
+	var silhouette := Panel.new()
+	silhouette.custom_minimum_size = Vector2(220.0, 520.0)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.03, 0.05, 0.05, 0.94)
+	style.border_color = Color(0.22, 0.26, 0.24)
+	style.set_border_width_all(2)
+	style.corner_radius_top_left = 80
+	style.corner_radius_top_right = 80
+	silhouette.add_theme_stylebox_override(&"panel", style)
+	silhouette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var label: Label = _make_label(22)
+	label.text = Roster.get_display_name(npc_id)
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	silhouette.add_child(label)
+	return silhouette
 
 
 func _build_interface() -> void:
@@ -116,42 +219,73 @@ func _build_interface() -> void:
 	_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_background)
 
-	_prop_layer = _make_layer("Props")
-	_character_layer = _make_layer("Characters")
+	_prop_layer = Control.new()
+	_prop_layer.name = "Props"
+	_prop_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_prop_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_prop_layer)
 
+	# Figures stand along the lower middle of the picture.
+	_character_layer = HBoxContainer.new()
+	_character_layer.name = "Characters"
+	_character_layer.anchor_left = 0.2
+	_character_layer.anchor_right = 0.8
+	_character_layer.anchor_top = 0.16
+	_character_layer.anchor_bottom = 0.72
+	_character_layer.alignment = BoxContainer.ALIGNMENT_CENTER
+	_character_layer.add_theme_constant_override(&"separation", 40)
+	_character_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_character_layer)
+
+	var header := VBoxContainer.new()
+	header.position = Vector2(48.0, 76.0)
+	header.add_theme_constant_override(&"separation", 2)
+	_root.add_child(header)
 	_title = _make_label(34)
-	_title.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	_title.position = Vector2(48.0, 36.0)
-	_root.add_child(_title)
-
-	_placeholder_note = _make_label(22)
+	header.add_child(_title)
+	_placeholder_note = _make_label(20)
 	_placeholder_note.text = tr("ROOMVIEW_PLACEHOLDER")
-	_placeholder_note.modulate = Color(1.0, 1.0, 1.0, 0.6)
-	_placeholder_note.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	_placeholder_note.position = Vector2(48.0, 84.0)
-	_root.add_child(_placeholder_note)
+	_placeholder_note.modulate = Color(1.0, 1.0, 1.0, 0.55)
+	header.add_child(_placeholder_note)
+	_present = _make_label(22)
+	header.add_child(_present)
+
+	# Everything along the bottom: narration, then actions, passages, hint.
+	var footer := VBoxContainer.new()
+	footer.anchor_left = 0.0
+	footer.anchor_right = 1.0
+	footer.anchor_top = 1.0
+	footer.anchor_bottom = 1.0
+	footer.offset_left = 48.0
+	footer.offset_right = -48.0
+	footer.offset_bottom = -36.0
+	footer.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	footer.add_theme_constant_override(&"separation", 14)
+	_root.add_child(footer)
+
+	_narration_panel = PanelContainer.new()
+	var narration_style := StyleBoxFlat.new()
+	narration_style.bg_color = Color(0.04, 0.05, 0.05, 0.9)
+	narration_style.border_color = Color(0.30, 0.32, 0.26)
+	narration_style.set_border_width_all(1)
+	narration_style.set_content_margin_all(20)
+	_narration_panel.add_theme_stylebox_override(&"panel", narration_style)
+	footer.add_child(_narration_panel)
+	_narration = _make_label(26)
+	_narration.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_narration_panel.add_child(_narration)
+
+	_actions = HBoxContainer.new()
+	_actions.add_theme_constant_override(&"separation", 14)
+	footer.add_child(_actions)
 
 	_links = HBoxContainer.new()
-	_links.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_links.position = Vector2(48.0, -150.0)
-	_links.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_links.add_theme_constant_override(&"separation", 16)
-	_root.add_child(_links)
+	_links.add_theme_constant_override(&"separation", 14)
+	footer.add_child(_links)
 
-	_hint = _make_label(24)
-	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_hint.position = Vector2(48.0, -72.0)
-	_hint.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_root.add_child(_hint)
-
-
-func _make_layer(layer_name: String) -> Control:
-	var control := Control.new()
-	control.name = layer_name
-	control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	control.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(control)
-	return control
+	_hint = _make_label(22)
+	_hint.modulate = Color(1.0, 1.0, 1.0, 0.7)
+	footer.add_child(_hint)
 
 
 func _make_label(font_size: int) -> Label:

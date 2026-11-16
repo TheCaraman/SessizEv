@@ -1,0 +1,51 @@
+{
+	"start": "doorstep",
+	"nodes": {
+		"doorstep": {
+			"speaker": "",
+			"text": "D1_ELENA_DOORSTEP",
+			"next": "hello"
+		},
+		"hello": {
+			"speaker": "elena_ward",
+			"text": "D1_ELENA_HELLO",
+			"next": "hub"
+		},
+		"hub": {
+			"speaker": "",
+			"text": "D1_ELENA_HUB",
+			"choices": [
+				{"id": "who", "text": "D1_ASK_WHO", "next": "who", "if_not_flag": "d1_elena_asked_who",
+					"effects": [{"type": "flag", "key": "d1_elena_asked_who"}, {"type": "time", "minutes": 5}]},
+				{"id": "where", "text": "D1_ASK_WHERE", "next": "where", "if_not_flag": "d1_elena_asked_where",
+					"effects": [{"type": "flag", "key": "d1_elena_asked_where"}, {"type": "time", "minutes": 5}]},
+				{"id": "alone", "text": "D1_ASK_ALONE", "next": "alone", "if_not_flag": "d1_elena_asked_alone",
+					"effects": [{"type": "flag", "key": "d1_elena_asked_alone"}, {"type": "time", "minutes": 5}]},
+				{"id": "proof", "text": "D1_ASK_PROOF", "next": "proof", "if_not_flag": "d1_elena_asked_proof",
+					"effects": [{"type": "flag", "key": "d1_elena_asked_proof"}, {"type": "time", "minutes": 5}]},
+				{"id": "admit", "text": "D1_CHOICE_ADMIT", "next": "admitted",
+					"effects": [
+						{"type": "admit", "npc": "elena_ward", "room": "guest_a"},
+						{"type": "trust", "npc": "elena_ward", "delta": 15},
+						{"type": "flag", "key": "elena_admitted"},
+						{"type": "clear_visitor"}
+					]},
+				{"id": "reject", "text": "D1_CHOICE_REJECT", "next": "rejected",
+					"effects": [
+						{"type": "remove", "npc": "elena_ward", "status": "rejected"},
+						{"type": "flag", "key": "elena_rejected"},
+						{"type": "clear_visitor"}
+					]}
+			]
+		},
+		"who": {"speaker": "elena_ward", "text": "D1_ELENA_WHO", "next": "hub"},
+		"where": {"speaker": "elena_ward", "text": "D1_ELENA_WHERE", "next": "hub"},
+		"alone": {"speaker": "elena_ward", "text": "D1_ELENA_ALONE", "next": "alone_beat"},
+		"alone_beat": {"speaker": "", "text": "D1_ELENA_ALONE_BEAT", "next": "hub"},
+		"proof": {"speaker": "elena_ward", "text": "D1_ELENA_PROOF", "next": "hub"},
+		"admitted": {"speaker": "elena_ward", "text": "D1_ELENA_ADMITTED", "next": "admitted_after"},
+		"admitted_after": {"speaker": "", "text": "D1_ELENA_ADMITTED_AFTER", "next": "end"},
+		"rejected": {"speaker": "elena_ward", "text": "D1_ELENA_REJECTED", "next": "rejected_after"},
+		"rejected_after": {"speaker": "", "text": "D1_ELENA_REJECTED_AFTER", "next": "end"}
+	}
+}

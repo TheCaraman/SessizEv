@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/dev/house_blockout.gd" id="1_blockout"]
 [ext_resource type="PackedScene" path="res://scenes/house/house.tscn" id="2_house"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_post_process.tscn" id="4_retro"]
 [ext_resource type="Script" path="res://scripts/ui/room_view.gd" id="5_room_view"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="6_hud"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_runner.gd" id="7_runner"]
+[ext_resource type="Script" path="res://scripts/narrative/campaign_director.gd" id="8_director"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_view.gd" id="9_dialogue_view"]
 
 [node name="HouseBlockout" type="Node3D"]
 script = ExtResource("1_blockout")
@@ -13,12 +16,21 @@ script = ExtResource("1_blockout")
 [node name="House" parent="." instance=ExtResource("2_house")]
 
 [node name="Player" parent="." instance=ExtResource("3_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.05, 9.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.85, 7)
+
+[node name="DialogueRunner" type="Node" parent="."]
+script = ExtResource("7_runner")
+
+[node name="CampaignDirector" type="Node" parent="."]
+script = ExtResource("8_director")
 
 [node name="RetroPostProcess" parent="." instance=ExtResource("4_retro")]
 
 [node name="RoomView" type="CanvasLayer" parent="."]
 script = ExtResource("5_room_view")
+
+[node name="DialogueView" type="CanvasLayer" parent="."]
+script = ExtResource("9_dialogue_view")
 
 [node name="Hud" type="CanvasLayer" parent="."]
 script = ExtResource("6_hud")
