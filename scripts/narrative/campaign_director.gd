@@ -63,6 +63,8 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 	var actions: Array[Dictionary] = []
 	for id: String in judgment.targets(room_id):
 		actions.append({"id": "expel:" + id, "label": tr("JUDGMENT_EXPEL_ACTION").format({"name": Roster.get_display_name(id)})})
+	for entry: Dictionary in judgment.memories(room_id):
+		actions.append({"id": "discuss_expulsion:" + entry["witness"] + ":" + entry["subject"], "label": tr("EXPEL_DISCUSS").format({"witness": Roster.get_display_name(entry["witness"]), "name": Roster.get_display_name(entry["subject"])})})
 	if room_id == "daniel_bedroom" and Day4Review.available():
 		actions.append({"id": "review_last_night", "label": tr("DAY4_REVIEW_ACTION")})
 	if room_id == str(night.events.definition["source_room"]) and night.events.can_inspect():
@@ -117,6 +119,8 @@ func perform_room_action(room_id: String, action_id: String) -> String:
 	else:
 		_repair_confirmation = false
 		return judgment.expel(room_id, action_id.trim_prefix("expel:"))
+	if action_id.begins_with("discuss_expulsion:"):
+		return judgment.discuss(room_id, action_id.get_slice(":", 1), action_id.get_slice(":", 2))
 
 	if action_id.begins_with("power:"):
 		var choice: String = action_id.trim_prefix("power:")

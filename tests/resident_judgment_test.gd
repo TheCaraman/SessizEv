@@ -52,6 +52,7 @@ func _ready() -> void:
 		check(GameState.get_status("elena_ward") == "expelled" and GameState.get_bed_of("elena_ward") == "", "confirmed adult leaves and frees bed")
 		check(GameState.minutes == int(baseline["minutes"]) + 16 and GameState.resources == baseline["resources"], "time once and no supply refund")
 		check(GameState.npcs["elena_ward"]["trust"] == int(baseline["npcs"]["elena_ward"]["trust"]) - 20 and GameState.npcs["elena_ward"]["infected"] == infected, "trust consequence without infection rewrite")
+		check(view.get_narration_text().contains(tr("EXPEL_ELENA_LEAVES")), "authored departure line independent of infection")
 		var after: Dictionary = GameState.to_dict()
 		view.perform_action("expel:elena_ward")
 		check(GameState.to_dict() == after, "repeat cannot charge twice")
@@ -81,6 +82,39 @@ func _ready() -> void:
 	for status: String in ["dead", "left", "expelled", "rejected", "unknown"]:
 		GameState.npcs["marcus_hale"]["status"] = status
 		check(judgment.targets("guest_b").is_empty(), "nonresident excluded " + status)
+	GameState.new_campaign(42)
+	GameState.day = 4
+	GameState.admit("elena_ward", "guest_a_1")
+	GameState.admit("marcus_hale", "guest_a_2")
+	GameState.admit("arthur_bell", "guest_b_1")
+	judgment.expel("guest_a", "elena_ward")
+	var before_memory: Dictionary = GameState.to_dict()
+	check(not GameState.flags.has(judgment.memory_key("marcus_hale", "elena_ward")), "confirmation alone creates no memory")
+	var response: String = judgment.expel("guest_a", "elena_ward")
+	check(response.contains(tr("EXPEL_ELENA_LEAVES")) and GameState.get_status("elena_ward") == "expelled", "departure speech belongs to actual decision")
+	check(GameState.flags.get(judgment.memory_key("marcus_hale", "elena_ward"), false), "same-room listener remembers")
+	check(not GameState.flags.has(judgment.memory_key("arthur_bell", "elena_ward")), "other room gets no telepathic knowledge")
+	check(GameState.npcs["marcus_hale"]["trust"] == before_memory["npcs"]["marcus_hale"]["trust"], "memory alone has no hidden trust tax")
+	check(SaveManager.load_game() and judgment.memories("guest_a").size() == 1, "listener memory survives load")
+	var memory_state: Dictionary = GameState.to_dict()
+	check(judgment.discuss("guest_a", "marcus_hale", "elena_ward").contains(tr("EXPEL_MARCUS_WITNESS").format({"name": Roster.get_display_name("elena_ward")})), "personal response to known departure")
+	check(judgment.discuss("guest_b", "arthur_bell", "elena_ward") == "" and GameState.to_dict() == memory_state, "unknown or repeat topic gives no fabricated testimony or cost")
+	var memory_scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
+	viewport.add_child(memory_scene)
+	memory_scene.get_node("Player").set_physics_process(false)
+	var memory_view: RoomView = memory_scene.get_node("RoomView")
+	memory_view.open("guest_a")
+	check(memory_view.get_action_ids().has("discuss_expulsion:marcus_hale:elena_ward"), "room exposes actual listener topic")
+	memory_view.perform_action("discuss_expulsion:marcus_hale:elena_ward")
+	check(memory_view.get_narration_text().contains(Roster.get_display_name("marcus_hale")), "real room response")
+	for frame: int in 5:
+		await get_tree().process_frame
+	if "--capture-judgment" in OS.get_cmdline_user_args():
+		await RenderingServer.frame_post_draw
+		check(viewport.get_texture().get_image().save_png("res://docs/qa/expel-witness-tr-2560.png") == OK, "witness response capture")
+	memory_view.close()
+	memory_scene.free()
+	await get_tree().process_frame
 	SaveManager.delete_save()
 	if failures == 0:
 		print("RESIDENT JUDGMENT TEST: PASS (%d checks)" % checks)

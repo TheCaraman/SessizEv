@@ -32,3 +32,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | DAY4-REVIEW-001 | TAMAM | Codex (sahiplik bırakıldı) | day4_review.gd/json, CampaignDirector eylemi, EventBus/HouseBlockout/JournalView bağlantısı, localization, day4_review_test ve QA | 2026-11-16 |
 
 | DAY4-EXPEL-001 | TAMAM | Codex (sahiplik bırakıldı) | resident_judgment.gd/json, CampaignDirector, localization, judgment test ve QA | 2026-11-16 |
+
+| DAY4-REACTION-001 | TAMAM | Codex (sahiplik bırakıldı) | resident_judgment.gd/json, campaign_director.gd, localization, resident_judgment_test, QA | 2026-11-16 |

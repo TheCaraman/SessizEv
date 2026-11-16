@@ -1,5 +1,15 @@
 {
   "eligible_adults": ["elena_ward", "marcus_hale", "arthur_bell"],
   "expel_minutes": 15,
-  "expel_trust": -20
+  "expel_trust": -20,
+  "departure_keys": {
+    "elena_ward": "EXPEL_ELENA_LEAVES",
+    "marcus_hale": "EXPEL_MARCUS_LEAVES",
+    "arthur_bell": "EXPEL_ARTHUR_LEAVES"
+  },
+  "witness_keys": {
+    "elena_ward": "EXPEL_ELENA_WITNESS",
+    "marcus_hale": "EXPEL_MARCUS_WITNESS",
+    "arthur_bell": "EXPEL_ARTHUR_WITNESS"
+  }
 }

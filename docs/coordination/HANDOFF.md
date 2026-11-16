@@ -130,3 +130,6 @@ Dayanak 44578a2. İlk ücretsiz sabah değerlendirme eylemi/JournalView bağlant
 
 ## 2026-11-16 / Codex / DAY4-EXPEL-001
 Dayanak 015c8fb. İlk nonlethal kovma akışı, gerçek oda ve iki basışlı anlık görüntü onayı. 19 paket/5834 denetim; GPU39. Başlangıçta Türkçe testte boş contains beklentisi hatası düzeltildi; ürün hatası değildi. Sosyal sahne/izolasyon henüz yok. Sahiplik bırakıldı.
+
+## 2026-11-16 / Codex / DAY4-REACTION-001
+Dayanak 2297898. Veriden kişisel sözler ve gerçek aynı-oda dinleyici hatırası; eski kayda geri doldurma yok. 19 paket/5867 denetim; GPU52; TR1440p bakıldı. Sahiplik bırakıldı. Sonraki: izolasyon/gece tanık kaydı; sanat aday onayı hâlâ ayrı.

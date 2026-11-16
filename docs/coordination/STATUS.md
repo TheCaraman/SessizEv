@@ -44,3 +44,6 @@ Daniel odasında ücretsiz inceleme mevcut; yalnız toplanmış kanıt ve günce
 
 ## Gün 4 ilk evden çıkarma
 Üç uygun yetişkin için bulunduğu odada iki basışlı kovma; 15 dakika/−20 hedef güveni, iş/yatak temizliği, kaynak iadesi yok, enfeksiyon sabit. 19 paket/5834 denetim; GPU capture 39. docs/qa/ResidentExpulsion.md. İzolasyon, tanık ve sosyal ayrılık sahneleri açık. Sanat defaultları korunur; aday onayı sayılmaz.
+
+## Ayrılık tepkileri
+Üç yetişkin için kişisel ayrılık ve dinleyici sözleri; yalnız aynı odada uygun kişi hatırlıyor, sonraki ücretsiz konuşma kayıtla korunuyor. Başka oda haberdar sayılmıyor. 19 paket/5867 denetim; GPU capture 52. docs/qa/ExpulsionReactions.md. Genel ilişki/moral ve izolasyon açık; enfeksiyon teşhisi yok.
