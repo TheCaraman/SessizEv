@@ -16,6 +16,8 @@ var locked: bool = false
 var is_front: bool = false
 ## How long the leaf takes to swing shut after the player leaves the room.
 const CLOSE_SECONDS: float = 0.45
+const OPEN_SECONDS: float = 0.55
+const APPROACH_SECONDS: float = 0.30
 
 var _hinge: Node3D
 var _opening: bool = false
@@ -25,6 +27,9 @@ var _tween: Tween
 var _portal: MeshInstance3D
 var _width: float = 0.9
 var _cover: ColorRect
+var _camera: Camera3D
+var _camera_start: Transform3D
+var _preview: RoomVisuals = RoomVisuals.new()
 
 func configure_leaf(leaf: Node3D, width: float) -> void:
 	_width = width
@@ -43,6 +48,10 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	transition.add_child(_cover)
 	leaf.reparent(_hinge, true)
 	EventBus.room_view_closed.connect(_on_room_view_closed)
+	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void:
+		if _portal != null and _portal.visible:
+			_show_room_threshold()
+	)
 
 
 ## Back in the corridor the door is still standing open where the player left
@@ -69,7 +78,7 @@ func is_closing() -> bool:
 	return _closing
 
 func _show_room_threshold() -> void:
-	# A dark recess instead of a miniature copy of the fullscreen room.
+	# Screen-matched image through a physical aperture, never a scaled card.
 	if _portal == null:
 		_portal = MeshInstance3D.new()
 		_portal.name = "RoomThreshold"
@@ -77,17 +86,43 @@ func _show_room_threshold() -> void:
 		quad.size = Vector2(_width, HouseLayout.DOOR_HEIGHT)
 		_portal.mesh = quad
 		_portal.position.y = HouseLayout.DOOR_HEIGHT * 0.5
-		var material := StandardMaterial3D.new()
-		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.cull_mode = BaseMaterial3D.CULL_DISABLED
-		material.albedo_color = Color(0.008, 0.012, 0.01)
+		var material := ShaderMaterial.new()
+		material.shader = preload("res://shaders/door_room_preview.gdshader")
 		_portal.material_override = material
 		add_child(_portal)
+	var parent: Node = get_parent()
+	var powered: bool = true
+	while parent != null:
+		var director: Node = parent.get_node_or_null("CampaignDirector")
+		if director is CampaignDirector:
+			powered = director.power.is_powered()
+			break
+		parent = parent.get_parent()
+	var visual: Dictionary = _preview.resolve(str(room_id), GameState.minutes, powered)
+	var material: ShaderMaterial = _portal.material_override
+	material.set_shader_parameter("room_image", load(visual["path"]))
+	material.set_shader_parameter("room_tint", Settings.world_tint(visual["background_tint"]))
 	_portal.visible = true
 
 func _exit_tree() -> void:
+	if is_instance_valid(_camera) and _camera.is_inside_tree():
+		_camera.global_transform = _camera_start
 	if _opening:
 		EventBus.door_transition_changed.emit(false)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _opening or not event.is_action_pressed(&"pause"):
+		return
+	if _tween != null and _tween.is_valid():
+		_tween.kill()
+	if is_instance_valid(_camera):
+		_camera.global_transform = _camera_start
+	_camera = null
+	_hinge.rotation.y = 0.0
+	_portal.visible = false
+	_opening = false
+	EventBus.door_transition_changed.emit(false)
+	get_viewport().set_input_as_handled()
 
 
 func get_interaction_prompt() -> String:
@@ -124,15 +159,22 @@ func interact(player: Node) -> void:
 	if _portal != null:
 		_portal.position.z = -direction * 0.065
 	_tween = create_tween()
-	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), 0.55).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	_tween.tween_callback(func() -> void:
-		_cover.modulate.a = 0.0
-		_cover.visible = true
-	)
-	_tween.tween_property(_cover, "modulate:a", 1.0, 0.12)
+	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), OPEN_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_camera = player.get_node_or_null("Head/Camera3D") as Camera3D
+	if _camera != null:
+		_camera_start = _camera.global_transform
+		if Settings.get_number("camera_motion") >= 0.5:
+			var destination: Vector3 = to_global(Vector3(0.0, HouseLayout.DOOR_HEIGHT * 0.5, direction * 0.18))
+			var target: Transform3D = _camera.global_transform
+			target.origin = destination
+			target = target.looking_at(to_global(Vector3(0.0, HouseLayout.DOOR_HEIGHT * 0.5, -direction)), Vector3.UP)
+			_tween.tween_property(_camera, "global_transform", target, APPROACH_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	_tween.tween_callback(func() -> void:
 		_held_open = true
 		EventBus.room_view_requested.emit(room_id)
+		if is_instance_valid(_camera):
+			_camera.global_transform = _camera_start
+		_camera = null
 		_cover.visible = false
 		_opening = false
 		EventBus.door_transition_changed.emit(false)

@@ -62,6 +62,7 @@ func _ready() -> void:
 		_update_guidance())
 	EventBus.notice_requested.connect(_show_notice)
 	EventBus.day_started.connect(_show_title)
+	EventBus.door_transition_changed.connect(func(active: bool) -> void: _set_covered(&"door_transition", active))
 	# While a room or a conversation fills the screen only the clock stays.
 	EventBus.room_view_opened.connect(func(_id: StringName) -> void: _set_covered(&"room", true))
 	EventBus.room_view_closed.connect(func(_id: StringName) -> void: _set_covered(&"room", false))

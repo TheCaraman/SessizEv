@@ -54,27 +54,28 @@ func _physics_process(_delta: float) -> void:
 			_send_action(&"interact")
 		20:
 			_check(not _room_view.is_open() and not _player.control_enabled, "physical opening precedes room view and locks movement")
-		65:
+		# Allow the authored leaf swing AND camera approach before the handoff.
+		80:
 			_check(_opened == [&"living_room"], "interact should open the living room, got %s" % [_opened])
 			_check(_room_view.is_open(), "room view should be visible")
 			_check(not _player.control_enabled, "player should be frozen while a room is shown")
 			_check(_prompt == "", "prompt should clear while a room is shown, got '%s'" % _prompt)
 			# Use the passage to the dining area, as the on-screen button would.
 			_room_view.open(&"dining")
-		70:
+		85:
 			_check(_room_view.get_room_id() == &"dining", "linked room should be shown")
 			_send_action(&"pause")
-		75:
+		90:
 			_check(not _room_view.is_open(), "pause should close the room view")
 			_check(_closed == [&"dining"], "closing should be announced once, got %s" % [_closed])
 			_check(_player.control_enabled, "player should regain control after leaving a room")
 			# The front door, from inside the entrance.
 			_face(Vector3(7.5, 0.05, 11.5), 180.0)
-		80:
+		95:
 			_check(_prompt == "Locked", "front door should read 'Locked', got '%s'" % _prompt)
 			_opened.clear()
 			_send_action(&"interact")
-		85:
+		100:
 			_check(_opened.is_empty(), "a locked door should not open a room view")
 			_check(_player.control_enabled, "a locked door should not freeze the player")
 			_finish()

@@ -3,8 +3,8 @@ extends Node
 const PATH: String = "user://settings.cfg"
 const LANGUAGES: Array[String] = ["en", "tr"]
 signal preferences_changed
-const DEFAULTS: Dictionary = {"brightness": 1.0, "mouse_sensitivity": 0.0022, "fov": 78.0, "master_volume": 1.0}
-const LIMITS: Dictionary = {"brightness": Vector2(0.7, 1.6), "mouse_sensitivity": Vector2(0.00055, 0.0066), "fov": Vector2(60.0, 95.0), "master_volume": Vector2(0.0, 1.0)}
+const DEFAULTS: Dictionary = {"brightness": 1.0, "mouse_sensitivity": 0.0022, "fov": 78.0, "master_volume": 1.0, "camera_motion": 1.0}
+const LIMITS: Dictionary = {"brightness": Vector2(0.7, 1.6), "mouse_sensitivity": Vector2(0.00055, 0.0066), "fov": Vector2(60.0, 95.0), "master_volume": Vector2(0.0, 1.0), "camera_motion": Vector2(0.0, 1.0)}
 var language: String = "en"
 var _values: Dictionary = DEFAULTS.duplicate()
 

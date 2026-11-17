@@ -84,7 +84,7 @@ func _ready() -> void:
 	check(is_equal_approx(session.get_node("DialogueView")._figure.modulate.r, 1.35), "dialogue figure follows brightness")
 	panel._back.grab_focus()
 	var visited: Array[Control] = []
-	for press: int in 6:
+	for press: int in Settings.DEFAULTS.size() + 2:
 		var tab := InputEventKey.new()
 		tab.keycode = KEY_TAB
 		tab.physical_keycode = KEY_TAB
@@ -99,7 +99,7 @@ func _ready() -> void:
 		check(focused != null and panel.is_ancestor_of(focused), "real Tab input stays inside modal")
 		if focused not in visited:
 			visited.append(focused)
-	check(visited.size() == 6, "Tab reaches every settings control")
+	check(visited.size() == Settings.DEFAULTS.size() + 2, "Tab reaches every settings control including motion, reset and back")
 	for resolution: Vector2i in [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1440)]:
 		viewport.size = resolution
 		for locale: String in ["en", "tr"]:

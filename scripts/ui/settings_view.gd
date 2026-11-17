@@ -125,3 +125,5 @@ func _refresh() -> void:
 		var value: float = Settings.get_number(key)
 		_sliders[key].set_value_no_signal(value)
 		_readouts[key].text = "%d°" % roundi(value) if key == "fov" else "%d%%" % roundi(value * (100.0 / float(Settings.DEFAULTS[key])))
+		if key == "camera_motion":
+			_readouts[key].text = tr("SETTINGS_MOTION_ON" if value >= 0.5 else "SETTINGS_MOTION_OFF")

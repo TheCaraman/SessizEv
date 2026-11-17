@@ -117,11 +117,8 @@ func open(room_id: StringName) -> void:
 
 func _reveal_from_door(room_id: StringName) -> void:
 	open(room_id)
-	_transition_cover.visible = true
-	_transition_cover.modulate.a = 1.0
-	_reveal_tween = create_tween()
-	_reveal_tween.tween_property(_transition_cover, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
-	_reveal_tween.tween_callback(func() -> void: _transition_cover.visible = false)
+	# The physical aperture has already revealed this image. A second black
+	# cover here would undo that continuity at the exact moment of handoff.
 
 func close() -> void:
 	if not visible:

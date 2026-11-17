@@ -24,17 +24,31 @@ func _ready() -> void:
 	var door: RoomDoor = scene.find_child("Door_living_room", true, false)
 	check(door != null and door.has_node("Hinge/DoorLeaf"), "real hinged leaf")
 	var before: Dictionary = GameState.to_dict()
+	var camera: Camera3D = player.get_node("Head/Camera3D")
+	var camera_before: Transform3D = camera.global_transform
 	door.interact(player)
 	door.interact(player)
 	check(not player.control_enabled and not room.is_open(), "opening locks control before showing room")
 	await get_tree().create_timer(0.3).timeout
 	check(absf(door.get_node("Hinge").rotation.y) > 0.1 and not room.is_open(), "door visibly rotates before room")
-	check(door.get_node("RoomThreshold").visible and door.get_node("RoomThreshold").material_override.albedo_texture == null, "recess never displays a scaled room card")
+	var threshold: MeshInstance3D = door.get_node("RoomThreshold")
+	check(threshold.visible and threshold.material_override is ShaderMaterial, "physical opening uses screen-matched room preview")
+	var preview_texture: Texture2D = threshold.material_override.get_shader_parameter("room_image")
+	check(preview_texture != null and preview_texture.resource_path == RoomVisuals.new().resolve("living_room", GameState.minutes, true)["path"], "opening shows the actual room variant before fullscreen handoff")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-opening.png") == OK, "opening image saved")
-	await get_tree().create_timer(0.7).timeout
+	await get_tree().create_timer(0.35).timeout
+	if "--capture-door" in OS.get_cmdline_user_args():
+		await RenderingServer.frame_post_draw
+		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-approaching.png") == OK, "approach image saved")
+	await get_tree().create_timer(0.35).timeout
 	check(room.is_open() and room.get_room_id() == "living_room" and not player.control_enabled, "opening resolves to correct room")
+	check(camera.global_position.distance_to(camera_before.origin) < 0.001, "camera returns to original corridor position behind room view")
+	check(not room._transition_cover.visible, "handoff adds no second black cover")
+	if "--capture-door" in OS.get_cmdline_user_args():
+		await RenderingServer.frame_post_draw
+		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-entered.png") == OK, "room handoff image saved")
 	check(is_equal_approx(room._root.modulate.a, 1.0), "room fade finishes")
 	var open_angle: float = absf(door.get_node("Hinge").rotation.y)
 	room.close()
@@ -54,6 +68,22 @@ func _ready() -> void:
 	await get_tree().create_timer(1.0).timeout
 	check(room.is_open() and room.get_room_id() == "living_room", "reopening reaches the same room")
 	room.close()
+	await get_tree().create_timer(RoomDoor.CLOSE_SECONDS + 0.05).timeout
+	door.interact(player)
+	var escape := InputEventAction.new()
+	escape.action = &"pause"
+	escape.pressed = true
+	door._unhandled_input(escape)
+	check(player.control_enabled and not room.is_open() and not threshold.visible, "Escape cancels an opening without entering the room")
+	await get_tree().create_timer(RoomDoor.OPEN_SECONDS + RoomDoor.APPROACH_SECONDS + 0.05).timeout
+	check(not room.is_open() and camera.global_position.distance_to(camera_before.origin) < 0.001, "cancelled tween never enters room or leaves displaced camera")
+	var motion: float = Settings.get_number("camera_motion")
+	check(Settings.set_number("camera_motion", 0.0) == OK, "reduced motion preference persists")
+	door.interact(player)
+	await get_tree().create_timer(RoomDoor.OPEN_SECONDS + 0.1).timeout
+	check(room.is_open() and camera.global_position.distance_to(camera_before.origin) < 0.001, "reduced motion opens room without moving camera")
+	room.close()
+	check(Settings.set_number("camera_motion", motion) == OK, "motion preference restored for other checks")
 	scene.free()
 	await get_tree().process_frame
 	if failures == 0:
