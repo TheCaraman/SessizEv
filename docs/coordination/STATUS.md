@@ -98,3 +98,6 @@ Ana klasörde (automation/integration): ortam ve lambalar kısıldı, sıcak akk
 
 ## 2026-11-17 — aktif0.1.15 / Elena B ve kapı deliği
 fcfc523, workers/dev-0.1.15, merkezi masaüstü launcher+PrepareOnly doğrulandı.35paket/7756WASAPI PASS,5nativeUI. Sahip ORTA/B stilini seçti; çantalı/temkinli ilk geliş ve daha sakin oda figürü bağlı.8EN/TR diyalog satırı değişti, mekanik etkiler aynı. I05 porch/peephole930b8c1 dahil; I11 daraltma ve I10 dekor dahil değil. Marcus/Arthur hâlâ eski sanat; genel atmosfer kabulü açık. Detay elena-release015 mesajında.
+
+## 2026-11-17 — aktif0.1.17 yeni açık hol/sahanlık
+b66b4d1, workers/dev-0.1.17; merkezi launcher ve PrepareOnly/import doğrulandı.35paket/7762WASAPI PASS;13native+13baseline. Gerçek FOYER_VOID/başlıksız bağlantı/açık ahşap korkuluklar/3.75m geçiş/V5 yüzeyler. OdaID/kayıt aynı. Oturma odası8310c0f dahil; diğer12oda ve V5tam-boy NPC açık. I08 36f1c36 teslim alındı ama sürümde değil; Claude yeni geometride CameraClip incelemesine devam edebilir. Ayrıntı corridor-release017-camera-ready mesajında.

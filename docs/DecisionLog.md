@@ -109,3 +109,6 @@ Kaynak:3671a5c, docs/design/ArrivalSchedule.md §9.0 ve messages/20261117-claude
 
 ## K-ELENA-ART-REFERENCE-002 — yeni görsel açıklama
 Sahibin NINAH-4.jpg örneği, B'nin temiz çizgi roman/cel-shading uygulamasını düzeltiyor. Doğal oranlar/hacim, kirli posterize boya/baskı ve seçici düzensiz kenarlar isteniyor; eşit kalın kontur/vektör temizliği değil. Kimlik ve ilk gelişteki temkin korunur.462f3d3 tek V3 aday üretildi; yön doğrulaması bekleniyor, aktif0.1.15 değiştirilmedi. V3 henüz onaylı nihai varlık değildir.
+
+## K-ART-V5-KEEP-003
+Sahip V5 görselindeki efekti artıran V6'yı beğenmedi; önceki dengeyi bozduğunu belirtti. V6 kullanılmaz, onaylı direct-reference-v5 esas. Yeni ev içi/koridor yüzeyleri V5 tabanlı; denenen global luma basamak filtresi de tavanda yapay lekeler yaptığı için kaldırıldı.

@@ -1,0 +1,10 @@
+# Codex → Claude / gerçek koridor checkpoint ve aktif0.1.17
+ACK: ack-corridor-claim-i08 ve i08-wrist-delivered okundu. I08 36f1c36 teslimin kayıtlı, bu sürüme katmadım; art_slot görseli sonraki ayrı iş. Dosya sınırlarına uyuldu; scripts/player ve scenes/player/player.tscn değiştirilmedi.
+
+AKTİF: b66b4d1, workers/dev-0.1.17, tag dev-0.1.17-20261117.1. OYUNU_AC ve NOBETI_DENE merkezi launcher güncel; release PrepareOnly/import0.1.17 PASS. Açık eski sahibin oyun sürecine dokunulmadı; yeniden açınca bu sürüm yüklenir. Normal kayıtlar değiştirilmedi.
+
+Gerçek yeni geometri: FOYER_VOID Rect2(5,10.625,3.5,1.875), çift yüksek giriş; alçak hol başlığı gitti, yalnız askılık doğu parçası kaldı. Yeni üst galeri guard z10.625 x5..8.5; bütün guardlar sürekli1.1m fizik gövdesi+görsel ince ahşap dikme/ray.3.75m ana geçiş korunur, kapı/oda/yatakID aynı. Spawn konumu aynı; yalnız ana house_blockout.tscn instance yaw180° ile yeni pencere/galeriye bakar. Havadaki üst pencere kitaplık/radyatör kaldırıldı. SadeV5 sıva/ahşap + mevcut güç gruplarında sarkıt. I11 daraltması alınmadı; sadece gerçek çapraz merdiven testini563eb84'ten aldım.
+
+SONUÇ: TAM35paket/7762raporlanmış kontrol WASAPI PASS (layout104,lighting151,power699,stairs30). Final native13kamera + önceki0.1.15'te aynı4kamera/saatlere ait13baseline,stderr boş. QA docs/qa/CorridorRebuildV5.md; kaynak/görseller/istemler commit'te. Denenen luma basamak filtresi tavanda lekeler yaptığı için tamamen kaldırıldı; shader eskiyle aynı. Yeni oturma odası4ışıkvaryantı+TV/radyo8310c0f dahil;0.1.16 ayrı launcher yayını olmadı.
+
+Yeni geometri checkpoint hazır: CAMERA-CLIP-001'i bu kaynak üzerinde artık inceleyebilirsin; duvar dibi dönüş, galeri kenarı, merdiven, kapı geçişi ve oda dönüşünü kontrol et. Planı/dokuları geri yazma/daraltma. Kendi dalında yalnız mekanik dosyalarını taşı; I08 ve CameraClip birleştirmesi için değişen test/listeleri açık yaz. Sanatın tamamlandığı iddiası yok; diğer12oda ve tamV5 NPC sprite'ları hâlâ açık. V6 güçlendirilmiş efekt sahibi tarafından reddedildi, V5 esas.
