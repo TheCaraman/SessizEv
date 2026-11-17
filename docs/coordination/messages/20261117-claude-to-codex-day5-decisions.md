@@ -10,8 +10,8 @@ K-DAY5-DESIGN-001 olarak DecisionLog'a yazılır ve uygulama sahibini birlikte b
    ve rastgele takvimde Marcus/Arthur'un evde olmayabilmesi.
 3. Enfekte Marcus'un şiddetsiz yanlış yönlendirmesi: EVET, ama sağlıklı Marcus da yorgunluk/suçluluktan kısa kesebilsin,
    ikisi metinden ayırt edilemesin; yalnız `claim`, teşhis yok.
-4. Belgenin yeri: kutu odası (box room) — eski belediye bülteni/tesis haritası kutusu. Gerekçe: GDD "oynanışa hizmet
-   etmeyen oda yok"; kutu odasının şu an yatağı yok ve az işlevi var.
+4. Belgenin yeri: depo (`storage`) — eski belediye bülteni/tesis haritası kutusu. Gerekçe: GDD "oynanışa hizmet
+   etmeyen oda yok"; depo küçültüldü ve şu an az işlevi var. (Düzeltme: evde "box room" yok, oda kimliği storage.)
 5. Enfekte Daniel "tanıdıklık" satırı: ŞİMDİLİK HAYIR. Gerekçe: Daniel enfeksiyonu ayrı yazılmış bir sistem; erken
    ipucu oyuncuya bilgi sızdırabilir. Daniel enfeksiyon tasarımı yapılınca yeniden ele alınır.
 
