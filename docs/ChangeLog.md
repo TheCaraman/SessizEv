@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.1.11-dev.20261117.1
+- Koridorlarda gündüz elektrikli lambalar kapalı; pencere aydınlığı ve sabah/gece geçişi belirginleştirildi.
+- Gece tavan aydınlığı yerine üç yerel abajur; üst kata iki küçük lambalı sehpa eklendi.
+- Kesintide elektrikli ışık ve armatür emisyonu sönüyor; sürekli kamera ışığı kaldırılıp kısa menzilli kesinti desteğiyle sınırlandı.
+- Sis yoğunluğu azaltıldı. Aynı kamera sabah/öğle/gece/kesinti gerçek GPU görüntüleriyle karşılaştırıldı.
+- Kapı animasyonu, karakter çizimleri ve merdiven düzeltmesi bu teslimde yok.
+
 ## 0.1.10-dev.20261117.1
 - Gün1 sabah/öğleden sonra HUD'unda zamanın eylemlerle ilerlediğini ve yatak odasında dinlenilebildiğini anlatan EN/TR yönlendirme.
 - İpucu kapı çalarken ve ekran kaplayan menü/diyaloglarda saklanır; saat ve kritik kapı altyazısı korunur.

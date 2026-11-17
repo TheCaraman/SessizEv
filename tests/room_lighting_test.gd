@@ -17,11 +17,31 @@ func _ready() -> void:
 	var director: CampaignDirector = session.get_node("CampaignDirector")
 	var definition: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RoomVisuals.DATA_PATH))["living_room"]
 	var cases: Array[Dictionary] = [{"variant": "day", "minutes": 720, "powered": true}, {"variant": "night", "minutes": 1380, "powered": true}, {"variant": "outage_day", "minutes": 720, "powered": false}, {"variant": "outage_night", "minutes": 1380, "powered": false}]
+	GameState.minutes = 420
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	for light: Node3D in get_tree().get_nodes_in_group("electric_lights"):
+		if session.is_ancestor_of(light):
+			check(not light.visible, "07:00 uses windows, not electric lights")
+	check(not session.get_node("Player/EmergencyNavigation").visible, "powered day has no camera light")
 	for state: Dictionary in cases:
 		GameState.minutes = state["minutes"]
 		GameState.power_incident = {} if state["powered"] else {"state": "outage", "cause": "loose_connection", "inspected": []}
 		room.open("living_room")
 		EventBus.time_changed.emit(GameState.day, GameState.minutes)
+		var local_count: int = 0
+		for light: Node3D in get_tree().get_nodes_in_group("electric_lights"):
+			if not session.is_ancestor_of(light):
+				continue
+			var local_lamp: bool = light.is_in_group("local_lamp_lights")
+			if local_lamp:
+				local_count += 1
+			check(light.visible == (bool(state["powered"]) and state["minutes"] == 1380 and local_lamp), "electric light follows phase, source and power " + light.name)
+		check(local_count >= 3, "local lamps cover ground and upper corridor")
+		for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
+			if session.is_ancestor_of(fitting):
+				var material: StandardMaterial3D = fitting.get_active_material(0)
+				check(material.emission_enabled == (bool(state["powered"]) and state["minutes"] == 1380 and fitting.is_in_group("local_lamp_fittings")), "fixture glow matches actual source")
+		check(session.get_node("Player/EmergencyNavigation").visible == (not state["powered"] and state["minutes"] == 1380), "backup navigation only in dark outage")
 		for frame: int in 4:
 			await get_tree().process_frame
 		check(room.get_visual_variant() == state["variant"], "authored variant " + state["variant"])

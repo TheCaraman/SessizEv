@@ -28,8 +28,8 @@ var _window_lights: Array[Dictionary] = []
 var _moon_lights: Array[Dictionary] = []
 ## The house environment; its fill light follows the clock.
 var _environment: Environment
-const DAY_AMBIENT: float = 0.27
-const NIGHT_AMBIENT: float = 0.13
+const DAY_AMBIENT: float = 0.30
+const NIGHT_AMBIENT: float = 0.065
 var _window_materials: Array[Dictionary] = []
 
 
@@ -83,8 +83,8 @@ func _ready() -> void:
 	_pause_menu.closed.connect(_update_control)
 	var emergency := OmniLight3D.new()
 	emergency.name = "EmergencyNavigation"
-	emergency.light_energy = 0.22
-	emergency.omni_range = 9.0
+	emergency.light_energy = 0.08
+	emergency.omni_range = 4.5
 	emergency.light_color = Color(0.75, 0.82, 0.83)
 	_player.add_child(emergency)
 	_cache_electric_lighting()
@@ -118,7 +118,11 @@ func _cache_electric_lighting() -> void:
 	# Cache this session only; another preview/session must keep its own materials.
 	for light: Node in get_tree().get_nodes_in_group("window_lights"):
 		if is_ancestor_of(light) and light is Light3D:
-			_window_lights.append({"node": light, "energy": light.light_energy})
+			var bounce: bool = light.name == "WindowBounce"
+			_window_lights.append({"node": light, "energy": light.light_energy * (2.2 if bounce else 1.0)})
+			if bounce and light is OmniLight3D:
+				light.light_color = Color(0.74, 0.84, 0.82)
+				light.omni_range = 8.0
 	for light: Node in get_tree().get_nodes_in_group("moon_lights"):
 		if is_ancestor_of(light) and light is Light3D:
 			_moon_lights.append({"node": light, "energy": light.light_energy})
@@ -133,6 +137,8 @@ func _cache_electric_lighting() -> void:
 	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
 		if is_ancestor_of(light) and light is Node3D:
 			_electric_lights.append(light)
+			if light is Light3D:
+				light.set_meta("base_energy", light.light_energy)
 	for fitting: Node in get_tree().get_nodes_in_group("electric_fittings"):
 		if not is_ancestor_of(fitting) or not fitting is MeshInstance3D:
 			continue
@@ -140,6 +146,8 @@ func _cache_electric_lighting() -> void:
 		if source is StandardMaterial3D:
 			var local_material: StandardMaterial3D = source.duplicate()
 			fitting.material_override = local_material
+			local_material.set_meta("local_lamp", fitting.is_in_group("local_lamp_fittings"))
+			local_material.set_meta("base_emission", local_material.emission_energy_multiplier)
 			_electric_materials.append(local_material)
 
 
@@ -152,32 +160,43 @@ func _update_electric_lighting(powered: bool) -> void:
 	if _environment != null:
 		_environment.ambient_light_energy = lerpf(DAY_AMBIENT, NIGHT_AMBIENT, night)
 	for entry: Dictionary in _moon_lights:
-		entry["node"].light_energy = float(entry["energy"]) * night
+		entry["node"].light_energy = float(entry["energy"]) * night * 0.45
 		entry["node"].visible = night > 0.01
 	for entry: Dictionary in _window_materials:
 		var material: StandardMaterial3D = entry["material"]
 		# Preserve distant silhouettes at night without increasing indoor beams.
 		material.albedo_color = entry["color"] * maxf(daylight, 0.18)
 		material.emission = entry["emission"] * maxf(daylight, 0.18)
+	# Lamps come on at dusk; no ceiling-wide wash or daylight tungsten cast.
+	var clock: int = posmod(GameState.minutes, 1440)
+	var lamplight: float = 1.0 - smoothstep(360.0, 420.0, float(clock)) if clock < 720 else smoothstep(1020.0, 1200.0, float(clock))
 	for light: Node3D in _electric_lights:
-		light.visible = powered
+		var local_lamp: bool = light.is_in_group("local_lamp_lights")
+		light.visible = powered and local_lamp and lamplight > 0.01
+		if light is Light3D:
+			light.light_energy = float(light.get_meta("base_energy")) * lamplight
 	for material: StandardMaterial3D in _electric_materials:
-		material.emission_enabled = powered
+		material.emission_enabled = powered and bool(material.get_meta("local_lamp")) and lamplight > 0.01
+		material.emission_energy_multiplier = float(material.get_meta("base_emission")) * lamplight
+	# Accessibility fill is a short-range backup, not an always-on camera lamp.
+	_player.get_node("EmergencyNavigation").visible = not powered and night > 0.1
 
 
 ## Weak exterior light remains at night, independent of household power.
 ## Always multiply cached originals; repeated clock events cannot darken them again.
 static func daylight_factor(minutes: int) -> float:
 	minutes = posmod(minutes, 1440)
+	if minutes < 360:
+		return 0.018
 	if minutes < 420:
-		return 0.08
+		return lerpf(0.018, 0.60, float(minutes - 360) / 60.0)
 	if minutes < 480:
-		return lerpf(0.08, 1.0, float(minutes - 420) / 60.0)
+		return lerpf(0.60, 1.0, float(minutes - 420) / 60.0)
 	if minutes < 1080:
 		return 1.0
 	if minutes < 1320:
-		return lerpf(1.0, 0.08, float(minutes - 1080) / 240.0)
-	return 0.08
+		return lerpf(1.0, 0.018, float(minutes - 1080) / 240.0)
+	return 0.018
 
 
 func get_current_room() -> StringName:
@@ -198,13 +217,13 @@ func _build_environment() -> void:
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
-	environment.ambient_light_color = Color(0.54, 0.69, 0.61)
+	environment.ambient_light_color = Color(0.65, 0.72, 0.70)
 	environment.ambient_light_energy = 0.27
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.008
+	environment.volumetric_fog_density = 0.004
 	environment.volumetric_fog_albedo = Color(0.78, 0.86, 0.80)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
 	environment.volumetric_fog_emission_energy = 0.05

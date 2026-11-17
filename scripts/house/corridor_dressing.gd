@@ -95,6 +95,12 @@ func _build_hall() -> void:
 
 func _build_upper_corridor() -> void:
 	var wood: Material = HouseMaterials.get_material(&"wood_stairs")
+	# Small local pools at the landing and bedroom end; keep the passage clear.
+	for point: Vector3 in [Vector3(5.28, UPPER, 7.8), Vector3(9.90, UPPER, 2.8)]:
+		_box(point + Vector3(0.0, 0.70, 0.0), Vector3(0.36, 0.045, 0.42), &"wood_stairs", true)
+		for offset: Vector3 in [Vector3(-0.13, 0.34, -0.16), Vector3(0.13, 0.34, -0.16), Vector3(-0.13, 0.34, 0.16), Vector3(0.13, 0.34, 0.16)]:
+			PropMeshes.cylinder(self, point + offset, 0.014, 0.014, 0.68, wood, Vector3.ZERO, 12)
+		_table_lamp(point + Vector3(0.0, 0.73, 0.0))
 	# A wooden chair beside Daniel's door, with a blanket thrown over it.
 	var chair := Vector3(5.32, UPPER, 9.85)
 	_box(chair + Vector3(0.0, 0.44, 0.0), Vector3(0.40, 0.04, 0.40), &"wood_stairs", true)
@@ -253,6 +259,7 @@ func _table_lamp(base: Vector3) -> void:
 	shade.position = base + Vector3(0.0, 0.36, 0.0)
 	add_child(shade)
 	shade.add_to_group("electric_fittings")
+	shade.add_to_group("local_lamp_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var shade_material := HouseMaterials.get_material(&"lamp_shade").duplicate() as StandardMaterial3D
 	shade_material.emission = Color(0.95, 0.66, 0.36)
@@ -261,6 +268,7 @@ func _table_lamp(base: Vector3) -> void:
 
 	var light := OmniLight3D.new()
 	light.add_to_group("electric_lights")
+	light.add_to_group("local_lamp_lights")
 	light.name = "TableLampLight"
 	light.position = base + Vector3(-0.1, 0.40, 0.0)
 	light.light_color = Color(0.92, 0.80, 0.55)

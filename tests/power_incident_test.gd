@@ -255,9 +255,17 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
-		check(light.visible, "real electric light restored")
+		check(not light.visible, "morning repair leaves daylight lighting in control")
 	for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
-		check(fitting.material_override.emission_enabled, "lamp glow restored")
+		check(not fitting.material_override.emission_enabled, "morning repair does not light ceiling fixtures")
+	GameState.minutes = 1380
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
+		check(light.visible == light.is_in_group("local_lamp_lights"), "repair restores local lamps at night without ceiling wash")
+	for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
+		check(fitting.material_override.emission_enabled == fitting.is_in_group("local_lamp_fittings"), "night fixture glow follows repaired local lamps")
+	GameState.minutes = 420
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	check(director.perform_room_action("daniel_bedroom", "sleep").contains(tr("NARR_END_OF_BUILD")) == false, "morning sleep unavailable")
 	scene.queue_free()
 	if failures == 0:
