@@ -42,7 +42,21 @@ Alternatif: Gün 4 gecesine küçük bir radyo/parazit olayı koyup Gün 5'i ora
 | Zorunlu geçiş | Yok. Gün 5 kapanışı Gün 4'teki gibi 20:00 sonrası açık onayla |
 | Başarısızlık | Hiç taramamak/okumamak: basamak sonraki günlerde ikinci yoldan yine bulunabilir |
 
-## 4. Keşif yolları (en az iki bağımsız; hiçbiri tek NPC'ye bağlı değil)
+## 0. Karar — K-DAY5-DESIGN-001 (2026-11-17)
+
+Sahip §9 kararlarını Claude ve Codex'e bıraktı ("ChatGPT ile karar verin"). Ortak karar:
+1. Gün 4 gecesi **sessiz gece** (yalnız mevcut tüketim; yeni olay yok; güç durumu devralınır).
+2. Başlangıç denge değerleri A 20 dk / B 40 dk / C–D 10 dk.
+3. **Enfekte Marcus'un gündüz yanlış yönlendirmesi YOK.** Codex itirazı kabul edildi: kanonda enfeksiyon bilinçsiz
+   gece etkisidir; salt `infected` bayrağına bağlı gündüz yalanı yazarlı bilinç/motivasyon tasarımı olmadan
+   eklenmez. C ve D sağlık durumundan bağımsız kısa kişisel yorumlardır.
+4. Belge yeri: depo (`storage`).
+5. Enfekte Daniel "tanıdıklık" satırı yok.
+Dürüstlük düzeltmesi (Codex): A+B iki bağımsız TAM yol değil, NPC'siz **tek yolun iki parçasıdır**; tam kampanya
+için ikinci tam alternatif yol henüz yazılmadı (§4). Bu, oynanabilir Gün 5 ya da sahibin nihai sanat/metin kabulü değildir.
+Uygulama: ROOMS-002 teslimi (strings.csv, shelter_manager) çıktıktan sonra tek yazarla.
+
+## 4. Keşif yolları (hiçbiri tek NPC'ye bağlı değil; ikinci tam alternatif henüz yok)
 
 Basamak iki parçadır: **doğa** ("konuşmaya benzemiyor") ve **yer** ("röle tesisinden geliyor"). Basamak, ikisi de
 bulununca tamamlanır.
@@ -55,11 +69,12 @@ bulununca tamamlanır.
 | D. Arthur | Arthur | Yer (kısmi): kasabaya röle kurulurken yaşananları hatırlar → B'yi 20 dk'ya indirir | 10 dk | Aynı koşullar |
 | E. Maya (gelecek) | Maya | Doğa + yer birlikte, en hızlı | — | İçeriği yazılınca; zorunlu değil |
 
-- A + B tek başına, hiç NPC olmadan basamağı tamamlar (en yavaş yol, ~60 dk).
-- C ve D yalnız hızlandırır; yokluklarında kayıp bilgi yoktur.
+- A + B, hiç NPC olmadan basamağı tamamlayan **tek yolun iki parçasıdır** (en yavaş, ~60 dk). Kanonun "iki bağımsız
+  keşif yolu" kuralı için ikinci TAM yol (ileride Victor/Ruth/Sophie/Clara ya da başka belge) henüz yazılmadı; açık iş.
+- C ve D yalnız hızlandırır; yokluklarında kayıp bilgi yoktur. Sözleri sağlık durumundan bağımsızdır.
 - Kanıt türleri mevcut sisteme uyar: radyo ve belge `fact`, NPC sözleri `claim` olarak kaydolur.
 
-## 5. Enfekte NPC davranışı (ÖNERİ — sahip kararı)
+## 5. Enfekte NPC davranışı — REDDEDİLDİ (K-DAY5-DESIGN-001 madde 3; tarihsel öneri aşağıda)
 
 Kanonda enfektelerin nedenlerinden biri "iletişim ekipmanını bozmak / ifşayı önlemek". Gün 5'te bunun en hafif,
 şiddetsiz biçimi önerilir:
@@ -82,7 +97,7 @@ Kanonda enfektelerin nedenlerinden biri "iletişim ekipmanını bozmak / ifşay�
 | Durum | Sonuç |
 |---|---|
 | Marcus sağlıklı & evde | C yolu açık (hız) |
-| Marcus enfekte & evde | C yanlış yönlendirir (§5); B doğrusunu verir |
+| Marcus enfekte & evde | C sağlıklı Marcus ile aynı (K-DAY5-DESIGN-001 m.3); enfeksiyon Gün 5 metnini değiştirmez |
 | Marcus yok / ölü / kovulmuş / reddedilmiş | C yok; A+B tam |
 | Marcus izole | Yalnız kapı görüşmesi; ÖNERİ: C kapıdan da kullanılabilir (aynı sözler) |
 | Arthur her durumda | D yalnız hızlandırır; yokluğu kayıp değil |
