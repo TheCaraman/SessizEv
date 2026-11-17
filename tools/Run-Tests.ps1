@@ -1,5 +1,19 @@
-param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90, [string]$AudioDriver = '')
+param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90, [string]$AudioDriver = '', [string[]]$SelectedTests)
 $ErrorActionPreference = 'Stop'
+$tests = @('arrival_scheduler_test', 'arrival_integration_test', 'day4_broadcast_test', 'accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')
+# Optional subset of the whitelist above. Checked before Godot starts or any
+# file is written. "-File" passes "a,b" as one string, so commas also split.
+$selectedMode = $PSBoundParameters.ContainsKey('SelectedTests')
+if ($selectedMode) {
+    $requested = @($SelectedTests | ForEach-Object { "$_" -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' })
+    if ($requested.Count -eq 0) { throw 'SelectedTests is empty; name at least one suite from the whitelist.' }
+    $unknown = @($requested | Where-Object { $tests -notcontains $_ })
+    if ($unknown.Count -gt 0) { throw "Unknown SelectedTests: $($unknown -join ', '). Allowed: $($tests -join ', ')" }
+    $duplicates = @($requested | Group-Object | Where-Object { $_.Count -gt 1 } | ForEach-Object { $_.Name })
+    if ($duplicates.Count -gt 0) { throw "SelectedTests repeats: $($duplicates -join ', ')" }
+    # Keep the whitelist order so a subset runs exactly as in the full run.
+    $tests = @($tests | Where-Object { $requested -contains $_ })
+}
 $project = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if (-not $GodotPath) {
     $local = Join-Path $project '..\tools\godot-4.7.2\Godot_v4.7.2-stable_win64_console.exe'
@@ -43,7 +57,6 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     if ($Expected) { $log -split "`n" | Where-Object { $_ -match 'TEST: PASS' } | Write-Output }
 }
 Invoke-GodotCheck @('--headless', '--path', $testProject, '--import')
-$tests = @('arrival_scheduler_test', 'arrival_integration_test', 'day4_broadcast_test', 'accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')
 foreach ($test in $tests) {
     $arguments = @('--headless')
     # Godot processes these switches in order: headless sets Dummy, so the
@@ -54,6 +67,12 @@ foreach ($test in $tests) {
 }
 if ($AudioDriver) {
     Invoke-GodotCheck @('--headless', '--audio-driver', $AudioDriver, '--path', $testProject, 'res://tests/audio_lifecycle_test.tscn', '--', "--expected-driver=$AudioDriver") 'AUDIO LIFECYCLE TEST: PASS'
+}
+if ($selectedMode) {
+    # Never the full-run wording: a subset is not a full PASS.
+    $audioNote = if ($AudioDriver) { " Hardware audio lifecycle ($AudioDriver) also passed; it is not counted in the selected total." } else { ' Hardware audio lifecycle was NOT run.' }
+    Write-Output "Selected $($tests.Count) test suites passed: $($tests -join ', '). This is a partial run, not the full suite.$audioNote"
+} elseif ($AudioDriver) {
     Write-Output "All $($tests.Count + 1) test suites passed (including hardware audio lifecycle)."
 } else {
     Write-Output "All $($tests.Count) core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows."
