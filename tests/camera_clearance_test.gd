@@ -147,7 +147,7 @@ func _ready() -> void:
 					door.interact(player)
 					doors += 1
 					var began: int = Time.get_ticks_msec()
-					while Time.get_ticks_msec() - began < int((RoomDoor.OPEN_SECONDS + RoomDoor.APPROACH_SECONDS - 0.03) * 1000.0):
+					while Time.get_ticks_msec() - began < int((RoomDoor.TRANSITION_SECONDS - 0.03) * 1000.0):
 						await get_tree().physics_frame
 						_probe(space, query, camera, scene, offenders, "door %s: " % door.room_id)
 					var abort := InputEventAction.new()

@@ -32,11 +32,16 @@ func _ready() -> void:
 	var before: Dictionary = GameState.to_dict()
 	var camera: Camera3D = player.get_node("Head/Camera3D")
 	var camera_before: Transform3D = camera.global_transform
+	check(is_equal_approx(RoomDoor.TRANSITION_SECONDS, maxf(RoomDoor.OPEN_SECONDS, RoomDoor.APPROACH_DELAY + RoomDoor.APPROACH_SECONDS)), "transition length matches leaf and approach")
+	check(RoomDoor.TRANSITION_SECONDS >= 0.35 and RoomDoor.TRANSITION_SECONDS <= 0.45, "door to room takes 0.35-0.45 s (DOOR-REFERENCE-003)")
+	var opened_at: int = Time.get_ticks_msec()
 	door.interact(player)
 	door.interact(player)
 	check(not player.control_enabled and not room.is_open(), "opening locks control before showing room")
-	await get_tree().create_timer(0.3).timeout
-	check(absf(door.get_node("Hinge").rotation.y) > 0.1 and not room.is_open(), "door visibly rotates before room")
+	await get_tree().create_timer(0.22).timeout
+	check(absf(door.get_node("Hinge").rotation.y) > 0.6 and not room.is_open(), "leaf swings out fast before the room shows")
+	check(camera.global_position.distance_to(camera_before.origin) > 0.02, "step into the doorway runs alongside the leaf, not after it")
+	check(absf(camera.global_position.y - camera_before.origin.y) < 0.001, "approach preserves eye height instead of crouching into doorway")
 	var threshold: MeshInstance3D = door.get_node("RoomThreshold")
 	check(threshold.visible and threshold.material_override is ShaderMaterial, "physical opening uses screen-matched room preview")
 	var preview_texture: Texture2D = threshold.material_override.get_shader_parameter("room_image")
@@ -56,12 +61,13 @@ func _ready() -> void:
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-opening.png") == OK, "opening image saved")
-	await get_tree().create_timer(0.35).timeout
-	check(absf(camera.global_position.y - camera_before.origin.y) < 0.001, "approach preserves eye height instead of crouching into doorway")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-approaching.png") == OK, "approach image saved")
-	await get_tree().create_timer(0.35).timeout
+	while not room.is_open() and Time.get_ticks_msec() - opened_at < 1500:
+		await get_tree().process_frame
+	var took: float = (Time.get_ticks_msec() - opened_at) / 1000.0
+	check(room.is_open() and took <= RoomDoor.TRANSITION_SECONDS + 0.12, "room shows %.2f s after the key press" % took)
 	check(room.is_open() and room.get_room_id() == "living_room" and not player.control_enabled, "opening resolves to correct room")
 	check(camera.global_position.distance_to(camera_before.origin) < 0.001, "camera returns to original corridor position behind room view")
 	check(not room._transition_cover.visible, "handoff adds no second black cover")
@@ -96,13 +102,23 @@ func _ready() -> void:
 	escape.pressed = true
 	door._unhandled_input(escape)
 	check(player.control_enabled and not room.is_open() and not threshold.visible, "Escape cancels an opening without entering the room")
-	await get_tree().create_timer(RoomDoor.OPEN_SECONDS + RoomDoor.APPROACH_SECONDS + 0.05).timeout
+	await get_tree().create_timer(RoomDoor.TRANSITION_SECONDS + 0.05).timeout
 	check(not room.is_open() and camera.global_position.distance_to(camera_before.origin) < 0.001, "cancelled tween never enters room or leaves displaced camera")
 	var motion: float = Settings.get_number("camera_motion")
 	check(Settings.set_number("camera_motion", 0.0) == OK, "reduced motion preference persists")
+	var reduced_at: int = Time.get_ticks_msec()
 	door.interact(player)
-	await get_tree().create_timer(RoomDoor.OPEN_SECONDS + 0.1).timeout
-	check(room.is_open() and camera.global_position.distance_to(camera_before.origin) < 0.001, "reduced motion opens room without moving camera")
+	var still: bool = true
+	while not room.is_open() and Time.get_ticks_msec() - reduced_at < 1500:
+		await get_tree().process_frame
+		still = still and camera.global_position.distance_to(camera_before.origin) < 0.001
+	var reduced_took: float = (Time.get_ticks_msec() - reduced_at) / 1000.0
+	check(room.is_open() and still, "reduced motion opens room without moving camera")
+	check(reduced_took <= RoomDoor.REDUCED_OPEN_SECONDS + 0.12, "reduced motion: room starts %.2f s after the key press" % reduced_took)
+	check(room._root.modulate.a < 0.5, "reduced motion: room dissolves in instead of cutting")
+	await get_tree().create_timer(RoomView.DISSOLVE_SECONDS + 0.05).timeout
+	check(is_equal_approx(room._root.modulate.a, 1.0), "reduced motion: dissolve finishes")
+	check(RoomDoor.REDUCED_OPEN_SECONDS + RoomView.DISSOLVE_SECONDS <= 0.45, "reduced motion stays within the same short budget")
 	room.close()
 	check(Settings.set_number("camera_motion", motion) == OK, "motion preference restored for other checks")
 	await get_tree().create_timer(RoomDoor.CLOSE_SECONDS + 0.05).timeout

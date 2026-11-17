@@ -16,8 +16,19 @@ var locked: bool = false
 var is_front: bool = false
 ## How long the leaf takes to swing shut after the player leaves the room.
 const CLOSE_SECONDS: float = 0.45
-const OPEN_SECONDS: float = 0.55
-const APPROACH_SECONDS: float = 0.30
+## Leaf swing when opening. The camera's step into the doorway runs in
+## parallel (DOOR-REFERENCE-003), starting APPROACH_DELAY later so the leaf
+## is already moving clear.
+const OPEN_SECONDS: float = 0.4
+const APPROACH_DELAY: float = 0.08
+const APPROACH_SECONDS: float = 0.32
+## From pressing the key to the room view, with camera motion on.
+## Equals max(OPEN_SECONDS, APPROACH_DELAY + APPROACH_SECONDS); the door test
+## checks that.
+const TRANSITION_SECONDS: float = 0.4
+## With camera motion off the camera does not move: a shorter leaf swing,
+## then RoomView dissolves in over RoomView.DISSOLVE_SECONDS.
+const REDUCED_OPEN_SECONDS: float = 0.25
 
 var _hinge: Node3D
 var _opening: bool = false
@@ -196,18 +207,23 @@ func interact(player: Node) -> void:
 	_show_room_threshold()
 	if _portal != null:
 		_portal.position.z = -direction * 0.065
+	# DOOR-REFERENCE-003: the leaf starts at once (ease-out, no slow wind-up)
+	# and the step into the doorway runs alongside it, so the room is shown
+	# after TRANSITION_SECONDS instead of leaf-then-approach.
+	var reduced: bool = Settings.get_number("camera_motion") < 0.5
 	_tween = create_tween()
-	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), OPEN_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_property(_hinge, "rotation:y", direction * deg_to_rad(82.0), REDUCED_OPEN_SECONDS if reduced else OPEN_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_camera = player.get_node_or_null("Head/Camera3D") as Camera3D
 	if _camera != null:
 		_camera_start = _camera.global_transform
-		if Settings.get_number("camera_motion") >= 0.5:
+		# Reduced motion: the camera stays put; RoomView dissolves in instead.
+		if not reduced:
 			var eye_height: float = clampf(to_local(_camera.global_position).y, 0.35, HouseLayout.DOOR_HEIGHT - 0.25)
 			var destination: Vector3 = to_global(Vector3(0.0, eye_height, direction * 0.18))
 			var target: Transform3D = _camera.global_transform
 			target.origin = destination
 			target = target.looking_at(to_global(Vector3(0.0, eye_height, -direction)), Vector3.UP)
-			_tween.tween_property(_camera, "global_transform", target, APPROACH_SECONDS).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			_tween.parallel().tween_property(_camera, "global_transform", target, APPROACH_SECONDS).set_delay(APPROACH_DELAY).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_tween.tween_callback(func() -> void:
 		_held_open = true
 		EventBus.room_view_requested.emit(room_id)

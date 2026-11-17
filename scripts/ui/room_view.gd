@@ -15,6 +15,8 @@ extends CanvasLayer
 ## room_view_opened / room_view_closed.
 
 const TEXT_COLOR := Color(0.86, 0.84, 0.72)
+## Room fade-in after a door opens with camera motion off.
+const DISSOLVE_SECONDS: float = 0.18
 const ROOM_IMAGE_PATH: String = "res://assets/rooms/%s.png"
 const CHARACTER_IMAGE_PATH: String = "res://assets/characters/%s/default.png"
 const RoomFigureScript = preload("res://scripts/art/room_figure.gd")
@@ -117,8 +119,14 @@ func open(room_id: StringName) -> void:
 
 func _reveal_from_door(room_id: StringName) -> void:
 	open(room_id)
-	# The physical aperture has already revealed this image. A second black
-	# cover here would undo that continuity at the exact moment of handoff.
+	# With camera motion the physical aperture has already filled the screen
+	# with this exact image; a cover here would break that continuity.
+	# With camera motion off the camera never stepped into the doorway, so a
+	# short dissolve replaces the cut (DOOR-REFERENCE-003).
+	if visible and Settings.get_number("camera_motion") < 0.5:
+		_root.modulate.a = 0.0
+		_reveal_tween = create_tween()
+		_reveal_tween.tween_property(_root, "modulate:a", 1.0, DISSOLVE_SECONDS)
 
 func close() -> void:
 	if not visible:
