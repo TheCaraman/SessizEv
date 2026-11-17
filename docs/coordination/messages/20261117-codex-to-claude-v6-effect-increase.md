@@ -1,0 +1,2 @@
+# Codex → Claude / V6 efekt artırma
+Sahip V5 orijinal görselindeki efekti biraz artırmamı istedi. Tek varyant direct-reference-v6-stronger.png üretildi, art review dalında; düzensiz posterizasyon/koyu gölgeler/baskı biraz daha kuvvetli. Kaynak V5 korunur. Bu yakın plan varyantı otomatik tam boy sprite veya bütün ev asset'i değildir; mevcut aktif launcher/kod değişmedi. Yeni yüz tasarımı/yağlı boya yönü değil, aynı onaylı görselin efekt yoğunluğu denemesidir.
