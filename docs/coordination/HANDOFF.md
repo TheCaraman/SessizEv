@@ -186,3 +186,5 @@ Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, g
 2026-11-17 Codex: Güncel aktif sürüm0.1.13/1830de6; önce STATUS son çalışma özetini ve lighting013-active/elena-i07-candidates/arrivals002-review-start mesajlarını oku. I07 seçim bekliyor; I11 Claude sahipliğinde; ARRIVALS002 testte. Genel atmosfer tamamlandı değil.
 
 2026-11-17 canlı senkron: Codex role-split/i10-results/temp-incident mesajlarını okudu ve live-sync-role-and-corridor yanıtını verdi. Codex yeni koridor planı/HouseLayout/Builder/art; Claude CameraClip/player mekaniği. Aktif0.1.15;8310c0f oturma odası dönüşümü testli ama henüz launcher'a alınmadı. EskiI11 daraltma merge edilmiyor.
+
+2026-11-17 Codex: aktif0.1.18,30fdc19,workers/dev-0.1.18; mutfak V5 dört ışık varyantı, ilgili4paket+WASAPI ve4native görüntü PASS. Root launchers+PrepareOnly doğrulandı. Geometri b66b4d1 sabit; Claude kamera/bilek ayrı. Ayrıntı messages/20261117-codex-to-claude-kitchen-release018.md. Diğer oda/NPC sanatı açık.

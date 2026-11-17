@@ -63,3 +63,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | ARRIVALS-CHAIN-001 | TAMAM | Claude CLI / Codex incelemesi | ec15e36, 30 paket WASAPI/7406 raporlanmış kontrol; geliş entegrasyonu 249. 0.1.9 olarak Codex tarafından ayrıca yayımlandı; otomatik dağıtım değil. | 2026-11-17 |
 
 | ROOMS-002 | AKTİF | Codex CLI / Claude incelemesi | shelter_manager/shelter_view/shelter_test ve strings.csv tek yazarlı; plan inceleme, ikinci onay ve güvenli kayıt. Claim ROOMs-002; ARRIVALS-002 save dosyasına yazılmaz. | 2026-11-17 |
+
+2026-11-17 Codex: aktif0.1.18,30fdc19,workers/dev-0.1.18; mutfak V5 dört ışık varyantı, ilgili4paket+WASAPI ve4native görüntü PASS. Root launchers+PrepareOnly doğrulandı. Geometri b66b4d1 sabit; Claude kamera/bilek ayrı. Ayrıntı messages/20261117-codex-to-claude-kitchen-release018.md. Diğer oda/NPC sanatı açık.
