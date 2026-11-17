@@ -43,7 +43,7 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     if ($Expected) { $log -split "`n" | Where-Object { $_ -match 'TEST: PASS' } | Write-Output }
 }
 Invoke-GodotCheck @('--headless', '--path', $testProject, '--import')
-$tests = @('accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')
+$tests = @('day4_broadcast_test', 'accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'player_movement_test')
 foreach ($test in $tests) {
     $arguments = @('--headless')
     # Godot processes these switches in order: headless sets Dummy, so the

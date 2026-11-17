@@ -11,7 +11,7 @@ const ARRIVALS_PATH: String = "res://resources/events/arrivals.json"
 ## Daniel will not go to bed before this.
 const EARLIEST_SLEEP_MINUTE: int = 20 * 60
 ## The last day with authored content; later mornings say so on screen.
-const LAST_AUTHORED_DAY: int = 3
+const LAST_AUTHORED_DAY: int = 4
 
 var power: PowerIncident
 var night: NightSession
@@ -21,6 +21,7 @@ var judgment := ResidentJudgment.new()
 var isolation := Isolation.new()
 var closure := Day4Closure.new()
 var accusation := Accusation.new()
+var day4_broadcast := Day4Broadcast.new()
 var _watch_confirmation_time: int = -1
 var _repair_confirmation: bool = false
 var _repair_offer: Dictionary = {}
@@ -41,6 +42,7 @@ var _warned_action: String = ""
 func setup(dialogue: DialogueRunner) -> void:
 	closure.shelter = shelter
 	accusation.shelter = shelter
+	day4_broadcast.shelter = shelter
 	power = PowerIncident.new()
 	add_child(power)
 	night = NightSession.new()
@@ -95,7 +97,7 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 	match room_id:
 		"living_room":
 			actions.append({"id": "watch_tv", "label": tr("ACTION_WATCH_TV")})
-			actions.append({"id": "radio", "label": tr("ACTION_RADIO")})
+			actions.append({"id": "radio", "label": day4_broadcast.label() if GameState.day == 4 else tr("ACTION_RADIO")})
 		"pantry":
 			actions.append({"id": "check_supplies", "label": tr("ACTION_CHECK_SUPPLIES")})
 		"daniel_bedroom":
@@ -274,6 +276,8 @@ func _duration_of(action_id: String) -> int:
 		"watch_tv":
 			return 5 if GameState.get_flag(_day_flag("tv")) else 20
 		"radio":
+			if GameState.day == 4:
+				return day4_broadcast.duration()
 			return 5 if GameState.get_flag(_day_flag("radio")) else 15
 		"check_supplies":
 			return 10
@@ -328,6 +332,8 @@ func _broadcast(key: String, first_text: String, again_text: String) -> String:
 ## Day 1 carries the "vessels are down" report. From Day 2 the radio carries
 ## the memory-loss report until it has been heard once.
 func _radio() -> String:
+	if GameState.day == 4:
+		return day4_broadcast.listen()
 	if GameState.day == 1:
 		return _broadcast("radio", "NARR_RADIO_DAY1", "NARR_RADIO_AGAIN")
 	if GameState.get_flag("heard_memory_loss_report"):
@@ -501,6 +507,8 @@ func _resolve_night() -> String:
 	if not short.is_empty():
 		text += "\n\n" + tr("NARR_MORNING_SHORTAGE").format({"what": ", ".join(short)})
 
+	if GameState.day == 4:
+		text += "\n\n" + tr("RADIO_D4_MORNING_GUIDE")
 	if GameState.day > LAST_AUTHORED_DAY:
 		text += "\n\n" + tr("NARR_END_OF_BUILD")
 	return text

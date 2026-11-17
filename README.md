@@ -8,7 +8,7 @@ Yerel Git ve aktarım adımları `docs/coordination/GIT_WORKFLOW.md` dosyasında
 
 ## Durum
 
-Gün 1–3 oynanabilir dikey kesit. Koridorlar 3D ve yürünür; odalar kapıdan açılan
+Gün 1–3 ve Gün4 inceleme/karar akışı oynanabilir dikey kesit. Koridorlar 3D ve yürünür; odalar kapıdan açılan
 2D sahnelerdir. F5 ana menüyü açar; yeni oyun ve kayıttan devam vardır.
 
 Windows'ta editörü açmadan: `OYUNU_AC.cmd` normal kampanyayı, `NOBETI_DENE.cmd`
@@ -23,7 +23,7 @@ uykuyu böler; sonraki uyku Gün 4 sabahına götürür. Gün 3 20:00–23:00'te
 kalma seçilirse 01/03/05/07 bekleme, gece araştırması, kalan geceyi uyuma ve enerji
 hesabı devreye girer. Boru sesi araştırılabilir masum bir olaydır; enfekte fail
 uydurmaz. Kayıt v5 gece yarısını ve tek sabah tüketimini korur. Hikâye içeriği Gün 4
-sabahı ana kesit sınırına ulaşır. Gün4 için ilk kanıt incelemesi, kovma/izolasyon ve uygun yeni gecede gerçek harekete dayanan çelişkili ifadeler vardır; tam Gün4 senaryosu henüz tamamlanmadı. İncelemeden sonra ücretsiz erteleme, 20:00 saatine onaylı bekleme ve kayıtlı kapanış özeti vardır. Kapanıştan sonra keşif/kararlar devam eder; Gün5 açılmaz. Üç yetişkine ayrı suçlama ekranında toplanmış kayıtlarla veya boş dayanakla suçlama yöneltilebilir. Genel elektrik bulgusu kişiyi belirlemez; gerçek tanık iddiası da enfeksiyon kanıtı değildir.
+sabahında inceleme/karar akışına geçer. Gün4 için ilk kanıt incelemesi, kovma/izolasyon ve uygun yeni gecede gerçek harekete dayanan çelişkili ifadeler vardır; tam Gün4 senaryosu henüz tamamlanmadı. İncelemeden sonra ücretsiz erteleme, 20:00 saatine onaylı bekleme ve kayıtlı kapanış özeti vardır. Kapanıştan sonra keşif/kararlar devam eder; Gün5 açılmaz. Üç yetişkine ayrı suçlama ekranında toplanmış kayıtlarla veya boş dayanakla suçlama yöneltilebilir. Genel elektrik bulgusu kişiyi belirlemez; gerçek tanık iddiası da enfeksiyon kanıtı değildir.
 Kaynak yetmezse onarım ertelenebilir; ilerleme tek bir NPC'ye bağlı değildir.
 
 13 oda arka planı ve Elena/Marcus/Arthur figürleri var. Yalnızca varsayılan
@@ -84,3 +84,5 @@ Beklenen: sabah üst kat koridorunda başlarsın; saat, oda kapıları ve Gün 1
 - `docs/TechnicalDesign.md` — mimari ve veri şemaları
 - `docs/ArtBible.md` — görsel yön
 - `docs/ProductionPlan.md` — fazlar, riskler, ses ve kalite özeti
+
+Gün4 radyo: pilli kanalda belirsiz tahliye duyurusu, ilk15dk ve sonra ücretsiz not; kaçırılan hafıza kaybı uyarısı alternatif yoldan korunur. Yeni radyo seslendirmesi yok. QA: docs/qa/Day4Broadcast.md.

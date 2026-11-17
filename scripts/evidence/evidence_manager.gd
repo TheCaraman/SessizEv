@@ -1,6 +1,6 @@
 class_name EvidenceManager
 extends RefCounted
-const CATALOGUES: Array[String] = ["res://resources/evidence/power.json", "res://resources/evidence/night_house.json", "res://resources/evidence/night_witness.json", "res://resources/evidence/accusation.json"]
+const CATALOGUES: Array[String] = ["res://resources/evidence/power.json", "res://resources/evidence/night_house.json", "res://resources/evidence/night_witness.json", "res://resources/evidence/accusation.json", "res://resources/evidence/day4_broadcast.json"]
 
 static func collect(id: String, key: String, kind: String = "fact") -> void:
 	collect_into(GameState.evidence, id, key, kind)

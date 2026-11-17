@@ -1,0 +1,124 @@
+{
+  "version": "0.1.8-dev.20261117.4",
+  "suites": 28,
+  "checks": 7078,
+  "audio_driver": "WASAPI",
+  "radio_gpu_checks": 249,
+  "full_run_radio_checks": 245,
+  "gpu_scope": "Final test additionally reopens room per locale and asserts heading and leave hint; production source unchanged",
+  "log_directory": "C:\\Users\\eyups\\AppData\\Local\\Temp\\tqh-tests-a17ee915c33f413f9280306113db0ec5",
+  "results": [
+    {
+      "suite": "ACCUSATION TEST",
+      "checks": 139
+    },
+    {
+      "suite": "AUDIO LIFECYCLE TEST",
+      "checks": 35
+    },
+    {
+      "suite": "CAMPAIGN TEST",
+      "checks": 69
+    },
+    {
+      "suite": "DAY12 INTEGRATION TEST",
+      "checks": 985
+    },
+    {
+      "suite": "DAY 2 TEST",
+      "checks": 737
+    },
+    {
+      "suite": "DAY4 RADIO TEST",
+      "checks": 245
+    },
+    {
+      "suite": "DAY4 CLOSURE TEST",
+      "checks": 236
+    },
+    {
+      "suite": "DAY4 REVIEW TEST",
+      "checks": 70
+    },
+    {
+      "suite": "DOOR AUDIO TEST",
+      "checks": 10
+    },
+    {
+      "suite": "DOOR TRANSITION TEST",
+      "checks": 15
+    },
+    {
+      "suite": "HOUSE LAYOUT TEST",
+      "checks": 99
+    },
+    {
+      "suite": "HOUSE NIGHT EVENTS TEST",
+      "checks": 16
+    },
+    {
+      "suite": "INTERACTION TEST",
+      "checks": 14
+    },
+    {
+      "suite": "ISOLATION TEST",
+      "checks": 65
+    },
+    {
+      "suite": "MENU TEST",
+      "checks": 80
+    },
+    {
+      "suite": "NIGHT OBSERVATION TEST",
+      "checks": 38
+    },
+    {
+      "suite": "NIGHT STATE TEST",
+      "checks": 32
+    },
+    {
+      "suite": "NIGHT TIMELINE TEST",
+      "checks": 2921
+    },
+    {
+      "suite": "NIGHT WATCH TEST",
+      "checks": 144
+    },
+    {
+      "suite": "NIGHT WITNESS TEST",
+      "checks": 89
+    },
+    {
+      "suite": "PLAYER MOVEMENT TEST",
+      "checks": 6
+    },
+    {
+      "suite": "POWER INCIDENT TEST",
+      "checks": 669
+    },
+    {
+      "suite": "PRESENTATION TEST",
+      "checks": 89
+    },
+    {
+      "suite": "RESIDENT JUDGMENT TEST",
+      "checks": 47
+    },
+    {
+      "suite": "ROOM LIGHTING TEST",
+      "checks": 56
+    },
+    {
+      "suite": "SAVE WRITE TEST",
+      "checks": 58
+    },
+    {
+      "suite": "SETTINGS TEST",
+      "checks": 90
+    },
+    {
+      "suite": "SHELTER TEST",
+      "checks": 24
+    }
+  ]
+}

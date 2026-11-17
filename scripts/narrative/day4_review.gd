@@ -50,6 +50,8 @@ static func summary() -> String:
 	var state: String = "COMPLETED" if GameState.get_flag("day4_review_completed", false) else ("DEFERRED" if GameState.get_flag("day4_review_deferred", false) else "OPEN")
 	var lines := PackedStringArray([TranslationServer.translate("D4_CLOSE_STATE_" + state), TranslationServer.translate("D4_CLOSE_CURRENT").format(counts)])
 	lines.append(TranslationServer.translate("D4_CLOSE_OUTAGE" if GameState.power_incident.get("state") == "outage" else "D4_CLOSE_POWER_AVAILABLE"))
+	if GameState.get_flag("day4_evacuation_heard", false):
+		lines.append(TranslationServer.translate("RADIO_D4_EVACUATION_CLAIM"))
 	if state == "COMPLETED":
 		var minute: int = int(GameState.get_flag("day4_review_completed_at", 1200))
 		lines.append(TranslationServer.translate("D4_CLOSE_FINISHED_AT").format({"time": "%02d:%02d" % [minute / 60, minute % 60]}))

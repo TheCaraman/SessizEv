@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## 0.1.8-dev.20261117.4
+- Gün4 pilli radyo tahliye iddiası, kaçırılmış hafıza uyarısı, güvenli kayıt ve ücretsiz not.
+- Gün4 sabahındaki yanlış erken kesit-sonu kaldırıldı; Gün5 hâlâ yok.
+- Radyo245 ve tam28paket7078WASAPI, GPU249; yeni ses varlığı yok.
+
 ## 0.1.7-dev.20261117.3
 - Üç yetişkine açık suçlama: toplanmış kayıt seçimi, desteklenmeyen suçlama ayrımı, açık Review/Confirm ve varsayılan Cancel.
 - İlk10dk/güven bedeli, hedefe özel cevap, ücretsiz tekrar; önce kayıt, sonra canlı uygulama. Dayanak/karar hafızası v5 optional alanda korunur.

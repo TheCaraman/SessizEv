@@ -115,3 +115,9 @@ Day4Design'daki ücretsiz erteleme ve20:00tamamlama uygulanır. Var olan bekleme
 
 ## K-DAY4-ACCUSATION-001 / 2026-11-17
 Mevcut Day4Design açık suçlama seçimi, dayanak ve kişisel yanıt uygulanır.10dk/ilk-5trust D4-V2 küçük dengeleme varsayımı veri dosyasında; nihai denge onayı değildir. Genel fiziksel ipucu kişiyi belirlemez; yalnız gerçek görüşülmüş tanıklık kendi subject kişisine bağlanır ve hâlâclaim kalır. Boş dayanak açıkçaunsupported; teşhis/kovma/izolasyon otomatik değil. VarsayılanCancel, Review→Confirm, savebeforelive ve tekrarda ücretsizyanıt. Gelecek nöbeti görevi gündüz konuşmasını engellemez; aktif iş farklıdır. bkz Accusation.md.
+
+## K-DAY4-RADIO-001 / 2026-11-17
+Ana spesifikasyondaki Gün4 tahliye duyurusu yalnız alındığı bilinen claim olarak uygulanır; konum/yol/kaynak doğrulanmaz. Pilli radyo, ilk15dk (mevcut temel maliyet), tekrar ücretsiz not. Kaçırılmış hafıza kaybı uyarısı aynı kanal tekrarında korunur. Yeni ses varlığı yok. Gün4 sabahındaki eski erken kesit-sonu mesajı kaldırılır; LAST_AUTHORED_DAY=4 yalnız yazılmış içeriğin varlığını söyler, tüm14gün/Gün4gecesi bitmiş demek değildir. docs/qa/Day4Broadcast.md.
+
+## K-NPC-ARRIVALS-ROOMS-001 / 2026-11-17 / Sahip onayı
+Sahip, kurallı rastgele NPC gelişini ve oyuncunun son oda/yatak kararını korurken NPC tercih/itirazlarını onayladı. Ziyaretçi seçimi ve takvim yeni kampanyada seed ile belirlenecek ve kaydedilecek; load ile yeniden seçilmeyecek. Her karakter her oynayışta gelmek zorunda değil; ana bilgi tek isteğe bağlı NPC'ye bağlı olmayacak. Enfeksiyon gelişten önce atanır ve takvim bunu değiştirmez. NPC kendi başına oda düzenini değiştirmez. Kesin geliş pencereleri, gece ziyaretleri ve sayısal itiraz bedelleri henüz belirlenmedi. Şu anda mevcut sabit üç ziyaret ve oyuncu yatak yönetimi var; yeni sistem uygulanmadı. Yetkili ayrıntı: docs/NPC_ArrivalAndRooms.md. Sahip özellikle önce Claude'a bildirilmesini istedi.
