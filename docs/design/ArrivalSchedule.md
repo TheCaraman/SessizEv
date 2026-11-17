@@ -147,6 +147,14 @@ ilkesini bozmaz: Elena kapıda *sunulur* ama oyuncu yine reddedebilir; Elena'sı
 Alternatif: Gün1 öğretici ziyaretçisi küçük bir havuzdan (Elena ya da başka bir tam profilli karakter) seçilir — bugün
 ikinci tam profil yok, bu yüzden önermiyorum.
 
+## 9.0 Sahip kararı — 2026-11-17 (K-ARRIVALS-PARAMS-001)
+
+Sahip §8 ve §9'daki önerileri olduğu gibi kabul etti ("Önerileri kabul et"):
+Elena G1 18:00–21:30 sabit öğretici (reddedilebilir); Marcus ve Arthur %100, G2–3 içinde değişken gün/saat;
+günde en çok 2 ziyaret, arada en az 90 dk; gece gelişi yok; ileriki roster pencereleri §9.4'teki taslak değerlerle
+başlar (denge testiyle ayarlanabilir); K-005 için §2 önerisi (takvim enfeksiyonu okur, değiştirmez; gerekirse
+ilk altı teklif içinde rastgele sıra). Aşağıdaki liste kayıt amaçlı korunuyor.
+
 ## 9. Sahibin karar vermesi gerekenler
 
 Belge bunları **seçmez**; yalnız seçenek ve öneri verir:
