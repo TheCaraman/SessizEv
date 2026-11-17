@@ -9,10 +9,17 @@ const SCALE: float = 0.5
 
 
 func _ready() -> void:
+	if not str(ProjectSettings.get_setting("application/config/custom_user_dir_name", "")).begins_with("TheQuietHours-Tests/"):
+		push_error("Use isolated QA user data")
+		get_tree().quit(1)
+		return
 	GameState.new_campaign(42)
 	var scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
 	add_child(scene)
 	var player: PlayerController = scene.get_node("Player")
+	# Walk the supported west wing in the new central-stair layout.
+	player.position = Vector3(5.1, 3.35, 10.7)
+	player.rotation.y = 0.0
 	var out: String = "bodycam/bodycam-review.png"
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out="):
@@ -30,7 +37,7 @@ func _ready() -> void:
 	Input.action_release(&"move_forward")
 	for _i: int in 18:
 		player.rotate_y(-0.045)
-		await get_tree().process_frame
+		await get_tree().physics_frame
 	frames.append(await _grab())
 	await get_tree().create_timer(1.2).timeout
 	frames.append(await _grab())

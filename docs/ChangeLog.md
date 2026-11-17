@@ -1,3 +1,7 @@
+# 0.1.19-dev.20261118.2
+
+İki katın iç planı yeniden kuruldu; geniş merkezi merdiven, iki yan geçiş ve geniş ön hol. Daha belirgin baskı dokulu duvar/kapı/tavan/ahşap. Claude BODYCAM-002 dahil; kapı/UI geçişlerine uyumlu salınım ve dönüş yatması, hareket azaltma ayarıyla kapanır. Ev35paket32+3koşu, son birleşim6paket+WASAPI, native53kamera ve18kapı/ev görüntüsü+hareket levhası doğrulandı. Ayrıntı docs/qa/HouseRebuildV2.md.
+
 # 0.1.18-dev.20261117.1 — mutfak V5
 
 Dört mutfak ışık görseli ve veriye bağlı kaynak seçimi; ilgili4paket+WASAPI ve dört native görüntü doğrulandı. Geometri, mekanik ve save şeması aynı. Ayrıntı docs/qa/InteriorV5Kitchen.md.

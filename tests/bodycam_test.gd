@@ -56,8 +56,8 @@ func _ready() -> void:
 	var lean: float = 0.0
 	var lag: float = 0.0
 	for _i: int in 25:
-		_player.rotate_y(-0.05)  # turning right, about 3 rad/s
-		await get_tree().process_frame
+		_player.rotate_y(-0.05)  # 3 rad/s at the fixed 60Hz physics rate
+		await get_tree().physics_frame
 		lean = minf(lean, _camera.rotation.z)
 		lag = maxf(lag, _camera.rotation.y)
 	check(lean < -deg_to_rad(0.5), "turning leans the view into the turn (%.2f°)" % rad_to_deg(lean))
@@ -106,7 +106,7 @@ func _ready() -> void:
 	check(off.reach == 0.0 and off.roll == 0.0, "camera motion off: the camera never moves")
 	for _i: int in 15:
 		_player.rotate_y(-0.05)
-		await get_tree().process_frame
+		await get_tree().physics_frame
 		check(_camera.transform == Transform3D.IDENTITY, "camera motion off: no turn lean")
 	Input.action_release(&"move_forward")
 	check(Settings.set_number("camera_motion", 1.0) == OK, "camera motion back on")
@@ -130,12 +130,12 @@ func _real_door_handoff() -> void:
 	add_child(scene)
 	var player: PlayerController = scene.get_node("Player")
 	var camera: Camera3D = player.get_node("Head/Camera3D")
-	player.position = Vector3(6.4, 0.05, 7.5)
+	player.position = Vector3(5.1, 0.05, 7.0)
 	player.rotation.y = deg_to_rad(90.0)
 	await _frames(20)
 	for _i: int in 12:
 		player.rotate_y(0.05)
-		await get_tree().process_frame
+		await get_tree().physics_frame
 	check(camera.transform.origin.length() > 0.0 or absf(camera.rotation.z) > deg_to_rad(0.3), "house view leans while turning")
 	var door: RoomDoor = scene.find_child("Door_living_room", true, false)
 	var room: RoomView = scene.get_node("RoomView")
@@ -150,7 +150,7 @@ func _real_door_handoff() -> void:
 	check(player.control_enabled, "control returns after the room")
 	for _i: int in 12:
 		player.rotate_y(0.05)
-		await get_tree().process_frame
+		await get_tree().physics_frame
 	check(absf(camera.rotation.z) > deg_to_rad(0.3), "body cam resumes after the room")
 	scene.queue_free()
 	await _frames(2)
