@@ -21,7 +21,9 @@ func _ready() -> void:
 	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	for light: Node3D in get_tree().get_nodes_in_group("electric_lights"):
 		if session.is_ancestor_of(light):
-			check(not light.visible, "07:00 uses windows, not electric lights")
+			check(light.visible == light.is_in_group("local_lamp_lights"), "07:00 keeps shaded lamps, ceiling wash stays off")
+			if light is Light3D and light.is_in_group("local_lamp_lights"):
+				check(light.light_energy > 0.0 and light.light_energy < float(light.get_meta("base_energy")), "morning lamp is dimmer than full night output")
 	check(not session.get_node("Player/EmergencyNavigation").visible, "powered day has no camera light")
 	for state: Dictionary in cases:
 		GameState.minutes = state["minutes"]
@@ -35,12 +37,12 @@ func _ready() -> void:
 			var local_lamp: bool = light.is_in_group("local_lamp_lights")
 			if local_lamp:
 				local_count += 1
-			check(light.visible == (bool(state["powered"]) and state["minutes"] == 1380 and local_lamp), "electric light follows phase, source and power " + light.name)
+			check(light.visible == (bool(state["powered"]) and local_lamp), "electric light follows source and power " + light.name)
 		check(local_count >= 3, "local lamps cover ground and upper corridor")
 		for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
 			if session.is_ancestor_of(fitting):
 				var material: StandardMaterial3D = fitting.get_active_material(0)
-				check(material.emission_enabled == (bool(state["powered"]) and state["minutes"] == 1380 and fitting.is_in_group("local_lamp_fittings")), "fixture glow matches actual source")
+				check(material.emission_enabled == (bool(state["powered"]) and fitting.is_in_group("local_lamp_fittings")), "fixture glow matches actual source")
 		check(session.get_node("Player/EmergencyNavigation").visible == (not state["powered"] and state["minutes"] == 1380), "backup navigation only in dark outage")
 		for frame: int in 4:
 			await get_tree().process_frame

@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## 0.1.13-dev.20261117.1
+- Gündüz abajurlar düşük güçte açık; gece tam ışık, kesintide ışık ve emisyon kapalı. Tavan armatürleri genel yıkama yapmıyor.
+- Düz ortam dolgusu azaltıldı; pencere spotu güçlendirildi, pencere dolgusunun menzili kısaltılıp gölgesi açıldı.
+- Gerçek aynı kamera önce/sonra ve giriş pencereleri dahil 12 gündüz/gece/kesinti görüntüsü. QA: CorridorLightingReview.md. Genel sanat kabulü hâlâ açık.
+
 ## 0.1.12-dev.20261117.1
 - Fiziksel kapı aralığında ortak oda kompozisyonu: arka plan, eşyalar ve gerçek odadaki NPC'ler birlikte görünür.
 - Siyah geçiş kapakları kaldırıldı; kısa, göz hizasını koruyan yaklaşma, Escape ile iptal ve ayarlardan kamera hareketini kapatma.

@@ -28,8 +28,8 @@ var _window_lights: Array[Dictionary] = []
 var _moon_lights: Array[Dictionary] = []
 ## The house environment; its fill light follows the clock.
 var _environment: Environment
-const DAY_AMBIENT: float = 0.30
-const NIGHT_AMBIENT: float = 0.065
+const DAY_AMBIENT: float = 0.18
+const NIGHT_AMBIENT: float = 0.075
 var _window_materials: Array[Dictionary] = []
 
 
@@ -119,10 +119,12 @@ func _cache_electric_lighting() -> void:
 	for light: Node in get_tree().get_nodes_in_group("window_lights"):
 		if is_ancestor_of(light) and light is Light3D:
 			var bounce: bool = light.name == "WindowBounce"
-			_window_lights.append({"node": light, "energy": light.light_energy * (2.2 if bounce else 1.0)})
+			_window_lights.append({"node": light, "energy": light.light_energy * (1.1 if bounce else 1.25)})
 			if bounce and light is OmniLight3D:
 				light.light_color = Color(0.74, 0.84, 0.82)
-				light.omni_range = 8.0
+				light.omni_range = 6.5
+				light.shadow_enabled = true
+				light.shadow_blur = 2.0
 	for light: Node in get_tree().get_nodes_in_group("moon_lights"):
 		if is_ancestor_of(light) and light is Light3D:
 			_moon_lights.append({"node": light, "energy": light.light_energy})
@@ -167,9 +169,11 @@ func _update_electric_lighting(powered: bool) -> void:
 		# Preserve distant silhouettes at night without increasing indoor beams.
 		material.albedo_color = entry["color"] * maxf(daylight, 0.18)
 		material.emission = entry["emission"] * maxf(daylight, 0.18)
-	# Lamps come on at dusk; no ceiling-wide wash or daylight tungsten cast.
+	# Dim inhabited-house pools remain by day; dusk brings them to full output.
+	# Keep the broad ceiling fittings off: windows and shaded lamps define space.
 	var clock: int = posmod(GameState.minutes, 1440)
 	var lamplight: float = 1.0 - smoothstep(360.0, 420.0, float(clock)) if clock < 720 else smoothstep(1020.0, 1200.0, float(clock))
+	lamplight = lerpf(0.55, 1.0, lamplight)
 	for light: Node3D in _electric_lights:
 		var local_lamp: bool = light.is_in_group("local_lamp_lights")
 		light.visible = powered and local_lamp and lamplight > 0.01

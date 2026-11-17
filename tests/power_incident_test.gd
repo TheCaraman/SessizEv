@@ -255,9 +255,9 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
-		check(not light.visible, "morning repair leaves daylight lighting in control")
+		check(light.visible == light.is_in_group("local_lamp_lights"), "morning repair restores shaded lamps, not ceiling wash")
 	for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
-		check(not fitting.material_override.emission_enabled, "morning repair does not light ceiling fixtures")
+		check(fitting.material_override.emission_enabled == fitting.is_in_group("local_lamp_fittings"), "morning repair restores only real shaded fixture glow")
 	GameState.minutes = 1380
 	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	for light: Node in get_tree().get_nodes_in_group("electric_lights"):
