@@ -10,6 +10,7 @@ func cancel() -> void:
 	_target = ""
 
 func targets(room: String) -> Array[String]:
+	room = RoomAliases.canonical(room)
 	var found: Array[String] = []
 	if GameState.day != 4 or GameState.visitor != "":
 		return found

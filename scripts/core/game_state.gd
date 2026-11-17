@@ -214,12 +214,13 @@ func get_location(npc_id: String) -> String:
 			str(job["room"]) != "" and int(job["day"]) == day
 			and minutes >= int(job["start"]) and minutes < int(job["end"])
 		):
-			return str(job["room"])
-	return str(npcs[npc_id]["room"])
+			return RoomAliases.canonical(job["room"])
+	return RoomAliases.canonical(npcs[npc_id]["room"])
 
 
 ## Ids of the residents who are in [param room_id] right now.
 func get_room_occupants(room_id: String) -> Array[String]:
+	room_id = RoomAliases.canonical(room_id)
 	var occupants: Array[String] = []
 	for id: String in get_residents():
 		if get_location(id) == room_id:
@@ -359,6 +360,10 @@ func to_dict() -> Dictionary:
 ## been through JSON (where every number comes back as a float) and one from
 ## save version 1 (which had no beds or visit records).
 func from_dict(data: Dictionary, announce_day: bool = true) -> void:
+	# ROOM-COMPACT-001: merged rooms (dining, pantry, ground bathroom) map to
+	# the room that now holds their function. Works on a copy, every load.
+	data = data.duplicate(true)
+	RoomAliases.migrate_state(data)
 	night_session = _restore_numbers(data.get("night_session", {}))
 	power_incident = _restore_numbers(data.get("power_incident", {}))
 	evidence = []

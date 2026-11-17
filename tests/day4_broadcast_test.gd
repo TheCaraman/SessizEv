@@ -68,7 +68,7 @@ func _ready() -> void:
 	room.perform_action("radio")
 	check(GameState.to_dict() == before and room.get_narration_text() == tr("NARR_SAVE_FAILED"), "failed save costs nothing and teaches no broadcast")
 	check(DirAccess.remove_absolute(pending) == OK, "remove owned fixture")
-	GameState.jobs["elena_ward"] = {"job": "inventory", "day": 4, "start": 420, "end": 425, "room": "pantry"}
+	GameState.jobs["elena_ward"] = {"job": "inventory", "day": 4, "start": 420, "end": 425, "room": "utility"}
 	room.perform_action("radio")
 	check(GameState.reports.size() == 1 and GameState.reports[0]["minutes"] == 425 and not GameState.jobs.has("elena_ward"), "other job completion saved with listening")
 	var saved: Dictionary = GameState.to_dict()

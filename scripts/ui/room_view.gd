@@ -98,6 +98,7 @@ func get_narration_text() -> String:
 
 
 func open(room_id: StringName) -> void:
+	room_id = StringName(RoomAliases.canonical(room_id))
 	if _reveal_tween != null and _reveal_tween.is_running():
 		_reveal_tween.kill()
 	_root.modulate.a = 1.0

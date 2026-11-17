@@ -64,7 +64,7 @@ func _ready() -> void:
 	GameState.npcs.elena_ward.tired = true
 	check(manager.why_refuses("elena_ward", "inventory").key == "REFUSE_TIRED", "fatigue refusal")
 	GameState.npcs.elena_ward.tired = false
-	GameState.npcs.elena_ward.blocked_rooms = ["pantry"]
+	GameState.npcs.elena_ward.blocked_rooms = ["utility"]
 	check(manager.why_refuses("elena_ward", "inventory").key == "REFUSE_ACCESS", "access refusal")
 	GameState.npcs.elena_ward.blocked_rooms = []
 	GameState.resources.food = 0

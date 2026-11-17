@@ -44,7 +44,7 @@ func _ready() -> void:
 		check(closure.perform("daniel_bedroom", "defer").is_empty() and GameState.to_dict() == deferred, "repeated deferral idempotent")
 		if mask == 7:
 			GameState.jobs[ids[0]] = {"job": "cooking", "day": 4, "start": 420, "end": 480, "room": "kitchen"}
-			GameState.jobs[ids[1]] = {"job": "inventory", "day": 4, "start": 420, "end": 450, "room": "pantry"}
+			GameState.jobs[ids[1]] = {"job": "inventory", "day": 4, "start": 420, "end": 450, "room": "utility"}
 			GameState.jobs[ids[2]] = {"job": "night_watch", "day": 4, "start": 420, "end": 420, "room": ""}
 			var original: Dictionary = GameState.to_dict()
 			var projected: Dictionary = original.duplicate(true)

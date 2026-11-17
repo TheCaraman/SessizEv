@@ -1,6 +1,6 @@
 {
 	"jobs": [
-		{"id": "inventory", "name": "JOB_INVENTORY", "room": "pantry", "minutes": 60, "report": "REPORT_INVENTORY"},
+		{"id": "inventory", "name": "JOB_INVENTORY", "room": "utility", "minutes": 60, "report": "REPORT_INVENTORY"},
 		{"id": "cooking", "name": "JOB_COOKING", "room": "kitchen", "minutes": 60, "report": "REPORT_MEAL", "needs_food": true, "sets_flag": "meal_ready_day_{day}"},
 		{"id": "security", "name": "JOB_SECURITY", "room": "vestibule", "minutes": 60, "report": "REPORT_SECURITY"},
 		{"id": "night_watch", "name": "JOB_NIGHT_WATCH", "room": "", "minutes": 0, "report": "REPORT_WATCH_QUIET", "at_night": true}

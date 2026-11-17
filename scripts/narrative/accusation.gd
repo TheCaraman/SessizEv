@@ -5,6 +5,7 @@ const RECORDS: String = "day4_accusations"
 var shelter: ShelterManager
 
 func targets(room: String) -> Array[String]:
+	room = RoomAliases.canonical(room)
 	var result: Array[String] = []
 	if not Day4Review.available() or GameState.visitor != "" or shelter == null:
 		return result

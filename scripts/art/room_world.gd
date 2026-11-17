@@ -40,6 +40,7 @@ func _init() -> void:
 	add_child(characters)
 
 func show_room(id: StringName, minutes: int, powered: bool, canvas_brightness: bool = true) -> Dictionary:
+	id = StringName(RoomAliases.canonical(id))
 	var visual: Dictionary = _visuals.resolve(str(id), minutes, powered)
 	var available: bool = ResourceLoader.exists(visual["path"])
 	var texture: Texture2D = load(visual["path"]) as Texture2D if available else _get_placeholder()

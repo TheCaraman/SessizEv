@@ -72,6 +72,7 @@ func setup(dialogue: DialogueRunner) -> void:
 ## Each entry is {"id": String, "label": String} with the label already
 ## translated.
 func get_room_actions(room_id: String) -> Array[Dictionary]:
+	room_id = RoomAliases.canonical(room_id)
 	var actions: Array[Dictionary] = []
 	for action: Dictionary in closure.actions(room_id):
 		actions.append(action)
@@ -100,7 +101,7 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 		"living_room":
 			actions.append({"id": "watch_tv", "label": tr("ACTION_WATCH_TV")})
 			actions.append({"id": "radio", "label": day4_broadcast.label() if GameState.day == 4 else tr("ACTION_RADIO")})
-		"pantry":
+		"utility":
 			actions.append({"id": "check_supplies", "label": tr("ACTION_CHECK_SUPPLIES")})
 		"daniel_bedroom":
 			if night.can_start():
@@ -125,6 +126,7 @@ func get_room_actions(room_id: String) -> Array[Dictionary]:
 ## Carries out a room action and returns the narration to show, already
 ## translated. Returns "" for unknown or unavailable actions.
 func perform_room_action(room_id: String, action_id: String) -> String:
+	room_id = RoomAliases.canonical(room_id)
 	var available: bool = false
 	for action: Dictionary in get_room_actions(room_id):
 		if action["id"] == action_id:

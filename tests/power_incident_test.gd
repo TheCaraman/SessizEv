@@ -116,7 +116,7 @@ func _ready() -> void:
 		check(GameState.power_incident["cause"] != "sabotage", "broadcast prerequisite")
 	prepare(91)
 	GameState.admit("marcus_hale", "guest_a_1")
-	GameState.jobs["marcus_hale"] = {"day": 3, "start": 1300, "end": 1430, "job": "inventory", "room": "pantry"}
+	GameState.jobs["marcus_hale"] = {"day": 3, "start": 1300, "end": 1430, "job": "inventory", "room": "utility"}
 	check(not power.eligible("marcus_hale"), "busy excluded")
 	GameState.jobs["marcus_hale"] = {"day": 3, "start": 1200, "end": 1200, "job": "night_watch", "room": ""}
 	check(not power.eligible("marcus_hale"), "night watch incompatible")

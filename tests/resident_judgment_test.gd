@@ -74,10 +74,10 @@ func _ready() -> void:
 	var before: Dictionary = GameState.to_dict()
 	check(judgment.expel("guest_b", "marcus_hale") == tr("POWER_TOO_LATE") and GameState.to_dict() == before, "late decision free refusal")
 	GameState.minutes = 600
-	GameState.jobs["marcus_hale"] = {"job": "inventory", "day": 4, "start": 590, "end": 610, "room": "pantry"}
-	check(judgment.targets("guest_b").is_empty() and judgment.targets("pantry").has("marcus_hale"), "decision follows actual job location")
-	judgment.expel("pantry", "marcus_hale")
-	judgment.expel("pantry", "marcus_hale")
+	GameState.jobs["marcus_hale"] = {"job": "inventory", "day": 4, "start": 590, "end": 610, "room": "utility"}
+	check(judgment.targets("guest_b").is_empty() and judgment.targets("utility").has("marcus_hale"), "decision follows actual job location")
+	judgment.expel("utility", "marcus_hale")
+	judgment.expel("utility", "marcus_hale")
 	check(not GameState.jobs.has("marcus_hale") and GameState.reports.is_empty() and GameState.completed_jobs.is_empty(), "interrupted work earns no report or output")
 	for status: String in ["dead", "left", "expelled", "rejected", "unknown"]:
 		GameState.npcs["marcus_hale"]["status"] = status

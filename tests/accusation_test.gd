@@ -82,8 +82,8 @@ func _ready() -> void:
 		GameState.npcs[target].erase(flag)
 	GameState.jobs[target] = {"job": "night_watch", "day": 4, "start": 420, "end": 420, "room": ""}
 	check(not controller.quote(origin, target, []).is_empty(), "future night-watch assignment does not block daytime conversation")
-	GameState.jobs[target] = {"job": "inventory", "day": 4, "start": 420, "end": 480, "room": "pantry"}
-	check(controller.quote("pantry", target, []).is_empty(), "active worker not simultaneously interrogated")
+	GameState.jobs[target] = {"job": "inventory", "day": 4, "start": 420, "end": 480, "room": "utility"}
+	check(controller.quote("utility", target, []).is_empty(), "active worker not simultaneously interrogated")
 	GameState.jobs.clear()
 	EvidenceManager.collect("acc_card", "POWER_CARD")
 	check(controller.quote(origin, target, ["unknown"]).is_empty(), "invented basis refused")
@@ -134,7 +134,7 @@ func _ready() -> void:
 	GameState.npcs[target]["trust"] = -100
 	GameState.npcs[target]["isolated"] = true
 	GameState.flags["isolation_ready"] = true
-	GameState.jobs["marcus_hale"] = {"job": "inventory", "day": 4, "start": 420, "end": 425, "room": "pantry"}
+	GameState.jobs["marcus_hale"] = {"job": "inventory", "day": 4, "start": 420, "end": 425, "room": "utility"}
 	var isolated: Dictionary = controller.quote("isolation", target, [])
 	check(not isolated.is_empty() and controller.commit(isolated) == OK, "isolated resident may answer at isolation door")
 	check(GameState.npcs[target]["trust"] == -100 and GameState.get_location(target) == "isolation", "trust floor and isolation preserved")

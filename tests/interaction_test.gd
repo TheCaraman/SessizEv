@@ -63,11 +63,11 @@ func _physics_process(_delta: float) -> void:
 			# Use the passage to the dining area, as the on-screen button would.
 			_room_view.open(&"dining")
 		85:
-			_check(_room_view.get_room_id() == &"dining", "linked room should be shown")
+			_check(_room_view.get_room_id() == &"kitchen", "linked room should be shown (dining merged into kitchen, ROOM-COMPACT-001)")
 			_send_action(&"pause")
 		90:
 			_check(not _room_view.is_open(), "pause should close the room view")
-			_check(_closed == [&"dining"], "closing should be announced once, got %s" % [_closed])
+			_check(_closed == [&"kitchen"], "closing should be announced once, got %s" % [_closed])
 			_check(_player.control_enabled, "player should regain control after leaving a room")
 			# The front door, from inside the entrance.
 			_face(Vector3(7.5, 0.05, 11.5), 180.0)

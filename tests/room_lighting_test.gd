@@ -113,7 +113,7 @@ func _ready() -> void:
 			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/kitchen-v5/%s.png" % state["variant"]) == OK, "real kitchen capture " + state["variant"])
 	director.power.repair(true)
 	check(room.get_visual_variant() == "night", "repair refreshes open kitchen")
-	room.open("pantry")
+	room.open("storage")  # pantry now maps to utility, which has variants (ROOM-COMPACT-001)
 	check(room.get_visual_variant() == "fallback", "rooms without authored lighting variants keep fallback")
 	check(room._background.modulate == room.get_prop_layer().modulate, "fallback keeps old world layer tint")
 	session.free()
