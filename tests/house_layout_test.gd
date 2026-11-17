@@ -15,7 +15,7 @@ extends Node
 ##   6. The player can walk up the stairs to the upper floor, and back down.
 
 const SCENE: PackedScene = preload("res://scenes/main/house_blockout.tscn")
-const CAPSULE_RADIUS: float = 0.3
+const CAPSULE_RADIUS: float = 0.38  # must match scenes/player/player.tscn (CAMERA-CLIP-001)
 const CAPSULE_HEIGHT: float = 1.75
 ## Capsule centre height above the floor, with 5 cm of clearance.
 const CAPSULE_CENTER_Y: float = CAPSULE_HEIGHT * 0.5 + 0.05

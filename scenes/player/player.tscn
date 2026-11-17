@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/player/interaction_ray.gd" id="2_ray"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
-radius = 0.3
+radius = 0.38
 height = 1.75
 
 [node name="Player" type="CharacterBody3D"]
