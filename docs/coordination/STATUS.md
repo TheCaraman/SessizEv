@@ -93,3 +93,5 @@ Ana klasörde (automation/integration): ortam ve lambalar kısıldı, sıcak akk
 - I11: Claude, workers/claude-upper-floor; HouseBuilder/Layout/CorridorDressing oran incelemesi sahipliği korunur. Codex paralel geometri düzenlemiyor.
 - ARRIVALS002: Codex workers/codex-arrival-validation'da8fa1409 entegrasyon incelemesi. Erken gece ziyareti/type/öğretici doğrulama boşlukları düzeltildi. İlgili5paket+WASAPI PASS; birleşik32paket koşusu sürüyor. Tam sonuç olmadan aktif diye sunulmaz.
 - Gün5, nihai18NPC/14gün, kapı deliği, poz setleri ve bilek arayüzü hâlâ açık. Geçmiş güncelleme satırları güncel tamamlanmış ürün sayılmaz.
+## 2026-11-17 — aktif sürüm0.1.14
+433d97c, workers/dev-0.1.14; masaüstü launcher ve release PrepareOnly doğrulandı. ARRIVALS002 kayıt doğrulaması entegre,32paket/7662WASAPI PASS. Işık/sanat0.1.13 ile aynı. Elena14702a9 levhası sahip seçimi bekliyor; I11 Claude; genel atmosfer kabulü açık. Eski0.1.13 aktif satırı tarihçedir. Ayrıntı arrivals002-release014 mesajında.
