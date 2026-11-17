@@ -1,6 +1,6 @@
 # ARRIVALS-001 — kurallı rastgele geliş takvimi (uygulama)
 
-Sahip: Claude. Worktree workers/claude-arrivals, dal claude/arrivals, taban 3719dd5 (codex/house-atmosphere-v3).
+Sahip: Claude. Worktree workers/claude-arrivals, dal claude/arrivals, taban fc36917 (radyo checkpoint; Aşama A rebase edildi). Aşama B DEVİR: a5043bf, 29 paket PASS, merge bekliyor.
 Tasarım: docs/design/ArrivalSchedule.md (sahip parametreleri onayladı, §9.0).
 
 Aşama A (şimdi, ortak dosyalara yazmaz): yeni scripts/narrative/arrival_scheduler.gd,
