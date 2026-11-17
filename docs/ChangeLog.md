@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.1.9-dev.20261117.1
+- Yeni kampanyalar için kayıtlı, seed tabanlı Gün 2–3 Marcus/Arthur gelişleri; eski kayıtlar sabit takvimini korur (v6).
+- Üç dallı gerçek Gün 3 ziyaret→gece/kesinti→Gün 4 radyo/kapanış entegrasyonu; 30 paket WASAPI geçti.
+- Saf oda tercihi hesaplama altyapısı; yönetim UI/itiraz ve yeni kişisel tercih henüz yok.
+- İzolasyonlu seçili test çalıştırma desteği; kısmi ve tam sonuç metinleri ayrı. QA: Development019.md.
+
 ## 0.1.8-dev.20261117.4
 - Gün4 pilli radyo tahliye iddiası, kaçırılmış hafıza uyarısı, güvenli kayıt ve ücretsiz not.
 - Gün4 sabahındaki yanlış erken kesit-sonu kaldırıldı; Gün5 hâlâ yok.
