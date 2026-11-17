@@ -123,7 +123,13 @@ func _refresh() -> void:
 			visitor_slot.add_child(figure)
 			figure.size = visitor_slot.size
 	var night: bool = posmod(GameState.minutes, 1440) >= 1200 or posmod(GameState.minutes, 1440) < 420
-	visitor_slot.modulate = Color(0.57, 0.66, 0.64) if night else Color(0.90, 0.93, 0.88)
+	# The porch lantern is on the house supply (PorchSet): in a power cut at
+	# night the visitor stands in the dark, lit only by the street lamp.
+	var lantern_out: bool = GameState.power_incident.get("state", "") == "outage"
+	if night and lantern_out:
+		visitor_slot.modulate = Color(0.30, 0.35, 0.36)
+	else:
+		visitor_slot.modulate = Color(0.57, 0.66, 0.64) if night else Color(0.90, 0.93, 0.88)
 
 
 func _exit_tree() -> void:

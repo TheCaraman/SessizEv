@@ -54,6 +54,21 @@ func _ready() -> void:
 	check(view.visitor_id == "elena_ward" and view.visitor_slot.get_child_count() == 1, "only real waiting visitor is drawn")
 	check(view.visitor_slot.get_child(0).get_meta("npc_id") == "elena_ward", "visible figure comes from public visitor id")
 	check(GameState.to_dict() == state and answered == 0, "seeing visitor neither recruits nor spends time")
+	# Light on the visitor follows the porch: day, night with the lantern, and
+	# night in a power cut (lantern out) are three different levels.
+	GameState.minutes = 660
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	var day_light: float = view.visitor_slot.modulate.v
+	GameState.minutes = 1350
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	var night_light: float = view.visitor_slot.modulate.v
+	GameState.power_incident = {"state": "outage", "cause": "grid_loss", "inspected": []}
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	var outage_light: float = view.visitor_slot.modulate.v
+	check(day_light > night_light and night_light > outage_light, "visitor is darker at night and darker still with the porch lantern out")
+	GameState.power_incident = {}
+	GameState.minutes = 420
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	GameState.visitor = ""
 	EventBus.visitor_changed.emit("")
 	check(view.visitor_slot.get_child_count() == 0, "departed visitor disappears immediately")
