@@ -119,7 +119,7 @@ Oyun içi her metin çeviri anahtarıyla yazılır. Kaynak dil İngilizce (`loca
 | Risk | Önlem |
 |---|---|
 | 4.7'ye özgü API farkları | Her sistemde resmi belgeden doğrulama; ilk çalıştırmada uyarı temizliği |
-| Merdivende NPC yol bulma | Blockout aşamasında tek NPC ile erken deneme |
+| Tek katta kapı ve gece rota erişimi | Gerçek oyuncuyla erişim testi; kilit, engel ve zemin desteği doğrulaması |
 | Düşük çözünürlükte metin | Arayüz ayrı katmanda, yerel çözünürlükte |
 | Kayıt şeması kayması | Sürüm numarası ve geçiş testleri |
 | Motor içi üretilen karakterlerin görsel sınırı | ArtBible §4; gerekirse dış kaynak kararı Faz 6 öncesi |

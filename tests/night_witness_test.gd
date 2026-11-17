@@ -76,7 +76,7 @@ func _ready() -> void:
 	shape.size = Vector3(3.0, 2.5, 0.4)
 	collider.shape = shape
 	obstacle.add_child(collider)
-	obstacle.position = Vector3(7.5, 4.55, 6.5)
+	obstacle.position = HouseLayout.room_center(&"corridor") + Vector3(-0.5, 1.25, 0.0)
 	session.add_child(obstacle)
 	await get_tree().physics_frame
 	await get_tree().physics_frame

@@ -137,14 +137,11 @@ Aşağıdaki tablo yukarıdan aşağıya değerlendirilir; ilk eşleşen kazanı
 
 Bu tablo `tests/` altında otomatik testle doğrulanacaktır: her girdi bileşimi tam olarak bir son üretmelidir.
 
-## 12. Ev [Taslak — ölçüler blockout'ta kesinleşir]
+## 12. Ev — tek katlı plan (2026-11-18 sahip yönlendirmesi)
 
-**Zemin kat:** giriş holü, ana koridor, oturma odası, mutfak, yemek alanı, kiler, tesisat odası (jeneratör ve sigorta), küçük banyo, merdiven, ön kapı, arka kapı (normalde kilitli).
+Giriş holü ve kısa L koridor 3D yürünür. Oturma odası, yemek köşeli mutfak, kiler/onarım işlevlerini birleştiren servis odası, Daniel'ın odası, iki misafir odası, çok amaçlı oda, izolasyon odası, tek banyo ve küçük depo/çamaşır dolabı katmanlı 2D'dir. Servise mutfaktan, küçük dolaba banyodan geçilir; sekiz oda kapısı ve ana giriş yürüyerek erişilir. Üst kat ve merdiven yoktur.
 
-**Üst kat:** sahanlık, Daniel'ın odası, iki misafir odası, çok amaçlı oda, izolasyona çevrilebilir küçük oda, banyo, depo dolabı.
-
-Kurallar: kapı genişliği en az 0,9 m, koridor en az 1,2 m, tavan 2,6 m, merdiven NPC yol bulmasına uygun. Oynanışa hizmet etmeyen oda yok.
-
+Dış kabuk15x12.5m; giriş/mainhol4m, yatak kanadı2.5m brüt, oda kapıları1.05m, tavan3.1m. İki yönde pencere dış dünya bağlantısı kurar. Oda isim/işlevleri kaynak verisinden alınır; eski dining/pantry/bathroom_ground kayıtları kitchen/utility/bathroom_upper kimliklerine taşınır. Tek banyonun dahili adı eski kayıt uyumu için korunur, oyuncuya sadece Banyo gösterilir. Ayrıntı docs/HousePlan.md son tek kat bölümü ve HouseLayout. Yatak kapasitesi/enfeksiyon kuralları aynı.
 ## 13. Arayüz ve erişilebilirlik [Taslak]
 
 - Ekranda kalıcı gösterge yok; yalnızca bağlamsal etkileşim ipucu ve saat.

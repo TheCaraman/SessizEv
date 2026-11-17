@@ -2,13 +2,13 @@
 
 Sürüm 0.2 · 2026-11-16 · K-011 ve K-012'ye göre yeniden yazıldı. Önceki "kirli PS1" yönü geçersizdir.
 
-Güncel sahip onayı: ART-REV-003 çizimsel yönü koru ve ilk odayı oyunda göster. 13 ana oda artık bu örneğin aynı çizim diline taşındı. Koridorda 3m dolaşım/geometri ve mat sıva-yeşil alt boya geçişi uygulandı. Mekân test sürümü hazır; sahibin nihai görsel kabulü beklenir. Ayrıntı docs/art/WholeHouseGraphicRevision.md; karakter üslubu ve ayrı gece/elektriksiz varyantlar açık. Kalın/koyu konturlar, sade biçimler, yeşil gölgeler ve hafif çarpık perspektif esas; önceki boyanmış gerçekçilik yönü geçersizdir. Referanslar yalnızca atmosfer/biçim içindir; sahneler kopyalanmaz.
+2026-11-18 geçerli yön: tek katlı 3D L koridor ve katmanlı2D odalar. Sahip videodaki loş ev hissini, koyu kapıları, pencere huzmelerini ve daha yumuşak yüzeyleri istedi. Kuvvetli duvar baskısı azaltıldı. Yeni koridor/dekor/ışık uygulandı; bütün oda ve karakter çizimleri bu son yöne henüz eşitlenmedi. Önceki13oda/kalın kontur revizyonu tarihçedir. Nihai görsel kabul sahibin denemesinden sonra; sahne veya varlıklar referanstan kopyalanmaz.
 
 ## 1. Sunum biçimi (K-011)
 
 | Alan | Biçim |
 |---|---|
-| Giriş, hol, merdiven, sahanlık, üst koridor | 3D, birinci şahıs yürünür |
+| Giriş, ana hol ve L biçimli yatak koridoru | 3D, birinci şahıs yürünür |
 | Diğer bütün odalar | Kapıdan açılan 2D katmanlı sahne |
 | Karakterler | 2D çizim; oda sahnesinin üstüne katman olarak eklenir |
 
@@ -34,13 +34,13 @@ Mevcut öğeler: sade, kirli sarı duvar kâğıdı (çok silik baklava deseni),
 
 **Işık ve atmosfer (K-014, K-015):** hava soluk, nötr bir pusla doludur ve ışık bu pusun içinde görünür (hacimli sis). Tavan lambaları zayıf, sıcak ışık adacıkları yapar. Gün ışığı gerçek pencerelerden gelir: dışarıdaki ışık perdelerin aralığından ve pencere çıtalarının arasından geçip yere ve duvara düşer. Yumuşak gölge, köşelerde temas gölgesi ve hafif parlama açıktır. Duvarlar sade tutulur; görünümü taşıyan şey desen değil ışıktır.
 
-**Palet dengesi:** kirli sarı duvar · koyu turkuaz kapı · koyu kırmızı yolluk · kahverengi parke · kirli beyaz tavan, kasa ve süpürgelik. Hiçbir renk bütün sahneyi boyamaz; ortam ışığı nötrdür.
+**Palet dengesi:** soluk bordo/gül-kahverengi duvar · mat koyu turkuaz kapı · koyu kırmızı yolluk · kahverengi parke · nötr krem tavan. Sıcak lamba bölgeleri ve serin yeşil pencere/ortam ışığı dengelenir.
 
-**Pencereler:** giriş holünde ön kapının yanında bir pencere. Üst kat koridorları dış duvara değmediği için orada pencere yoktur. Odaların pencereleri 2D oda görsellerinde çizilir.
+**Pencereler:** girişte ön kapının yanında ve L koridorun doğu ucunda iki gerçek pencere. Perdeler, jaluziler, dış manzara, kaynak ışığı, yerel hafif toz hacmi ve yumuşak huzmeler kullanılır. Oda içi pencereler2D çizimdir.
 
-**Koridor eşyaları:** girişte paspas, askılık ve asılı paltolar, ayakkabı sehpası, şemsiye; holde lambalı ve telefonlu konsol, tablolar, duvar saati; üst katta sandalye, tablolar, küçük dolap. Her kapının yanında elektrik anahtarı. Merdiven on altı gerçek basamak ve trabzandır.
+**Koridor eşyaları:** girişte paspas, askılık/paltolar, ayakkabı sehpası ve şemsiye; holde kitaplı yazı dolabı, lambalı telefon konsolu, tablolar ve saat; yatak kanadında küçük dolap, lamba ve sürahi. Orta geçişler açık kalır. Üst kat ve merdiven yoktur.
 
-Eksikler: kapı açılma sesi ve geçiş efekti, pencereden görünen dış manzara, boyanmış dokular. Eşyalar kutulardan kuruludur; paltolar ve perdeler gibi kumaş nesneler kaba durur.
+Kapı sesi, hızlı eşik geçişi ve dış manzara mevcut. Bazı mobilya ve karakterler hâlâ geçici üretim düzeyindedir; nihai sanat kabulü yapılmadı.
 
 ## 4. 2D oda görselleri — üretim kuralları
 
@@ -88,3 +88,5 @@ No text, no logos, no people. 16:9.
   hâlâ tek resim modülasyonu kullanır. docs/qa/LivingRoomLightingVariants.md kapsamı kaydeder.
 - Tam üretim istemleri docs/art/prompts/, ölçü/saydamlık/SHA256 kayıtları asset_manifest.json içinde.
 - Yapay zekâyla üretilen görsellerin ticari kullanım hakları, kullanılan aracın şartlarına bağlıdır; yayından önce lisans denetimi yapılacak.
+
+2026-11-18 güncel yön: tek katlı L planı,iki pencere,duvar/kapıda hafif yüzey dili; eski üst kat ve merdiven açıklamaları tarihçedir. Ayrıntı docs/qa/SingleStorey.md.

@@ -12,7 +12,7 @@ extends Node
 ##      door leads to the room the layout says it does.
 ##   4. Selected walls between rooms are solid.
 ##   5. HouseLayout.room_at() returns the right room for every room centre.
-##   6. The player can walk up the stairs to the upper floor, and back down.
+##   6. The single floor and both arms of the L have safe capsule clearance.
 
 const SCENE: PackedScene = preload("res://scenes/main/house_blockout.tscn")
 const CAPSULE_RADIUS: float = 0.38  # must match scenes/player/player.tscn (CAMERA-CLIP-001)

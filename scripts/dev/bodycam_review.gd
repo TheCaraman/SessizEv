@@ -17,8 +17,8 @@ func _ready() -> void:
 	var scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
 	add_child(scene)
 	var player: PlayerController = scene.get_node("Player")
-	# Walk the supported west wing in the new central-stair layout.
-	player.position = Vector3(5.1, 3.35, 10.7)
+	# Walk the supported main hall of the single-storey layout.
+	player.position = Vector3(7.0, 0.05, 10.0)
 	player.rotation.y = 0.0
 	var out: String = "bodycam/bodycam-review.png"
 	for arg: String in OS.get_cmdline_user_args():

@@ -1,3 +1,7 @@
+# 0.1.20-dev.20261118.1
+
+Tek kat L plan; oda13→10işlev, tekbanyo ve birleşikservis. Daha yumuşak duvar, koyu kapılar, ev eşyaları, pencerehuzmesi ve kapatılabilirvinyet. Paralel0.4sn kapı, onaylıhafifbodycam. EskiodaIDgöçü, gerçekzeminde geceyolkanıtı.40paket/7913WASAPI PASS; sonEN/TRdüzeltmeleri4paketPASS;13nativegörüntü ve2.6snmotorvideosu. Ayrıntı docs/qa/SingleStorey.md.
+
 # 0.1.19-dev.20261118.2
 
 İki katın iç planı yeniden kuruldu; geniş merkezi merdiven, iki yan geçiş ve geniş ön hol. Daha belirgin baskı dokulu duvar/kapı/tavan/ahşap. Claude BODYCAM-002 dahil; kapı/UI geçişlerine uyumlu salınım ve dönüş yatması, hareket azaltma ayarıyla kapanır. Ev35paket32+3koşu, son birleşim6paket+WASAPI, native53kamera ve18kapı/ev görüntüsü+hareket levhası doğrulandı. Ayrıntı docs/qa/HouseRebuildV2.md.

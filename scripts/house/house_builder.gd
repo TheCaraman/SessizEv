@@ -521,8 +521,8 @@ func _add_window_shafts(window: Node3D, width: float, out: float) -> void:
 		var vertices := PackedVector3Array([
 			Vector3(-width * 0.32, height, -out * 0.16),
 			Vector3(width * 0.32, height, -out * 0.16),
-			Vector3(width * 0.55 - 0.3, height - 0.5, -out * 4.2),
-			Vector3(-width * 0.55 - 0.3, height - 0.5, -out * 4.2)
+			Vector3(width * 0.55 - 0.3, height - 0.12, -out * 4.2),
+			Vector3(-width * 0.55 - 0.3, height - 0.12, -out * 4.2)
 		])
 		var arrays: Array = []
 		arrays.resize(Mesh.ARRAY_MAX)

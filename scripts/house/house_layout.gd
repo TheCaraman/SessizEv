@@ -15,9 +15,9 @@ const INTERIOR_WALL_THICKNESS: float = 0.1
 const STAIRS: Rect2 = Rect2()
 const FOYER_VOID: Rect2 = Rect2()
 const VOIDS: Array[Rect2] = []
-const ROOM_ALIASES: Dictionary = {&"dining": &"kitchen", &"pantry": &"utility", &"bathroom_ground": &"bathroom_upper"}
+const ROOM_ALIASES: Dictionary = RoomAliases.ALIASES
 static func canonical_room_id(id: StringName) -> StringName:
-	return ROOM_ALIASES.get(id, id)
+	return StringName(RoomAliases.canonical(id))
 static func is_in_void(_point: Vector2) -> bool:
 	return false
 const ROOMS: Array[Dictionary] = [
