@@ -1,0 +1,19 @@
+{
+  "approved_style": "B middle flat angular ink; owner explicit selection",
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "reference_comparison_commit": "14702a9",
+  "room": {
+    "sha256": "2BDCE3911D8673E7C1CBC738811AF094BB1022E7747790F636E37042AA89638D",
+    "original": "exec-91d054fb-3b46-47e1-9fab-444d1db5f3e9.png",
+    "path": "assets/characters/elena_ward/graphic/room.png"
+  },
+  "arrival": {
+    "sha256": "A9F09A8A3CDFE117E5B4B4349140A96A6C5CEEB5EA62D257B284EBC7982A020C",
+    "original": "exec-dfa86d1f-3ebb-4fbe-98ea-4012ee1eff91.png",
+    "path": "assets/characters/elena_ward/graphic/arrival.png"
+  },
+  "pixels": "1024x1536 RGBA; corner alpha0; central body alpha253",
+  "postprocessing": "No bitmap retouching, cropping or alpha removal; source tool output copied unchanged",
+  "infection_dependent": false
+}

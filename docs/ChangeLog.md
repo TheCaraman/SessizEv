@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.1.15-dev.20261117.1
+- Sahibin seçtiği B çizim stiliyle Elena: çantalı/temkinli ilk geliş ve daha sakin ev içi poz. Kapı deliği, geliş diyaloğu ve oda görünümü aynı context çözücüyü kullanır.
+- İlk geliş konuşması EN/TR daha kısa ve kaçamak; kliniği/kardeşi geçmişi ve kabul/ret mekanik etkileri korunur. Şüpheli görünüm enfeksiyondan bağımsızdır.
+- Claude'un sınırlı veranda/sokak seti ve ortak kapı deliği devamı entegre; E ile ücretsiz bakış/Escape dönüş, mevcut kapı yanıtlama korunur.
+- Üst koridoru1.65m'ye daraltan I11 alınmadı. I10 ek dekor bu sürümde yok; diğer NPC çizimleri henüz yenilenmedi.
+
 ## 0.1.14-dev.20261117.1
 - Claude ARRIVALS002 teslimi entegre: kayıtlı takvim sürümü/benzersiz ziyaret/kapıda bekleyen kişi tutarlılığı doğrulanır.
 - Erken gece ziyaretleri, eksik sabit öğretici ve bozuk kimlikler reddedilir; geçerli eski v5 kayıtlarının sabit takvimi korunur.

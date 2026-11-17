@@ -65,8 +65,8 @@ func show_room(id: StringName, minutes: int, powered: bool, canvas_brightness: b
 	visual["available"] = available
 	return visual
 
-static func make_figure(npc_id: String) -> Control:
-	var path: String = CHARACTER_IMAGE_PATH % npc_id
+static func make_figure(npc_id: String, context: StringName = &"room") -> Control:
+	var path: String = CharacterArt.texture_path(npc_id, context)
 	if ResourceLoader.exists(path):
 		var picture := FigureScript.new()
 		picture.texture = load(path) as Texture2D

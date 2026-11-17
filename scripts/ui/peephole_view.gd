@@ -118,7 +118,7 @@ func _refresh() -> void:
 			visitor_slot.remove_child(child)
 			child.queue_free()
 		if visitor_id != "":
-			var figure: Control = RoomWorld.make_figure(visitor_id)
+			var figure: Control = RoomWorld.make_figure(visitor_id, &"arrival")
 			figure.set_meta("npc_id", visitor_id)
 			visitor_slot.add_child(figure)
 			figure.size = visitor_slot.size

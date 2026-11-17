@@ -4,7 +4,7 @@ extends CanvasLayer
 ## they say, and the replies Daniel can give.
 ##
 ## The speaker appears as a 2D figure. The picture is loaded from
-## assets/characters/<id>/default.png; until that exists a plain silhouette
+## CharacterArt's context-specific resource; until that exists a plain silhouette
 ## with the character's name stands in for it.
 ##
 ## Replies can be clicked or chosen with the number keys.
@@ -74,7 +74,8 @@ func _show_node(node: Dictionary) -> void:
 func _show_figure(speaker_id: String) -> void:
 	if speaker_id == "":
 		return
-	var path: String = CHARACTER_IMAGE_PATH % speaker_id
+	var context: StringName = &"arrival" if _runner != null and _runner.get_dialogue_id().ends_with("_arrival") else &"room"
+	var path: String = CharacterArt.texture_path(speaker_id, context)
 	if ResourceLoader.exists(path):
 		# Reuse the same full-body asset as a waist-up conversation frame.
 		# Legs end behind the reply panel rather than floating above it.
