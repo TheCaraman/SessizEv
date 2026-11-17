@@ -63,6 +63,9 @@ func _ready() -> void:
 				var z: float = rect.position.y + 0.35
 				while z < rect.end.y - 0.3:
 					var start := Vector3(x, floor_y + 0.05, z)
+					if int(room["floor"]) == 1 and HouseLayout.is_in_void(Vector2(x, z)):
+						z += STEP
+						continue
 					body_query.transform = Transform3D(Basis.IDENTITY, start + Vector3(0.0, 0.875, 0.0))
 					if space.intersect_shape(body_query, 1).is_empty():
 						for i: int in 16:
