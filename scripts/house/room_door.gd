@@ -49,6 +49,8 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	_cover.visible = false
 	transition.add_child(_cover)
 	leaf.reparent(_hinge, true)
+	if is_front:
+		add_child(PeepholeInteraction.new())
 	EventBus.room_view_closed.connect(_on_room_view_closed)
 	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void:
 		if _portal != null and _portal.visible and (_opening or _closing):

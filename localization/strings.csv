@@ -326,3 +326,5 @@ RADIO_D4_MEMORY_REPEAT,"The channel also repeats an earlier warning:","Kanal dah
 RADIO_D4_NOTES,"From your notes; you are not receiving a new transmission:","Notlarından; yeni bir yayın almıyorsun:"
 RADIO_D4_UNAVAILABLE,"You need a quiet moment to listen. Finish the current interruption first.","Dinlemek için sakin bir an gerekli. Önce mevcut kesintiyi tamamla."
 RADIO_D4_MORNING_GUIDE,"You can review your notes in the bedroom or check the emergency radio downstairs. There is still time to investigate.","Yatak odasında notlarını inceleyebilir veya aşağıdaki acil durum radyosunu kontrol edebilirsin. Araştırmak için hâlâ zaman var."
+
+PROMPT_PEEPHOLE,"{key} — Look through peephole","{key} — Kapı deliğinden bak"
