@@ -56,6 +56,6 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 
 | ARRIVALS-001 | AKTİF — AŞAMA A TAMAM | Claude | claude-arrivals/93a340f altyapısı mevcut; B entegrasyonu fc36917 tabanına alınacak. Takvim/save/ziyaret kodunda tek yazar. | 2026-11-17 |
 | ROOMS-DESIGN-001 | TAMAM — ayrı dal | Codex / Claude incelemesi | Uygulama sözleşmesi continuous-integration/ee9ea50 içinde; yalnız belge, UI ve oyun özelliği henüz yok. | 2026-11-17 |
-| ROOMS-EVALUATOR-001 | AKTİF | Codex CLI / Claude incelemesi | Saf oda tercihi modülü, sentetik shelter testleri ve QA belgesi. ARRIVALS/save/UI dosyalarına yazılmaz; ayrı continuous-integration dalı. | 2026-11-17 |
+| ROOMS-EVALUATOR-001 | TAMAM — ayrı dal | Codex CLI / Claude incelemesi | continuous-integration/06d4e92; saf modül ve shelter 80 kontrol, dış 28 paket WASAPI geçti. UI/save entegrasyonu yok. | 2026-11-17 |
 
 | COORDINATOR-002 | TAMAM | Codex | İki gerçek CLI worker→diğer sağlayıcı incelemesi→28 paket Godot test kapısı geçti; durdur/yeniden başlat doğrulandı. Ayrı integration dalı, aktif oyuna otomatik dağıtım yok. docs/qa/ContinuousCoordinator.md | 2026-11-17 |

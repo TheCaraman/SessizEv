@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-11-17T09:51:21.8160303+03:00",
+  "task": "AUTO-ROOMS-EVALUATOR",
+  "status": "done",
+  "worker": "codex",
+  "reviewer": "claude",
+  "review_status": "approved",
+  "commit": "06d4e92dd1319094dd8b56d623e0397d4a0b41e4",
+  "calls": 2,
+  "godot": "4.7.2",
+  "audio": "WASAPI",
+  "test_suites": 28,
+  "shelter_checks": 80,
+  "log": "runtime/continuous/AUTO-ROOMS-EVALUATOR-2.tests.log",
+  "ui_integrated": false,
+  "save_integrated": false,
+  "active_player_build_changed": false
+}
