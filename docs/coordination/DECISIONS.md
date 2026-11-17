@@ -69,3 +69,15 @@ Aşağıdaki kararlar bu yetkiyle alındı; sahibi istediği an değiştirebilir
 | Kanıt | `git merge-base --is-ancestor main HEAD` = evet; `tools/Run-Tests.ps1` altı test geçti. |
 | Seçim / gerekçe | **A.** Kural: `main` yalnızca tüm testler geçtikten sonra, ileri sarma ile ilerler; force yok. |
 | Onay | Teknik karar. |
+
+### NPC-ARRIVALS-ROOMS-001 — Sahibin onayladığı geliş/oda yönü
+| Alan | Bilgi |
+|---|---|
+| Sorun | Sabit geliş günleri tekrar oynanışta ezberleniyor; oda kararlarında karakter tercihleri henüz yok. |
+| A | Bütün ziyaretler sabit, yalnız mekanik yatak ataması. |
+| B | Kampanya seed'ine bağlı geliş pencereleri ve ziyaretçi seçimi; oyuncu son oda kararını verirken NPC tercih/itiraz bildirir. |
+| Oyuncuya etkisi | Belirsizlik ve tekrar oynanabilirlik; kişisel ilişki ve barınak kararları anlam kazanır. |
+| Bağımlılık/risk | Eski kayıt takvimi, öğretici Elena gelişi, ret/eksik-NPC alternatifleri, gerçek yatak ve izolasyon kuralları. |
+| Seçim | B; kesin parametreler henüz tasarlanmadı, uygulanmadı. |
+| Onay | Sahip açıkça “onaylıyorum” dedi; önce Claude'a bildirilmesini istedi. |
+| Kaynak | docs/NPC_ArrivalAndRooms.md, K-NPC-ARRIVALS-ROOMS-001. |
