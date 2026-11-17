@@ -49,6 +49,10 @@ func _ready() -> void:
 		check(room.get_visual_variant() == state["variant"], "authored variant " + state["variant"])
 		check(room._background.texture.resource_path == definition[state["variant"]], "correct image selected")
 		check(room._background.modulate == Color.WHITE, "authored lighting not darkened twice")
+		if "--capture-living-lighting" in OS.get_cmdline_user_args():
+			DirAccess.make_dir_recursive_absolute("res://docs/qa/living-v5")
+			await RenderingServer.frame_post_draw
+			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/living-v5/%s.png" % state["variant"]) == OK, "real living room capture " + state["variant"])
 		check(room._title.modulate == Color.WHITE, "lighting never tints UI")
 		check(room._background.texture.get_size() == Vector2(1672, 941), "matching source framing dimensions")
 		check((room.get_prop_layer() as RoomProps).get_prop_ids().has("media_console"), "prop survives variant swap")

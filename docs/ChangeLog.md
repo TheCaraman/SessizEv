@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## 0.1.16-dev.20261117.1
+- Sahibin onayladığı V5 posterize fotoğraf/3D üslubuyla oturma odası ve ayrı TV/radyo dolabı yenilendi.
+- Gündüz/gece/elektrikli/elektriksiz dört tutarlı görsel; kesintide abajur ışığı gerçekten kaybolur, pencere ışığı kalır.
+- Oda yerleşimi ve etkileşimler korunur; gerçek kapı aralığı/oda renderı doğrulandı. Kalan odalar ve koridor yeniden yapımı henüz bu sürümde değil.
+
 ## 0.1.15-dev.20261117.1
 - Sahibin seçtiği B çizim stiliyle Elena: çantalı/temkinli ilk geliş ve daha sakin ev içi poz. Kapı deliği, geliş diyaloğu ve oda görünümü aynı context çözücüyü kullanır.
 - İlk geliş konuşması EN/TR daha kısa ve kaçamak; kliniği/kardeşi geçmişi ve kabul/ret mekanik etkileri korunur. Şüpheli görünüm enfeksiyondan bağımsızdır.

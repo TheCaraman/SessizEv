@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "scope": "living room first; remaining rooms and 3D corridor pending",
+  "style": "owner-approved direct-reference-v5",
+  "bitmap_retouched": false,
+  "files": [
+    {
+      "sha256": "972C44544F40808FE3210D9EE37CFAA63BDD9B148AEAE5D28980E555A0B8D9CD",
+      "path": "assets/rooms/graphic_v5/living_room/day.png"
+    },
+    {
+      "sha256": "B47F7500329BF9B7534D31DB50CB1534DCAD1A63AD3635440FC8CE59B7199E42",
+      "path": "assets/rooms/graphic_v5/living_room/night.png"
+    },
+    {
+      "sha256": "CB0CECA21D8777F12B50E22426C6EFF9F8FC26DF3DD04138017CD101395EA62B",
+      "path": "assets/rooms/graphic_v5/living_room/outage_day.png"
+    },
+    {
+      "sha256": "F2589C593536C2789C215B0BC90A62AED2CD34687875C22B6DBF53BEB24676D3",
+      "path": "assets/rooms/graphic_v5/living_room/outage_night.png"
+    },
+    {
+      "sha256": "361898E652A89C3B6C506D0FF8A67ECD3A26CEE83E0728CABECC7FDBD1A9687C",
+      "path": "assets/props/graphic_v5/media_console.png"
+    }
+  ]
+}

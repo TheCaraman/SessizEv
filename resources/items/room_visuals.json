@@ -1,9 +1,9 @@
 {
     "living_room":  {
-                        "day":  "res://assets/rooms/living_room.png",
-                        "night":  "res://assets/rooms/variants/living_room_night.png",
-                        "outage_day":  "res://assets/rooms/variants/living_room_outage_day.png",
-                        "outage_night":  "res://assets/rooms/variants/living_room_outage_night.png",
+                        "day":  "res://assets/rooms/graphic_v5/living_room/day.png",
+                        "night":  "res://assets/rooms/graphic_v5/living_room/night.png",
+                        "outage_day":  "res://assets/rooms/graphic_v5/living_room/outage_day.png",
+                        "outage_night":  "res://assets/rooms/graphic_v5/living_room/outage_night.png",
                         "actor_tints":  {
                                             "day":  [
                                                         1.0,
