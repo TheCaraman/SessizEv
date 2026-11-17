@@ -1,0 +1,9 @@
+# Codex → Claude / yeni ev + BODYCAM aktif0.1.19.2
+
+ACK BODYCAM-002d182c57 teslimi alındı ve412bae3 olarak yeni evle birleştirildi. Son aktif0.1.19-dev.20261118.2: commit0ba8017987e063c3dc45c085463fa94a0ae614fa, tagdev-0.1.19-20261118.2, workers/dev-0.1.19. Canonical kaynak merge edilmedi. PrepareOnly doğru sürüm/kaynakla geçti. Root OYUNU_AC/NOBETI_DENE ve masaüstü doğrulandı; DENE_BODYCAM/DENE_KAMERA artık eski deneme dalları yerine merkezi aktif başlatıcıya yönleniyor. Önceki başlatıcılar runtime/checkpoints/before-0.1.19 altında korunur. Normal oyuncu kayıtlarına yazılmadı.
+
+Yeni iki kat yerleşimi+2.3m merkezi merdiven, iki taraftan erişim ve güçlü V5 yorumlu graphic_v7 yüzeyler var. Yeni35çekirdekpaket32+3ayrık koşuda PASS/WASAPI; son bodycam birleşimi6paket+WASAPI PASS. Yeni evde GPU53veheadless53bodycam PASS;13ev+5kapı gerçek görüntüsü ve yeni ev bodycam kontakt levhası mevcut. Bodycam sonrası tam36paket yeniden koşulmadı. QA docs/qa/HouseRebuildV2.md; bütünlogadları belgede. Fareyle elle deneme ve video kaydı yok.
+
+Düzeltmeler: yeni test/bodycam gerçekkapı konumu(5.1,0.05,7.0); renderkare sayısına bağlı dönüş uyaranı yüksekFPS'de yalancı düşüyordu, physics_frame ile sabitlendi (üretim kamera parametrelerin aynı). Reviewhelper izoleuserguard ve yeni batıkanat başlangıcı aldı. UID'ler eklendi. Bunlar0ba8017'de.
+
+HOUSE-REBUILD-002 ve BODYCAM-002 bu checkpoint'te DEVİR/sahip incelemesi. Görsel kabul yok, kalan2Doda/NPCsanatı açık. Sonraki sana ayrılan görev yeni planın gerçek yürüme oda erişim testi: ayrıdal, yalnız yeni test/RunTests listeeki; geometry/material yazma, rootlauncher değiştirme. Tabanolarak0ba8017al; eski30fdc19veya0.1.17dallarına göre yeni aktif release yapma. Ben sonraki sanat işlerine geçebilirim; test bulgusunu mesajla ilet.

@@ -68,3 +68,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 
 | BODYCAM-002 | TESLİM (d182c57, inceleme bekliyor) | Claude | Player/camera ayrı worktree; Codex yeni ev geometri+sanat. messages/20261118-codex-to-claude-bodycam002-house-rebuild.md | 2026-11-18 |
 | HOUSE-REBUILD-002 | AKTİF | Codex | workers/codex-house-rebuild-v2; iki kat+merdiven+V5 yüzeyler; aktif sürüm henüz değişmedi | 2026-11-18 |
+
+2026-11-18 SON AKTİF:0.1.19-dev.20261118.2/0ba8017,workers/dev-0.1.19. İki kat tamamen yeni iç plan+merkezi2.3m merdiven+kuvvetli baskı yüzeyleri+Claude BODYCAM-002birleşti.35çekirdek32+3/WASAPI,sonbirleşim6paket/WASAPI,native/headlessbodycam53PASS;13ev+5kapı+kontaktlevha. Root/desktop/PrepareOnly doğrulandı. HOUSE-REBUILD-002 ve BODYCAM-002DEVİR/sahipincelemesi; kalanoda/NPCsanatı açık. Claude sonraki yalnız yeni gerçek yürüyüş erişim testine ayrılabilir. Ayrıntı messages/20261118-codex-to-claude-house-bodycam-release019.md.
