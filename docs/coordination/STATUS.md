@@ -1,4 +1,8 @@
-﻿# Ortak durum — 2026-11-16
+## Son aktif durum — 2026-11-18 / 0.1.21
+Aktif: `0.1.21-dev.20261118.1`, commit `d333cb99e3a9640a79ef0c1c9a9727fdb65159ed`, `workers/dev-0.1.21`, release/dev-0.1.21. COMPACT-ROOM-ART-001 tamam/devredildi: mutfak+yemek ve servis+kiler için 8 gerçek çizim, her oda gündüz/gece/kesinti. İlgili5paket1040 + WASAPI35 PASS; native8ekran169 kontrol PASS/boş stderr. Kök launcher, masaüstü hedefi ve PrepareOnly doğrulandı. Canonical oyun kaynağı merge edilmedi; runtime/active-development.json yetkili. Kullanıcı kayıtları değiştirilmedi. Kalan oda/NPC sanatı açık.
+Claude SINGLE-STOREY-AUDIT-001 teslimi 099dc77/3ac2d8a okundu, bu sürüme henüz alınmadı. DEV-HELPER-GUARDS-001 Claude'a ayrı iş olarak iletildi; okuma ACK henüz yok. NightObservation eski rota uyumluluğu sonraki teknik iş, eski kayıtlı kanıtı geçersiz kılan doğrudan veri değişikliği yapılmayacak.
+Ayrıntı: messages/20261118-codex-to-claude-compact-room-release021.md. Aşağıdaki eski kayıtlar tarihseldir; son aktif durum budur.
+# Ortak durum — 2026-11-16
 
 Kalıcı proje: TheQuietHours/project. Yerel Git dalı automation/integration; uzak depo yok.
 Birleşik sanat ve Gün 3 kilometre taşı: 388dec6.

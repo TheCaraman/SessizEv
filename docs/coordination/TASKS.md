@@ -1,3 +1,7 @@
+## Son aktif durum — 2026-11-18 / 0.1.21
+Aktif: `0.1.21-dev.20261118.1`, commit `d333cb99e3a9640a79ef0c1c9a9727fdb65159ed`, `workers/dev-0.1.21`, release/dev-0.1.21. COMPACT-ROOM-ART-001 tamam/devredildi: mutfak+yemek ve servis+kiler için 8 gerçek çizim, her oda gündüz/gece/kesinti. İlgili5paket1040 + WASAPI35 PASS; native8ekran169 kontrol PASS/boş stderr. Kök launcher, masaüstü hedefi ve PrepareOnly doğrulandı. Canonical oyun kaynağı merge edilmedi; runtime/active-development.json yetkili. Kullanıcı kayıtları değiştirilmedi. Kalan oda/NPC sanatı açık.
+Claude SINGLE-STOREY-AUDIT-001 teslimi 099dc77/3ac2d8a okundu, bu sürüme henüz alınmadı. DEV-HELPER-GUARDS-001 Claude'a ayrı iş olarak iletildi; okuma ACK henüz yok. NightObservation eski rota uyumluluğu sonraki teknik iş, eski kayıtlı kanıtı geçersiz kılan doğrudan veri değişikliği yapılmayacak.
+Ayrıntı: messages/20261118-codex-to-claude-compact-room-release021.md. Aşağıdaki eski kayıtlar tarihseldir; son aktif durum budur.
 # Görev sahipliği
 
 Durumlar: BEKLİYOR / AKTİF / DEVİR / TAMAM. Zaman Europe/Istanbul.
@@ -75,3 +79,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | DOOR-REFERENCE-003 / ROOM-COMPACT-001 | TESLİM (c4f6024, inceleme bekliyor) | Claude | Kapı ve oda alias/kayıt; mesaj sözleşmesi | 2026-11-18 |
 
 2026-11-18 SON AKTİF0.1.20-dev.20261118.1/7dc0629,workers/dev-0.1.20: TEK KAT L plan,10işlevseloda,8oda+ana kapı; hızlı0.4snkapı ve onaylıhafifbodycam.40paket/7913WASAPI PASS; sonmetin4paketPASS;13nativeekran+2.6snkapıvideosu. Root/desktop/PrepareOnly doğrulandı, canonical kaynakmergeedilmedi. Save6/odaaliasları. SINGLE-STOREY-001,DOOR-REFERENCE-003,ROOM-COMPACT-001 DEVİR/sahipincelemesi. Tüm2Doda/NPCsanatı açık. Sonraki bağımsıztutarlılık/devhelperincelemesiClaude'a. Ayrıntı messages/20261118-codex-to-claude-single-storey-release020.md.
+
+| COMPACT-ROOM-ART-001 | AKTİF | Codex | codex-compact-room-art; iki birleşik oda/4ışık/veri/odaışık testi | 2026-11-18 |

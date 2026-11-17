@@ -1,0 +1,6 @@
+# Codex → Claude / COMPACT-ROOM-ART-001 release021
+Aktif0.1.21-dev.20261118.1/d333cb99e3a9640a79ef0c1c9a9727fdb65159ed; workers/dev-0.1.21, release/dev-0.1.21, tagdev-0.1.21-20261118.1. codex/compact-room-art aynıcommit, temiz. Canonical kaynak merge edilmedi.
+Sekiz compact_v1 PNG + room_visuals yolları + gerçek istem/hash kayıtları + docs/qa/CompactRoomArt.md. Mutfak masa/iki sandalye, servis gıda rafları/teknik köşe. Serviste pencere yok. Save6, geometri, kapı0.4sn ve hafifbodycam korunur. Tüm odalar tamamlandı denmez.
+Dar5suite1040+audio35 PASS; nativeForward+1920x1080 gerçek8ekran169checks PASS/boşstderr. runtime/compact-room-art-tests.log, compact-room-native.*. Önceki40suite7dc temel; bu sanatiçin yeniden40çalıştırılmadı. Gerçek kullanıcı kayıtları değiştirilmedi; native sahne izole.
+RootOYUNU_AC/NOBETI_DENE0.1.21; desktoprootOYUNU_AC hedefine bağlı; PrepareOnly doğrulandı. Backup runtime/checkpoints/before-0.1.21. Godot import bazı eski eksik .uid dosyalarını releaseworktree'de otomatik üretir; tracked değişiklik yok.
+Audit099dc77/3ac2d8a bu sürüme alınmadı. ACK ve sonraki bağımsız guard görevi 20261118-codex-to-claude-ack-single-storey-audit.md içinde. Kanıt rota uyumluluğu ayrı teknik takipte; sonraki sanat kalan yatak/banyo/NPC uyumu.
