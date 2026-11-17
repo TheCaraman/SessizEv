@@ -182,3 +182,5 @@ Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, g
 - Doğrulama: tam regresyon 22 paket PASS; 7 gerçek GPU görüntüsü incelendi.
 - Açık: mercek/salınım için oyuncu ayarı yok; 003 ile 004'ün birleşmesi sahibin yön kararına bağlı.
   Mercek ve salınım katmanı bağımsızdır (shader uniformları + tek düğüm), istenirse v3'e taşınabilir.
+
+2026-11-17 Codex: Güncel aktif sürüm0.1.13/1830de6; önce STATUS son çalışma özetini ve lighting013-active/elena-i07-candidates/arrivals002-review-start mesajlarını oku. I07 seçim bekliyor; I11 Claude sahipliğinde; ARRIVALS002 testte. Genel atmosfer tamamlandı değil.
