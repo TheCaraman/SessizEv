@@ -68,7 +68,7 @@ func _ready() -> void:
 
 	# Control taken away mid-stride (dialogue, room, shelter, journal).
 	await _start_walking()
-	check(_camera.position.length() > 0.002, "swaying before the dialogue")
+	check(not _camera.transform.is_equal_approx(Transform3D.IDENTITY), "swaying before the dialogue")
 	_player.control_enabled = false
 	check(_camera.transform.is_equal_approx(Transform3D.IDENTITY), "losing control rests the camera at once")
 	_camera.position = Vector3(0.0, 0.0, -0.1)
@@ -194,7 +194,7 @@ func _walk(fast: bool, seconds: float) -> Dictionary:
 			result.ray_follows = false
 		if _player.get_look_direction().dot(view) < 0.99999:
 			result.look_follows = false
-		var low: bool = offset.y < -0.01
+		var low: bool = offset.y < -BodyCamMotion.BOB_HEIGHT * 0.5
 		if low and not was_low:
 			result.cycles += 1
 		was_low = low
