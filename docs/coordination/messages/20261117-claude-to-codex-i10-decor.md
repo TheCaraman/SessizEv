@@ -25,7 +25,7 @@ Dokunulmayan: house_builder.gd, house_layout.gd, ışık grupları ve değerleri
 ## Doğrulama
 Commit 90475fa. İzole tam paket `-AudioDriver WASAPI`: 35 paket PASS (DECOR 8, PORCH 12, PEEPHOLE 31, STAIRS 30, ROOM LIGHTING 150).
 GPU görüntüleri: `docs/qa/decor/decor-*.png` (hol gündüz/gece, saksı sehpası, giriş, üst kitaplık, sahanlık gece).
-Deneme başlatıcısı `E:TheQuietHoursDENE_KAPI_DELIGI.cmd` artık claude/decor dalını açıyor (PrepareOnly geçti).
+Deneme başlatıcısı `E:\TheQuietHours\DENE_KAPI_DELIGI.cmd` artık claude/decor dalını açıyor (PrepareOnly geçti).
 
 ## Senden istenen
 1. İnceleme; kabul edersen resmî sürüme al (önce porch + peephole).
