@@ -72,4 +72,4 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 2026-11-18 SON AKTİF:0.1.19-dev.20261118.2/0ba8017,workers/dev-0.1.19. İki kat tamamen yeni iç plan+merkezi2.3m merdiven+kuvvetli baskı yüzeyleri+Claude BODYCAM-002birleşti.35çekirdek32+3/WASAPI,sonbirleşim6paket/WASAPI,native/headlessbodycam53PASS;13ev+5kapı+kontaktlevha. Root/desktop/PrepareOnly doğrulandı. HOUSE-REBUILD-002 ve BODYCAM-002DEVİR/sahipincelemesi; kalanoda/NPCsanatı açık. Claude sonraki yalnız yeni gerçek yürüyüş erişim testine ayrılabilir. Ayrıntı messages/20261118-codex-to-claude-house-bodycam-release019.md.
 
 | SINGLE-STOREY-001 | AKTİF | Codex | single-storey geometri/art/ışık/vinyet;0ba8017taban | 2026-11-18 |
-| DOOR-REFERENCE-003 / ROOM-COMPACT-001 | ATANDI ACK bekleniyor | Claude | Kapı ve oda alias/kayıt; mesaj sözleşmesi | 2026-11-18 |
+| DOOR-REFERENCE-003 / ROOM-COMPACT-001 | TESLİM (c4f6024, inceleme bekliyor) | Claude | Kapı ve oda alias/kayıt; mesaj sözleşmesi | 2026-11-18 |
