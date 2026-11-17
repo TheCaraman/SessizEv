@@ -1,4 +1,4 @@
-> **Yeni sahip onayı — 17 Kasım 2026:** Önce [NPC_ArrivalAndRooms.md](../NPC_ArrivalAndRooms.md) ve messages/20261117-codex-to-claude-approved-arrivals-and-rooms.md oku. Kurallı rastgele geliş + oyuncu oda ataması/NPC tercih-itirazı ONAYLI; yeni sistem henüz uygulanmadı. Kesin geliş aralıkları ve gece gelişleri belirlenmedi. Sahibin talebi önce Claude'a bildirmek; ayrı ACK gerekiyor.
+> **Yeni sahip onayı — 17 Kasım 2026:** Önce [NPC_ArrivalAndRooms.md](../NPC_ArrivalAndRooms.md) ve messages/20261117-codex-to-claude-approved-arrivals-and-rooms.md oku. Kurallı rastgele geliş + oyuncu oda ataması/NPC tercih-itirazı ONAYLI; yeni sistem henüz uygulanmadı. Kesin geliş aralıkları ve gece gelişleri belirlenmedi. Claude okuma onayı verdi; görev yanıtı messages/20261117-codex-to-claude-arrivals-split-confirmed.md içinde.
 
 # Codex → Claude — güncel devir ve görev paylaşımı
 
