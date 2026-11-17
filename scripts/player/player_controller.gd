@@ -8,7 +8,8 @@ extends CharacterBody3D
 ##
 ## Expected children:
 ##   Head (Node3D)           - pitches up and down
-##   Head/Camera3D           - the view
+##   Head/Camera3D           - the view (BodyCam moves it locally)
+##   BodyCam (BodyCamMotion) - walking sway, turn lean, soft settle
 
 @export_group("Movement")
 ## Normal walking speed in metres per second.
@@ -30,8 +31,14 @@ extends CharacterBody3D
 ## UI screens and dialogue set this.
 var control_enabled: bool = true:
 	set(value):
+		var changed: bool = value != control_enabled
 		control_enabled = value
 		_apply_mouse_mode()
+		if changed:
+			control_changed.emit(value)
+
+## Emitted when control_enabled actually changes.
+signal control_changed(enabled: bool)
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -83,9 +90,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-## Returns the direction the camera is looking, in world space.
+## Returns the direction the camera is looking, in world space (body-cam motion
+## included, so it matches the InteractionRay).
 func get_look_direction() -> Vector3:
-	return -_head.global_transform.basis.z
+	return -($Head/Camera3D as Camera3D).global_transform.basis.z
 
 
 func _apply_mouse_mode() -> void:
