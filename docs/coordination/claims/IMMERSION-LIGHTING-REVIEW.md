@@ -2,3 +2,4 @@
 Dal codex/lighting-composition; workers/codex-lighting-composition; taban b9a6327.
 Dosyalar scripts/dev/house_blockout.gd, tests/room_lighting_test.gd, tests/power_incident_test.gd, QA. HouseBuilder/Layout/CorridorDressing I11 sahipliğine dokunulmaz.
 Sahibin düz/cansız ortam geri bildirimi: ortam dolgusunu azaltma, pencere ışığının ayrışması, gündüz düşük güçlü yerel abajur odağı. Gündüz abajurların tamamen kapanması önceki teknik varsayımdı, tasarım şartı değil. Yeni ekonomi/mekanik yok. Aynı kamera önce/sonra render; geçici deneme otomatik sanat onayı değildir.
+Dar teslim tamamlandı:1830de6, aktif0.1.13;4paket+WASAPI ve12native görüntü PASS. Sanat kabulü açık. Ayrıntı lighting013-active mesajında.
