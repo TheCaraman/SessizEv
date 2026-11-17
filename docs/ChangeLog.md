@@ -1,3 +1,7 @@
+# 0.1.18-dev.20261117.1 — mutfak V5
+
+Dört mutfak ışık görseli ve veriye bağlı kaynak seçimi; ilgili4paket+WASAPI ve dört native görüntü doğrulandı. Geometri, mekanik ve save şeması aynı. Ayrıntı docs/qa/InteriorV5Kitchen.md.
+
 # Değişiklik günlüğü
 
 ## 0.1.17-dev.20261117.1

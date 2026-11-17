@@ -90,6 +90,29 @@ func _ready() -> void:
 	director.power.repair(true)
 	check(room.get_visual_variant() == "night", "repair refreshes open utility without reopening")
 	SaveManager.delete_save("utility_lighting")
+	var kitchen: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RoomVisuals.DATA_PATH))["kitchen"]
+	for state: Dictionary in cases:
+		GameState.minutes = state["minutes"]
+		GameState.power_incident = {} if state["powered"] else {"state": "outage", "cause": "loose_connection", "inspected": []}
+		room.open("kitchen")
+		EventBus.time_changed.emit(GameState.day, GameState.minutes)
+		for frame: int in 4:
+			await get_tree().process_frame
+		check(room.get_visual_variant() == state["variant"], "kitchen authored variant " + state["variant"])
+		check(room._background.texture.resource_path == kitchen[state["variant"]], "kitchen image selected")
+		check(room._background.modulate == Color.WHITE, "kitchen authored lighting is not darkened twice")
+		check(room._title.modulate == Color.WHITE, "kitchen UI stays readable")
+		var values: Array = kitchen["actor_tints"][state["variant"]]
+		var expected := Color(values[0], values[1], values[2])
+		check(room.get_prop_layer().modulate.is_equal_approx(expected), "kitchen props follow authored source lighting")
+		EventBus.time_changed.emit(GameState.day, GameState.minutes)
+		check(room.get_prop_layer().modulate.is_equal_approx(expected), "kitchen tint is idempotent")
+		if "--capture-kitchen-lighting" in OS.get_cmdline_user_args():
+			DirAccess.make_dir_recursive_absolute("res://docs/qa/kitchen-v5")
+			await RenderingServer.frame_post_draw
+			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/kitchen-v5/%s.png" % state["variant"]) == OK, "real kitchen capture " + state["variant"])
+	director.power.repair(true)
+	check(room.get_visual_variant() == "night", "repair refreshes open kitchen")
 	room.open("pantry")
 	check(room.get_visual_variant() == "fallback", "rooms without authored lighting variants keep fallback")
 	check(room._background.modulate == room.get_prop_layer().modulate, "fallback keeps old world layer tint")
