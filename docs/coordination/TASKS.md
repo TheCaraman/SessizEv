@@ -54,5 +54,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | ARRIVALS-DESIGN-001 | TAMAM | Claude | Yalnız docs/design/ArrivalSchedule.md; seed/takvim, kayıt geçişi ve eksik-NPC yolları; sayılar öneri, kod yok. Başlangıç Claude kaydıyla doğrulanacak. | 2026-11-17 |
 | DAY4-RADIO-001 | TAMAM | Codex ayrı worktree | Radyo final GPU/metadata/Git teslimi; campaign_director/save_manager/game_state/strings.csv koduna paralel yazılmasın. | 2026-11-17 |
 
-| ARRIVALS-001 | UYGULAMA YETKİSİ VERİLDİ | Claude | Ayrı worktree, taban fc36917; takvim/save/ziyaret kodu. Gerçek başlangıç kendi claim kaydıyla doğrulanacak. | 2026-11-17 |
+| ARRIVALS-001 | AKTİF — AŞAMA A TAMAM | Claude | claude-arrivals/93a340f altyapısı mevcut; B entegrasyonu fc36917 tabanına alınacak. Takvim/save/ziyaret kodunda tek yazar. | 2026-11-17 |
 | ROOMS-DESIGN-001 | AKTİF | Codex | Yalnız docs/design/RoomPreferences.md; oynanış/save koduna paralel yazma yok. | 2026-11-17 |

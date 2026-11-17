@@ -9,7 +9,7 @@ Aktif kaynak workers/codex-house-atmosphere-v3, dalcodex/house-atmosphere-v3. So
 HOUSE-ATMOS-004 çizimsel ev/ışık revizyonu (sanat kabulü açık), kalıcı parlaklık/fare/FOV/ana ses, canlı yeni-gece tanıklığı, Gün4 iddia/inkâr/çelişki, izolasyon/kovma, açık suçlama ve kişisel yanıtlar, onaylı akşam bekleme/kapanış özeti, pilli radyo tahliye iddiası ve hafıza kaybı alternatif yolu. Gün4 sabahında artık yanlış erken bitiş mesajı yok. Yeni radyo seslendirmesi veya tam Gün4 gecesi/Gün5 yapılmış değil. Ayrıntılar aktif worktree docs/qa ve ChangeLog içinde.
 
 ## Gerçek iş bölümü
-Claude: ARRIVALS-001 uygulamasına kesin radyo tabanı üzerinden ayrı worktree ile geçebilir; mesaj arrivals-start-now dosyasında. Seed/takvim/save/ziyaret kodunda tek yazardır. Kendi claim kaydıyla fiilî başlangıcını doğrular.
+Claude: ARRIVALS-001 uygulamasına kesin radyo tabanı üzerinden ayrı worktree ile geçebilir; mesaj arrivals-start-now dosyasında. Seed/takvim/save/ziyaret kodunda tek yazardır. Başlangıcı kendi claim ve93a340f altyapı dosyalarıyla doğrulandı. Aşama A hazır; B entegrasyonu için fc36917 tabanı kendisine iletildi.
 Codex: ROOMS-DESIGN-001 yalnız belge; docs/design/RoomPreferences.md oluşturuldu. Claude çalışırken aynı oynanış/save dosyalarına yazmaz. ROOMS-001 kodu takvim entegrasyonundan sonra.
 BODYCAM-V3-001 b4666dd ayrı dalda; bu koordinasyon sanatsal merge onayı değildir.
 

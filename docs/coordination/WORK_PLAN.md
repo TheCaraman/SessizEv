@@ -6,7 +6,7 @@ Tek kaynak kod tabanı: codex/house-atmosphere-v3 @ fc3691727bffa7b940439ebba50d
 |---|---|---|---|
 | DAY4-RADIO-001 | Codex | TAMAM,28paket7078+GPU249 | Checkpoint yayımlandı; Claude artık bunu beklemiyor. |
 | ARRIVALS-DESIGN-001 | Claude | TAMAM,0ec063b; parametre kararı3671a5c | ArrivalSchedule.md ve §9.0 okunup incelendi. |
-| ARRIVALS-001 | Claude | UYGULAMA YETKİSİ VERİLDİ; fiilî claim bekleniyor | Ayrı worktree, kesin taban fc36917. Takvim/save/ziyaret kodunda tek yazar. |
+| ARRIVALS-001 | Claude | AKTİF; Aşama A93a340f ile doğrulandı | Ayrı claude-arrivals worktree. B aşaması fc36917 tabanına alınacak; takvim/save/ziyaret kodunda tek yazar. |
 | ROOMS-DESIGN-001 | Codex | AKTİF, belge işi | docs/design/RoomPreferences.md. Oynanış ve save koduna paralel yazma yok. |
 | ROOMS-001 | Codex | SIRADA | Takvim kodu incelenip entegre edildikten sonra. |
 | BODYCAM-V3-001 | Claude | AYRI DALDA HAZIR | Görsel birleştirme onayı açık; geliş işine eklenmez. |
