@@ -33,9 +33,9 @@ func _ready() -> void:
 	check(_camera.transform.is_equal_approx(Transform3D.IDENTITY), "standing still keeps the camera on the head")
 
 	var walk: Dictionary = await _walk(false, 1.4)
-	check(walk.dip > 0.015 and walk.dip < 0.06, "walking dips the view with each step (%.3f m)" % walk.dip)
-	check(walk.side > 0.008 and walk.side < 0.06, "walking shifts the view side to side (%.3f m)" % walk.side)
-	check(walk.roll > deg_to_rad(0.3) and walk.roll < deg_to_rad(4.0), "walking rolls the view a little (%.2f°)" % rad_to_deg(walk.roll))
+	check(walk.dip > BodyCamMotion.BOB_HEIGHT * 0.6 and walk.dip < 0.06, "walking dips the view with each step (%.3f m)" % walk.dip)
+	check(walk.side > BodyCamMotion.SWAY_SIDE * 0.5 and walk.side < 0.06, "walking shifts the view side to side (%.3f m)" % walk.side)
+	check(walk.roll > deg_to_rad(BodyCamMotion.SWAY_ROLL_DEGREES * 0.4) and walk.roll < deg_to_rad(4.0), "walking rolls the view a little (%.2f°)" % rad_to_deg(walk.roll))
 	check(walk.forward < 0.005, "the camera never moves forward or back")
 	check(walk.reach <= BodyCamMotion.MAX_OFFSET + 0.0001, "offset stays within the wall clearance bound")
 	check(walk.ray_follows, "interaction ray points where the camera points")

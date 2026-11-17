@@ -19,19 +19,19 @@ extends Node
 ## Metres walked per full gait cycle (two steps).
 const STRIDE: float = 1.5
 ## Vertical dip of each step at normal walking speed, metres.
-const BOB_HEIGHT: float = 0.038
+const BOB_HEIGHT: float = 0.022
 ## Side shift over a gait cycle at walking speed, metres.
-const SWAY_SIDE: float = 0.024
+const SWAY_SIDE: float = 0.013
 ## Roll that follows the side shift, degrees.
-const SWAY_ROLL_DEGREES: float = 1.5
+const SWAY_ROLL_DEGREES: float = 0.75
 ## Small nod with each step, degrees.
-const STEP_PITCH_DEGREES: float = 0.55
+const STEP_PITCH_DEGREES: float = 0.3
 ## Lean into a turn, degrees of roll per radian per second of turning.
-const TURN_LEAN: float = 1.2
-const TURN_LEAN_MAX_DEGREES: float = 3.0
+const TURN_LEAN: float = 0.6
+const TURN_LEAN_MAX_DEGREES: float = 1.6
 ## How far the view trails behind the body while turning, degrees per rad/s.
-const TURN_LAG: float = 0.9
-const TURN_LAG_MAX_DEGREES: float = 2.0
+const TURN_LAG: float = 0.5
+const TURN_LAG_MAX_DEGREES: float = 1.1
 ## Upper bound on the camera offset from the head, metres. The body radius is
 ## 0.38 m and the near-plane corners reach 0.122 m at FOV 95, so the view
 ## stays clear of walls (CAMERA-CLIP-001).
