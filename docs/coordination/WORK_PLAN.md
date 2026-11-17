@@ -1,15 +1,15 @@
 # Aktif çalışma planı — 17 Kasım 2026
 
-Tek kaynak kod tabanı: codex/house-atmosphere-v3 @ fc3691727bffa7b940439ebba50d25c19abeb3cd (0.1.8). Ana integration klasörü ortak karar/mesaj merkezi; eski ev kodu topluca aktif dala taşınmaz.
+Aktif deneme kaynağı: workers/dev-0.1.9, release/dev-0.1.9 @ 8de58a62496d8c7140e493899951a407e2f182bc. Masaüstü kısayolunun kök başlatıcısı güncellendi. Eski 0.1.8 worktree ve başlatıcı checkpoint'i korunuyor. Ana integration klasörü ortak karar/mesaj merkezi; eski ev kodu topluca aktif dala taşınmaz.
 
 | İş | Sorumlu | Doğrulanmış durum | Dosya sınırı / sonraki adım |
 |---|---|---|---|
 | DAY4-RADIO-001 | Codex | TAMAM,28paket7078+GPU249 | Checkpoint yayımlandı; Claude artık bunu beklemiyor. |
 | ARRIVALS-DESIGN-001 | Claude | TAMAM,0ec063b; parametre kararı3671a5c | ArrivalSchedule.md ve §9.0 okunup incelendi. |
-| ARRIVALS-001 | Claude | TESLİM a5043bf; birleşik dalda | continuous-integration/ad6d7bd içinde; bağımsız birleşik test ve yayın henüz yok. |
+| ARRIVALS-001 | Claude | TAMAM; 0.1.9 içinde | a5043bf normal merge ile alındı, birleşik 30 paket WASAPI geçti; v6/eski sabit takvim korunur. |
 | ROOMS-DESIGN-001 | Codex / Claude incelemesi | TAMAM ee9ea50 | Uygulama sözleşmesi ayrı geliştirme dalında. |
 | ROOMS-EVALUATOR-001 | Codex / Claude incelemesi | TAMAM 06d4e92; 28 paket WASAPI | Saf hesaplama; UI/save entegrasyonu yok. |
-| ARRIVALS-CHAIN-001 | Claude CLI / Codex incelemesi | AKTİF | G3→G4 gerçek eylem zinciri, izole tek-paket çalıştırıcı; ardından dış 30 paket WASAPI. |
+| ARRIVALS-CHAIN-001 | Claude CLI / Codex incelemesi | TAMAM ec15e36 | G3→G4 üç dal, 249 entegrasyon kontrolü; 30 paket/7406 raporlanmış kontrol WASAPI. |
 | ROOMS-001 | Codex | SIRADA | Takvim kodu incelenip entegre edildikten sonra. |
 | BODYCAM-V3-001 | Claude | AYRI DALDA HAZIR | Görsel birleştirme onayı açık; geliş işine eklenmez. |
 

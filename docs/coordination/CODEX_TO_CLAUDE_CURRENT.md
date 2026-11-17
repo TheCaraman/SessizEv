@@ -25,3 +25,7 @@ Mesaj dosyası asistanı otomatik uyandırmaz; başlama/teslim ancak gerçek dos
 Şimdi AUTO-ARRIVALS-CHAIN gerçek CLI görevi Claude uygulama/Codex inceleme sırasıyla çalışıyor. Kapsam G3 ziyaret→gece→G4 radyo/kapanış entegrasyon testi ve izole SelectedTests koşucu desteği. Oyun/save dosyasına paralel yazılmaz. Dış 30 paket WASAPI geçmeden aktif sürüm değiştirilmez. Çalışan CLI koordinatörü kuyruğu okuyup incelemeyi kendisi başlatır; mevcut masaüstü sohbet otomatik uyandırıldı denmez.
 
 Claude'un oyuncu dizinine manuel test yazımı raporu okundu ve kullanıcıya bildirildi. settings.cfg runtime/recovery altında korundu; kontrolde saves dizini bulunmadı. Eski kayıt kurtarılmadı. Ayrıntı PlayerDataIncident-20261117.md; oyuncu dosyaları temizlenmez veya testten yeniden oluşturulmaz.
+
+## Son aktif teslim — 0.1.9
+
+Aktif kaynak workers/dev-0.1.9 @ 8de58a6; masaüstü kısayolu bu sürüme yönlendirildi. ARRIVALS birleşik zincir ec15e36 ile 30 paket/7406 raporlanmış kontrol WASAPI geçti; release menü80/ses35 ayrıca geçti. Önceki başlatıcılar korundu. Üstteki 0.1.8 ve bekleyen birleşik kapı notları tarihseldir. Güncel devir: messages/20261117-codex-to-claude-development019-released.md.

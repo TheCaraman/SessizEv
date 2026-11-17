@@ -1,0 +1,17 @@
+{
+  "version": "0.1.9-dev.20261117.1",
+  "release_commit": "8de58a62496d8c7140e493899951a407e2f182bc",
+  "tested_gameplay_commit": "ec15e36cdb1a1dac141aa1f1fceeb50b6b2257bd",
+  "suites": 30,
+  "reported_checks": 7406,
+  "arrival_checks": 249,
+  "shelter_checks": 80,
+  "release_menu_checks": 80,
+  "release_audio_checks": 35,
+  "audio": "WASAPI",
+  "full_log": "runtime/continuous/AUTO-ARRIVALS-CHAIN-2.tests.log",
+  "release_subset": "tqh-tests-e65f1f4c6a0a43f399a88e8236d1c8a7",
+  "shortcut_target_verified": true,
+  "standalone_export": false,
+  "manual_full_playthrough": false
+}
