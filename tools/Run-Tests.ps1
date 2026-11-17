@@ -1,6 +1,6 @@
-param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90, [string]$AudioDriver = '', [string[]]$SelectedTests)
+param([string]$GodotPath = $env:GODOT_BIN, [int]$TimeoutSeconds = 90, [string]$AudioDriver = '', [string[]]$SelectedTests, [switch]$KeepProjectCopy)
 $ErrorActionPreference = 'Stop'
-$tests = @('arrival_scheduler_test', 'arrival_integration_test', 'day4_broadcast_test', 'accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'stairs_test', 'player_movement_test')
+$tests = @('arrival_scheduler_test', 'arrival_integration_test', 'arrival_validation_test', 'day4_broadcast_test', 'accusation_test', 'day4_closure_test', 'night_witness_test', 'settings_test', 'door_transition_test', 'night_observation_test', 'isolation_test', 'resident_judgment_test', 'day4_review_test', 'save_write_test', 'house_night_events_test', 'room_lighting_test', 'night_watch_test', 'night_state_test', 'night_timeline_test', 'door_audio_test', 'presentation_test', 'power_incident_test', 'shelter_test', 'campaign_test', 'day2_test', 'menu_test', 'day12_integration_test', 'interaction_test', 'house_layout_test', 'stairs_test', 'player_movement_test')
 # Optional subset of the whitelist above. Checked before Godot starts or any
 # file is written. "-File" passes "a,b" as one string, so commas also split.
 $selectedMode = $PSBoundParameters.ContainsKey('SelectedTests')
@@ -81,4 +81,26 @@ if ($selectedMode) {
 } else {
     Write-Output "All $($tests.Count) core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows."
 }
-Write-Output "Isolated user data: $userDirName (under the platform application-data directory)"
+if ($KeepProjectCopy) {
+    Write-Output "Project and isolated user data kept: $testData / $userDirName"
+} else {
+    # Delete only this successfully completed run. Never scan other test folders.
+    $runName = Split-Path $testData -Leaf
+    $tempRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\')
+    $expectedRun = [IO.Path]::GetFullPath((Join-Path $tempRoot $runName))
+    $expectedProject = [IO.Path]::GetFullPath((Join-Path $expectedRun 'project'))
+    $userRoot = [IO.Path]::GetFullPath((Join-Path $env:APPDATA 'TheQuietHours-Tests'))
+    $expectedUser = [IO.Path]::GetFullPath((Join-Path $userRoot $runName))
+    $actualUser = [IO.Path]::GetFullPath((Join-Path $env:APPDATA $userDirName))
+    if ($runName -notmatch '^tqh-tests-[a-f0-9]{32}$' -or
+        [IO.Path]::GetFullPath($testData) -ne $expectedRun -or
+        [IO.Path]::GetFullPath($testProject) -ne $expectedProject -or
+        $actualUser -ne $expectedUser) {
+        throw 'Refusing cleanup: resolved paths do not belong to this isolated run.'
+    }
+    Remove-Item -LiteralPath $expectedProject -Recurse -Force -ErrorAction Stop
+    if (Test-Path -LiteralPath $expectedUser) {
+        Remove-Item -LiteralPath $expectedUser -Recurse -Force -ErrorAction Stop
+    }
+    Write-Output "Logs kept: $testData; this run's verified project/user directories removed. Use -KeepProjectCopy for native review."
+}

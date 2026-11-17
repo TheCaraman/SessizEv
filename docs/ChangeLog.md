@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.1.14-dev.20261117.1
+- Claude ARRIVALS002 teslimi entegre: kayıtlı takvim sürümü/benzersiz ziyaret/kapıda bekleyen kişi tutarlılığı doğrulanır.
+- Erken gece ziyaretleri, eksik sabit öğretici ve bozuk kimlikler reddedilir; geçerli eski v5 kayıtlarının sabit takvimi korunur.
+- Başarılı testler yalnız kendi doğrulanmış geçici proje/kullanıcı dizinini temizler; loglar ve KeepProjectCopy seçeneği korunur.
+- Görsel yön0.1.13 ile aynı; yeni Elena çizimi seçilmedi/bağlanmadı. QA: ArrivalValidationIntegration.md.
+
 ## 0.1.13-dev.20261117.1
 - Gündüz abajurlar düşük güçte açık; gece tam ışık, kesintide ışık ve emisyon kapalı. Tavan armatürleri genel yıkama yapmıyor.
 - Düz ortam dolgusu azaltıldı; pencere spotu güçlendirildi, pencere dolgusunun menzili kısaltılıp gölgesi açıldı.

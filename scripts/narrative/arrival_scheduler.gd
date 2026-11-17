@@ -22,6 +22,77 @@ const DIALOGUE_DIR: String = "res://resources/dialogue/"
 const STREAM: String = "arrival_schedule_v1"
 ## Stored with the timetable; 0 marks the old fixed timetable of pre-v6 saves.
 const ALGORITHM_VERSION: int = 1
+## Rules every version-1 timetable obeys, frozen here (not read from the pool
+## file) so a later data change can never make an existing save invalid.
+const V1_MAX_PER_DAY: int = 2
+const V1_MIN_GAP: int = 90
+const V1_LATEST_END: int = 1380
+const V1_EARLIEST_START: int = 420
+const V1_TUTORIAL: Dictionary = {"visit": "elena", "day": 1, "start": 1080, "end": 1290}
+
+
+## Meaning checks on top of valid_schedule (ARRIVALS-002): the version is
+## known, a version-0 timetable is exactly the old fixed one, and a version-1
+## timetable keeps the rules it was generated under.
+static func valid_schedule_for_version(schedule: Variant, version: Variant, roster_ids: PackedStringArray) -> bool:
+	if not valid_schedule(schedule, roster_ids):
+		return false
+	if not (version is int or (version is float and is_equal_approx(version, roundf(version)))):
+		return false
+	match int(version):
+		0:
+			return _same_as_legacy(schedule)
+		1:
+			return _valid_v1(schedule)
+	return false
+
+
+## JSON turns whole numbers into floats, so compare field by field.
+static func _same_as_legacy(schedule: Array) -> bool:
+	var legacy: Array[Dictionary] = legacy_schedule()
+	if schedule.size() != legacy.size():
+		return false
+	for i: int in legacy.size():
+		for key: String in ["id", "visit", "npc", "dialogue"]:
+			if str(schedule[i][key]) != str(legacy[i][key]):
+				return false
+		for key: String in ["day", "start", "end"]:
+			if int(schedule[i][key]) != int(legacy[i][key]):
+				return false
+		if Array(schedule[i]["npcs"]) != Array(legacy[i]["npcs"]):
+			return false
+	return true
+
+
+static func _valid_v1(schedule: Array) -> bool:
+	var visits: Dictionary = {}
+	var people: Dictionary = {}
+	var per_day: Dictionary = {}
+	for entry: Dictionary in schedule:
+		var day: int = int(entry["day"])
+		var start: int = int(entry["start"])
+		var end: int = int(entry["end"])
+		if str(entry["id"]) != "d%d_%s" % [day, entry["visit"]] or visits.has(entry["visit"]):
+			return false
+		visits[entry["visit"]] = true
+		for npc: Variant in entry["npcs"]:
+			if people.has(npc):
+				return false
+			people[npc] = true
+		if start < V1_EARLIEST_START or end > V1_LATEST_END:
+			return false
+		if entry["visit"] == V1_TUTORIAL["visit"] and (day != V1_TUTORIAL["day"] or start != V1_TUTORIAL["start"] or end != V1_TUTORIAL["end"]):
+			return false
+		per_day[day] = per_day.get(day, 0) + 1
+		if per_day[day] > V1_MAX_PER_DAY:
+			return false
+	for i: int in schedule.size():
+		for j: int in range(i + 1, schedule.size()):
+			var a: Dictionary = schedule[i]
+			var b: Dictionary = schedule[j]
+			if int(a["day"]) == int(b["day"]) and not (int(b["start"]) >= int(a["end"]) + V1_MIN_GAP or int(a["start"]) >= int(b["end"]) + V1_MIN_GAP):
+				return false
+	return visits.has(V1_TUTORIAL["visit"])
 
 
 static func load_pool(path: String = POOL_PATH) -> Dictionary:
@@ -118,7 +189,9 @@ static func valid_schedule(schedule: Variant, roster_ids: PackedStringArray) -> 
 		for key: String in ["id", "visit", "npc", "npcs", "day", "start", "end", "dialogue"]:
 			if not entry.has(key):
 				return false
-		if not (entry["id"] is String and entry["npc"] is String and entry["npcs"] is Array and entry["dialogue"] is String):
+		if not (entry["id"] is String and entry["visit"] is String and entry["npc"] is String and entry["npcs"] is Array and entry["dialogue"] is String):
+			return false
+		if entry["id"].is_empty() or entry["visit"].is_empty() or entry["dialogue"].is_empty():
 			return false
 		for key: String in ["day", "start", "end"]:
 			if not (entry[key] is int or (entry[key] is float and is_equal_approx(entry[key], roundf(entry[key])))):

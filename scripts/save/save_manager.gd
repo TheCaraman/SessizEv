@@ -193,13 +193,21 @@ func _valid_state_shape(state: Dictionary) -> bool:
 			return false
 	# Version 6 timetable: optional for older saves, which keep the fixed one.
 	if state.has("arrival_schedule"):
-		if not ArrivalScheduler.valid_schedule(state["arrival_schedule"], Roster.get_ids()) or not _whole_number(state.get("arrival_schedule_version")):
+		if not ArrivalScheduler.valid_schedule_for_version(state["arrival_schedule"], state.get("arrival_schedule_version"), Roster.get_ids()):
 			return false
 		var visit_ids: Array = state["arrival_schedule"].map(func(entry: Dictionary) -> String: return entry["id"])
-		for arrival_id: Variant in state.get("resolved_arrivals", []):
-			if not visit_ids.has(arrival_id):
+		var resolved: Array = state.get("resolved_arrivals", [])
+		for arrival_id: Variant in resolved:
+			if not visit_ids.has(arrival_id) or resolved.count(arrival_id) > 1:
 				return false
-		if str(state.get("visitor_arrival", "")) != "" and not visit_ids.has(state["visitor_arrival"]):
+		# Whoever waits at the door belongs to a visit that has begun (ARRIVALS-002).
+		var waiting_visit: String = str(state.get("visitor_arrival", ""))
+		var waiting: String = str(state.get("visitor", ""))
+		if waiting_visit != "":
+			var index: int = visit_ids.find(waiting_visit)
+			if index < 0 or not resolved.has(waiting_visit) or state["arrival_schedule"][index]["npc"] != waiting:
+				return false
+		elif waiting != "":
 			return false
 	for value: Variant in state["resources"].values():
 		if not _whole_number(value) or float(value) < 0:
