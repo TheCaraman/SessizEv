@@ -26,6 +26,9 @@ func _ready() -> void:
 	var room: RoomView = scene.get_node("RoomView")
 	var door: RoomDoor = scene.find_child("Door_living_room", true, false)
 	check(door != null and door.has_node("Hinge/DoorLeaf"), "real hinged leaf")
+	# Start at the real corridor side, independent of the current floor plan.
+	player.global_position = door.to_global(Vector3(0.0, 0.05, 1.3))
+	player.global_rotation = Vector3(0.0, door.global_rotation.y, 0.0)
 	var before: Dictionary = GameState.to_dict()
 	var camera: Camera3D = player.get_node("Head/Camera3D")
 	var camera_before: Transform3D = camera.global_transform

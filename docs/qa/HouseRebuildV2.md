@@ -22,3 +22,4 @@ Tekrar: Run-Tests.ps1 -SelectedTests house_layout_test,stairs_test,camera_cleara
 
 ## Bitti tanımı ve kalanlar
 Yalnız test kapıları geçip başlatıcı yeni checkpoint'e bağlandığında oyuncuya teslim edilir. Normal oyuncu kayıtlarına test yazılmaz. Açık eski oyun yeni kaynakları almaz; yeniden açılmalı. Kalan2D odaların stili ve V5 tam-boy NPC'ler ayrı işler. Oyun bütün olarak tamamlanmış değildir. Daha önceki0.1.18 sürümü geri dönüş için korunur.
+Ek kapı incelemesi: test başlangıcı gerçek kapının dönüşümünden türetilir; emekli plandaki sabit konum kullanılmaz. Yeni evde native door_transition54PASS /5yakalama, stderr boş (runtime/house-v2-door-gpu.*). Görüntüler aynı QA klasöründe; açılma görüntüsü incelendi.
