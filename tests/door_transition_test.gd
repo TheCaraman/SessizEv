@@ -1,6 +1,7 @@
 extends Node
 var checks: int = 0
 var failures: int = 0
+var _language_before: String
 func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok:
@@ -8,8 +9,10 @@ func check(ok: bool, label: String) -> void:
 		push_error("FAIL: " + label)
 
 func _ready() -> void:
+	_check_shared_world()
 	GameState.new_campaign(42)
-	TranslationServer.set_locale("tr")
+	_language_before = Settings.language
+	check(Settings.set_language("tr") == OK, "capture/test language follows persisted setting")
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(1920, 1080)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -34,11 +37,19 @@ func _ready() -> void:
 	var threshold: MeshInstance3D = door.get_node("RoomThreshold")
 	check(threshold.visible and threshold.material_override is ShaderMaterial, "physical opening uses screen-matched room preview")
 	var preview_texture: Texture2D = threshold.material_override.get_shader_parameter("room_image")
-	check(preview_texture != null and preview_texture.resource_path == RoomVisuals.new().resolve("living_room", GameState.minutes, true)["path"], "opening shows the actual room variant before fullscreen handoff")
+	check(preview_texture is ViewportTexture and door._composition.background.texture.resource_path == RoomVisuals.new().resolve("living_room", GameState.minutes, true)["path"], "opening composites the actual room variant")
+	check(door._composition.props.get_prop_ids().has("media_console"), "props already exist behind the physical opening")
+	var director: CampaignDirector = scene.get_node("CampaignDirector")
+	GameState.power_incident = {"state": "outage", "cause": "grid_loss", "inspected": []}
+	director.power.power_changed.emit(false)
+	check(door._composition.background.texture.resource_path == RoomVisuals.new().resolve("living_room", GameState.minutes, false)["path"], "power-only event refreshes the open aperture without advancing time")
+	GameState.power_incident = before["power_incident"].duplicate(true)
+	director.power.power_changed.emit(true)
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-opening.png") == OK, "opening image saved")
 	await get_tree().create_timer(0.35).timeout
+	check(absf(camera.global_position.y - camera_before.origin.y) < 0.001, "approach preserves eye height instead of crouching into doorway")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-approaching.png") == OK, "approach image saved")
@@ -46,6 +57,8 @@ func _ready() -> void:
 	check(room.is_open() and room.get_room_id() == "living_room" and not player.control_enabled, "opening resolves to correct room")
 	check(camera.global_position.distance_to(camera_before.origin) < 0.001, "camera returns to original corridor position behind room view")
 	check(not room._transition_cover.visible, "handoff adds no second black cover")
+	check(door._composition.props.get_prop_ids() == (room.get_prop_layer() as RoomProps).get_prop_ids(), "same prop set before and after handoff")
+	check(door._preview_viewport.render_target_update_mode == SubViewport.UPDATE_DISABLED, "hidden preview does not render every frame")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-entered.png") == OK, "room handoff image saved")
@@ -84,8 +97,63 @@ func _ready() -> void:
 	check(room.is_open() and camera.global_position.distance_to(camera_before.origin) < 0.001, "reduced motion opens room without moving camera")
 	room.close()
 	check(Settings.set_number("camera_motion", motion) == OK, "motion preference restored for other checks")
+	await get_tree().create_timer(RoomDoor.CLOSE_SECONDS + 0.05).timeout
+	GameState.admit("elena_ward", "guest_a_1")
+	var occupied_door: RoomDoor = scene.find_child("Door_guest_a", true, false)
+	check(occupied_door != null, "real occupied bedroom has a corridor door")
+	if occupied_door != null:
+		player.global_position = occupied_door.to_global(Vector3(0.0, 0.05, 1.3))
+		player.global_rotation = Vector3(0.0, occupied_door.global_rotation.y, 0.0)
+		occupied_door.interact(player)
+		await get_tree().create_timer(0.3).timeout
+		check(occupied_door._composition.resident_ids == ["elena_ward"], "resident is visible through the opening before room UI")
+		if "--capture-door" in OS.get_cmdline_user_args():
+			await RenderingServer.frame_post_draw
+			check(viewport.get_texture().get_image().save_png("res://docs/qa/door-occupied-opening.png") == OK, "occupied opening saved")
+		await get_tree().create_timer(0.7).timeout
+		check(room.get_room_id() == &"guest_a" and room._world.resident_ids == occupied_door._composition.resident_ids, "resident identities match after physical handoff")
+		if "--capture-door" in OS.get_cmdline_user_args():
+			await RenderingServer.frame_post_draw
+			check(viewport.get_texture().get_image().save_png("res://docs/qa/door-occupied-entered.png") == OK, "occupied room saved")
+		room.close()
 	scene.free()
 	await get_tree().process_frame
+	check(Settings.set_language(_language_before) == OK, "test restores language preference")
 	if failures == 0:
 		print("DOOR TRANSITION TEST: PASS (%d checks)" % checks)
 	get_tree().quit(0 if failures == 0 else 1)
+
+func _check_shared_world() -> void:
+	GameState.new_campaign(42)
+	GameState.admit("elena_ward", "guest_a_1")
+	var world := RoomWorld.new()
+	world.size = Vector2(1920.0, 1080.0)
+	add_child(world)
+	var before: Dictionary = GameState.to_dict()
+	world.show_room(&"guest_a", 420, true)
+	check(world.resident_ids == ["elena_ward"] and world.characters.get_child_count() == 1, "shared world draws the real bedroom resident once")
+	check(world.characters.get_child(0).get_meta(&"npc_id") == "elena_ward", "figure identity is shared by preview and room")
+	world.show_room(&"guest_a", 420, true)
+	check(world.characters.get_child_count() == 1 and GameState.to_dict() == before, "repeated rendering neither duplicates figures nor mutates campaign")
+	GameState.jobs["elena_ward"] = {"job": "cooking", "room": "kitchen", "day": 1, "start": 420, "end": 480}
+	world.show_room(&"guest_a", 420, true)
+	check(world.resident_ids.is_empty(), "working resident is not simultaneously shown in bedroom")
+	world.show_room(&"kitchen", 420, true)
+	check(world.resident_ids == ["elena_ward"], "job location is the only displayed location")
+	GameState.jobs.clear()
+	GameState.npcs["elena_ward"]["isolated"] = true
+	GameState.flags["isolation_ready"] = true
+	world.show_room(&"guest_a", 420, true)
+	check(world.resident_ids.is_empty(), "isolated resident cannot appear in ordinary bedroom")
+	world.show_room(&"isolation", 420, true)
+	check(world.resident_ids == ["elena_ward"], "isolation uses the same central location model")
+	GameState.npcs["elena_ward"]["isolated"] = false
+	GameState.remove_npc("elena_ward", "expelled")
+	world.show_room(&"guest_a", 420, true)
+	check(world.resident_ids.is_empty(), "expelled resident has no room figure")
+	for powered: bool in [true, false]:
+		world.show_room(&"living_room", 1380, powered)
+		var expected: Dictionary = RoomVisuals.new().resolve("living_room", 1380, powered)
+		check(world.background.texture.resource_path == expected["path"] and world.props.get_prop_ids().has("media_console"), "night/outage composition keeps correct background and props")
+		check(world.props.modulate == world.characters.modulate, "actors and props share lighting, UI excluded")
+	world.free()

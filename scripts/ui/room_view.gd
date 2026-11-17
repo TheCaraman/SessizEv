@@ -22,6 +22,7 @@ const RoomFigureScript = preload("res://scripts/art/room_figure.gd")
 var _director: CampaignDirector
 var _room_id: StringName = &""
 var _root: Control
+var _world: RoomWorld
 var _background: TextureRect
 var _prop_layer: Control
 var _character_layer: HBoxContainer
@@ -34,7 +35,6 @@ var _actions: HFlowContainer
 var _links: HBoxContainer
 var _hint: Label
 var _placeholder_texture: Texture2D
-var _visuals := RoomVisuals.new()
 var _visual_variant: String = ""
 var _visual_path: String = ""
 var _reveal_tween: Tween
@@ -162,23 +162,13 @@ func _refresh() -> void:
 	if not visible:
 		return
 	var powered: bool = _director == null or _director.power.is_powered()
-	var visual: Dictionary = _visuals.resolve(str(_room_id), GameState.minutes, powered)
+	var visual: Dictionary = _world.show_room(_room_id, GameState.minutes, powered)
 	_visual_variant = visual["variant"]
-	if _visual_path != visual["path"]:
-		_visual_path = visual["path"]
-		var has_image: bool = ResourceLoader.exists(_visual_path)
-		_background.texture = load(_visual_path) as Texture2D if has_image else _get_placeholder()
-		(_prop_layer as RoomProps).show_room(str(_room_id), _background.texture.get_size())
-		_placeholder_note.visible = not has_image
-	_background.modulate = Settings.world_tint(visual["background_tint"])
-	# Only world layers share the temporary lighting tint; UI remains readable.
-	_character_layer.modulate = Settings.world_tint(visual["actor_tint"])
-	_prop_layer.modulate = Settings.world_tint(visual["actor_tint"])
-	_clear(_character_layer)
+	_visual_path = visual["path"]
+	_placeholder_note.visible = not visual["available"]
 	var names := PackedStringArray()
-	for npc_id: String in GameState.get_room_occupants(_room_id):
+	for npc_id: String in _world.resident_ids:
 		names.append(Roster.get_display_name(npc_id))
-		_character_layer.add_child(_make_figure(npc_id))
 	_present.visible = not names.is_empty()
 	_present.text = tr("ROOMVIEW_PRESENT").format({"names": ", ".join(names)})
 
@@ -221,28 +211,7 @@ func _make_button(text: String) -> Button:
 ## A resident's figure: their picture if it exists, otherwise a silhouette
 ## with their name.
 func _make_figure(npc_id: String) -> Control:
-	var path: String = CHARACTER_IMAGE_PATH % npc_id
-	if ResourceLoader.exists(path):
-		var picture := RoomFigureScript.new()
-		picture.texture = load(path) as Texture2D
-		return picture
-	var silhouette := Panel.new()
-	silhouette.custom_minimum_size = Vector2(220.0, 520.0)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.03, 0.05, 0.05, 0.94)
-	style.border_color = Color(0.22, 0.26, 0.24)
-	style.set_border_width_all(2)
-	style.corner_radius_top_left = 80
-	style.corner_radius_top_right = 80
-	silhouette.add_theme_stylebox_override(&"panel", style)
-	silhouette.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var label: Label = _make_label(22)
-	label.text = Roster.get_display_name(npc_id)
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	silhouette.add_child(label)
-	return silhouette
+	return RoomWorld.make_figure(npc_id)
 
 
 func _build_interface() -> void:
@@ -250,35 +219,13 @@ func _build_interface() -> void:
 	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_root)
 
-	var backdrop := ColorRect.new()
-	backdrop.color = Color(0.01, 0.02, 0.02)
-	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_root.add_child(backdrop)
-
-	_background = TextureRect.new()
-	_background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(_background)
-
-	_prop_layer = RoomProps.new()
-	_prop_layer.name = "Props"
-	_prop_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_prop_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(_prop_layer)
-
-	# Figures stand along the lower middle of the picture.
-	_character_layer = HBoxContainer.new()
-	_character_layer.name = "Characters"
-	_character_layer.anchor_left = 0.2
-	_character_layer.anchor_right = 0.8
-	_character_layer.anchor_top = 0.42
-	_character_layer.anchor_bottom = 0.90
-	_character_layer.alignment = BoxContainer.ALIGNMENT_CENTER
-	_character_layer.add_theme_constant_override(&"separation", 40)
-	_character_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(_character_layer)
+	_world = RoomWorld.new()
+	_world.name = "World"
+	_world.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_root.add_child(_world)
+	_background = _world.background
+	_prop_layer = _world.props
+	_character_layer = _world.characters
 
 	var header := VBoxContainer.new()
 	header.position = Vector2(48.0, 76.0)
