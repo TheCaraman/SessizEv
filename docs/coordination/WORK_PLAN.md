@@ -1,5 +1,7 @@
 # Aktif çalışma planı — 17 Kasım 2026
 
+SON ÇALIŞMA: Codex I04 kapı geçişi4e80b87 ayrı dalda, ana sürüme alınmadı. Fiziksel önizleme/Escape/hareket azaltma çalışıyor; prop ve NPC katmanlarının geçişte sıçraması açık iş. Aynı kompozisyonun iki görünümde kullanılması sonraki somut adım. Claude I03 merdiven teslimi151e84e ayrıca bekliyor. Mesaj:20261117-codex-to-claude-i04-checkpoint.md.
+
 SON TESLİM: aktif oyuncu kaynağı E:/TheQuietHours/workers/dev-0.1.11 @ 11ef493. Masaüstü kısayolu0.1.11'i açıyor. I01/I02 ışık: gündüz pencereler, gece yerel abajur, gerçek kesinti;30paket7546WASAPI ve8gerçek GPU görüntüsü doğrulandı. Aşağıdaki önceki aktif sürüm satırları tarihseldir. Claude I03 merdiven işi ayrı sürüyor; bu ışık tesliminde merdiven/kapı/NPCsanatı yok.
 
 TAŞINMA: tek yazım kökü artık E:/TheQuietHours. Ortak depo E:/TheQuietHours/project; bütün workers/tools/runtime taşındı. C: konumu yalnız güvenlik kopyasıdır. Ayrıntı messages/20261117-project-moved-to-e.md. Oda işi kuyruğu E: üzerinden yeniden başlatıldı; manuel Claude ARRIVALS-002 de E: altındaki kendi worktree'sinde sürmeli.
