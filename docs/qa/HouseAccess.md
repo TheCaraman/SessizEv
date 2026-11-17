@@ -1,11 +1,11 @@
-﻿# HOUSE-ACCESS-001 â€” walking access to every door (house v2, 0.1.19)
+# HOUSE-ACCESS-001 — walking access to every door (house v2, 0.1.19)
 
 Branch `claude/house-access`, base 0ba8017. Test: `tests/house_access_test.gd`, registered in Run-Tests after `bodycam_test`. No geometry, material or launcher file was changed.
 
 ## Method
 
 - **Grid:** 0.2 m cells over the walkable areas (`HouseLayout.WALKABLE_ROOMS`: vestibule, hall, landing, corridor) on both floors. A cell is free only when:
-  - the real player capsule fits there without touching anything (radius and height read from `player.tscn`, 0.38 Ã— 1.75, lifted 6 cm);
+  - the real player capsule fits there without touching anything (radius and height read from `player.tscn`, 0.38 × 1.75, lifted 6 cm);
   - a ray finds a floor beneath it within 12 cm of the storey height.
 - **Control checks:** the grid must reject three spots:
   - the capsule against the hall wall;
