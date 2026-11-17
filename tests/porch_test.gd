@@ -42,7 +42,7 @@ func _ready() -> void:
 	check(porch.global_position.distance_to(Vector3.ZERO) < 0.001, "porch set is authored in world coordinates")
 
 	var lantern: OmniLight3D = porch.get_node("PorchLantern")
-	var street: OmniLight3D = porch.get_node("StreetLamp")
+	var street: OmniLight3D = porch.get_node("StreetSupply/StreetLamp")
 	var daylight: OmniLight3D = porch.get_node("PorchDaylight")
 	check(lantern.is_in_group("electric_lights") and lantern.is_in_group("local_lamp_lights"), "porch lantern is on the house supply")
 	check(street.is_in_group("moon_lights") and not street.is_in_group("electric_lights"), "street lamp is not on the house supply")
@@ -50,10 +50,23 @@ func _ready() -> void:
 	check(lantern.visible and lantern.light_energy > 0.0, "porch lantern burns at night with power")
 	check(street.visible and street.light_energy > 0.0, "street lamp burns at night")
 
-	GameState.power_incident = {"state": "outage", "cause": "grid_loss", "inspected": []}
+	GameState.power_incident = {"state": "outage", "cause": "loose_connection", "inspected": []}
 	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	await get_tree().process_frame
 	check(not lantern.visible, "a power cut puts the porch lantern out")
+	check(street.is_visible_in_tree(), "a house-only fault leaves the street lamp lit")
+
+	GameState.power_incident = {"state": "outage", "cause": "grid_outage", "inspected": []}
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	await get_tree().process_frame
+	check(not lantern.visible and not street.is_visible_in_tree(), "a grid outage darkens the porch and the street")
+	check((porch.get_node("StreetLampHeadDark") as Node3D).visible, "the dead lamp head still stands there")
+
+	GameState.power_incident = {"state": "restored", "cause": "grid_outage", "inspected": []}
+	GameState.minutes = 1360
+	EventBus.time_changed.emit(GameState.day, GameState.minutes)
+	await get_tree().process_frame
+	check(street.is_visible_in_tree(), "the street lamp returns when the outage is over")
 
 	GameState.power_incident = {}
 	GameState.minutes = 660

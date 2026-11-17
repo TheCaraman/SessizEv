@@ -37,7 +37,7 @@ func _ready() -> void:
 	add_child(camera)
 	camera.make_current()
 	if outage:
-		GameState.power_incident = {"state": "outage", "cause": "grid_loss", "inspected": []}
+		GameState.power_incident = {"state": "outage", "cause": "grid_outage", "inspected": []}
 		EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	await get_tree().create_timer(0.8).timeout
 	await RenderingServer.frame_post_draw
