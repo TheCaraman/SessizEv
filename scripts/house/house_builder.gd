@@ -27,7 +27,6 @@ func build() -> void:
 	_build_slabs()
 	for wall: Dictionary in HouseLayout.WALLS:
 		_build_wall(wall)
-	_build_stairs()
 	_build_ceilings()
 	_build_lamps()
 	_build_runners()
@@ -50,13 +49,9 @@ func _build_slabs() -> void:
 	# Ground floor: one piece.
 	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 0.0)
 
-	# The upper floor wraps the stairs and the double-height entrance opening.
-	var upper: float = HouseLayout.STOREY_HEIGHT
-	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), HouseLayout.VOIDS):
-		_add_slab(slabs, piece, upper)
+	# A single roof: no second floor, stair hole or hidden upper geometry.
+	_add_slab(slabs, Rect2(0.0, 0.0, w, d), HouseLayout.STOREY_HEIGHT)
 
-	# Continuous roof above both normal rooms and the tall entrance.
-	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 2.0 * HouseLayout.STOREY_HEIGHT)
 
 
 ## Splits [param area] along every edge of [param holes] and returns the
@@ -302,119 +297,6 @@ func _add_door(
 
 ## The staircase is a single ramp: bottom at the south edge on floor 0, top at
 ## the north edge on floor 1 (docs/DecisionLog.md, V-012).
-func _build_stairs() -> void:
-	var stairs: Rect2 = HouseLayout.STAIRS
-	var rise: float = HouseLayout.STOREY_HEIGHT
-	var run: float = stairs.size.y
-	var angle: float = atan2(rise, run)
-	var thickness: float = 0.2
-	var center: Vector2 = stairs.get_center()
-	var ramp: StaticBody3D = _add_box(
-		self,
-		Vector3(center.x, rise * 0.5 - thickness * 0.5 * cos(angle), center.y),
-		Vector3(stairs.size.x, thickness, sqrt(rise * rise + run * run)),
-		&"wood_stairs",
-		Vector3(angle, 0.0, 0.0)
-	)
-	ramp.name = "Stairs"
-	# Solid closed underside: the central flight is not a walkable low tunnel.
-	# Without this volume the head could enter the decorative step risers.
-	var underside := StaticBody3D.new()
-	underside.name = "StairUnderside"
-	var underside_shape := ConvexPolygonShape3D.new()
-	var underside_points := PackedVector3Array()
-	for x: float in [stairs.position.x, stairs.end.x]:
-		underside_points.append(Vector3(x, -0.2, stairs.position.y))
-		underside_points.append(Vector3(x, rise - 0.02, stairs.position.y))
-		underside_points.append(Vector3(x, -0.2, stairs.end.y))
-	underside_shape.points = underside_points
-	var underside_collision := CollisionShape3D.new()
-	underside_collision.shape = underside_shape
-	underside.add_child(underside_collision)
-	add_child(underside)
-	# The ramp is only what the player walks on; the visible stairs are steps.
-	(ramp.get_child(1) as MeshInstance3D).visible = false
-
-	var steps := Node3D.new()
-	steps.name = "Steps"
-	add_child(steps)
-	var count: int = 18
-	var step_rise: float = rise / float(count)
-	var step_run: float = run / float(count)
-	var inner_width: float = stairs.size.x - HouseLayout.INTERIOR_WALL_THICKNESS
-	for i: int in count:
-		var top: float = step_rise * float(i + 1)
-		var z: float = stairs.end.y - step_run * (float(i) + 0.5)
-		# Solid block up to this step, a paler riser, and a tread with a nosing.
-		_add_mesh(steps, Vector3(center.x, top * 0.5, z), Vector3(inner_width, top, step_run), &"wood_stairs")
-		_add_mesh(
-			steps, Vector3(center.x, top - step_rise * 0.5, z + step_run * 0.5 + 0.004),
-			Vector3(inner_width, step_rise - 0.03, 0.008), &"frame_paint"
-		)
-		_add_mesh(
-			steps, Vector3(center.x, top - 0.012, z + 0.014),
-			Vector3(inner_width, 0.03, step_run + 0.03), &"wood_stairs"
-		)
-
-	# Open side of the stair: a balustrade over the hall, with an invisible
-	# barrier following the slope so nobody steps off into the hall.
-	var length: float = sqrt(rise * rise + run * run)
-	var edge_x: float = stairs.position.x + 0.03
-	# A slanted prism with vertical ends, so it stops exactly at the foot and
-	# the head of the stairs (IMMERSION I-03). A box rotated to the slope stuck
-	# its corners 25 cm out past both ends, just above the floor, and caught
-	# players stepping off the bottom step beside the hall guard.
-	var barrier := StaticBody3D.new()
-	barrier.name = "StairBalustrade"
-	var barrier_shape := ConvexPolygonShape3D.new()
-	var half_thickness: float = 0.03
-	var barrier_height: float = 1.0
-	var points := PackedVector3Array()
-	for x: float in [edge_x - half_thickness, edge_x + half_thickness]:
-		points.append(Vector3(x, 0.0, stairs.end.y))
-		points.append(Vector3(x, barrier_height, stairs.end.y))
-		points.append(Vector3(x, rise, stairs.position.y))
-		points.append(Vector3(x, rise + barrier_height, stairs.position.y))
-	barrier_shape.points = points
-	var barrier_collision := CollisionShape3D.new()
-	barrier_collision.shape = barrier_shape
-	barrier.add_child(barrier_collision)
-	add_child(barrier)
-	var balustrade_rail: MeshInstance3D = _add_mesh(steps, Vector3(edge_x, rise * 0.5 + 0.95, center.y), Vector3(0.07, 0.06, length), &"wood_stairs")
-	balustrade_rail.rotation.x = angle
-	for i: int in count:
-		var t: float = (float(i) + 0.5) / float(count)
-		var step_top: float = step_rise * float(i + 1)
-		PropMeshes.cylinder(steps, Vector3(edge_x, step_top + 0.46, stairs.end.y - run * t), 0.014, 0.014, 0.92,
-			HouseMaterials.get_material(&"frame_paint"), Vector3.ZERO, 8)
-
-	# Handrail on the hall-side wall, following the slope, on four brackets.
-	var rail_x: float = stairs.position.x + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + 0.07
-	var rail: MeshInstance3D = _add_mesh(
-		steps, Vector3(rail_x, rise * 0.5 + 0.95, center.y),
-		Vector3(0.05, 0.05, sqrt(rise * rise + run * run) - 0.3), &"wood_stairs"
-	)
-	rail.rotation.x = angle
-	for i: int in 4:
-		var t: float = (float(i) + 0.5) / 4.0
-		_add_mesh(
-			steps, Vector3(rail_x - 0.035, rise * t + 0.92, stairs.end.y - run * t),
-			Vector3(0.07, 0.02, 0.02), &"brass"
-		)
-
-
-	# The central flight is open on both sides: mirror the slope guard and rails.
-	var opposite_guard := barrier.duplicate() as StaticBody3D
-	opposite_guard.name = "StairBalustradeEast"
-	opposite_guard.position.x = stairs.size.x - 0.06
-	add_child(opposite_guard)
-	for item: Node in steps.get_children():
-		if item is Node3D and item.position.x < stairs.position.x + 0.25:
-			var mirrored := item.duplicate() as Node3D
-			mirrored.position.x = 2.0 * center.x - item.position.x
-			steps.add_child(mirrored)
-
-## Pale plaster ceiling panels over the corridors and the stairwell.
 func _build_ceilings() -> void:
 	var ceilings := Node3D.new()
 	ceilings.name = "Ceilings"
@@ -466,11 +348,7 @@ func _build_lamps() -> void:
 			lamps, "Lamp_%s" % room["id"],
 			Vector3(center.x, ceiling_y, center.y), maxf(rect.size.x, rect.size.y) + 2.0
 		)
-	var stair_center: Vector2 = HouseLayout.STAIRS.get_center()
-	_add_lamp(
-		lamps, "Lamp_stairs",
-		Vector3(stair_center.x, HouseLayout.STOREY_HEIGHT + WALL_HEIGHT, stair_center.y), 7.5
-	)
+
 
 
 ## A flat ceiling fitting with a light just below it.
@@ -588,6 +466,20 @@ func _add_window(
 	daylight.shadow_blur = 0.4
 	daylight.light_volumetric_fog_energy = 2.4
 	window.add_child(daylight)
+	# A localized dust volume catches real blind shadows without fogging the house.
+	var haze := FogVolume.new()
+	haze.name = "WindowDust"
+	haze.shape = RenderingServer.FOG_VOLUME_SHAPE_BOX
+	haze.size = Vector3(width + 0.8, 2.4, 4.2)
+	haze.position = Vector3(-0.35, 1.45, -out * 2.0)
+	var dust := FogMaterial.new()
+	dust.density = 0.004
+	dust.albedo = Color(0.82, 0.87, 0.77)
+	dust.edge_fade = 0.45
+	haze.material = dust
+	haze.add_to_group("window_dust")
+	window.add_child(haze)
+	_add_window_shafts(window, width, out)
 	# Broad low-energy bounced daylight, local to the actual window.
 	var bounce := OmniLight3D.new()
 	bounce.name = "WindowBounce"
@@ -621,6 +513,35 @@ func _add_window(
 ## Dusty venetian blinds across a window: a head rail, two cords and a stack
 ## of thin tilted slats. One slat hangs askew. [param out] is the outdoor Z
 ## sign in window space.
+func _add_window_shafts(window: Node3D, width: float, out: float) -> void:
+	# Soft authored scattering sheets; world depth hides them behind real walls.
+	# Their brightness follows the window source, never the household power.
+	for index: int in 3:
+		var height: float = 1.85 + float(index) * 0.12
+		var vertices := PackedVector3Array([
+			Vector3(-width * 0.32, height, -out * 0.16),
+			Vector3(width * 0.32, height, -out * 0.16),
+			Vector3(width * 0.55 - 0.3, height - 0.5, -out * 4.2),
+			Vector3(-width * 0.55 - 0.3, height - 0.5, -out * 4.2)
+		])
+		var arrays: Array = []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = vertices
+		arrays[Mesh.ARRAY_TEX_UV] = PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
+		arrays[Mesh.ARRAY_INDEX] = PackedInt32Array([0, 1, 2, 0, 2, 3])
+		var mesh := ArrayMesh.new()
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		var shaft := MeshInstance3D.new()
+		shaft.name = "WindowShaft_%d" % index
+		shaft.mesh = mesh
+		shaft.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var material := ShaderMaterial.new()
+		material.shader = preload("res://shaders/window_shaft.gdshader")
+		shaft.material_override = material
+		shaft.add_to_group("window_shafts")
+		window.add_child(shaft)
+
+
 func _add_blinds(window: Node3D, width: float, top: float, bottom: float, z: float, out: float) -> void:
 	var slat_material: Material = HouseMaterials.get_material(&"blind_slat")
 	_add_mesh(window, Vector3(0.0, top + 0.03, z), Vector3(width + 0.06, 0.045, 0.06), &"frame_paint")
@@ -671,26 +592,23 @@ func _add_curtain(
 
 ## Carpet runners along the downstairs hall and the upstairs corridor.
 func _build_runners() -> void:
-	# Downstairs down the middle of the hall; upstairs along the gallery,
-	# clear of the parapet over the open hall.
-	var placements: Array[Array] = [[5.15, 6.2, 5.8, RUNNER_WIDTH], [5.15, 6.2, 5.8, 1.1]]
-	for floor_index: int in 2:
-		var length: float = placements[floor_index][2]
-		var runner_width: float = placements[floor_index][3]
+	var placements: Array[Dictionary] = [
+		{"center": Vector3(7.0, 0.006, 7.5), "length": 7.2, "width": 1.35, "yaw": 0.0},
+		{"center": Vector3(12.0, 0.006, 4.25), "length": 5.4, "width": 1.15, "yaw": PI * 0.5}
+	]
+	for placement: Dictionary in placements:
 		var quad := QuadMesh.new()
-		quad.size = Vector2(runner_width, length)
-		# The runner texture is square; repeat it along the length.
+		quad.size = Vector2(placement["width"], placement["length"])
 		var material := HouseMaterials.get_material(&"runner").duplicate() as StandardMaterial3D
-		material.uv1_scale = Vector3(1.0, length / runner_width, 1.0)
+		material.uv1_scale = Vector3(1.0, float(placement["length"]) / float(placement["width"]), 1.0)
 		quad.material = material
 		var runner := MeshInstance3D.new()
-		runner.name = "Runner_F%d" % floor_index
+		runner.name = "Runner_%d" % get_child_count()
 		runner.mesh = quad
-		runner.rotation.x = -PI * 0.5
-		runner.position = Vector3(placements[floor_index][0], HouseLayout.floor_height(floor_index) + 0.006, placements[floor_index][1])
+		runner.rotation = Vector3(-PI * 0.5, placement["yaw"], 0.0)
+		runner.position = placement["center"]
 		runner.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(runner)
-
 
 ## Adds a solid, visible box. [param euler] is the rotation in radians.
 func _add_box(

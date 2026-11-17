@@ -49,7 +49,7 @@ func _ready() -> void:
 	body_query.exclude = [player.get_rid()]
 
 	# Control: a sphere on a known wall face must register, or the probe is blind.
-	query.transform = Transform3D(Basis.IDENTITY, Vector3(4.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + reach * 0.5, 1.6, 6.2))
+	query.transform = Transform3D(Basis.IDENTITY, Vector3(5.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + reach * 0.5, 1.6, 6.2))
 	check(not space.intersect_shape(query, 1).is_empty(), "probe sees the hall wall it touches")
 
 	var tested: int = 0
@@ -185,6 +185,9 @@ func _add_probes(scene: Node, player: Node) -> int:
 	for node: Node in scene.find_children("*", "MeshInstance3D", true, false):
 		var part := node as MeshInstance3D
 		if part.mesh == null or not part.is_visible_in_tree() or player.is_ancestor_of(part):
+			continue
+		# Transparent light scattering is intentionally traversable, not a surface.
+		if part.is_in_group("window_shafts"):
 			continue
 		var shape: ConcavePolygonShape3D = part.mesh.create_trimesh_shape()
 		if shape == null:

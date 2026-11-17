@@ -30,6 +30,23 @@ func _ready() -> void:
 	backdrop.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	backdrop.add_to_group("window_backdrops")
 	add_child(backdrop)
+	# The new L wing ends at a real side window, with its own exterior view.
+	var side_view := MeshInstance3D.new()
+	side_view.name = "SideStreet"
+	var side_quad := QuadMesh.new()
+	side_quad.size = Vector2(20.0, 10.0)
+	side_view.mesh = side_quad
+	side_view.position = Vector3(22.0, 4.5, 4.25) - position
+	side_view.rotation.y = -PI * 0.5
+	var side_paint := _material(Color.WHITE)
+	side_paint.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	side_paint.cull_mode = BaseMaterial3D.CULL_DISABLED
+	side_paint.albedo_texture = load("res://assets/exterior/briar_glen_street_day.png")
+	side_paint.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	side_view.material_override = side_paint
+	side_view.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	side_view.add_to_group("window_backdrops")
+	add_child(side_view)
 	# Porch, gate and street lamp for the door view (IMMERSION I-05); authored in
 	# world coordinates, so undo this node's offset.
 	var porch: Node3D = preload("res://scripts/house/porch_set.gd").new()

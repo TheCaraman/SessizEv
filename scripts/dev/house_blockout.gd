@@ -28,9 +28,10 @@ var _window_lights: Array[Dictionary] = []
 var _moon_lights: Array[Dictionary] = []
 ## The house environment; its fill light follows the clock.
 var _environment: Environment
-const DAY_AMBIENT: float = 0.18
-const NIGHT_AMBIENT: float = 0.075
+const DAY_AMBIENT: float = 0.24
+const NIGHT_AMBIENT: float = 0.09
 var _window_materials: Array[Dictionary] = []
+var _window_shafts: Array[ShaderMaterial] = []
 
 
 func _ready() -> void:
@@ -116,6 +117,9 @@ func _physics_process(_delta: float) -> void:
 
 func _cache_electric_lighting() -> void:
 	# Cache this session only; another preview/session must keep its own materials.
+	for shaft: Node in get_tree().get_nodes_in_group("window_shafts"):
+		if is_ancestor_of(shaft) and shaft is MeshInstance3D:
+			_window_shafts.append(shaft.material_override as ShaderMaterial)
 	for light: Node in get_tree().get_nodes_in_group("window_lights"):
 		if is_ancestor_of(light) and light is Light3D:
 			var bounce: bool = light.name == "WindowBounce"
@@ -159,6 +163,8 @@ func _update_electric_lighting(powered: bool) -> void:
 		entry["node"].light_energy = float(entry["energy"]) * daylight
 	# Moon and street light: the mirror image of daylight. Independent of power.
 	var night: float = clampf((1.0 - daylight) / 0.92, 0.0, 1.0)
+	for shaft: ShaderMaterial in _window_shafts:
+		shaft.set_shader_parameter("strength", maxf(daylight, night * 0.08))
 	if _environment != null:
 		_environment.ambient_light_energy = lerpf(DAY_AMBIENT, NIGHT_AMBIENT, night)
 	for entry: Dictionary in _moon_lights:
@@ -221,19 +227,19 @@ func _build_environment() -> void:
 	environment.background_color = Color(0.01, 0.02, 0.02)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	# Dim, nearly neutral fill light; lamps and daylight supply the colour.
-	environment.ambient_light_color = Color(0.65, 0.72, 0.70)
+	environment.ambient_light_color = Color(0.44, 0.64, 0.58)
 	environment.ambient_light_energy = 0.27
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 
 	# Pale dusty haze that light visibly travels through.
 	environment.volumetric_fog_enabled = true
-	environment.volumetric_fog_density = 0.004
+	environment.volumetric_fog_density = 0.002
 	environment.volumetric_fog_albedo = Color(0.78, 0.86, 0.80)
 	environment.volumetric_fog_emission = Color(0.05, 0.08, 0.09)
-	environment.volumetric_fog_emission_energy = 0.05
+	environment.volumetric_fog_emission_energy = 0.0
 	environment.volumetric_fog_anisotropy = 0.7
 	environment.volumetric_fog_length = 24.0
-	environment.volumetric_fog_ambient_inject = 0.4
+	environment.volumetric_fog_ambient_inject = 0.05
 
 	# Soft bloom around lit surfaces and soft contact shadows in corners.
 	environment.glow_enabled = true

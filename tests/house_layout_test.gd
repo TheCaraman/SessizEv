@@ -22,17 +22,12 @@ const CAPSULE_CENTER_Y: float = CAPSULE_HEIGHT * 0.5 + 0.05
 
 ## Pairs of plan points (x, z) on the same floor that must NOT see each other.
 const SOLID_CHECKS: Array[Dictionary] = [
-	{"floor": 0, "from": Vector2(3.125, 4.6875), "to": Vector2(7.5, 4.6875), "what": "dining / hall"},
-	{"floor": 0, "from": Vector2(7.5, 6.25), "to": Vector2(12.5, 6.25), "what": "hall / utility"},
-	{"floor": 0, "from": Vector2(12.5, 7.5), "to": Vector2(12.5, 11.25), "what": "utility / bathroom"},
-	{"floor": 0, "from": Vector2(13.375, 1.875), "to": Vector2(13.375, 6.25), "what": "pantry / utility"},
-	{"floor": 1, "from": Vector2(3.125, 1.875), "to": Vector2(3.125, 5.625), "what": "guest B / guest A"},
-	{"floor": 1, "from": Vector2(3.125, 5.625), "to": Vector2(3.125, 10.0), "what": "guest A / Daniel"},
-	{"floor": 1, "from": Vector2(8.25, 1.125), "to": Vector2(12.5, 1.125), "what": "isolation / multipurpose"},
-	{"floor": 1, "from": Vector2(12.5, 6.25), "to": Vector2(12.5, 10.0), "what": "multipurpose / bathroom"},
-	{"floor": 1, "from": Vector2(7.5, 6.25), "to": Vector2(9.5, 6.25), "what": "corridor / stairwell guard"},
+	{"floor": 0, "from": Vector2(4, 5.7), "to": Vector2(6, 5.7), "what": "kitchen / hall"},
+	{"floor": 0, "from": Vector2(1, 2), "to": Vector2(1, 4), "what": "service / kitchen"},
+	{"floor": 0, "from": Vector2(11, 1), "to": Vector2(13, 1), "what": "guest A / guest B"},
+	{"floor": 0, "from": Vector2(2, 7), "to": Vector2(2, 9), "what": "kitchen / living"},
+	{"floor": 0, "from": Vector2(11, 7), "to": Vector2(13, 7), "what": "multipurpose / bathroom"}
 ]
-
 var _player: PlayerController
 var _space: PhysicsDirectSpaceState3D
 var _frame: int = 0
@@ -41,62 +36,32 @@ var _checks: int = 0
 
 
 func _ready() -> void:
+	GameState.new_campaign(42)
 	var scene: Node = SCENE.instantiate()
 	add_child(scene)
 	_player = scene.get_node("Player") as PlayerController
-
-
-func _physics_process(_delta: float) -> void:
-	_frame += 1
-	match _frame:
-		5:
-			_space = _player.get_world_3d().direct_space_state
-			_check(not HouseLayout.is_in_void(Vector2(_player.position.x, _player.position.z)), "initial player spawn is not over an opening")
-			_check(not _raycast(_player.position + Vector3.UP * 0.1, _player.position + Vector3.DOWN * 0.3).is_empty(), "initial player spawn has immediate floor support")
-			_check_rooms()
-			_check_openings()
-			_check_solid_walls()
-			_check_open_foyer()
-			_check(_raycast(Vector3(5.5, 4.9, 6.25), Vector3(7.5, 4.9, 6.25)).is_empty(), "open central stairwell admits eye-level sightline")
-			_check(not _raycast(Vector3(7.5, 3.6, 11.375), Vector3(7.5, 3.0, 11.375)).is_empty(), "upper front gallery has a real supported floor")
-			# This physical walking test faces north regardless of opening framing.
-			_player.global_position = Vector3(7.5, 0.05, 9.8)
-			_player.rotation.y = 0.0
-			_player.velocity = Vector3.ZERO
-		15:
-			Input.action_press(&"move_forward")
-		315:
-			Input.action_release(&"move_forward")
-			var position: Vector3 = _player.global_position
-			_check(
-				absf(position.y - HouseLayout.STOREY_HEIGHT) < 0.05 and position.z < 3.5,
-				"stairs should carry the player to the upper landing (y = %.2f, z = %.2f)"
-				% [position.y, position.z]
-			)
-			_check(
-				HouseLayout.room_at(position) == &"landing",
-				"player should be on the landing, got '%s'" % HouseLayout.room_at(position)
-			)
-			# Walk back down.
-			_player.global_position = Vector3(7.5, HouseLayout.STOREY_HEIGHT + 0.05, 2.8)
-			_player.velocity = Vector3.ZERO
-		325:
-			Input.action_press(&"move_back")
-		625:
-			Input.action_release(&"move_back")
-			var position: Vector3 = _player.global_position
-			_check(
-				absf(position.y) < 0.05 and position.z > 9.0,
-				"player should walk back down the stairs (y = %.2f, z = %.2f)"
-				% [position.y, position.z]
-			)
-			_finish()
-
+	_player.set_physics_process(false)
+	for frame: int in 5:
+		await get_tree().physics_frame
+	_space = _player.get_world_3d().direct_space_state
+	_check(HouseLayout.FLOOR_COUNT == 1, "exactly one storey")
+	_check(HouseLayout.VOIDS.is_empty() and not scene.has_node("House/Stairs"), "no stair or upper floor hole")
+	_check(not _raycast(_player.position + Vector3.UP * 0.1, _player.position + Vector3.DOWN * 0.3).is_empty(), "spawn has floor support")
+	_check_rooms()
+	_check_openings()
+	_check_solid_walls()
+	_check_open_foyer()
+	_check(HouseLayout.get_room(&"dining")["id"] == &"kitchen", "old dining ID resolves to kitchen")
+	_check(HouseLayout.get_room(&"pantry")["id"] == &"utility", "old pantry ID resolves to service")
+	_check(HouseLayout.get_room(&"bathroom_ground")["id"] == &"bathroom_upper", "old second bathroom resolves to single bathroom")
+	_check(get_tree().get_nodes_in_group("window_dust").size() == 2, "local haze at both actual windows")
+	_check(get_tree().get_nodes_in_group("window_shafts").size() == 6, "three soft shafts at each actual window")
+	_finish()
 
 func _check_rooms() -> void:
 	_check((HouseLayout.get_room(&"hall")["rects"][0] as Rect2).size.x >= 3.7, "main hall is at least 3.7 m wide after HOUSE-ATMOS-001")
-	_check(_capsule_fits(Vector3(5.1, 0.0, 8.4)), "newly widened ground strip is physically usable")
-	_check(_capsule_fits(Vector3(5.1, HouseLayout.STOREY_HEIGHT, 6.25)), "newly widened upper strip is physically usable")
+	_check(_capsule_fits(Vector3(7.0, 0.0, 8.4)), "newly widened ground strip is physically usable")
+	_check(_capsule_fits(Vector3(10.0, 0.0, 4.25)), "quiet wing is physically usable")
 	for room: Dictionary in HouseLayout.ROOMS:
 		var id: StringName = room["id"]
 		var center: Vector3 = HouseLayout.room_center(id)
@@ -115,14 +80,12 @@ func _check_rooms() -> void:
 
 
 func _check_open_foyer() -> void:
-	_check(HouseLayout.STAIRS.size.x >= 2.3 - 0.001, "central stair is at least 2.3m wide")
-	_check(is_equal_approx(HouseLayout.STAIRS.get_center().x, HouseLayout.WIDTH * 0.5), "stair is centered in the house")
-	for floor_index: int in 2:
-		var y: float = HouseLayout.floor_height(floor_index)
-		_check(_capsule_can_move(Vector3(5.1, y, 4.0), Vector3(5.1, y, 10.6)), "west circulation wing continuous on floor %d" % floor_index)
-		_check(_capsule_can_move(Vector3(9.9, y, 4.0), Vector3(9.9, y, 10.6)), "east circulation wing continuous on floor %d" % floor_index)
-		_check(_capsule_can_move(Vector3(5.1, y, 10.6), Vector3(9.9, y, 10.6)), "broad front connection on floor %d" % floor_index)
-	_check(_capsule_can_move(Vector3(7.5, 0.0, 9.8), Vector3(7.5, 0.0, 11.6)), "stair foot opens directly into entry hall")
+	_check(_capsule_can_move(Vector3(7.0, 0.0, 11.0), Vector3(7.0, 0.0, 4.25)), "continuous entry-to-corner route")
+	_check(_capsule_can_move(Vector3(7.0, 0.0, 4.25), Vector3(14.0, 0.0, 4.25)), "continuous L-turn and bedroom wing")
+	_check(not _raycast(Vector3(7.0, 2.8, 7.0), Vector3(7.0, 4.0, 7.0)).is_empty(), "roof closes house above head")
+	_check(HouseLayout.room_at(Vector3(7.0, 4.0, 7.0)) == &"", "no upstairs room classification")
+	for room: Dictionary in HouseLayout.ROOMS:
+		_check(room["floor"] == 0, "all authored rooms use ground floor: " + str(room["id"]))
 
 func _check_openings() -> void:
 	for wall: Dictionary in HouseLayout.WALLS:
@@ -131,11 +94,11 @@ func _check_openings() -> void:
 			var a: Vector3
 			var b: Vector3
 			if wall["axis"] == "x":
-				a = Vector3(opening["pos"], base_y, wall["at"] - 0.6)
-				b = Vector3(opening["pos"], base_y, wall["at"] + 0.6)
+				a = Vector3(opening["pos"], base_y, wall["at"] - 0.5)
+				b = Vector3(opening["pos"], base_y, wall["at"] + 0.5)
 			else:
-				a = Vector3(wall["at"] - 0.6, base_y, opening["pos"])
-				b = Vector3(wall["at"] + 0.6, base_y, opening["pos"])
+				a = Vector3(wall["at"] - 0.5, base_y, opening["pos"])
+				b = Vector3(wall["at"] + 0.5, base_y, opening["pos"])
 			var label: String = "floor %d, %s-wall at %.1f, opening at %.2f" % [
 				wall["floor"], wall["axis"], wall["at"], opening["pos"]
 			]

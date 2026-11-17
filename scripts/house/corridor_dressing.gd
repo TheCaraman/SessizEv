@@ -5,7 +5,7 @@ extends Node3D
 ## HouseBuilder. Shaped parts come from PropMeshes; plain boxes are kept only
 ## for things that really are boxes (shelves, drawers, books).
 ##
-## Plan after HOUSE-ATMOS-001 (×1.25, storey 3.3 m):
+## Historical helper coordinates below are unused; _ready owns the new L plan.
 ##   Ground: hall x 5..8.75, z 3.75..10.625; vestibule x 5..10.25, z 10.625..12.5.
 ##           West wall x = 5 (living-room door at z 7.5); stair guard x = 8.75;
 ##           coat wall z = 10.625 east of the opening (x 8.875..10.25);
@@ -20,20 +20,43 @@ const FRONT_FACE: float = 12.5 - HouseLayout.EXTERIOR_WALL_THICKNESS * 0.5
 
 
 func _ready() -> void:
-	# The old furniture functions describe the retired east-stair layout.
-	# New placements keep both 2.35m circulation wings and stair approaches clear.
-	_flat_box(Vector3(7.5, 0.008, 12.05), Vector3(1.2, 0.016, 0.55), Color(0.20, 0.17, 0.12))
-	for x: float in [5.35, 9.65]:
-		_radiator(Vector3(x, 0.0, FRONT_FACE - 0.08), 1.0)
-		_radiator(Vector3(x, UPPER, FRONT_FACE - 0.08), 1.0)
-	for floor_y: float in [0.0, UPPER]:
-		for x: float in [4.28, 10.72]:
-			var at := Vector3(x, floor_y, 9.0 if x < 7.5 else 9.6)
-			_box(at + Vector3(0.0, 0.38, 0.0), Vector3(0.32, 0.76, 0.6), &"wood_stairs", true)
-			_table_lamp(at + Vector3(0.0, 0.78, 0.0))
-	PropMeshes.framed_picture(self, Vector3(4.056, 1.65, 8.3), Vector2(0.65, 0.5), 1.0, 0.0, &"painting_landscape")
-	PropMeshes.framed_picture(self, Vector3(4.056, UPPER + 1.65, 7.4), Vector2(0.55, 0.45), 1.0, 0.0, &"photo_house")
-
+	# Single-storey placements: keep the middle of the L circulation clear.
+	_flat_box(Vector3(7.5, 0.008, 12.05), Vector3(1.0, 0.016, 0.55), Color(0.18, 0.15, 0.10))
+	_radiator(Vector3(6.0, 0.0, FRONT_FACE - 0.08), 0.8)
+	_bureau(Vector3(WEST_FACE, 0.0, 8.5))
+	PropMeshes.framed_picture(self, Vector3(WEST_FACE + 0.004, 1.66, 7.4), Vector2(0.5, 0.42), 1.0, 0.0, &"photo_house")
+	PropMeshes.framed_picture(self, Vector3(8.944, 1.68, 9.3), Vector2(0.58, 0.44), -1.0, 0.0, &"painting_landscape")
+	# Entry coats hang from a wall-mounted rail; shoes sit below, not in the route.
+	var coat_root := Node3D.new()
+	coat_root.name = "EntryCoats"
+	coat_root.position = Vector3(5.1, 0.0, 11.5)
+	coat_root.rotation.y = PI * 0.5
+	add_child(coat_root)
+	PropMeshes.box(coat_root, Vector3(0.0, 1.75, 0.0), Vector3(1.05, 0.09, 0.04), HouseMaterials.get_material(&"wood_stairs"))
+	PropMeshes.coat(coat_root, Vector3(-0.3, 1.73, 0.06), Color(0.12, 0.16, 0.17), 0.9, 11)
+	PropMeshes.coat(coat_root, Vector3(0.32, 1.73, 0.06), Color(0.30, 0.21, 0.14), 0.75, 23)
+	_box(Vector3(5.3, 0.18, 11.5), Vector3(0.42, 0.36, 1.12), &"wood_stairs", true)
+	for z: float in [11.25, 11.48, 11.7]:
+		PropMeshes.shoe(self, Vector3(5.33, 0.37, z), Color(0.14, 0.10, 0.07), PI * 0.5)
+	PropMeshes.umbrella(self, Vector3(5.26, 0.0, 12.16), Color(0.12, 0.14, 0.15), Vector3(0.1, 0.0, -0.1))
+	# Main hall telephone and reading lamp.
+	var table := Vector3(8.72, 0.0, 7.5)
+	_box(table + Vector3(0.0, 0.4, 0.0), Vector3(0.35, 0.8, 1.0), &"wood_stairs", true)
+	_table_lamp(table + Vector3(0.0, 0.82, -0.29))
+	var phone := Node3D.new()
+	phone.name = "Telephone"
+	phone.position = table + Vector3(0.0, 0.82, 0.23)
+	phone.rotation.y = PI
+	add_child(phone)
+	PropMeshes.telephone(phone)
+	_mantel_clock(table + Vector3(0.0, 0.82, 0.01))
+	# A small cabinet and family print between bedroom doors in the quiet wing.
+	_box(Vector3(12.0, 0.4, 3.25), Vector3(1.0, 0.8, 0.36), &"wood_stairs", true)
+	_table_lamp(Vector3(12.25, 0.82, 3.25))
+	var picture := PropMeshes.framed_picture(self, Vector3(12.0, 1.62, 3.056), Vector2(0.62, 0.43), 1.0, 0.0, &"painting_still_life")
+	picture.rotation.y = -PI * 0.5
+	var jug := HouseMaterials.get_flat(Color(0.34, 0.43, 0.34))
+	PropMeshes.cylinder(self, Vector3(11.72, 0.94, 3.24), 0.06, 0.08, 0.24, jug, Vector3.ZERO, 20)
 
 func _build_entrance() -> void:
 	# Doormat inside the front door.

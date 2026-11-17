@@ -9,3 +9,4 @@ func _ready() -> void:
 
 func _apply() -> void:
 	_material.set_shader_parameter("brightness", Settings.get_number("brightness"))
+	_material.set_shader_parameter("vignette_strength", Settings.get_number("vignette"))

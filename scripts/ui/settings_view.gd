@@ -45,12 +45,12 @@ func _build() -> void:
 	panel.name = "SettingsPanel"
 	panel.anchor_left = 0.18
 	panel.anchor_right = 0.82
-	panel.anchor_top = 0.16
-	panel.anchor_bottom = 0.86
-	panel.add_theme_constant_override("separation", 20)
+	panel.anchor_top = 0.10
+	panel.anchor_bottom = 0.92
+	panel.add_theme_constant_override("separation", 12)
 	add_child(panel)
 	var title := Label.new()
-	title.add_theme_font_size_override("font_size", 46)
+	title.add_theme_font_size_override("font_size", 40)
 	_labels[title] = "MENU_SETTINGS"
 	panel.add_child(title)
 	for key: String in Settings.DEFAULTS:
@@ -67,7 +67,7 @@ func _build() -> void:
 		var limits: Vector2 = Settings.LIMITS[key]
 		slider.min_value = limits.x
 		slider.max_value = limits.y
-		slider.step = 0.00011 if key == "mouse_sensitivity" else (0.01 if key == "master_volume" else (0.05 if key == "brightness" else 1.0))
+		slider.step = 0.00011 if key == "mouse_sensitivity" else (0.01 if key in ["master_volume", "vignette"] else (0.05 if key == "brightness" else 1.0))
 		slider.custom_minimum_size = Vector2(280, 44)
 		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		slider.value_changed.connect(func(value: float) -> void:
