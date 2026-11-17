@@ -95,3 +95,6 @@ Ana klasörde (automation/integration): ortam ve lambalar kısıldı, sıcak akk
 - Gün5, nihai18NPC/14gün, kapı deliği, poz setleri ve bilek arayüzü hâlâ açık. Geçmiş güncelleme satırları güncel tamamlanmış ürün sayılmaz.
 ## 2026-11-17 — aktif sürüm0.1.14
 433d97c, workers/dev-0.1.14; masaüstü launcher ve release PrepareOnly doğrulandı. ARRIVALS002 kayıt doğrulaması entegre,32paket/7662WASAPI PASS. Işık/sanat0.1.13 ile aynı. Elena14702a9 levhası sahip seçimi bekliyor; I11 Claude; genel atmosfer kabulü açık. Eski0.1.13 aktif satırı tarihçedir. Ayrıntı arrivals002-release014 mesajında.
+
+## 2026-11-17 — aktif0.1.15 / Elena B ve kapı deliği
+fcfc523, workers/dev-0.1.15, merkezi masaüstü launcher+PrepareOnly doğrulandı.35paket/7756WASAPI PASS,5nativeUI. Sahip ORTA/B stilini seçti; çantalı/temkinli ilk geliş ve daha sakin oda figürü bağlı.8EN/TR diyalog satırı değişti, mekanik etkiler aynı. I05 porch/peephole930b8c1 dahil; I11 daraltma ve I10 dekor dahil değil. Marcus/Arthur hâlâ eski sanat; genel atmosfer kabulü açık. Detay elena-release015 mesajında.
