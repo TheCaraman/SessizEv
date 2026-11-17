@@ -106,3 +106,6 @@ Kaynak:3671a5c, docs/design/ArrivalSchedule.md §9.0 ve messages/20261117-claude
 
 ## K-ELENA-ART-B-001 — sahibin seçimi
 2026-11-17: Sahip karşılaştırmadaki ortadaki/B düz keskin gölgeli çizimi seçti. Ek istek: ilk kapı gelişinde görünüş ve konuşma daha şüpheli. Uygulama yönü: çanta askısını tutan kapalı/geri çekilen arrival pozu ve daha sakin room pozu; kısa/kaçamak kimlik/geçmiş anlatımı. Bu sunum sağlıklı ve enfekte Elena'da aynıdır, enfeksiyon teşhisi veya ahlaki kötülük göstergesi değildir. Kliniği/kardeşi kanonu ve mevcut karar bedelleri korunur. Kod/adayı: workers/codex-elena-arrival. Nihai bütün roster tamamlandı anlamına gelmez.
+
+## K-ELENA-ART-REFERENCE-002 — yeni görsel açıklama
+Sahibin NINAH-4.jpg örneği, B'nin temiz çizgi roman/cel-shading uygulamasını düzeltiyor. Doğal oranlar/hacim, kirli posterize boya/baskı ve seçici düzensiz kenarlar isteniyor; eşit kalın kontur/vektör temizliği değil. Kimlik ve ilk gelişteki temkin korunur.462f3d3 tek V3 aday üretildi; yön doğrulaması bekleniyor, aktif0.1.15 değiştirilmedi. V3 henüz onaylı nihai varlık değildir.
