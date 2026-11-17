@@ -1,40 +1,19 @@
-> **Yeni sahip onayı — 17 Kasım 2026:** Önce [NPC_ArrivalAndRooms.md](../NPC_ArrivalAndRooms.md) ve messages/20261117-codex-to-claude-approved-arrivals-and-rooms.md oku. Kurallı rastgele geliş + oyuncu oda ataması/NPC tercih-itirazı ONAYLI; yeni sistem henüz uygulanmadı. Kesin geliş aralıkları ve gece gelişleri belirlenmedi. Claude okuma onayı verdi; görev yanıtı messages/20261117-codex-to-claude-arrivals-split-confirmed.md içinde.
+# Codex → Claude — güncel ortak koordinasyon
 
-# Codex → Claude — güncel devir ve görev paylaşımı
+Güncelleme:17 Kasım 2026. Güncel sıra ve sahiplik: WORK_PLAN.md. Sahip onaylı genel yön NPC_ArrivalAndRooms.md; Claude tarafından kaydedilen parametre onayı ArrivalSchedule.md §9.0 (3671a5c). Claude onayı okudu ve geliş tasarımını0ec063b ile teslim etti; eski “ACK bekleniyor” notları tarihsel.
 
-Güncelleme: 17 Kasım 2026. Sahip, son yapılanların, gelişmelerin ve sıradaki işlerin önce Claude ile paylaşılmasını istedi. Bu belge ortak klasördedir. Okuma onayı gelmeden Claude okudu denmeyecek.
+## Tek teknik taban
+Aktif kaynak workers/codex-house-atmosphere-v3, dalcodex/house-atmosphere-v3. Son teslim fc3691727bffa7b940439ebba50d25c19abeb3cd,0.1.8-dev.20261117.4. Radyo artık WIP değil;28paket7078WASAPI ve GPU249 doğrulandı. runtime/active-development.json güncel. Oyuncu kayıtları silinmedi, şema5 bu teslimde korunur. Ana integration klasörü karar/mesaj merkezi; eski ana kod tümüyle aktif dala merge edilmez.
 
-## Kaynak ve sürüm ayrımı
-- Ana depo: TheQuietHours/project, automation/integration. Claude tarafından bırakılmış HOUSE-ATMOS-003 dosyaları korunuyor; üstlerine yazılmadı.
-- Aktif deneme kaynağı: TheQuietHours/workers/codex-house-atmosphere-v3, dal codex/house-atmosphere-v3.
-- Son tamamlanmış Git noktası: 3719dd50f5d83dedecb8c328edc7837ea90358ee, etiket dev-0.1.7-20261117.3. runtime/active-development.json hâlâ bu tamamlanmış noktayı bildiriyor.
-- Çalışma dosyalarında şu anda 0.1.8-dev.20261117.4 radyo adayı var; henüz commit/etiket ve nihai GPU incelemesi yapılmadı. Başlatıcı worktree dosyalarını açtığı için şu anda açılırsa bu aday çalışır; metadata ile aynı teslim sanılmamalı. Oyuncu kayıtları silinmedi, şema5 korunuyor.
+## Tamamlananlar
+HOUSE-ATMOS-004 çizimsel ev/ışık revizyonu (sanat kabulü açık), kalıcı parlaklık/fare/FOV/ana ses, canlı yeni-gece tanıklığı, Gün4 iddia/inkâr/çelişki, izolasyon/kovma, açık suçlama ve kişisel yanıtlar, onaylı akşam bekleme/kapanış özeti, pilli radyo tahliye iddiası ve hafıza kaybı alternatif yolu. Gün4 sabahında artık yanlış erken bitiş mesajı yok. Yeni radyo seslendirmesi veya tam Gün4 gecesi/Gün5 yapılmış değil. Ayrıntılar aktif worktree docs/qa ve ChangeLog içinde.
 
-## Tamamlanmış gelişmeler
-1. HOUSE-ATMOS-004: tam geniş üst hol, sıradan kapalı ev hacmi, çizimsel sıva/zemin/kapı yüzeyleri, perde aralığı ve kaynaklı pencere ışığı. Spawn döşemesi ve korkuluk ekseni düzeltildi. Görsel sahibin nihai kabulünde değil; Claude003 mercek/salınım otomatik taşınmadı.
-2. Kalıcı ayarlar: parlaklık, fare hassasiyeti, FOV, ana ses ve sıfırda tam mute; ana/pause menüsünde EN/TR. Tam görüntü/ses kategorileri/tuş atama menüsü tamamlanmadı.
-3. Canlı gece tanıklığı (50cdc75): yalnız yeni Gün3 nöbetinde, Daniel odasında beklerken iki uygun yetişkinin masum banyo ziyareti ve boru sonrası gözlemi. Gerçek kilit/koridor ölçümü, zamanlı dönüş, save/load; eski aktif geceye tanık eklenmez. Enfeksiyondan bağımsız. Gün4 iddia/inkâr/çelişki görüşmeleri var.
-4. Gün4 kapanışı (5b75b02): ücretsiz erteleme, açık onayla20:00 bekleme, kapanış ve güncel özet. İşler aynı kayıt adayında ortak saf reducer ile tamamlanır. Kayıt hatasında canlı saat/iş/rapor değişmez. Gün5 veya ikinci günlük tüketim yok. Tab/Esc kapatma ipucu eklendi.
-5. Açık suçlama (3719dd5): toplanmış kayıt seçimi, boş/genel bulguda unsupported, gerçek tanıklığın yalnız kendi gördüğü kişiye bağlanması. Bu bir teşhis veya sabotaj ispatı değil. Cancel varsayılan, Review→Confirm, ilk10dk/güven−5 geçici denge değeri, sonra ücretsiz kişisel yanıt. Üç yetişkin için ayrı sözler, izolasyon kapısı, aktif iş sınırı ve tarihsel kayıt var. Enfeksiyon/kovma/izolasyon otomatik değişmez.
+## Gerçek iş bölümü
+Claude: ARRIVALS-001 uygulamasına kesin radyo tabanı üzerinden ayrı worktree ile geçebilir; mesaj arrivals-start-now dosyasında. Seed/takvim/save/ziyaret kodunda tek yazardır. Kendi claim kaydıyla fiilî başlangıcını doğrular.
+Codex: ROOMS-DESIGN-001 yalnız belge; docs/design/RoomPreferences.md oluşturuldu. Claude çalışırken aynı oynanış/save dosyalarına yazmaz. ROOMS-001 kodu takvim entegrasyonundan sonra.
+BODYCAM-V3-001 b4666dd ayrı dalda; bu koordinasyon sanatsal merge onayı değildir.
 
-## Son tamamlanmış doğrulama
-0.1.7: 27 paket /6809 denetim WASAPI ile PASS; suçlama139, gerçek GPU141. EN/TR720p/1080p/1440p, Tab/Escape, save/load ve hata senaryoları doğrulandı. QA belgeleri aktif worktree docs/qa altında: HouseAtmosphereV3.md, PlaytestSettings.md, MasterVolume.md, LiveNightWitness.md, Day4Closure.md, Accusation.md. Ana bilgisayarda elle baştan sona fare/klavye oynandığı iddia edilmiyor. Nihai sanat/karakter onayı açık.
+## Açık sınırlar
+Yeni geliş takvimi henüz uygulanmış sayılmıyor. Şu anda yalnız üç işlevsel NPC ve sabit ziyaret verisi var. İçeriği yazılmamış karakterler sırf enfekte ihtiyacı veya kapasite için zorla getirilmez. Tümü sağlıklı üç kişilik içerik havuzu geçerli fallback'tir. Gün5–14,18NPC genişlemesi, ilişkiler/epiloglar/sonlar, nihai sanat/animasyon/ses, tam ayarlar ve Windows standalone export hâlâ eksik. Manuel tam oynama doğrulanmadı.
 
-## Şu anda Codex üzerinde — DAY4-RADIO-001
-Dosyalar: scripts/narrative/day4_broadcast.gd; resources/events/day4_broadcast.json; resources/evidence/day4_broadcast.json; CampaignDirector/Day4Review/SaveManager/EvidenceManager bağlantıları; localization/strings.csv; tests/day4_broadcast_test.*; tools/Run-Tests.ps1; docs/qa/Day4Broadcast.md.
-
-Uygulandı: Gün4 pilli radyoda uzak tahliye bölgesi duyurusu; konum/güvenli yol/kaynak doğrulanmıyor. İlk15dk, tekrar ücretsiz ve açıkça not okuması. Kaçırılmış hafıza kaybı uyarısı aynı dinlemede korunuyor. Claim, önce kayıt, aynı adayda biten gündüz işleri; NPC/elektrik/enfeksiyon bağımlılığı yok. Radyoyu kaçırmak kapanışı engellemez. Eski radio_day_4 işareti yeni duyuruyu geçmişten duyulmuş saymaz.
-
-Ek hata düzeltmesi: Gün4 sabahındaki eski erken “kesit bitti” mesajı kaldırıldı. LAST_AUTHORED_DAY=4 yalnız mevcut yazarlı içeriği işaretliyor; Gün4 gecesi/Gün5 hâlâ yok. Gerçek Gün3 gece→Gün4 sabah→radyo→inceleme→akşam→kapanış zinciri test edildi.
-
-Son aday doğrulaması:28 paket PASS. Radyo245; diğer paketler de geçti. Günlük: C:/Users/eyups/AppData/Local/Temp/tqh-tests-a17ee915c33f413f9280306113db0ec5. Nihai toplam makine kaydına henüz aktarılmadı. Gerçek GPU radyo EN/TR görüntüleri henüz alınmadı/incelenmedi. Yeni seslendirme veya radyo sesi üretilmedi; bu teslim metin/günlük/kayıt uygulaması.
-
-## Görev paylaşımı ve sıradaki işler
-- Codex: önce radyo adayının GPU/yerleşim incelemesi, sürüm/metadata/değişiklik günlüğü ve Git checkpoint teslimini bitirir. Yukarıdaki aktif dosyalara paralel yazma.
-- Claude için çakışmayan katkı: bu deviri okuyup ayrı ACK mesajı bırak; mümkünse salt okunur aday incelemesi yap, mantık/kanon/oyuncu akışı bulgularını dosya-satırla ayrı mesajda bildir. Bulguyu düzeltmek için aynı dosyalarda eşzamanlı değişiklik yapma.
-- Sonra: Gün5 Broken Signal soruşturmasının veri/alternatif keşif tasarımını mevcut GDD ve NarrativeBible ile karşılaştır. Maya zorunlu olmamalı; şu anki3NPC kesitine daha sonra girecek18NPC genişlemesini varmış gibi sayma. Yeni yaratıcı yön veya mekân değişikliğini sahip onayı olmadan uygulama.
-- Görsel işler: sahibin HOUSE-ATMOS-004 / Claude003 seçimi ve karakter adayı onayı açık. Onaysız mercek/salınım veya yeni karakter üslubunu aktif dala taşıma.
-- Uzun vadeli açıklar: Gün5–14, tüm18NPC, geniş ilişkiler, epiloglar/sonlar, nihai sanat/animasyon/ses, tam ayarlar/erişilebilirlik, performans profili ve Windows standalone export. Tam oyun bitmedi.
-
-## Koordinasyon kuralı
-Ayrı worktree kullan; ana dosyalardaki başkasının değişikliğini koru. Görevi TASKS içinde sahiplen, yalnız kendi yollarını stage et, test ve devir kaydı bırak. Bu belge ve mesaj dosyası asistanı kendiliğinden uyandırmaz. ACK veya gerçek oturum yanıtı olmadan iletişim tamamlandı varsayma.
+Mesaj dosyası asistanı otomatik uyandırmaz; başlama/teslim ancak gerçek dosya/commit/ACK ile doğrulanır. Sahipten rutin mesaj taşıması veya aynı iş için tekrar onay istenmez.

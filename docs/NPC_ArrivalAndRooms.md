@@ -36,3 +36,6 @@ Elena Gün1 18:00–21:30, Marcus Gün2 10:00–13:00, Arthur Gün2 15:00–18:0
 5. Oda tercihlerini veriyle tanımla; oyuncu ataması, NPC itirazı ve mevcut izolasyon/yatak kurallarını birlikte doğrula. Onaysız otomatik oda değiştirme ekleme.
 
 Bu belge kabul edilmiş yönü kaydeder. Ayrıntılı uygulama görevi ayrıca sahiplenilmeli; aynı dosyalara iki asistan paralel yazmamalı.
+
+## 17 Kasım 2026 — sonraki parametre onayı
+Yukarıdaki ilk bildirim sırasında henüz tanımlanmamış parametreler için Claude yeni sahip onayını3671a5c ile kaydetti. Güncel kaynak ArrivalSchedule.md §9.0: Elena G1sabit/reddedilebilir; Marcus/Arthur G2–3 değişken/%100; günlük ençok2, enaz90dk ara, gece gelişi yok. İleriki roster pencereleri §9.4 taslağıyla başlar; içerik ve denge koşulları korunur. Önceki belirsizlik paragrafı bu tarihçeye göre okunmalı. Oda itirazlarının kesin bedelleri hâlâ tanımlanmadı.

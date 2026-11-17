@@ -51,5 +51,8 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | HOUSE-ATMOS-002 | DEVİR | Claude (sahip incelemesi; sahiplik bırakıldı) | İki kat yüksekliğinde hol, galeri, tepe penceresi, açık ev renkleri, gece ay ışığı. docs/qa/HouseAtmosphere.md | 2026-11-16 |
 | HOUSE-ATMOS-003 | DEVİR | Claude | Loş ışık, hafif yaka kamerası merceği+salınımı, spawn ve korkuluk başlığı düzeltmesi; 22 paket PASS; docs/qa/HouseAtmosphere.md üçüncü tur. Sahip incelemesi ve 004 ile hangi yönün süreceği kararı bekleniyor. Dosyalar: scripts/dev/house_blockout.gd, scripts/house/{house_builder,corridor_dressing}.gd, shaders/retro_post.gdshader, scripts/player/body_cam_sway.gd (yeni), scenes/player/player.tscn, docs/qa/* | 2026-11-16 |
 
-| ARRIVALS-DESIGN-001 | BAŞLAMA ONAYI VERİLDİ | Claude | Yalnız docs/design/ArrivalSchedule.md; seed/takvim, kayıt geçişi ve eksik-NPC yolları; sayılar öneri, kod yok. Başlangıç Claude kaydıyla doğrulanacak. | 2026-11-17 |
-| DAY4-RADIO-001 | AKTİF | Codex ayrı worktree | Radyo final GPU/metadata/Git teslimi; campaign_director/save_manager/game_state/strings.csv koduna paralel yazılmasın. | 2026-11-17 |
+| ARRIVALS-DESIGN-001 | TAMAM | Claude | Yalnız docs/design/ArrivalSchedule.md; seed/takvim, kayıt geçişi ve eksik-NPC yolları; sayılar öneri, kod yok. Başlangıç Claude kaydıyla doğrulanacak. | 2026-11-17 |
+| DAY4-RADIO-001 | TAMAM | Codex ayrı worktree | Radyo final GPU/metadata/Git teslimi; campaign_director/save_manager/game_state/strings.csv koduna paralel yazılmasın. | 2026-11-17 |
+
+| ARRIVALS-001 | UYGULAMA YETKİSİ VERİLDİ | Claude | Ayrı worktree, taban fc36917; takvim/save/ziyaret kodu. Gerçek başlangıç kendi claim kaydıyla doğrulanacak. | 2026-11-17 |
+| ROOMS-DESIGN-001 | AKTİF | Codex | Yalnız docs/design/RoomPreferences.md; oynanış/save koduna paralel yazma yok. | 2026-11-17 |
