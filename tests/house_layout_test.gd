@@ -56,10 +56,12 @@ func _physics_process(_delta: float) -> void:
 			_check_rooms()
 			_check_openings()
 			_check_solid_walls()
+			_check_open_foyer()
 			_check(_raycast(Vector3(8.125, 4.9, 6.25), Vector3(9.625, 4.9, 6.25)).is_empty(), "open stairwell admits eye-level sightline above safe guard")
-			_check(_capsule_fits(Vector3(6.625, 3.35, 11.375)), "upper window recess is genuinely accessible")
-			# Stand at the foot of the stairs, facing north (the default facing).
+			_check(_raycast(Vector3(6.625, 3.6, 11.375), Vector3(6.625, 3.0, 11.375)).is_empty(), "upper window now overlooks protected double-height foyer")
+			# This physical walking test faces north regardless of opening framing.
 			_player.global_position = Vector3(9.5, 0.05, 10.0)
+			_player.rotation.y = 0.0
 			_player.velocity = Vector3.ZERO
 		15:
 			Input.action_press(&"move_forward")
@@ -110,6 +112,15 @@ func _check_rooms() -> void:
 			"room_at() should return '%s' at its centre, got '%s'"
 			% [id, HouseLayout.room_at(center + Vector3.UP * 0.02)]
 		)
+
+
+func _check_open_foyer() -> void:
+	_check(_raycast(Vector3(7.0, 1.7, 11.5), Vector3(7.0, 5.9, 11.5)).is_empty(), "entry has actual double-height air, no low ceiling")
+	_check(_raycast(Vector3(7.0, 3.4, 11.5), Vector3(7.0, 3.0, 11.5)).is_empty(), "gallery opening has no invisible floor")
+	_check(not _raycast(Vector3(7.0, 4.1, 10.2), Vector3(7.0, 4.1, 11.0)).is_empty(), "gallery guard prevents falling into entry")
+	_check(_raycast(Vector3(7.0, 2.7, 10.2), Vector3(7.0, 2.7, 11.0)).is_empty(), "old low entry lintel removed")
+	_check(_capsule_can_move(Vector3(7.0, 0.0, 9.9), Vector3(7.0, 0.0, 11.6)), "real capsule can enter broad foyer")
+	_check(_capsule_fits(Vector3(7.0, HouseLayout.STOREY_HEIGHT, 9.9)), "upper viewing area remains supported and clear")
 
 
 func _check_openings() -> void:

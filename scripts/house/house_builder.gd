@@ -50,12 +50,12 @@ func _build_slabs() -> void:
 	# Ground floor: one piece.
 	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 0.0)
 
-	# Upper floor is complete except for the staircase opening.
+	# The upper floor wraps the stairs and the double-height entrance opening.
 	var upper: float = HouseLayout.STOREY_HEIGHT
 	for piece: Rect2 in _cells_outside(Rect2(0.0, 0.0, w, d), HouseLayout.VOIDS):
 		_add_slab(slabs, piece, upper)
 
-	# A normal enclosed upper storey, no atrium or roof-light set.
+	# Continuous roof above both normal rooms and the tall entrance.
 	_add_slab(slabs, Rect2(0.0, 0.0, w, d), 2.0 * HouseLayout.STOREY_HEIGHT)
 
 
@@ -110,14 +110,7 @@ func _build_wall(wall: Dictionary) -> void:
 	holder.name = "Wall_F%d_%s_%s" % [wall["floor"], wall["axis"], str(wall["at"]).replace(".", "_")]
 	add_child(holder)
 	if wall.get("guard", false):
-		# Solid 1.1m guard preserves safe stair separation, opens the sightline.
-		_add_wall_piece(holder, wall, wall["from"], wall["to"], base_y, 1.1, thickness)
-		var along_x: bool = wall["axis"] == "x"
-		var mid: float = (wall["from"] + wall["to"]) * 0.5
-		var length: float = wall["to"] - wall["from"]
-		var center := Vector3(mid, base_y + 1.12, wall["at"]) if along_x else Vector3(wall["at"], base_y + 1.12, mid)
-		var size := Vector3(length, 0.06, 0.16) if along_x else Vector3(0.16, 0.06, length)
-		_add_mesh(holder, center, size, &"wood_stairs")
+		_build_open_guard(holder, wall, base_y)
 		return
 
 	var openings: Array = (wall["openings"] as Array).duplicate()
@@ -150,6 +143,35 @@ func _build_wall(wall: Dictionary) -> void:
 	var center := Vector3(mid, base_y + WALL_HEIGHT - 0.045, wall["at"]) if along_x else Vector3(wall["at"], base_y + WALL_HEIGHT - 0.045, mid)
 	var size := Vector3(wall["to"] - wall["from"], 0.09, thickness + 0.04) if along_x else Vector3(thickness + 0.04, 0.09, wall["to"] - wall["from"])
 	_add_mesh(holder, center, size, &"frame_paint")
+
+
+## Physically continuous safety barrier, visually open domestic balustrade.
+func _build_open_guard(holder: Node3D, wall: Dictionary, base_y: float) -> void:
+	var along_x: bool = wall["axis"] == "x"
+	var start: float = float(wall["from"])
+	var length: float = float(wall["to"]) - start
+	var mid: float = start + length * 0.5
+	var center := Vector3(mid, base_y + 0.55, wall["at"]) if along_x else Vector3(wall["at"], base_y + 0.55, mid)
+	var size := Vector3(length, 1.1, 0.10) if along_x else Vector3(0.10, 1.1, length)
+	var body := StaticBody3D.new()
+	body.name = "OpenGuardCollision"
+	var collision := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = size
+	collision.shape = shape
+	body.position = center
+	body.add_child(collision)
+	holder.add_child(body)
+	for height: float in [0.12, 1.08]:
+		var rail_at := center
+		rail_at.y = base_y + height
+		var rail_size := Vector3(length, 0.065, 0.12) if along_x else Vector3(0.12, 0.065, length)
+		_add_mesh(holder, rail_at, rail_size, &"wood_stairs")
+	var count: int = maxi(2, ceili(length / 0.16))
+	for i: int in count + 1:
+		var at: float = start + length * float(i) / float(count)
+		var point := Vector3(at, base_y + 0.60, wall["at"]) if along_x else Vector3(wall["at"], base_y + 0.60, at)
+		_add_mesh(holder, point, Vector3(0.035, 0.94, 0.035), &"frame_paint")
 
 
 ## Adds one box of a wall between [param from] and [param to] along the wall's
@@ -427,11 +449,12 @@ func _build_lamps() -> void:
 
 ## A flat ceiling fitting with a light just below it.
 func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_range: float) -> void:
+	var pendant: bool = lamp_name == "Lamp_vestibule"
 	var shade := MeshInstance3D.new()
 	var cover := CylinderMesh.new()
-	cover.top_radius = 0.15
-	cover.bottom_radius = 0.19
-	cover.height = 0.08
+	cover.top_radius = 0.055 if pendant else 0.15
+	cover.bottom_radius = 0.22 if pendant else 0.19
+	cover.height = 0.22 if pendant else 0.08
 	cover.radial_segments = 48
 	var cover_material := HouseMaterials.get_material(&"lamp_shade").duplicate() as StandardMaterial3D
 	cover_material.emission_energy_multiplier = 0.6
@@ -440,16 +463,20 @@ func _add_lamp(parent: Node3D, lamp_name: String, ceiling_point: Vector3, light_
 	shade.position = ceiling_point + Vector3(0.0, -0.05, 0.0)
 	parent.add_child(shade)
 	shade.add_to_group("electric_fittings")
+	if pendant:
+		shade.add_to_group("local_lamp_fittings")
 	shade.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 	var lamp := OmniLight3D.new()
 	lamp.add_to_group("electric_lights")
+	if pendant:
+		lamp.add_to_group("local_lamp_lights")
 	lamp.name = lamp_name
 	lamp.position = ceiling_point + Vector3(0.0, -0.25, 0.0)
 	lamp.omni_range = light_range
 	lamp.light_color = LAMP_COLOR
 	# Weak warm pools: the corridors are lit mostly by the cold haze.
-	lamp.light_energy = 0.32
+	lamp.light_energy = 0.58 if pendant else 0.32
 	lamp.omni_attenuation = 1.6
 	lamp.shadow_enabled = true
 	lamp.shadow_blur = 2.5

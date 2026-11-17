@@ -26,7 +26,7 @@ static func get_material(kind: StringName) -> StandardMaterial3D:
 static func _create(kind: StringName) -> StandardMaterial3D:
 	match kind:
 		&"wallpaper":
-			return _triplanar(&"painted_v3/plaster", 0.34)
+			return _triplanar(&"graphic_v5/plaster", 0.34)
 		&"wainscot":
 			return _flat(Color(0.085, 0.15, 0.125), 1.0)
 		&"door_paint":
@@ -39,7 +39,7 @@ static func _create(kind: StringName) -> StandardMaterial3D:
 		&"trim_dark":
 			return _flat(Color(0.035, 0.065, 0.05), 1.0)
 		&"parquet":
-			return _triplanar(&"painted_v3/floorboards", 0.4)
+			return _triplanar(&"graphic_v5/floorboards", 0.4)
 		&"wood_stairs":
 			return _triplanar(kind, 1.0)
 		&"trim_door":

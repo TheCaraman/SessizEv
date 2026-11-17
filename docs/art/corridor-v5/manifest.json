@@ -1,0 +1,15 @@
+{
+  "mapping": "world-space triplanar; seam continuity not numerically measured",
+  "files": [
+    {
+      "path": "assets/textures/graphic_v5/plaster.png",
+      "sha256": "8FCD794F531B08934E808F2603C03D188D8809BB3B8DD85F75964EC1D321C97B"
+    },
+    {
+      "path": "assets/textures/graphic_v5/floorboards.png",
+      "sha256": "E9B7A6509C40B9298AADD01F7AAC382A39FD479D6E4DF396E2AA79CBA59537E6"
+    }
+  ],
+  "bitmap_retouched": false,
+  "tool": "built-in image_gen"
+}

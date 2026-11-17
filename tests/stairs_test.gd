@@ -65,12 +65,15 @@ func _run_all(rate: int) -> void:
 		var ok: bool = end.x < 7.5
 		_report.append("rate %d early west turn at z %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, z, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 		check(ok, "early turn west off the stair foot at %d Hz, z %.2f" % [rate, z])
-	# Diagonal approach to the top from the upstairs corridor (south-west).
-	for start_x: float in [8.2]:
-		var end: Vector3 = await _walk(Vector3(start_x, top_y, 2.6), 135.0, &"move_forward", FRAMES)
-		var ok: bool = end.y < 0.1 or end.z > 4.5
+	# Diagonal entry: from the west end of the landing, heading mostly east and
+	# a little south, the player crosses onto the top step and goes down along
+	# the stairwell wall. (Corrected in I-11: the old case walked south-west into
+	# the corridor and never reached the stairs.)
+	for start_x: float in [7.5]:
+		var end: Vector3 = await _walk(Vector3(start_x, top_y, 2.7), 250.0, &"move_forward", FRAMES)
+		var ok: bool = end.y < HouseLayout.STOREY_HEIGHT - 0.5 and end.x > 8.75
 		_report.append("rate %d diagonal entry from x %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, start_x, end.x, end.y, end.z, "ok" if ok else "STUCK"])
-		check(ok, "diagonal entry to the stairs at %d Hz from x %.2f" % [rate, start_x])
+		check(ok, "diagonal entry onto the stairs at %d Hz from x %.2f" % [rate, start_x])
 
 
 ## Places the player, faces [param yaw_deg] (0 = north, 180 = south, 90 = west),

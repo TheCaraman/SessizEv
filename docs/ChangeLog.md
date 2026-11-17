@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.1.17-dev.20261117.1
+- Açık giriş holü: çift kat yüksekliği, alçak başlıksız bağlantı ve görüşü açık ahşap sahanlık/merdiven korkulukları;3.75m geçiş korunur.
+- Daha sade V5 sıva/ahşap dokuları, gerçek yerel giriş sarkıtı ve pencereli galeriye yönelen başlangıç kadrajı.
+- Oda ad/kimlikleri ve mevcut mekanikler korunur; yeni oturma odası4ışıkvaryantı/TV prop'u dahil.
+-35paket/7762WASAPI PASS;13native önce/sonra kadraj. Bütün evin nihai sanat işi devam eder.
+
 ## 0.1.16-dev.20261117.1
 - Sahibin onayladığı V5 posterize fotoğraf/3D üslubuyla oturma odası ve ayrı TV/radyo dolabı yenilendi.
 - Gündüz/gece/elektrikli/elektriksiz dört tutarlı görsel; kesintide abajur ışığı gerçekten kaybolur, pencere ışığı kalır.

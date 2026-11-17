@@ -25,8 +25,10 @@ const INTERIOR_WALL_THICKNESS: float = 0.1
 ## floor 0, the top at the north edge (min z) on floor 1.
 const STAIRS: Rect2 = Rect2(8.75, 3.75, 1.5, 5.625)
 
-## Only the stairwell is open; the upstairs hall has a complete floor (HOUSE-ATMOS-004).
-const VOIDS: Array[Rect2] = [STAIRS]
+## Double-height entry gives the corridor a view of daylight and the lower hall.
+## Bedroom access and the full 3.75m upper passage remain outside this opening.
+const FOYER_VOID: Rect2 = Rect2(5.0, 10.625, 3.5, 1.875)
+const VOIDS: Array[Rect2] = [STAIRS, FOYER_VOID]
 
 
 ## True if the plan point lies over an upper-floor opening.
@@ -52,7 +54,7 @@ const ROOMS: Array[Dictionary] = [
 	{"id": &"daniel_bedroom", "name_key": "ROOM_DANIEL", "floor": 1, "rects": [Rect2(0.0, 7.5, 5.0, 5.0)]},
 	{"id": &"isolation", "name_key": "ROOM_ISOLATION", "floor": 1, "rects": [Rect2(5.0, 0.0, 5.25, 2.25)]},
 	{"id": &"landing", "name_key": "ROOM_LANDING", "floor": 1, "rects": [Rect2(5.0, 2.25, 5.25, 1.5)]},
-	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(5.0, 3.75, 3.75, 6.875), Rect2(8.75, 9.375, 1.5, 1.25), Rect2(5.0, 10.625, 3.5, 1.875)]},
+	{"id": &"corridor", "name_key": "ROOM_CORRIDOR", "floor": 1, "rects": [Rect2(5.0, 3.75, 3.75, 6.875), Rect2(8.75, 9.375, 1.5, 1.25)]},
 	{"id": &"multipurpose", "name_key": "ROOM_MULTIPURPOSE", "floor": 1, "rects": [Rect2(10.25, 0.0, 4.75, 8.125)]},
 	{"id": &"bathroom_upper", "name_key": "ROOM_BATHROOM_UPPER", "floor": 1, "rects": [Rect2(10.25, 8.125, 4.75, 4.375)]},
 	{"id": &"storage", "name_key": "ROOM_STORAGE", "floor": 1, "rects": [Rect2(8.5, 10.625, 1.75, 1.875)]},
@@ -101,8 +103,8 @@ const WALLS: Array[Dictionary] = [
 	{"floor": 0, "axis": "z", "at": 10.25, "from": 3.75, "to": 12.5, "openings": [{"pos": 10.0, "to": &"bathroom_ground"}]},
 	# Utility / bathroom.
 	{"floor": 0, "axis": "x", "at": 9.375, "from": 10.25, "to": 15.0, "openings": []},
-	# Hall / vestibule.
-	{"floor": 0, "axis": "x", "at": 10.625, "from": 5.0, "to": 10.25, "openings": [{"pos": 7.0, "width": 3.75}]},
+	# Hall and entry are one open volume; no low lintel cuts off the tall foyer.
+	{"floor": 0, "axis": "x", "at": 10.625, "from": 8.875, "to": 10.25, "openings": []},
 	# --- Upper floor, exterior ---
 	{"floor": 1, "axis": "x", "at": 0.0, "from": -0.125, "to": 15.125, "exterior": true, "openings": []},
 	{"floor": 1, "axis": "x", "at": 12.5, "from": -0.125, "to": 15.125, "exterior": true, "openings": [{"pos": 6.625, "width": 1.875, "window": true}]},
@@ -123,6 +125,8 @@ const WALLS: Array[Dictionary] = [
 	# Parapet along the open stairwell and its south end.
 	{"floor": 1, "axis": "z", "at": 8.75, "from": 3.75, "to": 9.375, "guard": true, "openings": []},
 	{"floor": 1, "axis": "x", "at": 9.375, "from": 8.75, "to": 10.25, "guard": true, "openings": []},
+	# Open gallery edge at the double-height entry. All doors stay on solid floor.
+	{"floor": 1, "axis": "x", "at": 10.625, "from": 5.0, "to": 8.5, "guard": true, "openings": []},
 	# Storage closet north wall.
 	{"floor": 1, "axis": "x", "at": 10.625, "from": 8.5, "to": 10.25, "openings": [{"pos": 9.375, "to": &"storage"}]},
 	{"floor": 1, "axis": "z", "at": 8.5, "from": 10.625, "to": 12.5, "openings": []},

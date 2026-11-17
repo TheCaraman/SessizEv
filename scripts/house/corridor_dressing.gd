@@ -10,7 +10,7 @@ extends Node3D
 ##           West wall x = 5 (living-room door at z 7.5); stair guard x = 8.75;
 ##           coat wall z = 10.625 east of the opening (x 8.875..10.25);
 ##           front door x = 7.5 and windows at x 5.94 and 9.31 on z = 12.5.
-##   Upper:  corridor x 5..8.75, z 3.75..10.625 and x 5..8.5, z 10.625..12.5;
+##   Upper:  corridor x 5..8.75, z 3.75..10.625, overlooking the tall entrance;
 ##           bedroom doors on x = 5 at z 3.0, 5.625, 8.75; window x 6.625 on z = 12.5;
 ##           landing x 5..10.25, z 2.25..3.75, box-room wall z = 2.25.
 
@@ -122,9 +122,7 @@ func _build_upper_corridor() -> void:
 	PropMeshes.framed_picture(self, Vector3(WEST_FACE + 0.004, UPPER + 1.62, 4.31), Vector2(0.44, 0.35), 1.0, 0.0, &"photo_house")
 	PropMeshes.framed_picture(self, Vector3(WEST_FACE + 0.004, UPPER + 1.66, 7.19), Vector2(0.52, 0.40), 1.0, deg_to_rad(-2.0), &"painting_landscape")
 
-	# Low bookcase at the window end, and a radiator under the window.
-	_bookcase(Vector3(5.21, UPPER, 11.7))
-	_radiator(Vector3(6.625, UPPER, FRONT_FACE - 0.08), 1.2)
+	# The front window now belongs to the tall foyer; no floating upper props.
 
 	# Small cabinet on the landing against the box-room wall, with a jug.
 	var cabinet := Vector3(6.2, UPPER, 2.25 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + 0.15)
