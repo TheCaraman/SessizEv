@@ -60,9 +60,9 @@ func _ready() -> void:
 		await get_tree().physics_frame
 		lean = minf(lean, _camera.rotation.z)
 		lag = maxf(lag, _camera.rotation.y)
-	check(lean < -deg_to_rad(0.5), "turning leans the view into the turn (%.2f°)" % rad_to_deg(lean))
+	check(lean < -deg_to_rad(BodyCamMotion.TURN_LEAN_MAX_DEGREES * 0.4), "turning leans the view into the turn (%.2f°)" % rad_to_deg(lean))
 	check(lean > -deg_to_rad(BodyCamMotion.TURN_LEAN_MAX_DEGREES + 0.6), "lean stays controlled")
-	check(lag > deg_to_rad(0.3) and lag < deg_to_rad(BodyCamMotion.TURN_LAG_MAX_DEGREES + 0.4), "the view trails the turn slightly (%.2f°)" % rad_to_deg(lag))
+	check(lag > deg_to_rad(BodyCamMotion.TURN_LAG_MAX_DEGREES * 0.4) and lag < deg_to_rad(BodyCamMotion.TURN_LAG_MAX_DEGREES + 0.4), "the view trails the turn slightly (%.2f°)" % rad_to_deg(lag))
 	await get_tree().create_timer(1.0).timeout
 	check(_camera.transform.origin.length() < 0.002 and absf(_camera.rotation.z) < deg_to_rad(0.1), "lean settles after the turn")
 
@@ -136,7 +136,7 @@ func _real_door_handoff() -> void:
 	for _i: int in 12:
 		player.rotate_y(0.05)
 		await get_tree().physics_frame
-	check(camera.transform.origin.length() > 0.0 or absf(camera.rotation.z) > deg_to_rad(0.3), "house view leans while turning")
+	check(camera.transform.origin.length() > 0.0 or absf(camera.rotation.z) > deg_to_rad(BodyCamMotion.TURN_LEAN_MAX_DEGREES * 0.3), "house view leans while turning")
 	var door: RoomDoor = scene.find_child("Door_living_room", true, false)
 	var room: RoomView = scene.get_node("RoomView")
 	door.interact(player)
@@ -151,7 +151,7 @@ func _real_door_handoff() -> void:
 	for _i: int in 12:
 		player.rotate_y(0.05)
 		await get_tree().physics_frame
-	check(absf(camera.rotation.z) > deg_to_rad(0.3), "body cam resumes after the room")
+	check(absf(camera.rotation.z) > deg_to_rad(BodyCamMotion.TURN_LEAN_MAX_DEGREES * 0.3), "body cam resumes after the room")
 	scene.queue_free()
 	await _frames(2)
 

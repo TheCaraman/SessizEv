@@ -6,8 +6,8 @@ Branch `claude/bodycam-002`, base 30fdc19 (0.1.18) + the owner-approved 0.38 m b
 
 `scripts/player/body_cam_motion.gd` (node `Player/BodyCam`) moves `Head/Camera3D` in its **local** transform:
 
-- **Walking:** with each step the view dips (2.2 cm at walking speed), shifts side to side (1.3 cm over a two-step cycle), rolls 0.75° and nods 0.3° (lightened after the owner found the first values too strong, 2026-11-18). The amplitude follows the real horizontal speed, so walking fast sways about 1.6× more. The offset is capped at 6 cm, which keeps the view clear of walls (body radius 0.38 m, near-plane corners reach 0.122 m at FOV 95).
-- **Turning:** the view leans into the turn (up to 1.6°) and trails the body slightly (up to 1.1°). A spring drives both, slightly under-damped, so the end of a turn settles softly.
+- **Walking:** with each step the view dips (1.2 cm at walking speed), shifts side to side (0.7 cm over a two-step cycle), rolls 0.4° and nods 0.15° (lightened twice at the owner's request, 2026-11-18: first 3.8 cm/1.5°, then 2.2 cm/0.75°). The amplitude follows the real horizontal speed, so walking fast sways about 1.6× more. The offset is capped at 6 cm, which keeps the view clear of walls (body radius 0.38 m, near-plane corners reach 0.122 m at FOV 95).
+- **Turning:** the view leans into the turn (up to 0.9°) and trails the body slightly (up to 0.6°). A spring drives both, slightly under-damped, so the end of a turn settles softly.
 - **Stopping:** the gait strength eases out (about 0.5 s), so the view settles back to the head with no snap.
 - Mouse look (Player yaw, Head pitch) is unchanged. `InteractionRay` is a child of the camera, so it always points where the view points. `PlayerController.get_look_direction()` now returns the camera direction for the same reason.
 - No blur, pixelation or colour effect.
