@@ -61,3 +61,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | COORDINATOR-002 | TAMAM | Codex | İki gerçek CLI worker→diğer sağlayıcı incelemesi→28 paket Godot test kapısı geçti; durdur/yeniden başlat doğrulandı. Ayrı integration dalı, aktif oyuna otomatik dağıtım yok. docs/qa/ContinuousCoordinator.md | 2026-11-17 |
 
 | ARRIVALS-CHAIN-001 | TAMAM | Claude CLI / Codex incelemesi | ec15e36, 30 paket WASAPI/7406 raporlanmış kontrol; geliş entegrasyonu 249. 0.1.9 olarak Codex tarafından ayrıca yayımlandı; otomatik dağıtım değil. | 2026-11-17 |
+
+| ROOMS-002 | AKTİF | Codex CLI / Claude incelemesi | shelter_manager/shelter_view/shelter_test ve strings.csv tek yazarlı; plan inceleme, ikinci onay ve güvenli kayıt. Claim ROOMs-002; ARRIVALS-002 save dosyasına yazılmaz. | 2026-11-17 |
