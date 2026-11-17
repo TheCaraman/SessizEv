@@ -120,7 +120,7 @@ func _ready() -> void:
 						await get_tree().process_frame
 					var panel: Control = journal.find_child("JournalPanel", true, false)
 					check(Rect2(Vector2.ZERO, Vector2(resolution)).encloses(panel.get_global_rect()), "summary modal fits " + locale + str(resolution))
-					check(Rect2(Vector2.ZERO, Vector2(resolution)).encloses(journal._close_hint.get_global_rect()) and journal._close_hint.text == tr("JOURNAL_CLOSE_HINT"), "visible localized close hint fits " + locale + str(resolution))
+					check(Rect2(Vector2.ZERO, Vector2(resolution)).encloses(journal._close_hint.get_global_rect()) and journal._close_hint.text == tr("JOURNAL_CLOSE_HINT").format({"key": InputSetup.get_key_label(&"journal")}), "visible localized close hint fits " + locale + str(resolution))
 					check(not journal.text.text.contains("{resident}") and not journal.text.text.contains("D4_CLOSE_"), "summary localization " + locale)
 					if "--capture-closure" in OS.get_cmdline_user_args() and resolution == Vector2i(1920, 1080):
 						await RenderingServer.frame_post_draw

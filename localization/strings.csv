@@ -185,7 +185,7 @@ TRUST_DISTRUSTFUL,"Distrustful","Güvensiz"
 TRUST_NEUTRAL,"Neutral","Tarafsız"
 TRUST_COOPERATIVE,"Cooperative","İşbirlikçi"
 TRUST_LOYAL,"Loyal","Sadık"
-POWER_WAKE,"At 23:00 the house lights go out. Check the utility room. Tab in corridor: journal.","Saat 23:00: ev ışıkları söndü. Tesisat odasını kontrol et. Koridorda Tab: günlük."
+POWER_WAKE,"At 23:00 the house lights go out. Check the utility room. J in corridor: journal.","Saat 23:00: ev ışıkları söndü. Tesisat odasını kontrol et. Koridorda J: günlük."
 WATCH_ACTION,Stay awake tonight (up to 40 energy),Bu gece uyanık kal (en çok 40 enerji)
 WATCH_WAIT_ACTION,Wait until {time},Saat {time} olana kadar bekle
 WATCH_CONFIRM,"The watch starts at 23:00, or now if later. An eight-hour watch costs 40 energy; a late start only counts the hours ahead. You can investigate or sleep for the remaining hours. Press again to begin; another action or leaving this room cancels.","Nöbet 23:00'te, daha geçse şimdi başlar. Sekiz saatlik nöbet 40 enerjiye mal olur; geç başlarsan yalnızca kalan süre sayılır. Araştırabilir veya kalan saatleri uyuyabilirsin. Başlamak için tekrar bas; başka eylem veya odadan çıkmak iptal eder."
@@ -217,7 +217,7 @@ POWER_ALREADY,"Power is already available.","Güç zaten mevcut."
 POWER_DEFER,"Deferred. You may end the night and continue in the morning. No supplies spent.","Ertelendi. Geceyi bitirip sabah devam edebilirsin. Kaynak harcanmadı."
 POWER_TV_OFF,"The TV has no power. The battery radio still works.","TV elektriksiz. Pilli radyo çalışıyor."
 POWER_WATCH,"House lights failed at 23:00. I cannot identify a culprit.","Ev ışıkları 23:00’te söndü. Faili belirleyemiyorum."
-POWER_JOURNAL,"Journal — Tab / Esc to close","Günlük — kapatmak için Tab / Esc"
+POWER_JOURNAL,"Journal — J / Esc to close","Günlük — kapatmak için J / Esc"
 POWER_FACT,Fact,Olgu
 POWER_CLAIM,Claim,İddia
 POWER_SUSPICION,Suspicion,Şüphe
@@ -300,7 +300,9 @@ D4_CLOSE_OUTAGE,"The power outage is still unresolved. This does not prevent com
 D4_CLOSE_POWER_AVAILABLE,"No active power outage is recorded.","Etkin elektrik kesintisi kaydı yok."
 D4_CLOSE_FINISHED_AT,"Review completion recorded at {time}. The shelter status above reflects subsequent changes too.","Değerlendirme {time} saatinde tamamlandı. Yukarıdaki barınak durumu sonraki değişiklikleri de içerir."
 D4_CLOSE_BUILD_LIMIT,"This is the end of the current playable slice. The next night and Day 5 are not implemented. Your campaign remains saved; you can keep exploring.","Mevcut oynanabilir kesit burada bitiyor. Sonraki gece ve Gün 5 uygulanmadı. Kampanyan kayıtlı; keşfe devam edebilirsin."
-JOURNAL_CLOSE_HINT,"Tab / Esc — Close","Tab / Esc — Kapat"
+JOURNAL_CLOSE_HINT,"{key} / Esc — Close","{key} / Esc — Kapat"
+WRIST_DAY,Day {day},Gün {day}
+WRIST_ENERGY,Energy {energy}%,Enerji %{energy}
 ACC_ACTION,"Accuse {name}…","{name}: suçlama yönelt…"
 ACC_REREAD,"Reread {name}'s response (free)","{name}: yanıtı tekrar oku (ücretsiz)"
 ACC_TITLE,"Accusation — {name}","Suçlama — {name}"
