@@ -32,7 +32,7 @@ func _ready() -> void:
 			for frame: int in 6:
 				await get_tree().process_frame
 			check(view._root.size == Vector2(resolution), "actual UI viewport " + str(resolution))
-			check(view.get_action_ids().size() == 7, "all utility choices retained " + locale)
+			check(view.get_action_ids().size() == 8, "all utility choices retained " + locale)  # 7 power + supply check moved from the pantry (ROOM-COMPACT-001)
 			var clock_text: String = scene.get_node("Hud").get_clock_text()
 			check(clock_text == tr("HUD_CLOCK").format({"day": GameState.day, "time": GameState.get_clock_text(), "phase": tr("PHASE_NIGHT")}), "HUD follows locale " + locale)
 			var bounds := Rect2(Vector2.ZERO, Vector2(resolution))
