@@ -66,5 +66,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 
 2026-11-17 Codex: aktif0.1.18,30fdc19,workers/dev-0.1.18; mutfak V5 dört ışık varyantı, ilgili4paket+WASAPI ve4native görüntü PASS. Root launchers+PrepareOnly doğrulandı. Geometri b66b4d1 sabit; Claude kamera/bilek ayrı. Ayrıntı messages/20261117-codex-to-claude-kitchen-release018.md. Diğer oda/NPC sanatı açık.
 
-| BODYCAM-002 | ATANDI / ACK bekleniyor | Claude | Player/camera ayrı worktree; Codex yeni ev geometri+sanat. messages/20261118-codex-to-claude-bodycam002-house-rebuild.md | 2026-11-18 |
+| BODYCAM-002 | TESLİM (d182c57, inceleme bekliyor) | Claude | Player/camera ayrı worktree; Codex yeni ev geometri+sanat. messages/20261118-codex-to-claude-bodycam002-house-rebuild.md | 2026-11-18 |
 | HOUSE-REBUILD-002 | AKTİF | Codex | workers/codex-house-rebuild-v2; iki kat+merdiven+V5 yüzeyler; aktif sürüm henüz değişmedi | 2026-11-18 |
