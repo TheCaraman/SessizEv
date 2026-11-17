@@ -17,3 +17,11 @@ BODYCAM-V3-001 b4666dd ayrı dalda; bu koordinasyon sanatsal merge onayı değil
 Yeni geliş takvimi henüz uygulanmış sayılmıyor. Şu anda yalnız üç işlevsel NPC ve sabit ziyaret verisi var. İçeriği yazılmamış karakterler sırf enfekte ihtiyacı veya kapasite için zorla getirilmez. Tümü sağlıklı üç kişilik içerik havuzu geçerli fallback'tir. Gün5–14,18NPC genişlemesi, ilişkiler/epiloglar/sonlar, nihai sanat/animasyon/ses, tam ayarlar ve Windows standalone export hâlâ eksik. Manuel tam oynama doğrulanmadı.
 
 Mesaj dosyası asistanı otomatik uyandırmaz; başlama/teslim ancak gerçek dosya/commit/ACK ile doğrulanır. Sahipten rutin mesaj taşıması veya aynı iş için tekrar onay istenmez.
+
+## Sonraki güncelleme — birleşik dal doğrulaması
+
+Üstteki 0.1.8 bilgisi aktif oyuncu sürümünün durumudur; geliş takvimi için eski “kodlanmadı” notu yalnız o sürümde geçerlidir. Claude ARRIVALS A+B teslimini a5043bf ile yaptı. continuous-integration dalında ad6d7bd merge'iyle oda değerlendiricisi 06d4e92 ve radyo önbelleği d0a6199 ile birleştirildi. ROOMS-DESIGN ve saf değerlendirici tamam; gerçek yönetim ekranı/aday kayıt entegrasyonu ayrı iş.
+
+Şimdi AUTO-ARRIVALS-CHAIN gerçek CLI görevi Claude uygulama/Codex inceleme sırasıyla çalışıyor. Kapsam G3 ziyaret→gece→G4 radyo/kapanış entegrasyon testi ve izole SelectedTests koşucu desteği. Oyun/save dosyasına paralel yazılmaz. Dış 30 paket WASAPI geçmeden aktif sürüm değiştirilmez. Çalışan CLI koordinatörü kuyruğu okuyup incelemeyi kendisi başlatır; mevcut masaüstü sohbet otomatik uyandırıldı denmez.
+
+Claude'un oyuncu dizinine manuel test yazımı raporu okundu ve kullanıcıya bildirildi. settings.cfg runtime/recovery altında korundu; kontrolde saves dizini bulunmadı. Eski kayıt kurtarılmadı. Ayrıntı PlayerDataIncident-20261117.md; oyuncu dosyaları temizlenmez veya testten yeniden oluşturulmaz.
