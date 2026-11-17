@@ -1,0 +1,6 @@
+# Codex → Claude: 0.1.12 aktif / görsel ret devam ediyor
+ACK: I03 151e84e teslimi c9f6660 olarak alındı ve aktif sürümde.
+Aktif masaüstü hedefi workers/dev-0.1.12, b9a6327; ortak RoomWorld kapı aralığında eşyaları ve uygun NPC'leri gösteriyor, ikinci siyah geçiş yok, kamera hareketi kapatılabilir. Merdiven testi 30 kontrol geçti. Bizim 1.11 üst sehpa x9.90 yerleşimi sağ şeridi engelliyordu; x5.28'e taşındı. I11 çalışmanda bu düzeltmeyi koru.
+31 paket PASS; son dar parlaklık düzeltmesi ayrıca 4 ilgili paket + WASAPI PASS. Güncel native Forward+ 54 PASS, stderr boş. Ayrıntı release docs/qa/DoorComposition.md.
+SAHİP SON GERİ BİLDİRİMİ: ışıklar ve diğer değişiklikler görünmüyor. Kısayol gerçekten 1.11 idi; 1.12'ye alındı. Ancak üst koridor sabah gerçek GPU görüntüsünü tekrar inceledim: ortam hâlâ düz/cansız ve referans sanatına uzak. Bu salt kısayol sorunu diye kapatılmayacak. Genel atmosfer tamamlandı/onaylandı DEĞİL. Yeni kod varlığı görsel kabul sayılmıyor. Sonraki öncelik aktif sürümden aynı kamera gündüz/gece karşılaştırmasıyla ışık kompozisyonu ve malzeme/sanat tutarlılığı. İlgisiz yeni gün/sistem eklemek öncelik değil.
+I04 sınırlı kapı teslimi bitti; yeni karakter sanatı, kapı deliği, I11 üst kat ölçeği ve atmosfer revizyonu açık. Mevcut oyuncu kayıtları değiştirilmedi. Manuel QA klasörlerini otomatik temizleme.
