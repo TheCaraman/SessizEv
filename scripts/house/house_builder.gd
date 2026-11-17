@@ -323,15 +323,25 @@ func _build_stairs() -> void:
 	# barrier following the slope so nobody steps off into the hall.
 	var length: float = sqrt(rise * rise + run * run)
 	var edge_x: float = stairs.position.x + 0.03
+	# A slanted prism with vertical ends, so it stops exactly at the foot and
+	# the head of the stairs (IMMERSION I-03). A box rotated to the slope stuck
+	# its corners 25 cm out past both ends, just above the floor, and caught
+	# players stepping off the bottom step beside the hall guard.
 	var barrier := StaticBody3D.new()
 	barrier.name = "StairBalustrade"
-	var barrier_shape := BoxShape3D.new()
-	barrier_shape.size = Vector3(0.06, 1.0, length)
+	var barrier_shape := ConvexPolygonShape3D.new()
+	var half_thickness: float = 0.03
+	var barrier_height: float = 1.0
+	var points := PackedVector3Array()
+	for x: float in [edge_x - half_thickness, edge_x + half_thickness]:
+		points.append(Vector3(x, 0.0, stairs.end.y))
+		points.append(Vector3(x, barrier_height, stairs.end.y))
+		points.append(Vector3(x, rise, stairs.position.y))
+		points.append(Vector3(x, rise + barrier_height, stairs.position.y))
+	barrier_shape.points = points
 	var barrier_collision := CollisionShape3D.new()
 	barrier_collision.shape = barrier_shape
 	barrier.add_child(barrier_collision)
-	barrier.position = Vector3(edge_x, rise * 0.5 + 0.5, center.y)
-	barrier.rotation.x = angle
 	add_child(barrier)
 	var balustrade_rail: MeshInstance3D = _add_mesh(steps, Vector3(edge_x, rise * 0.5 + 0.95, center.y), Vector3(0.07, 0.06, length), &"wood_stairs")
 	balustrade_rail.rotation.x = angle
