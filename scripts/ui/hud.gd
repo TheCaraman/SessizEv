@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## In-world HUD: a small reticle, the contextual interaction prompt, the clock,
-## a subtitle line for sounds that matter, and the day title card.
+## a subtitle line for sounds that matter, the day title card and, on the
+## first day only, a quiet line explaining what moves the clock.
 ## No survival meters are shown (GDD section 13).
 
 const TEXT_COLOR := Color(0.86, 0.84, 0.72)
@@ -12,6 +13,7 @@ var _reticle: ColorRect
 var _clock: Label
 var _subtitle: Label
 var _title: Label
+var _guidance: Label
 var _notice_time_left: float = 0.0
 var _title_tween: Tween
 var _covered_by: Dictionary = {}
@@ -39,9 +41,25 @@ func _ready() -> void:
 	_clock.modulate = Color(1.0, 1.0, 1.0, 0.8)
 	add_child(_clock)
 
+	# Sits under the clock, away from the centred knock subtitle, so it never
+	# replaces either of them.
+	_guidance = Label.new()
+	_guidance.position = Vector2(40.0, 64.0)
+	_guidance.size = Vector2(560.0, 0.0)
+	_guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_guidance.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_style(_guidance, 19)
+	_guidance.add_theme_constant_override(&"outline_size", 6)
+	_guidance.modulate = Color(1.0, 1.0, 1.0, 0.62)
+	add_child(_guidance)
+
 	EventBus.interaction_prompt_changed.connect(func(text: String) -> void: _prompt.text = text)
-	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void: _update_clock())
-	EventBus.visitor_changed.connect(func(_id: String) -> void: _update_subtitle())
+	EventBus.time_changed.connect(func(_day: int, _minutes: int) -> void:
+		_update_clock()
+		_update_guidance())
+	EventBus.visitor_changed.connect(func(_id: String) -> void:
+		_update_subtitle()
+		_update_guidance())
 	EventBus.notice_requested.connect(_show_notice)
 	EventBus.day_started.connect(_show_title)
 	# While a room or a conversation fills the screen only the clock stays.
@@ -53,6 +71,7 @@ func _ready() -> void:
 	EventBus.shelter_view_closed.connect(func() -> void: _set_covered(&"shelter", false))
 	_update_clock()
 	_update_subtitle()
+	_update_guidance()
 	if GameState.active:
 		_show_title(GameState.day)
 
@@ -61,6 +80,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and _clock != null:
 		_update_clock()
 		_update_subtitle()
+		_update_guidance()
 		_title.text = tr("TITLE_DAY_1") if GameState.day == 1 else tr("TITLE_DAY_N").format({"day": GameState.day})
 
 
@@ -79,6 +99,7 @@ func _set_covered(what: StringName, covered: bool) -> void:
 	var clear: bool = _covered_by.is_empty()
 	for control: Control in [_reticle, _prompt, _subtitle, _title]:
 		control.visible = clear
+	_update_guidance()
 
 
 ## Current prompt text; used by tests.
@@ -94,6 +115,11 @@ func get_clock_text() -> String:
 	return _clock.text
 
 
+## The first-day time hint as shown; empty while it is hidden. Used by tests.
+func get_guidance_text() -> String:
+	return _guidance.text if _guidance.visible else ""
+
+
 func _update_clock() -> void:
 	if not GameState.active:
 		_clock.text = ""
@@ -104,6 +130,23 @@ func _update_clock() -> void:
 		"time": GameState.get_clock_text(),
 		"phase": tr(phase_keys[GameState.get_phase()]),
 	})
+
+
+## Day 1 daytime only: walking the house costs no time, so a new player could
+## wait in an empty corridor for a knock that never comes. The line says what
+## does move the clock and nothing about who comes or when. It gives way to a
+## visitor at the door and to anything that covers the screen.
+func _update_guidance() -> void:
+	var phase: int = GameState.get_phase()
+	var wanted: bool = (
+		GameState.active
+		and GameState.day == 1
+		and (phase == GameState.Phase.MORNING or phase == GameState.Phase.AFTERNOON)
+		and GameState.visitor == ""
+		and _covered_by.is_empty()
+	)
+	_guidance.text = tr("HUD_DAY1_TIME_HINT") if wanted else ""
+	_guidance.visible = wanted
 
 
 ## The subtitle names any sound the player must not miss, so the cue never

@@ -12,9 +12,14 @@ extends Node
 ##   4. Sleeping: only when allowed, moves to Day 2, uses supplies, autosaves.
 ##   5. A save survives a round trip unchanged.
 ##   6. Rejecting Elena and ignoring the door both leave a valid campaign.
+##   7. The Day 1 time hint: real EN/TR text, no spoilers, gives way to the
+##      door and to covering views, survives a load, changes no state.
 
 const SCENE: PackedScene = preload("res://scenes/main/house_blockout.tscn")
 const TEST_SLOT: String = "test_slot"
+const GUIDANCE_SLOT: String = "test_guidance_slot"
+const GUIDANCE_EN: String = "Walking the house does not move the clock. Conversations and meaningful actions do. Resting in Daniel's bedroom lets time pass."
+const GUIDANCE_TR: String = "Evde dolaşmak saati ilerletmez; konuşmalar ve anlamlı eylemler ilerletir. Daniel'in yatak odasında dinlenmek zamanı geçirir."
 
 var _scene: Node
 var _director: CampaignDirector
@@ -45,7 +50,9 @@ func _physics_process(_delta: float) -> void:
 		_check_save_round_trip()
 		_check_reject_path()
 		_check_ignored_door()
+		_check_day1_guidance()
 		SaveManager.delete_save(TEST_SLOT)
+		SaveManager.delete_save(GUIDANCE_SLOT)
 		_finish()
 
 
@@ -227,6 +234,79 @@ func _check_ignored_door() -> void:
 	_check(GameState.get_status("elena_ward") == "left", "she should be recorded as having left")
 	_check(_director.can_sleep(), "sleep should be possible once she has gone")
 	_check(GameState.minutes <= GameState.LAST_MINUTE, "the clock should stop at 23:59")
+
+
+func _guidance() -> String:
+	return _hud.call(&"get_guidance_text") as String
+
+
+func _check_day1_guidance() -> void:
+	# Evening of the ignored-door campaign: nobody waits, but it is not daytime.
+	_check(GameState.day == 1 and GameState.get_phase() != GameState.Phase.MORNING, "the ignored-door campaign should end in the evening")
+	_check(_guidance() == "", "the time hint should not show in the evening")
+
+	GameState.new_campaign(42)
+	# The earlier "knocking has stopped" notice would still hold the subtitle;
+	# let its few seconds run out as a frame would.
+	_hud.call(&"_process", 6.0)
+	_check(_guidance() == GUIDANCE_EN, "the Day 1 morning should show the time hint, got '%s'" % _guidance())
+	_check((_hud.call(&"get_clock_text") as String).contains("07:00"), "the hint must not replace the clock")
+	_check(_hud.call(&"get_subtitle_text") == "", "the hint must not use the door subtitle line")
+	var spoiler: RegEx = RegEx.create_from_string("(?i)[0-9]|elena|marcus|arthur|infect|enfekte|knock|visitor|evening|akşam|ziyaret|kapı")
+	_check(spoiler.search(GUIDANCE_EN) == null, "the EN hint must not name a visitor, time or infection")
+	_check(spoiler.search(GUIDANCE_TR) == null, "the TR hint must not name a visitor, time or infection")
+	_check(GUIDANCE_EN.contains("Daniel's bedroom") and GUIDANCE_EN.contains("time pass"), "the EN hint should say resting in Daniel's bedroom passes time")
+	_check(GUIDANCE_TR.contains("dinlenmek zamanı geçirir"), "the TR hint should say resting passes time")
+
+	# Pure UI: reading, retranslating and a notice change nothing in the campaign.
+	var before: String = JSON.stringify(GameState.to_dict())
+	TranslationServer.set_locale("tr")
+	_check(_guidance() == GUIDANCE_TR, "the Turkish HUD should show the Turkish hint, got '%s'" % _guidance())
+	_check((_hud.call(&"get_clock_text") as String).begins_with("Gün 1"), "the Turkish clock should stay beside the hint")
+	TranslationServer.set_locale("en")
+	_check(_guidance() == GUIDANCE_EN, "switching back should restore the English hint")
+	_check(JSON.stringify(GameState.to_dict()) == before, "showing the hint must not change time, residents, infection or schedule")
+	_check(GameState.minutes == 7 * 60 and GameState.visitor == "", "the hint must not advance time or bring anyone early")
+
+	# What the hint promises is true: rest exists on Day 1 and passes an hour.
+	_room_view.open(&"daniel_bedroom")
+	_check(_guidance() == "", "the hint should hide while a room fills the screen")
+	_check(_room_view.get_action_ids().has("rest"), "Daniel's bedroom should offer rest on the Day 1 morning")
+	_room_view.perform_action("rest")
+	_check(GameState.minutes == 8 * 60, "resting should pass an hour, got %d" % GameState.minutes)
+	_room_view.close()
+	_check(_guidance() == GUIDANCE_EN, "the hint should return after leaving the room")
+
+	# Afternoon still shows it; a save at this point is reloaded below.
+	GameState.advance_minutes(13 * 60 - GameState.minutes)
+	_check(GameState.get_phase() == GameState.Phase.AFTERNOON and _guidance() == GUIDANCE_EN, "the Day 1 afternoon should keep the hint")
+	_check(SaveManager.save_game(GUIDANCE_SLOT) == OK, "saving the Day 1 afternoon should succeed")
+
+	# The knock wins: the hint gives way to the door subtitle and the conversation.
+	GameState.advance_minutes(18 * 60 - GameState.minutes)
+	_check(GameState.visitor != "", "the existing evening arrival should still knock")
+	_check(_guidance() == "", "the hint must hide while someone is at the door")
+	_check((_hud.call(&"get_subtitle_text") as String).contains("knocking"), "the knock subtitle should stay visible")
+	EventBus.front_door_used.emit()
+	_check(_dialogue.is_active() and _guidance() == "", "the hint must stay hidden during the conversation")
+	_dialogue.choose(0)
+	_dialogue.choose(0)
+	_dialogue.choose_by_id("reject")
+	while _dialogue.is_active():
+		_dialogue.choose(0)
+	_check(GameState.visitor == "" and _guidance() == "", "after the door the evening should not bring the hint back")
+
+	# Loading a Day 1 daytime save shows it again; a later day does not.
+	_check(SaveManager.load_game(GUIDANCE_SLOT), "loading the Day 1 afternoon save should succeed")
+	_hud.call(&"_process", 6.0)
+	_check(GameState.minutes == 13 * 60 and _guidance() == GUIDANCE_EN, "a loaded Day 1 afternoon should show the hint, got '%s'" % _guidance())
+	_check(_hud.call(&"get_subtitle_text") == "", "a loaded empty doorstep should show no knock")
+	var loaded: String = JSON.stringify(GameState.to_dict())
+	EventBus.notice_requested.emit("[test notice]")
+	_check(_hud.call(&"get_subtitle_text") == "[test notice]" and _guidance() == GUIDANCE_EN, "a notice and the hint should not replace each other")
+	_check(JSON.stringify(GameState.to_dict()) == loaded, "a notice beside the hint must not change the campaign")
+	_check(SaveManager.load_game(TEST_SLOT), "loading the Day 2 save should succeed")
+	_check(GameState.day == 2 and _guidance() == "", "the hint is for Day 1 only")
 
 
 func _check(condition: bool, message: String) -> void:
