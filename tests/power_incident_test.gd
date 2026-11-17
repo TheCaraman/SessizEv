@@ -187,6 +187,9 @@ func _ready() -> void:
 		var legacy: Dictionary = GameState.to_dict()
 		legacy.erase("power_incident")
 		legacy.erase("evidence")
+		# Old saves had no stored timetable; they keep the fixed one.
+		legacy.erase("arrival_schedule")
+		legacy.erase("arrival_schedule_version")
 		if version == 1:
 			legacy.erase("beds")
 		if version < 3:

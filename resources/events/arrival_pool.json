@@ -1,0 +1,17 @@
+{
+	"version": 1,
+	"rules": {
+		"max_visits_per_day": 2,
+		"min_gap_minutes": 90,
+		"latest_end": 1380,
+		"slot_minutes": 15,
+		"first_offers_window": 6
+	},
+	"visits": [
+		{"id": "elena", "npcs": ["elena_ward"], "fixed": {"day": 1, "start": 1080, "end": 1290}, "dialogue": "elena_arrival", "always": true},
+		{"id": "marcus", "npcs": ["marcus_hale"], "windows": [{"days": [2, 3], "start_min": 540, "start_max": 960, "duration": 180}], "dialogue": "marcus_arrival", "always": true},
+		{"id": "arthur", "npcs": ["arthur_bell"], "windows": [{"days": [2, 3], "start_min": 540, "start_max": 960, "duration": 180}], "dialogue": "arthur_arrival", "always": true},
+		{"id": "noah_lily", "npcs": ["noah_reed", "lily_reed"], "windows": [{"days": [3, 6], "start_min": 600, "start_max": 1080, "duration": 150}], "dialogue": "noah_arrival", "chance": 1.0},
+		{"id": "maya", "npcs": ["maya_collins"], "windows": [{"days": [4, 8], "start_min": 540, "start_max": 1080, "duration": 150}], "dialogue": "maya_arrival", "chance": 0.7}
+	]
+}

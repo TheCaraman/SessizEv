@@ -14,8 +14,10 @@ enum Phase { MORNING, AFTERNOON, EVENING, NIGHT }
 
 ## Version 2 added beds, resolved_arrivals and visitor_arrival; version 3 added
 ## jobs, completed_jobs and reports (docs/Day2Design.md, section 10).
+## Version 6 stores the campaign's own door-visit timetable (arrival_schedule,
+## docs/design/ArrivalSchedule.md); older saves keep the old fixed timetable.
 ## Older saves are migrated on load.
-const SAVE_VERSION: int = 5
+const SAVE_VERSION: int = 6
 ## The day starts at 07:00. Times are minutes since midnight.
 const DAY_START: int = 7 * 60
 const AFTERNOON_START: int = 12 * 60
@@ -51,9 +53,15 @@ var player: Dictionary = {}
 var npcs: Dictionary = {}
 ## bed id -> character id, for occupied beds only.
 var beds: Dictionary = {}
-## Ids of the visits (resources/events/arrivals.json) that have already
-## begun or been missed. A visit never happens twice.
+## Ids of the visits in arrival_schedule that have already begun or been
+## missed. A visit never happens twice.
 var resolved_arrivals: Array[String] = []
+## This campaign's door visits, chosen once at the start (ArrivalScheduler)
+## and never rolled again: [{"id", "visit", "npc", "npcs", "day", "start",
+## "end", "dialogue"}]. Saves from before version 6 keep the old fixed
+## timetable (arrival_schedule_version 0).
+var arrival_schedule: Array[Dictionary] = []
+var arrival_schedule_version: int = 0
 ## Work in progress: character id -> {"job", "day", "start", "end", "room"}.
 ## One job per character. "room" is where they are while working, or "".
 var jobs: Dictionary = {}
@@ -95,6 +103,9 @@ func new_campaign(seed_value: int = -1) -> void:
 		npcs[npc["id"]] = {
 			"status": "unknown", "infected": infected[npc["id"]], "trust": 0, "room": "",
 		}
+	# After infection, on its own random stream; it reads infection, never sets it.
+	arrival_schedule = ArrivalScheduler.generate(campaign_seed, infected)
+	arrival_schedule_version = ArrivalScheduler.ALGORITHM_VERSION
 	active = true
 	EventBus.day_started.emit(day)
 	EventBus.time_changed.emit(day, minutes)
@@ -334,6 +345,8 @@ func to_dict() -> Dictionary:
 		"npcs": npcs.duplicate(true),
 		"beds": beds.duplicate(true),
 		"resolved_arrivals": resolved_arrivals.duplicate(),
+		"arrival_schedule": arrival_schedule.duplicate(true),
+		"arrival_schedule_version": arrival_schedule_version,
 		"jobs": jobs.duplicate(true),
 		"completed_jobs": completed_jobs.duplicate(),
 		"reports": reports.duplicate(true),
@@ -397,6 +410,24 @@ func from_dict(data: Dictionary, announce_day: bool = true) -> void:
 			resolved_arrivals.append(str(arrival_id))
 	else:
 		_migrate_from_version_1()
+
+	# Version 6: the stored timetable. Older saves are never re-rolled; they
+	# keep the fixed timetable they were played with.
+	arrival_schedule = []
+	if data.get("arrival_schedule") is Array:
+		for entry: Dictionary in data["arrival_schedule"]:
+			var npcs_in_visit: Array = []
+			for npc_id: Variant in entry.get("npcs", []):
+				npcs_in_visit.append(str(npc_id))
+			arrival_schedule.append({
+				"id": str(entry["id"]), "visit": str(entry["visit"]), "npc": str(entry["npc"]),
+				"npcs": npcs_in_visit, "day": int(entry["day"]), "start": int(entry["start"]),
+				"end": int(entry["end"]), "dialogue": str(entry["dialogue"]),
+			})
+		arrival_schedule_version = int(data.get("arrival_schedule_version", 0))
+	else:
+		arrival_schedule = ArrivalScheduler.legacy_schedule()
+		arrival_schedule_version = 0
 
 	# Version 3 fields; absent in older saves, where nobody had a job yet.
 	jobs = {}
