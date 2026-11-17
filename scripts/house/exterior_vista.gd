@@ -30,6 +30,11 @@ func _ready() -> void:
 	backdrop.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	backdrop.add_to_group("window_backdrops")
 	add_child(backdrop)
+	# Porch, gate and street lamp for the door view (IMMERSION I-05); authored in
+	# world coordinates, so undo this node's offset.
+	var porch: Node3D = preload("res://scripts/house/porch_set.gd").new()
+	porch.position = -position
+	add_child(porch)
 
 func _box(at: Vector3, size: Vector3, color: Color) -> void:
 	var instance := MeshInstance3D.new()
