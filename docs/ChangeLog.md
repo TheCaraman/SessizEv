@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## 0.1.10-dev.20261117.1
+- Gün1 sabah/öğleden sonra HUD'unda zamanın eylemlerle ilerlediğini ve yatak odasında dinlenilebildiğini anlatan EN/TR yönlendirme.
+- İpucu kapı çalarken ve ekran kaplayan menü/diyaloglarda saklanır; saat ve kritik kapı altyazısı korunur.
+- Oda planı önizlemesi bu sürümde yok; ayrı dalın GPU incelemesinde başlık/saat çakışması ve dil yenileme sorunu bulundu.
+
 ## 0.1.9-dev.20261117.1
 - Yeni kampanyalar için kayıtlı, seed tabanlı Gün 2–3 Marcus/Arthur gelişleri; eski kayıtlar sabit takvimini korur (v6).
 - Üç dallı gerçek Gün 3 ziyaret→gece/kesinti→Gün 4 radyo/kapanış entegrasyonu; 30 paket WASAPI geçti.
