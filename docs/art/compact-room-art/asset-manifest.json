@@ -1,0 +1,50 @@
+[
+  {
+    "path": "assets/rooms/compact_v1/kitchen/day.png",
+    "sha256": "1A5A1883773E428C0D268775EFBA7254CC1877D3D0E25311CA88EB7DD7950BF0",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/kitchen/night.png",
+    "sha256": "1E60161E0265B0B996E82D46CD78BAC5624AFFC6A7E4FF0E16A69F24FEB4BF6A",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/kitchen/outage_day.png",
+    "sha256": "C96BF65838869654D8F17C7520E9BF2F04870C94F76EFEF2936967E89647C451",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/kitchen/outage_night.png",
+    "sha256": "77C5531D963C8F308B7A8C1B07F09D5124C8934E258AD8E552057ECCEC19219D",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/utility/day.png",
+    "sha256": "3DE6475CAB919CB4D00309344167E14FCEF7986D29991A3E74A2149DC1C121F0",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/utility/night.png",
+    "sha256": "D39390A28C34E257F7D725A205CD87AA9F49DFA1E15C3CD15AD61E241CDACA13",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/utility/outage_day.png",
+    "sha256": "77529070B0818CAC69FC5CBE77778898430FA27BA6A316E12394C00642842155",
+    "width": 1672,
+    "height": 941
+  },
+  {
+    "path": "assets/rooms/compact_v1/utility/outage_night.png",
+    "sha256": "4F508722E6BF32B1E77E2765DD0C25B6C019C497CE6FC06FB2A7AD3095931376",
+    "width": 1672,
+    "height": 941
+  }
+]

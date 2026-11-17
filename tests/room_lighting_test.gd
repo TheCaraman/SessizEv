@@ -38,7 +38,7 @@ func _ready() -> void:
 			if local_lamp:
 				local_count += 1
 			check(light.visible == (bool(state["powered"]) and local_lamp), "electric light follows source and power " + light.name)
-		check(local_count >= 3, "local lamps cover ground and upper corridor")
+		check(local_count >= 3, "local lamps cover the single-storey circulation")
 		for fitting: MeshInstance3D in get_tree().get_nodes_in_group("electric_fittings"):
 			if session.is_ancestor_of(fitting):
 				var material: StandardMaterial3D = fitting.get_active_material(0)
@@ -85,6 +85,7 @@ func _ready() -> void:
 		if "--capture-room-lighting" in OS.get_cmdline_user_args():
 			await RenderingServer.frame_post_draw
 			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/utility-lighting-%s.png" % state["variant"]) == OK, "utility capture saved")
+		await _capture_compact("utility", state["variant"])
 	check(SaveManager.save_game("utility_lighting") == OK and SaveManager.load_game("utility_lighting"), "utility outage survives load")
 	check(room.get_visual_variant() == "outage_night", "load keeps correct utility lighting")
 	director.power.repair(true)
@@ -102,6 +103,7 @@ func _ready() -> void:
 		check(room._background.texture.resource_path == kitchen[state["variant"]], "kitchen image selected")
 		check(room._background.modulate == Color.WHITE, "kitchen authored lighting is not darkened twice")
 		check(room._title.modulate == Color.WHITE, "kitchen UI stays readable")
+		check(room._background.texture.get_size() == Vector2(1672, 941), "kitchen variants keep native framing")
 		var values: Array = kitchen["actor_tints"][state["variant"]]
 		var expected := Color(values[0], values[1], values[2])
 		check(room.get_prop_layer().modulate.is_equal_approx(expected), "kitchen props follow authored source lighting")
@@ -111,6 +113,7 @@ func _ready() -> void:
 			DirAccess.make_dir_recursive_absolute("res://docs/qa/kitchen-v5")
 			await RenderingServer.frame_post_draw
 			check(get_viewport().get_texture().get_image().save_png("res://docs/qa/kitchen-v5/%s.png" % state["variant"]) == OK, "real kitchen capture " + state["variant"])
+		await _capture_compact("kitchen", state["variant"])
 	director.power.repair(true)
 	check(room.get_visual_variant() == "night", "repair refreshes open kitchen")
 	room.open("storage")  # pantry now maps to utility, which has variants (ROOM-COMPACT-001)
@@ -120,3 +123,11 @@ func _ready() -> void:
 	if failures == 0:
 		print("ROOM LIGHTING TEST: PASS (%d checks)" % checks)
 	get_tree().quit(0 if failures == 0 else 1)
+
+func _capture_compact(room_id: String, variant: String) -> void:
+	if "--capture-compact-room-lighting" not in OS.get_cmdline_user_args():
+		return
+	DirAccess.make_dir_recursive_absolute("res://docs/qa/compact-room-art")
+	await RenderingServer.frame_post_draw
+	var path := "res://docs/qa/compact-room-art/%s-%s.png" % [room_id, variant]
+	check(get_viewport().get_texture().get_image().save_png(path) == OK, "compact native capture " + room_id + " " + variant)

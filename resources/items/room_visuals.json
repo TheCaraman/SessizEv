@@ -1,9 +1,9 @@
 {
     "kitchen": {
-        "day": "res://assets/rooms/graphic_v5/kitchen/day.png",
-        "night": "res://assets/rooms/graphic_v5/kitchen/night.png",
-        "outage_day": "res://assets/rooms/graphic_v5/kitchen/outage_day.png",
-        "outage_night": "res://assets/rooms/graphic_v5/kitchen/outage_night.png",
+        "day": "res://assets/rooms/compact_v1/kitchen/day.png",
+        "night": "res://assets/rooms/compact_v1/kitchen/night.png",
+        "outage_day": "res://assets/rooms/compact_v1/kitchen/outage_day.png",
+        "outage_night": "res://assets/rooms/compact_v1/kitchen/outage_night.png",
         "actor_tints": {
             "day": [1.0, 1.0, 1.0],
             "night": [0.62, 0.61, 0.54],
@@ -40,10 +40,10 @@
                                         }
                     },
     "utility":  {
-                    "day":  "res://assets/rooms/utility.png",
-                    "night":  "res://assets/rooms/variants/utility_night.png",
-                    "outage_day":  "res://assets/rooms/variants/utility_outage_day.png",
-                    "outage_night":  "res://assets/rooms/variants/utility_outage_night.png",
+                    "day":  "res://assets/rooms/compact_v1/utility/day.png",
+                    "night":  "res://assets/rooms/compact_v1/utility/night.png",
+                    "outage_day":  "res://assets/rooms/compact_v1/utility/outage_day.png",
+                    "outage_night":  "res://assets/rooms/compact_v1/utility/outage_night.png",
                     "actor_tints":  {
                                         "day":  [
                                                     1,

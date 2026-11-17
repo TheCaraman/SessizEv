@@ -1,0 +1,46 @@
+{
+  "task": "COMPACT-ROOM-ART-001",
+  "direction": "Owner-approved combined rooms; lighting-only variants; no copied game assets",
+  "entries": [
+    {
+      "id": "CompactKitchenDay",
+      "prompt": "Edit target reference1 kitchen game background into a combined kitchen/dining nook for an ordinary modest American single-storey home, WIDE 16:9 approx1672x941. Preserve original camera, back center window and sink, left refrigerator, right stove and cream cabinets. Add a SMALL worn wooden dining table with two mismatched ordinary chairs in the front LEFT quadrant, modestly angled, a folded checked cloth and two plain cups, leaving central floor clear for independently composited NPCs. No new doorway, people, UI, text, evidence, stains shaped like clues. Redesign surface rendering toward reference2 corridor's soft low-contrast illustrated photographic mood: subdued dusty rose/cream walls, dark teal worktops, dark brown wood, gentle cool green shadows and small warm lamp pools. Reduce the target's aggressive chipped gouache patches and heavy gritty grain, do not make it pristine photorealism or clean vector cartoon; quiet irregular edges and very fine print texture only. Ordinary lived-in home, not designer house, not luxury, not ruined dungeon. DAY version: overcast daylight through half curtains, dim warm pendant and hood work light on, readable muted interior, no blinding white highlights. Slight atmospheric softness, high resolution smooth image, no pixel blocks, no heavy outlines or vignette painted over focal area. Deliver only complete empty-room background.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-eeca3f5d-0051-47ef-a9ef-dde2505c2800.png"
+    },
+    {
+      "id": "CompactKitchenNight",
+      "prompt": "Lighting-only edit of this EXACT combined kitchen/dining background to NIGHT WITH POWER. Preserve camera/framing/aspect16:9 and every object: LEFT foreground small table/two mismatched chairs/two cups/folded cloth, left refrigerator, back sink/window and curtains, right stove, all cupboards, tiles and props. No people or UI or new items, do not resize/reposition anything. Maintain same softened illustrated photographic volume and fine quiet texture; no gritty paint patches, no photoreal polish. Outside the window is nearly black with faint cool green-grey silhouettes, no daylight. Pendant bulb and hood light remain ON: restrained warm amber pools, gentle green-teal shadows, dim lived-in horror atmosphere but central floor/table leg shapes readable. Do not make entire room monochrome orange or crush corners to pure black. Output only full room image at same resolution.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-486b20d4-623a-444a-9555-c16fcd1b1f3f.png"
+    },
+    {
+      "id": "CompactKitchenOutageDay",
+      "prompt": "Lighting-only edit of this exact original game kitchen painting. Preserve every object, table and both chairs, two cups, folded checked cloth, cabinetry, utensils, curtain positions, camera framing, restrained painted illustrative style and native dimensions. POWER OUTAGE DURING OVERCAST DAY: ceiling pendant bulb completely OFF (no glow or warm halo), cooker hood light completely OFF (no light pool). Only cool muted daylight through existing window, desaturated teal-green shadows, readable furniture and open floor. Do not add candles, flashlights, people, clues or any other source. Keep the room lived-in and matte, no photorealism, no pixelation, no dense hatch/noise filter. Exact same composition.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-ea5a7bae-eeb7-4f6f-a80d-1c9fb9a9b382.png"
+    },
+    {
+      "id": "CompactKitchenOutageNight",
+      "prompt": "Lighting-only edit of this exact original game kitchen painting. Preserve every single object, table/chairs/cups/cloth, framing and native dimensions. POWER OUTAGE AT NIGHT: pendant bulb OFF with absolutely no glow or halo; cooker hood OFF. Window outside nearly black with faint cool tree silhouettes, no bright sky. Very weak cool teal reflected night ambient keeps cabinet edges and empty floor readable, much darker than day but not a black screen. No warm electric light, no invented candles, flashlight or emergency source. Same restrained matte illustrative painting, no added people or clues, no photographic gloss or pixelation.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-02a2a240-1810-4390-bcbb-4e5db7c3cb06.png"
+    },
+    {
+      "id": "CompactUtilityDay",
+      "prompt": "Edit reference1 existing utility game-room background into a combined small domestic service room and pantry. WIDE16:9 about1672x941, preserve camera, central back electrical panel, technical equipment cage on right, left workbench, right high vent, no window. Add dry-food storage above and beside the LEFT workbench: two tidy wooden shelves of a modest number of unlabeled cans, glass jars, folded paper food bags and small supply cartons; food visibly separated from tools, no food touching machines. Keep center floor clear for composited NPC. The closed vented metal equipment cabinet on right remains technical, not food. No extra room or door, no people, no UI/text, no random story evidence. Rendering must match reference2 new kitchen: softened illustrated photographic volume, quiet print texture, gentle edges; reduce reference1's thick black comic outlines and chipped gouache/gritty patches. Dull warm plaster, matte dark teal cabinet frames, old wood, ordinary lived-in shelter rather than photoreal luxury or dungeon. DAY powered: dim warm ceiling caged lamp and small workbench lamp on, weak cool ambient from existing high ventilation grille only; NO invented window or sunlight beams. Readable but subdued service space, no full bright overhead wash, no large vignette, no pixel blocks. Complete empty-room background only.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-b16f2229-6f51-4ca5-b5f3-4a94bb2afcb3.png"
+    },
+    {
+      "id": "CompactUtilityNight",
+      "prompt": "Lighting-only edit of the supplied original game utility room. Keep exactly the food shelves with jars/cans/bags on LEFT, technical workbench, central electrical panel, cage/equipment RIGHT, high ventilation grille, all objects and framing and dimensions. NIGHT WITH POWER: ceiling caged bulb and workbench lamp ON creating small restrained warm pools; vent becomes nearly dark, no daytime outside illumination. Cool teal-green shadows, matte illustrated painted surface, no heavy hatch/noise filter, no photographic gloss. No window, no people, no new objects or clues. Keep floor readable for composited character silhouettes.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-ca096cda-fcc9-4f1f-88d1-2731ed36c99f.png"
+    },
+    {
+      "id": "CompactUtilityOutageDay",
+      "prompt": "Lighting-only edit of supplied original utility/pantry game painting. Exact same framing, dimensions and EVERY object: food jars/cans/paper bags on left shelves, workbench with lamp/tools, central electrical panel, right caged equipment/pipes/high ventilation grille. POWER OUTAGE DURING DAY: ceiling caged bulb completely OFF, workbench lamp completely OFF, no warm halos or light pools anywhere. Dim diffuse cool ambient through the existing ventilation grille ONLY, readable teal-green shadows and equipment/food shapes, not black. No windows, candles, flashlights or other new sources, no people or clues. Preserve the matte restrained painted style without grain/hatching/pixelation.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-9bd913a6-e3af-4e97-8be3-a0b8c1f5d94f.png"
+    },
+    {
+      "id": "CompactUtilityOutageNight",
+      "prompt": "Lighting-only edit of supplied original utility/pantry game painting. EXACT same dimensions, framing and all object positions: left food shelves/jars/bags, workbench/lamp/tools, central panel, right equipment cage and pipes and ventilation grille. POWER OUTAGE AT NIGHT: ceiling caged bulb OFF, workbench lamp OFF, no glow or warm pools. Existing high vent nearly dark with only extremely weak cool ambient, no glowing cyan grille. Muted cool green shadows, dark but all main equipment silhouettes and central floor still readable. Do not add windows/candles/flashlights/people/clues. Preserve matte original illustrated style, no heavy hatching/noise, no pixelation, no glossy photographic render.",
+      "source": "C:\\Users\\eyups\\.codex\\generated_images\\01a1e3f1-d831-7cd2-b598-45fae2768fcd\\exec-1a7ae31a-f46e-49d8-a38f-00f8f879aa2b.png"
+    }
+  ]
+}

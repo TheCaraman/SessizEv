@@ -1,3 +1,7 @@
+# 0.1.21-dev.20261118.1
+
+Birleşik mutfak/yemek alanı ve servis/kiler için sekiz yeni 2D arkaplan: gündüz, gece, gündüz kesinti, gece kesinti. Mutfakta masa/iki sandalye; serviste gıda rafı ve ayrı teknik köşe. Yeni pencere veya mekanik eklenmedi. Mevcut kapı, görev, tüketim ve kayıt sistemi korunur. Ayrıntı docs/qa/CompactRoomArt.md.
+
 # 0.1.20-dev.20261118.1
 
 Tek kat L plan; oda13→10işlev, tekbanyo ve birleşikservis. Daha yumuşak duvar, koyu kapılar, ev eşyaları, pencerehuzmesi ve kapatılabilirvinyet. Paralel0.4sn kapı, onaylıhafifbodycam. EskiodaIDgöçü, gerçekzeminde geceyolkanıtı.40paket/7913WASAPI PASS; sonEN/TRdüzeltmeleri4paketPASS;13nativegörüntü ve2.6snmotorvideosu. Ayrıntı docs/qa/SingleStorey.md.
