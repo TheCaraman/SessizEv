@@ -53,3 +53,23 @@ No problem was found in the new plan.
 - Entering the rooms. `door_transition_test` covers that.
 - Night and power-outage states. The tour runs on Day 1 at 07:00.
 - No video or GPU capture; the test is headless.
+
+## Single-storey adaptation (ROOM-COMPACT-001, 2026-11-18)
+
+The test no longer assumes two floors. It reads the walkable floors from `HouseLayout.ROOMS`, and the stair entry points from `HouseLayout.STAIRS` (only when there is more than one floor and the stairs have an area). The doors come from the scene and from `HouseLayout.WALLS`. The fixed-coordinate control checks were replaced by checks taken from the data:
+- at every door, the capsule in the wall plane must be rejected;
+- under the stairs and the stairwell void are checked only when there are stairs.
+
+- Two-storey house (0.1.19, this branch): PASS, 78 checks.
+- Codex's single-storey work in progress (`workers/codex-single-storey`, uncommitted, copied read-only to a scratch folder, this test added): PASS, 49 checks. All 9 doors were reached, the 8 corridor doors and the front door:
+  - front door 0.6 m;
+  - daniel_bedroom 1.0 m;
+  - living_room 2.5 m;
+  - kitchen 3.5 m;
+  - isolation 3.1 m;
+  - guest_a 3.5 m;
+  - multipurpose 0.7 m;
+  - bathroom_upper 2.8 m;
+  - guest_b 0.7 m.
+
+  Nothing was written to Codex's worktree.

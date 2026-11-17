@@ -7,7 +7,9 @@ extends Node
 ## capsule (radius and height read from player.tscn) fits there without
 ## touching anything, and a floor lies beneath it. Every route is then walked
 ## with the real PlayerController (move_forward, move_and_slide). There is no
-## teleporting between doors, and the tour goes down the real stairs. At each
+## teleporting between doors; on a two-storey plan the tour takes the real
+## stairs. Floors, stairs and doors are read from HouseLayout and the scene,
+## so the same test covers the single-storey plan. At each
 ## door the player faces it, and the real InteractionRay must target it and
 ## show a prompt.
 ## Run only through tools/Run-Tests.ps1.
@@ -21,8 +23,12 @@ const LOOKAHEAD: float = 0.55
 ## A route fails if the body gains less than this over STALL_FRAMES.
 const STALL_DISTANCE: float = 0.05
 const STALL_FRAMES: int = 45
-const STAIR_FOOT := Vector3(7.5, 0.0, 9.7)
-const STAIR_TOP := Vector3(7.5, HouseLayout.STOREY_HEIGHT, 2.9)
+## Stair entry points, derived from HouseLayout.STAIRS (a flight rising
+## toward -Z): 0.7 m beyond its foot, 0.6 m beyond its top.
+var _stair_foot: Vector3
+var _stair_top: Vector3
+## Floors that hold walkable rooms (one for the single-storey plan).
+var _floors: Array[int] = []
 
 var checks: int = 0
 var failures: int = 0
@@ -30,7 +36,7 @@ var _player: PlayerController
 var _ray: InteractionRay
 var _radius: float
 var _height: float
-var _free: Array[Dictionary] = [{}, {}]
+var _free: Array[Dictionary] = []
 var _report: Array[String] = []
 
 
@@ -53,33 +59,52 @@ func _ready() -> void:
 	await _frames(10)
 	check(_player.control_enabled, "player has control at the start")
 
-	for floor_index: int in 2:
+	for room: Dictionary in HouseLayout.ROOMS:
+		if room["id"] in HouseLayout.WALKABLE_ROOMS and not _floors.has(int(room["floor"])):
+			_floors.append(int(room["floor"]))
+	_floors.sort()
+	check(not _floors.is_empty(), "the plan has walkable areas")
+	var has_stairs: bool = _floors.size() > 1 and HouseLayout.STAIRS.has_area()
+	if has_stairs:
+		_stair_foot = Vector3(HouseLayout.STAIRS.get_center().x, 0.0, HouseLayout.STAIRS.end.y + 0.7)
+		_stair_top = Vector3(HouseLayout.STAIRS.get_center().x, HouseLayout.STOREY_HEIGHT, HouseLayout.STAIRS.position.y - 0.6)
+	_free.resize(_floors.max() + 1)
+	for floor_index: int in _floors:
 		_free[floor_index] = _build_grid(floor_index)
 		check(_free[floor_index].size() > 100, "floor %d has walkable space (%d cells)" % [floor_index, _free[floor_index].size()])
-	# Control: the planner must reject the body overlapping a wall, the
-	# space under the stairs and the stairwell void upstairs.
-	check(not _free[0].has(Vector2i(int(4.1 / STEP), int(7.5 / STEP))), "grid rejects the capsule against the hall wall")
-	check(not _free[0].has(Vector2i(int(7.5 / STEP), int(6.0 / STEP))), "grid rejects the space under the stairs")
-	check(not _free[1].has(Vector2i(int(7.5 / STEP), int(6.0 / STEP))), "grid rejects the stairwell void upstairs")
 
-	var doors: Array[Array] = [[], []]
+	var doors: Dictionary = {}
+	for floor_index: int in _floors:
+		doors[floor_index] = []
+	var door_count: int = 0
 	for node: Node in scene.find_children("*", "RoomDoor", true, false):
 		var door := node as RoomDoor
 		if door.room_id == &"" and not door.is_front:
 			continue
-		var floor_index: int = 1 if door.global_position.y > HouseLayout.STOREY_HEIGHT * 0.5 else 0
-		doors[floor_index].append(door)
+		var floor_index: int = _floor_of(door.global_position)
+		check(doors.has(floor_index), "door %s stands on a walkable floor" % door.name)
+		if doors.has(floor_index):
+			doors[floor_index].append(door)
+			door_count += 1
+			# Control: the body can never stand in a doorway's wall plane.
+			check(not _free[floor_index].has(_cell_of(door.global_position)), "grid rejects the capsule in the wall at %s" % door.name)
+	if has_stairs:
+		var under := Vector3(HouseLayout.STAIRS.get_center().x, 0.0, HouseLayout.STAIRS.get_center().y)
+		check(not _free[0].has(_cell_of(under)), "grid rejects the space under the stairs")
+		check(not _free[1].has(_cell_of(under)), "grid rejects the stairwell void upstairs")
 	var expected: int = 0
 	for wall: Dictionary in HouseLayout.WALLS:
 		for opening: Dictionary in wall["openings"]:
 			if opening.has("to") or opening.get("front", false):
 				expected += 1
-	check(doors[0].size() + doors[1].size() == expected, "every usable door in the plan exists in the house (%d)" % expected)
+	check(door_count == expected, "every usable door in the plan exists in the house (%d)" % expected)
 
-	# Upper floor first (the game starts on the gallery), then the stairs,
-	# then the ground floor, nearest door first each time.
-	var start_floor: int = 1 if _player.global_position.y > HouseLayout.STOREY_HEIGHT * 0.5 else 0
-	var order: Array[int] = [start_floor, 1 - start_floor]
+	# The spawn floor first, then (two-storey plan) down or up the real
+	# stairs to the other; nearest door first each time.
+	var order: Array[int] = [_floor_of_player()]
+	for floor_index: int in _floors:
+		if not order.has(floor_index):
+			order.append(floor_index)
 	for floor_index: int in order:
 		if floor_index != _floor_of_player():
 			var stairs_ok: bool = await _take_stairs(floor_index)
@@ -129,12 +154,12 @@ func _visit(door: RoomDoor, floor_index: int) -> void:
 ## Walks the real stairs between floors along the centre lane.
 func _take_stairs(to_floor: int) -> bool:
 	var from_floor: int = 1 - to_floor
-	var entry: Vector3 = STAIR_TOP if from_floor == 1 else STAIR_FOOT
+	var entry: Vector3 = _stair_top if from_floor == 1 else _stair_foot
 	var walked: Dictionary = await _walk_to(_cell_center(_nearest_free(from_floor, entry), from_floor), from_floor)
 	_report.append("to stairs on floor %d: %s, %.1f m" % [from_floor, "ok" if walked.ok else walked.why, walked.distance])
 	if not walked.ok:
 		return false
-	var exit: Vector3 = STAIR_FOOT if to_floor == 0 else STAIR_TOP
+	var exit: Vector3 = _stair_foot if to_floor == 0 else _stair_top
 	var yaw: float = PI if to_floor == 0 else 0.0
 	_player.rotation.y = yaw
 	Input.action_press(&"move_forward")
@@ -288,7 +313,15 @@ func _find_path(floor_index: int, from: Vector2i, to: Vector2i) -> Array[Vector3
 
 
 func _floor_of_player() -> int:
-	return 1 if _player.global_position.y > HouseLayout.STOREY_HEIGHT * 0.5 else 0
+	return _floor_of(_player.global_position)
+
+
+func _floor_of(point: Vector3) -> int:
+	return 1 if point.y > HouseLayout.STOREY_HEIGHT * 0.5 else 0
+
+
+func _cell_of(point: Vector3) -> Vector2i:
+	return Vector2i(int(point.x / STEP), int(point.z / STEP))
 
 
 func _frames(count: int) -> void:
