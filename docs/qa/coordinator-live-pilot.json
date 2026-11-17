@@ -1,0 +1,36 @@
+{
+  "verified_at": "2026-11-17T09:38:02.5975046+03:00",
+  "kind": "real CLI providers and external Godot gate",
+  "tasks": [
+    {
+      "id": "AUTO-ROOMS-DESIGN",
+      "status": "done",
+      "calls": 2,
+      "worker": "codex",
+      "reviewer": "claude",
+      "review_status": "approved",
+      "commit": "ee9ea50f7d74550198ccc62ff395a5d442f692df"
+    },
+    {
+      "id": "AUTO-RADIO-CACHE",
+      "status": "done",
+      "calls": 3,
+      "worker": "claude",
+      "reviewer": "codex",
+      "review_status": "approved",
+      "commit": "d0a6199fb8fb2beff6725868434fb2731902c4f2"
+    }
+  ],
+  "godot_suites_per_task": 28,
+  "radio_checks": 249,
+  "audio_driver": "WASAPI",
+  "unit_tests": 15,
+  "restart_verified": true,
+  "running_pid": 25260,
+  "calls_after_restart": [
+    2,
+    3
+  ],
+  "active_player_build_changed": false,
+  "manual_claude_arrivals_changed": false
+}

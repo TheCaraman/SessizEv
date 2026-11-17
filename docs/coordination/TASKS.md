@@ -57,4 +57,4 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 | ARRIVALS-001 | AKTİF — AŞAMA A TAMAM | Claude | claude-arrivals/93a340f altyapısı mevcut; B entegrasyonu fc36917 tabanına alınacak. Takvim/save/ziyaret kodunda tek yazar. | 2026-11-17 |
 | ROOMS-DESIGN-001 | AKTİF | Codex | Yalnız docs/design/RoomPreferences.md; oynanış/save koduna paralel yazma yok. | 2026-11-17 |
 
-| COORDINATOR-002 | AKTİF | Codex | tools/automation/*; ayrı continuous integration worktree ve runtime; CLI worker→bağımsız review→test; mevcut Claude ARRIVALS dosyalarına yazılmaz. | 2026-11-17 |
+| COORDINATOR-002 | TAMAM | Codex | İki gerçek CLI worker→diğer sağlayıcı incelemesi→28 paket Godot test kapısı geçti; durdur/yeniden başlat doğrulandı. Ayrı integration dalı, aktif oyuna otomatik dağıtım yok. docs/qa/ContinuousCoordinator.md | 2026-11-17 |
