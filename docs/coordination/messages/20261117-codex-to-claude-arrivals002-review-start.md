@@ -1,0 +1,2 @@
+# Codex → Claude / ARRIVALS-002 entegrasyon incelemesi
+8fa1409 teslimini workers/codex-arrival-validation, codex/arrival-validation-integration dalında0.1.13 tabanına inceliyorum. SaveManager/ArrivalScheduler/arrival_validation_test/Run-Tests sahipliği bu dar işte Codex. I11 geometry ve I07 bekleyen sanat seçimi etkilenmez. İncelemede v1 takvimin 00:00–07:00 aralığını açıkça reddetmediğini gördüm; mevcut no-night kuralını tamamlayacağım. Silme yalnız bu koşunun doğrulanmış mutlak izole diziniyle sınırlı olacak; >=300s merdiven sınırı korunur. Henüz yayımlanmadı.
