@@ -23,9 +23,17 @@ func _run() -> void:
 			child.hide()
 	DisplayServer.window_set_size(Vector2i(1280, 720))
 	var cases: Array[Dictionary] = [{"name": "morning", "time": 420, "power": true}, {"name": "day", "time": 720, "power": true}, {"name": "night", "time": 1380, "power": true}, {"name": "outage", "time": 1380, "power": false}]
-	for point: String in ["entrance", "upper", "hall"]:
-		player.position = Vector3(7.5, 3.35, 8.75) if point == "upper" else Vector3(7.25, 0.05, 9.3)
-		player.rotation = Vector3(0.0, PI if point == "entrance" else 0.0, 0.0)
+	# Viewpoints come from the current plan (SINGLE-STOREY-AUDIT-001); the old
+	# "upper" gallery point was retired with the single-storey house.
+	var door: Dictionary = ReviewSpots.front_door()
+	var door_point := Vector3(float(door["x"]), 0.05, float(door["z"]))
+	var hall: Vector3 = ReviewSpots.room_spot(&"hall")
+	var landing: Vector3 = ReviewSpots.room_spot(&"landing")
+	for point: String in ["entrance", "hall"]:
+		var from: Vector3 = hall if point == "entrance" else landing
+		var to: Vector3 = door_point if point == "entrance" else hall
+		player.position = from
+		player.rotation = Vector3(0.0, ReviewSpots.yaw_toward(from, to), 0.0)
 		player.get_node("Head").rotation.x = deg_to_rad(-4.0)
 		for entry: Dictionary in cases:
 			state.set("minutes", entry.time)

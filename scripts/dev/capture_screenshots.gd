@@ -1,28 +1,47 @@
 extends Node
-## Developer tool: renders the game from fixed viewpoints and saves PNG files
-## to docs/screenshots/. Needs a real window (do not run headless).
+## Developer tool: renders the game from viewpoints derived from the current
+## HouseLayout (SINGLE-STOREY-AUDIT-001) and saves PNG files to
+## docs/screenshots/. Needs a real window (do not run headless).
 ##
-## Run with:
-##   godot --path . --resolution 1280x720 res://scenes/main/capture_screenshots.tscn
+## It starts campaigns and answers the door, so it runs ONLY in an isolated
+## project copy (tools/Run-Tests.ps1 -KeepProjectCopy, then
+##   godot --path <copy>/project --resolution 1280x720 res://scenes/main/capture_screenshots.tscn
+## ); against the real project it refuses and quits.
 
 const SCENE: PackedScene = preload("res://scenes/main/house_blockout.tscn")
 const OUTPUT_DIR: String = "res://docs/screenshots"
 
-## name, position (x, y, z), yaw in degrees (positive turns left), pitch in
-## degrees. An optional "room" opens that room's 2D view for the shot.
-const SHOTS: Array[Dictionary] = [
-	{"name": "01_hall_from_entrance", "position": Vector3(7.5, 0.0, 11.875), "yaw": 0.0, "pitch": -4.0},
-	{"name": "02_entrance_coats_window", "position": Vector3(6.875, 0.0, 11.875), "yaw": -70.0, "pitch": -4.0},
-	{"name": "03_hall_table_lamp", "position": Vector3(6.875, 0.0, 5.375), "yaw": -140.0, "pitch": -10.0},
-	{"name": "04_stairs_from_foot", "position": Vector3(9.5, 0.0, 10.375), "yaw": 0.0, "pitch": 12.0},
-	{"name": "05_upper_corridor", "position": Vector3(7.5, 3.3, 4.25), "yaw": 180.0, "pitch": -6.0},
-	{"name": "06_living_room_actions", "position": Vector3(8.0, 0.0, 8.25), "yaw": 65.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
-	{"name": "07_elena_at_the_door", "position": Vector3(7.5, 0.0, 11.125), "yaw": 180.0, "pitch": 0.0, "answer_door": true},
-	{"name": "09_marcus_bed_choice", "position": Vector3(7.5, 0.0, 11.125), "yaw": 180.0, "pitch": 0.0, "day2_bed_choice": true},
-]
+## name, position, yaw (radians), pitch in degrees. An optional "room" opens
+## that room's 2D view for the shot. The old stair and upper-corridor shots
+## were retired with the single-storey plan.
+static func shots() -> Array[Dictionary]:
+	var entrance: Vector3 = ReviewSpots.inside_front_door(0.9)
+	var door: Dictionary = ReviewSpots.front_door()
+	var door_point := Vector3(float(door["x"]), 0.05, float(door["z"]))
+	var hall: Vector3 = ReviewSpots.room_spot(&"hall")
+	var landing: Vector3 = ReviewSpots.room_spot(&"landing")
+	var corridor: Vector3 = ReviewSpots.room_spot(&"corridor")
+	var window_point := Vector3(door_point.x - 1.5, 0.05, door_point.z)
+	for wall: Dictionary in HouseLayout.WALLS:
+		if wall["axis"] == "x" and is_equal_approx(float(wall["at"]), door_point.z):
+			for opening: Dictionary in wall["openings"]:
+				if opening.get("window", false):
+					window_point = Vector3(float(opening["pos"]), 0.05, door_point.z)
+	var at_door: Vector3 = ReviewSpots.inside_front_door(0.75)
+	return [
+		{"name": "01_hall_from_entrance", "position": entrance, "yaw": ReviewSpots.yaw_toward(entrance, hall), "pitch": -4.0},
+		{"name": "02_entrance_window", "position": ReviewSpots.inside_front_door(1.6), "yaw": ReviewSpots.yaw_toward(ReviewSpots.inside_front_door(1.6), window_point), "pitch": -4.0},
+		{"name": "03_hall_from_landing", "position": landing, "yaw": ReviewSpots.yaw_toward(landing, hall), "pitch": -10.0},
+		{"name": "04_corridor_from_landing", "position": landing, "yaw": ReviewSpots.yaw_toward(landing, corridor), "pitch": -6.0},
+		{"name": "06_living_room_actions", "position": hall, "yaw": 0.0, "pitch": 0.0, "room": &"living_room", "action": "watch_tv"},
+		{"name": "07_elena_at_the_door", "position": at_door, "yaw": ReviewSpots.yaw_toward(at_door, door_point), "pitch": 0.0, "answer_door": true},
+		{"name": "09_marcus_bed_choice", "position": at_door, "yaw": ReviewSpots.yaw_toward(at_door, door_point), "pitch": 0.0, "day2_bed_choice": true},
+	]
 
 
 func _ready() -> void:
+	if not ReviewSpots.isolated(get_tree()):
+		return
 	var scene: Node = SCENE.instantiate()
 	add_child(scene)
 	var player := scene.get_node("Player") as PlayerController
@@ -31,11 +50,11 @@ func _ready() -> void:
 	var head := player.get_node("Head") as Node3D
 
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT_DIR))
-	for shot: Dictionary in SHOTS:
+	for shot: Dictionary in shots():
 		room_view.close()
 		(scene.get_node("DialogueRunner") as DialogueRunner).cancel()
 		player.global_position = shot["position"]
-		player.rotation = Vector3(0.0, deg_to_rad(shot["yaw"]), 0.0)
+		player.rotation = Vector3(0.0, shot["yaw"], 0.0)
 		head.rotation = Vector3(deg_to_rad(shot["pitch"]), 0.0, 0.0)
 		for i: int in 4:
 			await get_tree().physics_frame

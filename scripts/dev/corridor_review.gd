@@ -1,10 +1,21 @@
 extends Node
 ## Art-only real corridor camera. No campaign save or day resolution.
+## Run only in an isolated project copy (ReviewSpots.isolated).
+##   default        just inside the front door, facing into the house
+##   --foyer        the entrance seen from the hall, facing the front door
+##   --upper        retired: the single-storey plan has no upper floor
+##   --night        21:30 instead of 11:00
+##   --view=x,y,z,yaw_deg,pitch_deg,file_name   free camera (y = body height)
+##   --capture-corridor   save under res://docs/qa/ and quit
 
 func _ready() -> void:
+	if not ReviewSpots.isolated(get_tree()):
+		return
+	if "--upper" in OS.get_cmdline_user_args() and not ReviewSpots.has_floor(1):
+		get_tree().quit(1)
+		return
 	GameState.new_campaign(42)
 	GameState.minutes = 660
-	var upper: bool = "--upper" in OS.get_cmdline_user_args()
 	if "--night" in OS.get_cmdline_user_args():
 		GameState.minutes = 1350
 	var scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
@@ -12,14 +23,14 @@ func _ready() -> void:
 	var player: PlayerController = scene.get_node("Player")
 	player.set_physics_process(false)
 	player.control_enabled = false
-	player.position = Vector3(6.875, 3.35, 9.6) if upper else Vector3(6.875, 0.05, 10.25)
-	player.rotation.y = 0.0
+	var entrance: Vector3 = ReviewSpots.inside_front_door(1.0)
+	player.position = entrance
+	player.rotation.y = ReviewSpots.yaw_toward(entrance, ReviewSpots.room_spot(&"hall"))
 	if "--foyer" in OS.get_cmdline_user_args():
-		player.position = Vector3(6.75, 0.05, 9.6)
-		player.rotation.y = PI
+		var hall: Vector3 = ReviewSpots.room_spot(&"hall")
+		player.position = hall
+		player.rotation.y = ReviewSpots.yaw_toward(hall, entrance)
 	scene.get_node("Hud").visible = false
-	# Optional free camera for close-ups of props:
-	#   --view=x,y,z,yaw_deg,pitch_deg,file_name   (y is eye height above the floor plane)
 	var custom_name: String = ""
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--view="):
@@ -31,7 +42,7 @@ func _ready() -> void:
 	if "--capture-corridor" in OS.get_cmdline_user_args():
 		await get_tree().create_timer(0.6).timeout
 		await RenderingServer.frame_post_draw
-		var name: String = "corridor-%s-%s.png" % ["upper" if upper else "ground", "night" if GameState.minutes > 1200 else "day"]
+		var name: String = "corridor-ground-%s.png" % ("night" if GameState.minutes > 1200 else "day")
 		if "--foyer" in OS.get_cmdline_user_args():
 			name = "foyer-%s.png" % ("night" if GameState.minutes > 1200 else "day")
 		if custom_name != "":
