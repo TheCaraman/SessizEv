@@ -20,9 +20,19 @@ const FRONT_FACE: float = 12.5 - HouseLayout.EXTERIOR_WALL_THICKNESS * 0.5
 
 
 func _ready() -> void:
-	_build_entrance()
-	_build_hall()
-	_build_upper_corridor()
+	# The old furniture functions describe the retired east-stair layout.
+	# New placements keep both 2.35m circulation wings and stair approaches clear.
+	_flat_box(Vector3(7.5, 0.008, 12.05), Vector3(1.2, 0.016, 0.55), Color(0.20, 0.17, 0.12))
+	for x: float in [5.35, 9.65]:
+		_radiator(Vector3(x, 0.0, FRONT_FACE - 0.08), 1.0)
+		_radiator(Vector3(x, UPPER, FRONT_FACE - 0.08), 1.0)
+	for floor_y: float in [0.0, UPPER]:
+		for x: float in [4.28, 10.72]:
+			var at := Vector3(x, floor_y, 9.0 if x < 7.5 else 9.6)
+			_box(at + Vector3(0.0, 0.38, 0.0), Vector3(0.32, 0.76, 0.6), &"wood_stairs", true)
+			_table_lamp(at + Vector3(0.0, 0.78, 0.0))
+	PropMeshes.framed_picture(self, Vector3(4.056, 1.65, 8.3), Vector2(0.65, 0.5), 1.0, 0.0, &"painting_landscape")
+	PropMeshes.framed_picture(self, Vector3(4.056, UPPER + 1.65, 7.4), Vector2(0.55, 0.45), 1.0, 0.0, &"photo_house")
 
 
 func _build_entrance() -> void:

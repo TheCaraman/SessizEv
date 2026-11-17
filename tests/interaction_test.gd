@@ -41,11 +41,11 @@ func _physics_process(_delta: float) -> void:
 	match _frame:
 		5:
 			# In the hall, facing the stair wall (east): nothing to use.
-			_face(Vector3(7.5, 0.05, 6.25), -90.0)
+			_face(Vector3(5.1, 0.05, 8.2), 90.0)
 		10:
 			_check(_prompt == "", "a plain wall should show no prompt, got '%s'" % _prompt)
 			# Facing west, toward the living room door at x = 5, z = 6.
-			_face(Vector3(6.4, 0.05, 7.5), 90.0)
+			_face(Vector3(5.1, 0.05, 7.0), 90.0)
 		15:
 			_check(
 				_prompt.contains("Living room") and _prompt.contains("E"),

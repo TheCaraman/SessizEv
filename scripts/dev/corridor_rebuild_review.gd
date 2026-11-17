@@ -5,7 +5,7 @@ func _ready() -> void:
 		push_error("Use isolated QA user data")
 		get_tree().quit(1)
 		return
-	DirAccess.make_dir_recursive_absolute("res://docs/qa/corridor-rebuild")
+	DirAccess.make_dir_recursive_absolute("res://docs/qa/house-rebuild-v2")
 	GameState.new_campaign(42)
 	GameState.day = 4
 	var scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
@@ -18,15 +18,15 @@ func _ready() -> void:
 	for frame: int in 12:
 		await get_tree().process_frame
 	await RenderingServer.frame_post_draw
-	if get_viewport().get_texture().get_image().save_png("res://docs/qa/corridor-rebuild/opening-view-morning.png") != OK:
+	if get_viewport().get_texture().get_image().save_png("res://docs/qa/house-rebuild-v2/opening-view-morning.png") != OK:
 		push_error("Opening view capture failed")
 		get_tree().quit(1)
 		return
 	var points: Array[Dictionary] = [
-		{"id": "upper-north", "at": Vector3(7.2, 3.35, 9.7), "yaw": 0.0, "pitch": -4.0},
-		{"id": "upper-gallery", "at": Vector3(7.0, 3.35, 8.2), "yaw": 180.0, "pitch": -4.0},
-		{"id": "lower-hall", "at": Vector3(7.0, 0.05, 9.7), "yaw": 0.0, "pitch": 0.0},
-		{"id": "entry-height", "at": Vector3(7.0, 0.05, 8.8), "yaw": 180.0, "pitch": 16.0}
+		{"id": "upper-north", "at": Vector3(5.1, 3.35, 10.7), "yaw": 0.0, "pitch": -4.0},
+		{"id": "upper-gallery", "at": Vector3(9.9, 3.35, 4.6), "yaw": 180.0, "pitch": -4.0},
+		{"id": "lower-hall", "at": Vector3(7.5, 0.05, 11.5), "yaw": 0.0, "pitch": 0.0},
+		{"id": "entry-height", "at": Vector3(5.1, 0.05, 5.0), "yaw": 180.0, "pitch": 16.0}
 	]
 	var cases: Array[Dictionary] = [
 		{"id": "day", "time": 720, "power": true},
@@ -44,7 +44,7 @@ func _ready() -> void:
 			for frame: int in 12:
 				await get_tree().process_frame
 			await RenderingServer.frame_post_draw
-			var path: String = "res://docs/qa/corridor-rebuild/%s-%s.png" % [point["id"], state["id"]]
+			var path: String = "res://docs/qa/house-rebuild-v2/%s-%s.png" % [point["id"], state["id"]]
 			if get_viewport().get_texture().get_image().save_png(path) != OK:
 				push_error("Capture failed: " + path)
 				get_tree().quit(1)

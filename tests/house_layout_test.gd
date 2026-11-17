@@ -57,10 +57,10 @@ func _physics_process(_delta: float) -> void:
 			_check_openings()
 			_check_solid_walls()
 			_check_open_foyer()
-			_check(_raycast(Vector3(8.125, 4.9, 6.25), Vector3(9.625, 4.9, 6.25)).is_empty(), "open stairwell admits eye-level sightline above safe guard")
-			_check(_raycast(Vector3(6.625, 3.6, 11.375), Vector3(6.625, 3.0, 11.375)).is_empty(), "upper window now overlooks protected double-height foyer")
+			_check(_raycast(Vector3(5.5, 4.9, 6.25), Vector3(7.5, 4.9, 6.25)).is_empty(), "open central stairwell admits eye-level sightline")
+			_check(not _raycast(Vector3(7.5, 3.6, 11.375), Vector3(7.5, 3.0, 11.375)).is_empty(), "upper front gallery has a real supported floor")
 			# This physical walking test faces north regardless of opening framing.
-			_player.global_position = Vector3(9.5, 0.05, 10.0)
+			_player.global_position = Vector3(7.5, 0.05, 9.8)
 			_player.rotation.y = 0.0
 			_player.velocity = Vector3.ZERO
 		15:
@@ -69,7 +69,7 @@ func _physics_process(_delta: float) -> void:
 			Input.action_release(&"move_forward")
 			var position: Vector3 = _player.global_position
 			_check(
-				absf(position.y - HouseLayout.STOREY_HEIGHT) < 0.05 and position.z < 3.75,
+				absf(position.y - HouseLayout.STOREY_HEIGHT) < 0.05 and position.z < 3.5,
 				"stairs should carry the player to the upper landing (y = %.2f, z = %.2f)"
 				% [position.y, position.z]
 			)
@@ -78,7 +78,7 @@ func _physics_process(_delta: float) -> void:
 				"player should be on the landing, got '%s'" % HouseLayout.room_at(position)
 			)
 			# Walk back down.
-			_player.global_position = Vector3(9.5, HouseLayout.STOREY_HEIGHT + 0.05, 3.0)
+			_player.global_position = Vector3(7.5, HouseLayout.STOREY_HEIGHT + 0.05, 2.8)
 			_player.velocity = Vector3.ZERO
 		325:
 			Input.action_press(&"move_back")
@@ -86,7 +86,7 @@ func _physics_process(_delta: float) -> void:
 			Input.action_release(&"move_back")
 			var position: Vector3 = _player.global_position
 			_check(
-				absf(position.y) < 0.05 and position.z > 9.375,
+				absf(position.y) < 0.05 and position.z > 9.0,
 				"player should walk back down the stairs (y = %.2f, z = %.2f)"
 				% [position.y, position.z]
 			)
@@ -95,8 +95,8 @@ func _physics_process(_delta: float) -> void:
 
 func _check_rooms() -> void:
 	_check((HouseLayout.get_room(&"hall")["rects"][0] as Rect2).size.x >= 3.7, "main hall is at least 3.7 m wide after HOUSE-ATMOS-001")
-	_check(_capsule_fits(Vector3(5.7, 0.0, 8.4)), "newly widened ground strip is physically usable")
-	_check(_capsule_fits(Vector3(5.6, HouseLayout.STOREY_HEIGHT, 6.25)), "newly widened upper strip is physically usable")
+	_check(_capsule_fits(Vector3(5.1, 0.0, 8.4)), "newly widened ground strip is physically usable")
+	_check(_capsule_fits(Vector3(5.1, HouseLayout.STOREY_HEIGHT, 6.25)), "newly widened upper strip is physically usable")
 	for room: Dictionary in HouseLayout.ROOMS:
 		var id: StringName = room["id"]
 		var center: Vector3 = HouseLayout.room_center(id)
@@ -115,13 +115,14 @@ func _check_rooms() -> void:
 
 
 func _check_open_foyer() -> void:
-	_check(_raycast(Vector3(7.0, 1.7, 11.5), Vector3(7.0, 5.9, 11.5)).is_empty(), "entry has actual double-height air, no low ceiling")
-	_check(_raycast(Vector3(7.0, 3.4, 11.5), Vector3(7.0, 3.0, 11.5)).is_empty(), "gallery opening has no invisible floor")
-	_check(not _raycast(Vector3(7.0, 4.1, 10.2), Vector3(7.0, 4.1, 11.0)).is_empty(), "gallery guard prevents falling into entry")
-	_check(_raycast(Vector3(7.0, 2.7, 10.2), Vector3(7.0, 2.7, 11.0)).is_empty(), "old low entry lintel removed")
-	_check(_capsule_can_move(Vector3(7.0, 0.0, 9.9), Vector3(7.0, 0.0, 11.6)), "real capsule can enter broad foyer")
-	_check(_capsule_fits(Vector3(7.0, HouseLayout.STOREY_HEIGHT, 9.9)), "upper viewing area remains supported and clear")
-
+	_check(HouseLayout.STAIRS.size.x >= 2.3 - 0.001, "central stair is at least 2.3m wide")
+	_check(is_equal_approx(HouseLayout.STAIRS.get_center().x, HouseLayout.WIDTH * 0.5), "stair is centered in the house")
+	for floor_index: int in 2:
+		var y: float = HouseLayout.floor_height(floor_index)
+		_check(_capsule_can_move(Vector3(5.1, y, 4.0), Vector3(5.1, y, 10.6)), "west circulation wing continuous on floor %d" % floor_index)
+		_check(_capsule_can_move(Vector3(9.9, y, 4.0), Vector3(9.9, y, 10.6)), "east circulation wing continuous on floor %d" % floor_index)
+		_check(_capsule_can_move(Vector3(5.1, y, 10.6), Vector3(9.9, y, 10.6)), "broad front connection on floor %d" % floor_index)
+	_check(_capsule_can_move(Vector3(7.5, 0.0, 9.8), Vector3(7.5, 0.0, 11.6)), "stair foot opens directly into entry hall")
 
 func _check_openings() -> void:
 	for wall: Dictionary in HouseLayout.WALLS:

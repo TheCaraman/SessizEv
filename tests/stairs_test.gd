@@ -39,39 +39,39 @@ func _ready() -> void:
 func _run_all(rate: int) -> void:
 	var top_y: float = HouseLayout.STOREY_HEIGHT + 0.05
 	# Down from the landing: lanes across the width, straight and angled.
-	for lane: float in [8.95, 9.5, 10.02]:
+	for lane: float in [6.8, 7.5, 8.2]:
 		for yaw: float in [180.0, 195.0]:
-			var end: Vector3 = await _walk(Vector3(lane, top_y, 2.9), yaw, &"move_forward", FRAMES)
+			var end: Vector3 = await _walk(Vector3(lane, top_y, 2.8), yaw, &"move_forward", FRAMES)
 			var ok: bool = end.y < 0.1 and end.z > 9.3
 			_report.append("rate %d down lane %.2f yaw %.0f -> (%.2f, %.2f, %.2f) %s" % [rate, lane, yaw, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 			check(ok, "down the stairs at %d Hz, lane %.2f, heading %.0f" % [rate, lane, yaw])
 	# Up from the hall, the same lanes.
-	for lane: float in [8.95, 9.5, 10.02]:
-		var end: Vector3 = await _walk(Vector3(lane, 0.05, 10.0), 0.0, &"move_forward", FRAMES)
+	for lane: float in [6.8, 7.5, 8.2]:
+		var end: Vector3 = await _walk(Vector3(lane, 0.05, 9.8), 0.0, &"move_forward", FRAMES)
 		var ok: bool = absf(end.y - HouseLayout.STOREY_HEIGHT) < 0.1 and end.z < 3.8
 		_report.append("rate %d up lane %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, lane, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 		check(ok, "up the stairs at %d Hz, lane %.2f" % [rate, lane])
 	# Off the bottom step and round into the hall (west), as a player does.
-	for lane: float in [8.95, 9.5, 10.02]:
-		var start: Vector3 = await _walk(Vector3(lane, top_y, 2.9), 180.0, &"move_forward", FRAMES)
+	for lane: float in [6.8, 7.5, 8.2]:
+		var start: Vector3 = await _walk(Vector3(lane, top_y, 2.8), 180.0, &"move_forward", FRAMES)
 		var end: Vector3 = await _walk(start, 90.0, &"move_forward", 150)
-		var ok: bool = end.x < 7.5 and end.y < 0.1
+		var ok: bool = end.x < 6.35 and end.y < 0.1
 		_report.append("rate %d bottom turn from lane %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, lane, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 		check(ok, "turn from the stair foot into the hall at %d Hz, lane %.2f" % [rate, lane])
 	# Stepping off the bottom step and turning west at once, beside the hall
 	# guard: where the old slanted barrier box stuck out past the stair foot.
-	for z: float in [9.5, 9.6]:
-		var end: Vector3 = await _walk(Vector3(9.15, 0.05, z), 90.0, &"move_forward", 150)
-		var ok: bool = end.x < 7.5
+	for z: float in [9.15, 9.3]:
+		var end: Vector3 = await _walk(Vector3(7.1, 0.05, z), 90.0, &"move_forward", 150)
+		var ok: bool = end.x < 6.35
 		_report.append("rate %d early west turn at z %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, z, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 		check(ok, "early turn west off the stair foot at %d Hz, z %.2f" % [rate, z])
 	# Diagonal entry: from the west end of the landing, heading mostly east and
 	# a little south, the player crosses onto the top step and goes down along
 	# the stairwell wall. (Corrected in I-11: the old case walked south-west into
 	# the corridor and never reached the stairs.)
-	for start_x: float in [7.5]:
+	for start_x: float in [5.5]:
 		var end: Vector3 = await _walk(Vector3(start_x, top_y, 2.7), 250.0, &"move_forward", FRAMES)
-		var ok: bool = end.y < HouseLayout.STOREY_HEIGHT - 0.5 and end.x > 8.75
+		var ok: bool = end.y < HouseLayout.STOREY_HEIGHT - 0.5 and end.x > 6.35
 		_report.append("rate %d diagonal entry from x %.2f -> (%.2f, %.2f, %.2f) %s" % [rate, start_x, end.x, end.y, end.z, "ok" if ok else "STUCK"])
 		check(ok, "diagonal entry onto the stairs at %d Hz from x %.2f" % [rate, start_x])
 

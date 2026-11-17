@@ -26,29 +26,32 @@ static func get_material(kind: StringName) -> StandardMaterial3D:
 static func _create(kind: StringName) -> StandardMaterial3D:
 	match kind:
 		&"wallpaper":
-			return _triplanar(&"graphic_v5/plaster", 0.34)
+			return _triplanar(&"graphic_v7/plaster", 0.34)
 		&"wainscot":
 			return _flat(Color(0.085, 0.15, 0.125), 1.0)
 		&"door_paint":
-			return _triplanar(&"painted_v3/door", 0.48)
+			var door: StandardMaterial3D = _triplanar(&"graphic_v7/door", 0.48)
+			return door
 		&"door_panel_paint":
-			return _triplanar(&"painted_v3/door", 0.48)
+			var panel: StandardMaterial3D = _triplanar(&"graphic_v7/door", 0.48)
+			panel.albedo_color = Color(0.88, 0.92, 0.89)
+			return panel
 		&"frame_paint":
-			# Pale, chipped door frames and skirting that catch the light.
-			return _flat(Color(0.43, 0.47, 0.37), 0.85)
+			return _triplanar(&"graphic_v7/door", 0.48)
 		&"trim_dark":
 			return _flat(Color(0.035, 0.065, 0.05), 1.0)
 		&"parquet":
-			return _triplanar(&"graphic_v5/floorboards", 0.4)
+			return _triplanar(&"graphic_v7/wood", 0.4)
 		&"wood_stairs":
-			return _triplanar(kind, 1.0)
+			return _triplanar(&"graphic_v7/wood", 0.5)
 		&"trim_door":
 			# The shadowed moulding around each door panel: the door paint, darker.
 			return _flat(Color(0.095, 0.17, 0.14), 1.0)
 		&"runner":
 			return _uv_mapped(kind)
 		&"ceiling":
-			return _flat(Color(0.83, 0.77, 0.65), 1.0)
+			var ceiling: StandardMaterial3D = _triplanar(&"graphic_v7/ceiling", 0.34)
+			return ceiling
 		&"curtain":
 			return _flat(Color(0.47, 0.42, 0.33), 1.0)
 		&"curtain_cloth":
@@ -95,6 +98,8 @@ static func get_flat(color: Color) -> StandardMaterial3D:
 
 static func _flat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
+	material.diffuse_mode = BaseMaterial3D.DIFFUSE_TOON
+	material.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	material.albedo_color = color
 	material.roughness = roughness
 	return material
@@ -119,6 +124,8 @@ static func _triplanar(texture_name: StringName, tiles_per_metre: float) -> Stan
 
 static func _uv_mapped(texture_name: StringName) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
+	material.diffuse_mode = BaseMaterial3D.DIFFUSE_TOON
+	material.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	material.roughness = 0.9
 	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	var texture: Texture2D = _load_texture(texture_name)

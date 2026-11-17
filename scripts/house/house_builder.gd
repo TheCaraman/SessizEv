@@ -317,6 +317,21 @@ func _build_stairs() -> void:
 		Vector3(angle, 0.0, 0.0)
 	)
 	ramp.name = "Stairs"
+	# Solid closed underside: the central flight is not a walkable low tunnel.
+	# Without this volume the head could enter the decorative step risers.
+	var underside := StaticBody3D.new()
+	underside.name = "StairUnderside"
+	var underside_shape := ConvexPolygonShape3D.new()
+	var underside_points := PackedVector3Array()
+	for x: float in [stairs.position.x, stairs.end.x]:
+		underside_points.append(Vector3(x, -0.2, stairs.position.y))
+		underside_points.append(Vector3(x, rise - 0.02, stairs.position.y))
+		underside_points.append(Vector3(x, -0.2, stairs.end.y))
+	underside_shape.points = underside_points
+	var underside_collision := CollisionShape3D.new()
+	underside_collision.shape = underside_shape
+	underside.add_child(underside_collision)
+	add_child(underside)
 	# The ramp is only what the player walks on; the visible stairs are steps.
 	(ramp.get_child(1) as MeshInstance3D).visible = false
 
@@ -387,6 +402,17 @@ func _build_stairs() -> void:
 			Vector3(0.07, 0.02, 0.02), &"brass"
 		)
 
+
+	# The central flight is open on both sides: mirror the slope guard and rails.
+	var opposite_guard := barrier.duplicate() as StaticBody3D
+	opposite_guard.name = "StairBalustradeEast"
+	opposite_guard.position.x = stairs.size.x - 0.06
+	add_child(opposite_guard)
+	for item: Node in steps.get_children():
+		if item is Node3D and item.position.x < stairs.position.x + 0.25:
+			var mirrored := item.duplicate() as Node3D
+			mirrored.position.x = 2.0 * center.x - item.position.x
+			steps.add_child(mirrored)
 
 ## Pale plaster ceiling panels over the corridors and the stairwell.
 func _build_ceilings() -> void:
@@ -647,7 +673,7 @@ func _add_curtain(
 func _build_runners() -> void:
 	# Downstairs down the middle of the hall; upstairs along the gallery,
 	# clear of the parapet over the open hall.
-	var placements: Array[Array] = [[6.875, 7.2, 6.4, RUNNER_WIDTH], [5.88, 6.7, 5.6, 0.95]]
+	var placements: Array[Array] = [[5.15, 6.2, 5.8, RUNNER_WIDTH], [5.15, 6.2, 5.8, 1.1]]
 	for floor_index: int in 2:
 		var length: float = placements[floor_index][2]
 		var runner_width: float = placements[floor_index][3]

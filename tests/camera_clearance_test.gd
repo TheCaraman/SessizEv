@@ -49,7 +49,7 @@ func _ready() -> void:
 	body_query.exclude = [player.get_rid()]
 
 	# Control: a sphere on a known wall face must register, or the probe is blind.
-	query.transform = Transform3D(Basis.IDENTITY, Vector3(5.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + reach * 0.5, 1.6, 6.2))
+	query.transform = Transform3D(Basis.IDENTITY, Vector3(4.0 + HouseLayout.INTERIOR_WALL_THICKNESS * 0.5 + reach * 0.5, 1.6, 6.2))
 	check(not space.intersect_shape(query, 1).is_empty(), "probe sees the hall wall it touches")
 
 	var tested: int = 0
@@ -114,7 +114,7 @@ func _ready() -> void:
 	var z_stairs: float = HouseLayout.STAIRS.position.y + 0.2
 	while z_stairs < HouseLayout.STAIRS.end.y - 0.1:
 		var rise_here: float = HouseLayout.STOREY_HEIGHT * (HouseLayout.STAIRS.end.y - z_stairs) / run
-		for x_stairs: float in [9.1, 9.5, 9.9]:
+		for x_stairs: float in [6.8, 7.5, 8.2]:
 			for i: int in 8:
 				var angle: float = TAU * float(i) / 8.0
 				player.global_position = Vector3(x_stairs, rise_here + 0.4, z_stairs)
