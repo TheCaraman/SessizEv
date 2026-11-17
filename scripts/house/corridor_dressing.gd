@@ -96,7 +96,7 @@ func _build_hall() -> void:
 func _build_upper_corridor() -> void:
 	var wood: Material = HouseMaterials.get_material(&"wood_stairs")
 	# Small local pools at the landing and bedroom end; keep the passage clear.
-	for point: Vector3 in [Vector3(5.28, UPPER, 7.8), Vector3(9.90, UPPER, 2.8)]:
+	for point: Vector3 in [Vector3(5.28, UPPER, 7.8), Vector3(5.28, UPPER, 2.8)]:
 		_box(point + Vector3(0.0, 0.70, 0.0), Vector3(0.36, 0.045, 0.42), &"wood_stairs", true)
 		for offset: Vector3 in [Vector3(-0.13, 0.34, -0.16), Vector3(0.13, 0.34, -0.16), Vector3(-0.13, 0.34, 0.16), Vector3(0.13, 0.34, 0.16)]:
 			PropMeshes.cylinder(self, point + offset, 0.014, 0.014, 0.68, wood, Vector3.ZERO, 12)

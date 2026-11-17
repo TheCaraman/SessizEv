@@ -131,7 +131,7 @@ func _show_room_threshold() -> void:
 				_power_source.power_changed.connect(_on_preview_power_changed)
 			break
 		parent = parent.get_parent()
-	_composition.show_room(room_id, GameState.minutes, powered)
+	_composition.show_room(room_id, GameState.minutes, powered, false)
 	var material: ShaderMaterial = _portal.material_override
 	material.set_shader_parameter("room_image", _preview_viewport.get_texture())
 	material.set_shader_parameter("room_tint", Color.WHITE)

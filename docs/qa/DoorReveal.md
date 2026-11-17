@@ -25,3 +25,6 @@ GPU: Forward+/GTX1080Ti,1920x1080. E:/TheQuietHours/runtime/door-gpu-review aç�
 ÖNEMLİ: önizleme şimdilik yalnız arka planı gösteriyor. RoomView'daki ayrı RoomProps ve NPC figürleri ancak tam ekran devirde ekleniyor; bu görsel sıçramadır. Bunu tamamlanmış kesintisiz geçiş saymıyorum ve ana sürüme almıyorum. Sonraki adım: ortak oda dünya katmanı (arka plan + prop + gerçek uygun sakinler), hem RoomView hem önizleme tarafından kullanılsın. Gizli enfeksiyon bilgisi ve UI düğmeleri önizlemeye taşınmasın. Eşyalar/NPC'ler iki ayrı mantıkta çoğaltılmasın; tek konum/izolasyon/ölüm kuralları korunsun.
 
 Ardından açı/iki kapı yönü, farklı FOV/parlaklık, gün/gece/kesinti, hareket azaltma, Escape ve hızlı yeniden etkileşim GPU/işlev testleri; güncel tam regresyon; ondan sonra aktif sürüm kararı. Şu aşamada yeni karakter sanatı, Gün5, kapı deliği veya merdiven teslimi yok. Kaynakları editörde açmak için ek kurulum gerekmez; mevcut Godot4.7.2 proje yeterli. Testler yalnız izolasyonlu Run-Tests.ps1; açık ana sahneye test kurulumuyla kullanıcı verisi yazılmaz.
+
+## Güncel durum
+Yukarıdaki açık işler prototip tarihçesidir. Ortak RoomWorld ile eşya ve NPC sıçraması giderildi; güncel doğrulama ve kalan sınırlar DoorComposition.md içinde. 0.1.12 kapı/merdiven teslimidir; bütün ev atmosferi tamamlanmadı.

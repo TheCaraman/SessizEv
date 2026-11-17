@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.1.12-dev.20261117.1
+- Fiziksel kapı aralığında ortak oda kompozisyonu: arka plan, eşyalar ve gerçek odadaki NPC'ler birlikte görünür.
+- Siyah geçiş kapakları kaldırıldı; kısa, göz hizasını koruyan yaklaşma, Escape ile iptal ve ayarlardan kamera hareketini kapatma.
+- Claude'un merdiven korkuluğu çarpışma düzeltmesi: zemine taşan görünmez kutu köşeleri yerine merdiven sınırında kalan prizma.
+- Yeni karakter stili, üst kat plan değişikliği ve kapı deliği bu teslimde yok. QA: DoorComposition.md.
+
 ## 0.1.11-dev.20261117.1
 - Koridorlarda gündüz elektrikli lambalar kapalı; pencere aydınlığı ve sabah/gece geçişi belirginleştirildi.
 - Gece tavan aydınlığı yerine üç yerel abajur; üst kata iki küçük lambalı sehpa eklendi.

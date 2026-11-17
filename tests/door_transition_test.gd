@@ -45,6 +45,11 @@ func _ready() -> void:
 	check(door._composition.background.texture.resource_path == RoomVisuals.new().resolve("living_room", GameState.minutes, false)["path"], "power-only event refreshes the open aperture without advancing time")
 	GameState.power_incident = before["power_incident"].duplicate(true)
 	director.power.power_changed.emit(true)
+	var old_brightness: float = Settings.get_number("brightness")
+	check(Settings.set_number("brightness", 1.35) == OK, "non-default brightness saved in isolated settings")
+	check(door._composition.background.modulate == RoomVisuals.new().resolve("living_room", GameState.minutes, true)["background_tint"], "3D preview does not multiply brightness a second time")
+	check(is_equal_approx(float(scene.get_node("RetroPostProcess")._material.get_shader_parameter("brightness")), 1.35), "corridor pass applies preview brightness once")
+	check(Settings.set_number("brightness", old_brightness) == OK, "brightness restored before visual comparison")
 	if "--capture-door" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
 		check(viewport.get_texture().get_image().save_png("res://docs/qa/door-opening.png") == OK, "opening image saved")

@@ -39,7 +39,7 @@ func _init() -> void:
 	characters.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(characters)
 
-func show_room(id: StringName, minutes: int, powered: bool) -> Dictionary:
+func show_room(id: StringName, minutes: int, powered: bool, canvas_brightness: bool = true) -> Dictionary:
 	var visual: Dictionary = _visuals.resolve(str(id), minutes, powered)
 	var available: bool = ResourceLoader.exists(visual["path"])
 	var texture: Texture2D = load(visual["path"]) as Texture2D if available else _get_placeholder()
@@ -47,8 +47,10 @@ func show_room(id: StringName, minutes: int, powered: bool) -> Dictionary:
 		background.texture = texture
 		props.show_room(str(id), texture.get_size())
 	_room_id = id
-	background.modulate = Settings.world_tint(visual["background_tint"])
-	props.modulate = Settings.world_tint(visual["actor_tint"])
+	# The corridor post-process already applies brightness to a 3D aperture.
+	# Native canvas rooms sit above that pass and apply it here instead.
+	background.modulate = Settings.world_tint(visual["background_tint"]) if canvas_brightness else visual["background_tint"]
+	props.modulate = Settings.world_tint(visual["actor_tint"]) if canvas_brightness else visual["actor_tint"]
 	characters.modulate = props.modulate
 	var occupants: Array[String] = GameState.get_room_occupants(id)
 	if occupants != resident_ids:

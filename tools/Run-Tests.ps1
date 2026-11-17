@@ -23,6 +23,7 @@ if (-not $GodotPath) {
 $GodotPath = (Resolve-Path -LiteralPath $GodotPath).Path
 $testData = Join-Path ([IO.Path]::GetTempPath()) ('tqh-tests-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $testData | Out-Null
+Write-Output "Logs and project copy: $testData"
 $testProject = Join-Path $testData 'project'
 # Copy current files, including uncommitted edits, but exclude editor caches and Git.
 & robocopy $project $testProject /E /XD .git .godot build tools /XF override.cfg /NFL /NDL /NJH /NJS /NP | Out-Null
@@ -39,11 +40,14 @@ function Invoke-GodotCheck([string[]]$Arguments, [string]$Expected = '') {
     $errFile = Join-Path $testData "$caseName.stderr.log"
     # Start-Process needs explicit quotes around arguments containing spaces.
     $quoted = @($Arguments | ForEach-Object { '"' + $_ + '"' })
+    # The stairs suite walks 30 real routes at 60/30 Hz (about 210 seconds).
+    # Keep its physical timing intact rather than accelerating the simulation.
+    $caseTimeout = if ($caseName -eq 'stairs_test') { [Math]::Max($TimeoutSeconds, 300) } else { $TimeoutSeconds }
     $process = Start-Process -FilePath $GodotPath -ArgumentList $quoted -WindowStyle Hidden -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
     $null = $process.Handle
-    if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+    if (-not $process.WaitForExit($caseTimeout * 1000)) {
         $process.Kill()
-        throw "Godot timed out after $TimeoutSeconds seconds"
+        throw "Godot $caseName timed out after $caseTimeout seconds"
     }
     $process.WaitForExit()
     $process.Refresh()
@@ -77,5 +81,4 @@ if ($selectedMode) {
 } else {
     Write-Output "All $($tests.Count) core test suites passed. Hardware audio lifecycle was NOT run; pass -AudioDriver WASAPI on Windows."
 }
-Write-Output "Logs and project copy: $testData"
 Write-Output "Isolated user data: $userDirName (under the platform application-data directory)"
