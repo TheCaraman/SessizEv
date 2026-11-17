@@ -76,6 +76,8 @@ func _ready() -> void:
 		var broken: Dictionary = saved.duplicate(true)
 		broken["flags"].merge(patch, true)
 		check(not SaveManager._valid_state_shape(broken), "corrupt report state rejected " + str(patch))
+	check(is_same(Day4Broadcast._rules(), Day4Broadcast._rules()) and Day4Broadcast._rules() == JSON.parse_string(FileAccess.get_file_as_string(Day4Broadcast.RULES)), "radio rules read once into class cache and match data file")
+	check(saved["flags"][Day4Broadcast.AT] == GameState.DAY_START + 15 and SaveManager._valid_state_shape(saved), "earliest report minute measured from day start is valid")
 	var orphan: Dictionary = saved.duplicate(true)
 	orphan["flags"].erase(Day4Broadcast.HEARD)
 	check(not SaveManager._valid_state_shape(orphan), "orphan claim rejected")
