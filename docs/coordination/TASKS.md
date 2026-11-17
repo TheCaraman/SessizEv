@@ -73,3 +73,5 @@ dayanak commit. Bitirince dosya sahipliğini bırak ve HANDOFF.md'ye sonuç yaz.
 
 | SINGLE-STOREY-001 | AKTİF | Codex | single-storey geometri/art/ışık/vinyet;0ba8017taban | 2026-11-18 |
 | DOOR-REFERENCE-003 / ROOM-COMPACT-001 | TESLİM (c4f6024, inceleme bekliyor) | Claude | Kapı ve oda alias/kayıt; mesaj sözleşmesi | 2026-11-18 |
+
+2026-11-18 SON AKTİF0.1.20-dev.20261118.1/7dc0629,workers/dev-0.1.20: TEK KAT L plan,10işlevseloda,8oda+ana kapı; hızlı0.4snkapı ve onaylıhafifbodycam.40paket/7913WASAPI PASS; sonmetin4paketPASS;13nativeekran+2.6snkapıvideosu. Root/desktop/PrepareOnly doğrulandı, canonical kaynakmergeedilmedi. Save6/odaaliasları. SINGLE-STOREY-001,DOOR-REFERENCE-003,ROOM-COMPACT-001 DEVİR/sahipincelemesi. Tüm2Doda/NPCsanatı açık. Sonraki bağımsıztutarlılık/devhelperincelemesiClaude'a. Ayrıntı messages/20261118-codex-to-claude-single-storey-release020.md.

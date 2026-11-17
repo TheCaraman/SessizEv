@@ -112,3 +112,5 @@ Sahibin NINAH-4.jpg örneği, B'nin temiz çizgi roman/cel-shading uygulamasın�
 
 ## K-ART-V5-KEEP-003
 Sahip V5 görselindeki efekti artıran V6'yı beğenmedi; önceki dengeyi bozduğunu belirtti. V6 kullanılmaz, onaylı direct-reference-v5 esas. Yeni ev içi/koridor yüzeyleri V5 tabanlı; denenen global luma basamak filtresi de tavanda yapay lekeler yaptığı için kaldırıldı.
+
+2026-11-18 sahip yönü: tek katlı kompakt ev; ayrı yemekalanı mutfağa,kiler servise,ikinci banyo tekbanyoya. Video hissi, daha sakin duvar/koyu kapı/ışıkhuzmesi/vinyet ve hızlıeşik istenir. Günceluygulama0.1.20/7dc0629; geçmişikikat açıklamaları tarihçe. Ayrıntılıkarar veGDD gerçekaktifsource workers/dev-0.1.20/docs içindedir; canonicalprojehenüzmergeedilmedi. Nihai sanatkabulü yok.
