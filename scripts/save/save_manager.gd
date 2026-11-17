@@ -44,6 +44,9 @@ func commit_candidate(expected: Dictionary, candidate: Dictionary, transaction_i
 	for id: String in expected["npcs"]:
 		if candidate["npcs"][id]["infected"] != expected["npcs"][id]["infected"]:
 			return ERR_INVALID_DATA
+	# The door timetable is chosen once per campaign, like the seed.
+	if candidate.get("arrival_schedule") != expected.get("arrival_schedule") or candidate.get("arrival_schedule_version") != expected.get("arrival_schedule_version"):
+		return ERR_INVALID_DATA
 	if candidate["flags"].has(marker):
 		return ERR_INVALID_DATA
 	var committed: Dictionary = candidate.duplicate(true)
@@ -187,6 +190,16 @@ func _valid_state_shape(state: Dictionary) -> bool:
 			return false
 	for key: String in ["resolved_arrivals", "completed_jobs", "reports", "evidence"]:
 		if state.has(key) and not state[key] is Array:
+			return false
+	# Version 6 timetable: optional for older saves, which keep the fixed one.
+	if state.has("arrival_schedule"):
+		if not ArrivalScheduler.valid_schedule(state["arrival_schedule"], Roster.get_ids()) or not _whole_number(state.get("arrival_schedule_version")):
+			return false
+		var visit_ids: Array = state["arrival_schedule"].map(func(entry: Dictionary) -> String: return entry["id"])
+		for arrival_id: Variant in state.get("resolved_arrivals", []):
+			if not visit_ids.has(arrival_id):
+				return false
+		if str(state.get("visitor_arrival", "")) != "" and not visit_ids.has(state["visitor_arrival"]):
 			return false
 	for value: Variant in state["resources"].values():
 		if not _whole_number(value) or float(value) < 0:

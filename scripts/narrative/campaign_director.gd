@@ -4,10 +4,10 @@ extends Node
 ## and the visits of Day 2 ("Strangers"; docs/Day2Design.md).
 ##
 ## It decides what can be done in each 2D room (room actions), brings
-## visitors to the door from resources/events/arrivals.json, and resolves the
+## visitors to the door from the campaign's stored timetable
+## (GameState.arrival_schedule, ArrivalScheduler), and resolves the
 ## night. All lasting state goes through GameState.
 
-const ARRIVALS_PATH: String = "res://resources/events/arrivals.json"
 ## Daniel will not go to bed before this.
 const EARLIEST_SLEEP_MINUTE: int = 20 * 60
 ## The last day with authored content; later mornings say so on screen.
@@ -30,8 +30,11 @@ var _confirmation_minute: int = 0
 var shelter: ShelterManager
 
 var _dialogue: DialogueRunner
-## Visits, sorted by day, then start time, then id.
-var _arrivals: Array[Dictionary] = []
+## Visits, sorted by day, then start time, then id: always the live
+## campaign's stored timetable, so a new game or a load needs no reload.
+var _arrivals: Array[Dictionary]:
+	get:
+		return GameState.arrival_schedule
 ## "room|action" of a timed action the player has been warned about once
 ## because it would outlast the visitor's patience. Pressing it again goes
 ## ahead.
@@ -49,7 +52,6 @@ func setup(dialogue: DialogueRunner) -> void:
 	night.name = "NightSession"
 	add_child(night)
 	_dialogue = dialogue
-	_load_arrivals()
 	EventBus.time_changed.connect(_check_power_time)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _repair_confirmation = false)
 	EventBus.room_view_closed.connect(func(_room: StringName) -> void: _watch_confirmation = false)
@@ -367,28 +369,6 @@ func _dialogue_for(npc_id: String) -> String:
 
 
 # --- Visits -----------------------------------------------------------------
-
-func _load_arrivals() -> void:
-	_arrivals = []
-	var json := JSON.new()
-	if json.parse(FileAccess.get_file_as_string(ARRIVALS_PATH)) != OK or not json.data is Dictionary:
-		push_error("CampaignDirector: %s could not be read" % ARRIVALS_PATH)
-		return
-	for entry: Dictionary in json.data.get("arrivals", []):
-		_arrivals.append({
-			"id": str(entry["id"]), "npc": str(entry["npc"]), "day": int(entry["day"]),
-			"start": int(entry["start"]), "end": int(entry["end"]), "dialogue": str(entry["dialogue"]),
-		})
-	_arrivals.sort_custom(_arrival_comes_first)
-
-
-## Order of visits: earlier day, then earlier start, then id alphabetically.
-static func _arrival_comes_first(a: Dictionary, b: Dictionary) -> bool:
-	if a["day"] != b["day"]:
-		return a["day"] < b["day"]
-	if a["start"] != b["start"]:
-		return a["start"] < b["start"]
-	return a["id"] < b["id"]
 
 
 func _get_arrival(arrival_id: String) -> Dictionary:

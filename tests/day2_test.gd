@@ -37,7 +37,7 @@ var _checks: int = 0
 
 func _ready() -> void:
 	TranslationServer.set_locale("en")
-	GameState.new_campaign(1)
+	_start_campaign(1)
 	_scene = SCENE.instantiate()
 	add_child(_scene)
 	_director = _scene.get_node("CampaignDirector") as CampaignDirector
@@ -136,7 +136,7 @@ func _check_all_combinations() -> void:
 
 func _run_combination(campaign_seed: int, elena: String, marcus: String, arthur: String) -> void:
 	var label: String = "[elena %s, marcus %s, arthur %s]" % [elena, marcus, arthur]
-	GameState.new_campaign(campaign_seed)
+	_start_campaign(campaign_seed)
 	var infected: Dictionary = _infection_map()
 
 	# Day 1.
@@ -199,7 +199,7 @@ func _run_combination(campaign_seed: int, elena: String, marcus: String, arthur:
 	_check(_infection_map() == infected, "%s infection must not change through play" % label)
 	var saved: String = JSON.stringify(GameState.to_dict())
 	_check(SaveManager.save_game(TEST_SLOT) == OK, "%s saving should work" % label)
-	GameState.new_campaign(999999)
+	_start_campaign(999999)
 	_check(SaveManager.load_game(TEST_SLOT), "%s loading should work" % label)
 	_check(JSON.stringify(GameState.to_dict()) == saved, "%s a version 2 save should round-trip unchanged" % label)
 	_check(_infection_map() == infected, "%s infection must not change through loading" % label)
@@ -208,7 +208,7 @@ func _run_combination(campaign_seed: int, elena: String, marcus: String, arthur:
 # --- Item 4 -----------------------------------------------------------------
 
 func _check_interrupt_and_warning() -> void:
-	GameState.new_campaign(31)
+	_start_campaign(31)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("reject", 0)
 	_sleep()
@@ -239,7 +239,7 @@ func _check_interrupt_and_warning() -> void:
 
 
 func _check_waiting_keeps_visitor() -> void:
-	GameState.new_campaign(32)
+	_start_campaign(32)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("miss", 21 * 60 + 30)
 	_sleep()
@@ -269,7 +269,7 @@ func _check_waiting_keeps_visitor() -> void:
 # --- Item 6 -----------------------------------------------------------------
 
 func _check_full_house() -> void:
-	GameState.new_campaign(33)
+	_start_campaign(33)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("admit", 0)
 	_sleep()
@@ -293,7 +293,7 @@ func _check_full_house() -> void:
 
 
 func _check_bed_rules() -> void:
-	GameState.new_campaign(34)
+	_start_campaign(34)
 	_check(GameState.admit("elena_ward", "guest_a_1"), "a free bed can be given")
 	_check(not GameState.admit("marcus_hale", "guest_a_1"), "an occupied bed cannot be given again")
 	_check(GameState.get_status("marcus_hale") == "unknown", "a refused admission changes nothing")
@@ -310,7 +310,7 @@ func _check_bed_rules() -> void:
 # --- Item 5 -----------------------------------------------------------------
 
 func _check_loading_during_visit() -> void:
-	GameState.new_campaign(35)
+	_start_campaign(35)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("reject", 0)
 	_sleep()
@@ -319,7 +319,7 @@ func _check_loading_during_visit() -> void:
 	_check(SaveManager.save_game(TEST_SLOT) == OK, "saving with a visitor waiting should work")
 	var saved: String = JSON.stringify(GameState.to_dict())
 
-	GameState.new_campaign(36)
+	_start_campaign(36)
 	_check(SaveManager.load_game(TEST_SLOT), "loading should work")
 	_check(JSON.stringify(GameState.to_dict()) == saved, "the waiting visitor should be restored exactly")
 	_check(GameState.visitor == "marcus_hale" and GameState.visitor_arrival == "d2_marcus", "same person, same visit")
@@ -345,7 +345,7 @@ func _check_loading_during_visit() -> void:
 # --- Item 11 ----------------------------------------------------------------
 
 func _check_radio() -> void:
-	GameState.new_campaign(37)
+	_start_campaign(37)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("miss", 21 * 60 + 30)
 	_sleep()
@@ -360,7 +360,7 @@ func _check_radio() -> void:
 	_room_view.close()
 
 	# Missing it on Day 2 does not lock it away: it can be heard on Day 3.
-	GameState.new_campaign(38)
+	_start_campaign(38)
 	_go_to(18 * 60 + 5)
 	_handle_visitor("miss", 21 * 60 + 30)
 	_sleep()
@@ -377,7 +377,7 @@ func _check_radio() -> void:
 # --- Item 10 ----------------------------------------------------------------
 
 func _check_shortage_is_reported() -> void:
-	GameState.new_campaign(39)
+	_start_campaign(39)
 	GameState.admit("elena_ward", "guest_a_1")
 	GameState.admit("marcus_hale", "guest_a_2")
 	GameState.resources["food"] = 5
@@ -403,7 +403,7 @@ func _check_shortage_is_reported() -> void:
 func _check_version_1_migration() -> void:
 	# A version 1 save as written before beds and visit records existed:
 	# Elena admitted on Day 1, now the morning of Day 2.
-	GameState.new_campaign(40)
+	_start_campaign(40)
 	var infected: Dictionary = _infection_map()
 	var old_npcs: Dictionary = GameState.npcs.duplicate(true)
 	old_npcs["elena_ward"]["status"] = "resident"
@@ -418,7 +418,7 @@ func _check_version_1_migration() -> void:
 		"visitor": "",
 	}
 	var through_json: Dictionary = JSON.parse_string(JSON.stringify(version_1))
-	GameState.new_campaign(41)
+	_start_campaign(41)
 	GameState.from_dict(through_json)
 
 	_check(GameState.day == 2 and GameState.minutes == 435, "migration keeps the day and time")
@@ -455,3 +455,13 @@ func _finish() -> void:
 			printerr("FAIL: " + failure)
 		print("DAY 2 TEST: FAIL (%d of %d)" % [_failures.size(), _checks])
 		get_tree().quit(1)
+
+
+## This suite checks docs/Day2Design.md's fixed visits (Marcus 10:00, Arthur
+## 15:00), so every campaign here uses that timetable instead of the seed's
+## random one (ARRIVALS-001). Random timetables are covered by
+## arrival_scheduler_test and arrival_integration_test.
+func _start_campaign(seed_value: int) -> void:
+	GameState.new_campaign(seed_value)
+	GameState.arrival_schedule = ArrivalScheduler.legacy_schedule()
+	GameState.arrival_schedule_version = 0

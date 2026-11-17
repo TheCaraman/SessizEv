@@ -76,6 +76,9 @@ func _ready() -> void:
 	check(GameState.player["energy"] == 100, "rest recovery capped")
 	GameState.new_campaign(42)
 	GameState.day = 2
+	# This check is about rest cut short by a knock: use the fixed Day 2
+	# timetable (Marcus at 10:00) rather than this seed's random one.
+	GameState.arrival_schedule = ArrivalScheduler.legacy_schedule()
 	GameState.minutes = 590
 	GameState.player["energy"] = 60
 	var rest_text: String = director.perform_room_action("daniel_bedroom", "rest")
