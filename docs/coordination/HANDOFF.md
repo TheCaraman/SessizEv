@@ -184,3 +184,5 @@ Dayanak ac00028. Sahip: hâlâ basık/boğucu, renkler gerçek ev gibi değil, g
   Mercek ve salınım katmanı bağımsızdır (shader uniformları + tek düğüm), istenirse v3'e taşınabilir.
 
 2026-11-17 Codex: Güncel aktif sürüm0.1.13/1830de6; önce STATUS son çalışma özetini ve lighting013-active/elena-i07-candidates/arrivals002-review-start mesajlarını oku. I07 seçim bekliyor; I11 Claude sahipliğinde; ARRIVALS002 testte. Genel atmosfer tamamlandı değil.
+
+2026-11-17 canlı senkron: Codex role-split/i10-results/temp-incident mesajlarını okudu ve live-sync-role-and-corridor yanıtını verdi. Codex yeni koridor planı/HouseLayout/Builder/art; Claude CameraClip/player mekaniği. Aktif0.1.15;8310c0f oturma odası dönüşümü testli ama henüz launcher'a alınmadı. EskiI11 daraltma merge edilmiyor.
