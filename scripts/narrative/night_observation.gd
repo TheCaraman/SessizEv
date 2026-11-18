@@ -21,8 +21,12 @@ static func valid(record: Dictionary) -> bool:
 	var steps: Variant = record.get("steps")
 	if not steps is Array or steps.is_empty() or not steps[0] is Dictionary:
 		return false
-	var route: Variant = rules["routes"].get(str(steps[0].get("room", "")), [])
-	if route.is_empty() or route.size() != steps.size():
+	var route: Array = []
+	for variant: Array in route_variants(rules, str(steps[0].get("room", ""))):
+		if _rooms_match(steps, variant):
+			route = variant
+			break
+	if route.is_empty():
 		return false
 	var previous: int = -1
 	var seen_in_corridor: bool = false
@@ -59,6 +63,41 @@ static func valid(record: Dictionary) -> bool:
 		return false
 	return true
 
+## Routes that a record starting in [param room] may follow: the current plan's
+## route first, then any legacy route (NIGHT-ROUTE-COMPAT-001). Records saved
+## under an older house plan stay valid; new records use the current route.
+static func route_variants(rules: Dictionary, room: String) -> Array:
+	var variants: Array = []
+	var current: Variant = rules["routes"].get(room)
+	if current is Array and not current.is_empty():
+		variants.append(current)
+	var legacy: Variant = rules.get("legacy_routes", {}).get(room)
+	if legacy is Array and not legacy.is_empty() and legacy != current:
+		variants.append(legacy)
+	return variants
+
+
+static func _rooms_match(steps: Array, route: Array) -> bool:
+	if steps.size() != route.size():
+		return false
+	for i: int in steps.size():
+		if not steps[i] is Dictionary or steps[i].get("room") != route[i]:
+			return false
+	return true
+
+
+static func _observer_trace_rooms(route: Array) -> Array:
+	var outward: Array = []
+	for room: String in route:
+		outward.append(room)
+		if room == "corridor":
+			break
+	var expected: Array = outward.duplicate()
+	for index: int in range(outward.size() - 2, -1, -1):
+		expected.append(outward[index])
+	return expected
+
+
 static func whole(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and floorf(float(value)) == float(value)
 
@@ -73,15 +112,15 @@ static func valid_completed(record: Dictionary) -> bool:
 	var observer_room: Variant = snapshot[record["observer"]].get("room")
 	if subject_room != record["steps"][0]["room"] or not rules["routes"].has(observer_room):
 		return false
-	var outward: Array = []
-	for room: String in rules["routes"][observer_room]:
-		outward.append(room)
-		if room == "corridor":
+	if not trace is Array:
+		return false
+	var expected: Array = []
+	for variant: Array in route_variants(rules, str(observer_room)):
+		var rooms: Array = _observer_trace_rooms(variant)
+		if _rooms_match(trace, rooms):
+			expected = rooms
 			break
-	var expected: Array = outward.duplicate()
-	for index: int in range(outward.size() - 2, -1, -1):
-		expected.append(outward[index])
-	if not trace is Array or trace.size() != expected.size():
+	if expected.is_empty():
 		return false
 	var previous: int = -1
 	var observing: bool = false

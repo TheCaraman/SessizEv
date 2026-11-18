@@ -95,7 +95,12 @@ func _available(id: String) -> bool:
 
 func _route_allowed(id: String) -> bool:
 	var person: Dictionary = GameState.npcs.get(id, {})
-	for room: String in ["corridor", "landing", "bathroom_upper", str(person.get("room", ""))]:
+	# The rooms this person would actually pass (NIGHT-ROUTE-COMPAT-001); the
+	# old fixed list still named the two-storey stair landing.
+	var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(NightObservation.RULES))
+	var rooms: Array = (rules["routes"].get(GameState.get_location(id), ["corridor", "bathroom_upper"]) as Array).duplicate()
+	rooms.append(str(person.get("room", "")))
+	for room: String in rooms:
 		if room in person.get("blocked_rooms", []):
 			return false
 	return true
