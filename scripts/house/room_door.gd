@@ -43,6 +43,12 @@ var _camera_start: Transform3D
 var _preview_viewport: SubViewport
 var _composition: RoomWorld
 var _power_source: PowerIncident
+## FOLEY-001: open and close cues, built on first use.
+var _sound: AudioStreamPlayer3D
+var _open_cue: AudioStreamWAV
+var _close_cue: AudioStreamWAV
+## Emitted when the door plays a cue (&"open" or &"close").
+signal sound_played(kind: StringName)
 
 func configure_leaf(leaf: Node3D, width: float) -> void:
 	_width = width
@@ -60,6 +66,13 @@ func configure_leaf(leaf: Node3D, width: float) -> void:
 	_cover.visible = false
 	transition.add_child(_cover)
 	leaf.reparent(_hinge, true)
+	_sound = AudioStreamPlayer3D.new()
+	_sound.name = "DoorSound"
+	_sound.position = Vector3(0.0, 1.05, 0.0)
+	_sound.volume_db = -9.0
+	_sound.unit_size = 4.0
+	_sound.max_distance = 20.0
+	add_child(_sound)
 	if is_front:
 		add_child(PeepholeInteraction.new())
 	EventBus.room_view_closed.connect(_on_room_view_closed)
@@ -81,6 +94,7 @@ func _on_room_view_closed(_room: StringName) -> void:
 	_held_open = false
 	_closing = true
 	_show_room_threshold()
+	_play_cue(&"close")
 	if _tween != null and _tween.is_valid():
 		_tween.kill()
 	_tween = create_tween()
@@ -151,6 +165,8 @@ func _show_room_threshold() -> void:
 	_portal.visible = true
 
 func _exit_tree() -> void:
+	if _sound != null:
+		_sound.stop()
 	if _power_source != null and _power_source.power_changed.is_connected(_on_preview_power_changed):
 		_power_source.power_changed.disconnect(_on_preview_power_changed)
 	if is_instance_valid(_camera) and _camera.is_inside_tree():
@@ -168,10 +184,29 @@ func _unhandled_input(event: InputEvent) -> void:
 	_camera = null
 	_hinge.rotation.y = 0.0
 	_portal.visible = false
+	if _sound != null:
+		_sound.stop()
 	_preview_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	_opening = false
 	EventBus.door_transition_changed.emit(false)
 	get_viewport().set_input_as_handled()
+
+
+## The leaf has its own sound: the latch and hinge as it opens, a falling
+## creak and the frame hit (timed to CLOSE_SECONDS) as it swings shut.
+func _play_cue(kind: StringName) -> void:
+	if _sound == null:
+		return
+	if kind == &"open":
+		if _open_cue == null:
+			_open_cue = Foley.make_door_open()
+		_sound.stream = _open_cue
+	else:
+		if _close_cue == null:
+			_close_cue = Foley.make_door_close(CLOSE_SECONDS)
+		_sound.stream = _close_cue
+	_sound.play()
+	sound_played.emit(kind)
 
 
 func get_interaction_prompt() -> String:
@@ -201,6 +236,7 @@ func interact(player: Node) -> void:
 		return
 	_opening = true
 	EventBus.door_transition_changed.emit(true)
+	_play_cue(&"open")
 	var direction: float = 1.0
 	if player is Node3D and to_local(player.global_position).z < 0.0:
 		direction = -1.0
