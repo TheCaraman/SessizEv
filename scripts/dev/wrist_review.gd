@@ -4,6 +4,10 @@
 ## write. Run only in an isolated copy.  --out=NAME.png (under res://docs/qa/)
 
 func _ready() -> void:
+	if not str(ProjectSettings.get_setting("application/config/custom_user_dir_name", "")).begins_with("TheQuietHours-Tests/"):
+		push_error("wrist_review runs only in an isolated project copy (tools/Run-Tests.ps1 -KeepProjectCopy).")
+		get_tree().quit(1)
+		return
 	GameState.new_campaign(42)
 	GameState.day = 3
 	GameState.minutes = 21 * 60 + 40
