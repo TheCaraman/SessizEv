@@ -1,5 +1,6 @@
 param(
     [switch]$NightDemo,
+    [switch]$WalkDemo,
     [switch]$PrepareOnly,
     [string]$GodotPath = $env:GODOT_BIN
 )
@@ -25,14 +26,15 @@ $launchCache = Join-Path $env:LOCALAPPDATA ('TheQuietHours\playtests\' + $launch
 New-Item -ItemType Directory -Path $launchCache | Out-Null
 $scene = ''
 $userData = 'Normal campaign preferences and saves'
-if ($NightDemo) {
+if ($NightDemo -or $WalkDemo) {
     $launchProject = Join-Path $launchCache 'project'
     & robocopy $sourceProject $launchProject /E /XD .git .godot docs tools build /XF override.cfg /NFL /NDL /NJH /NJS /NP | Out-Null
     if ($LASTEXITCODE -ge 8) { throw 'Deneme projesi kopyalanamadi.' }
-    $userData = 'TheQuietHours-Playtests/night-watch/' + $launchId
+    $demoName = if ($WalkDemo) { 'npc-walk' } else { 'night-watch' }
+    $userData = 'TheQuietHours-Playtests/' + $demoName + '/' + $launchId
     $overrideText = "[application]`nconfig/name=`"The Quiet Hours - Night Demo`"`nconfig/use_custom_user_dir=true`nconfig/custom_user_dir_name=`"$userData`"`n"
     [IO.File]::WriteAllText((Join-Path $launchProject 'override.cfg'), $overrideText, (New-Object Text.UTF8Encoding $false))
-    $scene = 'res://tests/manual_night_watch.tscn'
+    $scene = if ($WalkDemo) { 'res://scenes/dev/npc_walk_demo.tscn' } else { 'res://tests/manual_night_watch.tscn' }
 }
 # Refresh imported assets before launching. Each run keeps its diagnostic logs.
 $importOut = Join-Path $launchCache 'import-stdout.log'
@@ -53,7 +55,7 @@ if ($importProcess.ExitCode -ne 0 -or $importText -match '(?m)(SCRIPT ERROR:|ERR
 $projectVersion = [regex]::Match([IO.File]::ReadAllText((Join-Path $sourceProject 'project.godot')), '(?m)^config/version="([^"]+)"').Groups[1].Value
 $launchInfo = [ordered]@{
     project_version = $projectVersion
-    mode = $(if ($NightDemo) { 'night_demo' } else { 'campaign' })
+    mode = $(if ($WalkDemo) { 'npc_walk_demo' } elseif ($NightDemo) { 'night_demo' } else { 'campaign' })
     project = $launchProject
     scene = $scene
     user_data = $userData
