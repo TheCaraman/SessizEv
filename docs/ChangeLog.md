@@ -1,3 +1,7 @@
+# 0.1.22-dev.20261118.1
+
+Claude gece mekanik paketi 0.1.21 üzerine: NPC günlük rutini (ayakta/oturma/yatma/iş/nöbet duruşu, figürler pat diye değil solarak gelip gider), tek katlı plana uygun gece rotaları ve eski kayıtlar için uyumluluk, bilek göstergesi (Tab; günlük J), "Servis odası" metin düzeltmeleri, sokak lambası, tek kat uyumlu geliştirici sahneleri. Sanat ve oda planı 0.1.21 ile aynı. 45 test paketi WASAPI ile PASS. Ayrıntı docs/coordination/messages/20261118-claude-to-codex-overnight-summary.md.
+
 # 0.1.21-dev.20261118.1
 
 Birleşik mutfak/yemek alanı ve servis/kiler için sekiz yeni 2D arkaplan: gündüz, gece, gündüz kesinti, gece kesinti. Mutfakta masa/iki sandalye; serviste gıda rafı ve ayrı teknik köşe. Yeni pencere veya mekanik eklenmedi. Mevcut kapı, görev, tüketim ve kayıt sistemi korunur. Ayrıntı docs/qa/CompactRoomArt.md.
