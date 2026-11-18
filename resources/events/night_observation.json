@@ -7,6 +7,11 @@
   "allowed_adults": ["elena_ward", "marcus_hale", "arthur_bell"],
   "routes": {
     "guest_a": ["guest_a", "corridor", "bathroom_upper", "corridor", "guest_a"],
+    "guest_b": ["guest_b", "corridor", "bathroom_upper", "corridor", "guest_b"],
+    "multipurpose": ["multipurpose", "corridor", "bathroom_upper", "corridor", "multipurpose"]
+  },
+  "_legacy_note": "Routes of the two-storey plan (stair landing). Only used to keep night_witness_record saves made under that plan valid; new records always use routes (NIGHT-ROUTE-COMPAT-001).",
+  "legacy_routes": {
     "guest_b": ["guest_b", "landing", "corridor", "bathroom_upper", "corridor", "landing", "guest_b"],
     "multipurpose": ["multipurpose", "landing", "corridor", "bathroom_upper", "corridor", "landing", "multipurpose"]
   },

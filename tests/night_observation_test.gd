@@ -14,7 +14,9 @@ func fixture(origin: String) -> Dictionary:
 	for room: String in rules["routes"][origin]:
 		steps.append({"room": room, "minute": minute})
 		minute += 2
-	var seen: int = 1504 if origin == "guest_a" else 1506
+	# Seen one minute after first reaching the corridor (route-derived, so it
+	# follows route data changes; NIGHT-ROUTE-COMPAT-001).
+	var seen: int = 1501 + 2 * (rules["routes"][origin] as Array).find("corridor") + 1
 	return {"day": 3, "start": 1501, "end": minute - 2, "seen_at": seen,
 		"subject": "elena_ward", "observer": "marcus_hale", "subject_reason": "bathroom_visit", "observer_reason": "checking_after_pipe_noise", "denial_reason": "fear_of_accusation",
 		"steps": steps, "snapshot": {"elena_ward": {"status": "resident", "route_access": true}, "marcus_hale": {"status": "resident", "route_access": true}},
