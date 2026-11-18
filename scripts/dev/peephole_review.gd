@@ -7,7 +7,13 @@ extends Node
 ##   --outage       household power off
 ##   --out=NAME.png file under res://docs/qa/
 
+## Runs the full campaign session (CampaignDirector, power, arrivals), whose
+## time and power paths can autosave, so it runs ONLY in an isolated project
+## copy (tools/Run-Tests.ps1 -KeepProjectCopy) and refuses otherwise
+## (DEV-HELPER-GUARDS-001).
 func _ready() -> void:
+	if not ReviewSpots.isolated(get_tree()):
+		return
 	GameState.new_campaign(42)
 	GameState.minutes = 660
 	var file: String = "peephole-review.png"

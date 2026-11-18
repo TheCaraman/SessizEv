@@ -13,6 +13,31 @@ func check(ok: bool, label: String) -> void:
 		push_error("FAIL: " + label)
 
 
+## DEV-HELPER-GUARDS-001: any developer scene that runs the campaign session or
+## can write saves or settings must refuse to run outside an isolated copy.
+## house_blockout.gd is the game session itself, not a helper.
+const RISKY: Array[String] = ["house_blockout.tscn", "SaveManager", "Settings.set_", "Settings.restore_defaults", "CampaignDirector", "commit_candidate"]
+const NOT_HELPERS: Array[String] = ["house_blockout.gd"]
+
+
+func _check_dev_scene_guards() -> void:
+	var risky_count: int = 0
+	for file: String in DirAccess.get_files_at("res://scripts/dev"):
+		if not file.ends_with(".gd") or file in NOT_HELPERS:
+			continue
+		var source: String = FileAccess.get_file_as_string("res://scripts/dev/" + file)
+		var risky: bool = false
+		for token: String in RISKY:
+			risky = risky or source.contains(token)
+		if not risky:
+			continue
+		risky_count += 1
+		var guarded: bool = source.contains("ReviewSpots.isolated(") or source.contains("custom_user_dir_name")
+		check(guarded, "%s runs the session or writes state, so it must guard isolation" % file)
+	check(risky_count >= 8, "guard scan found the session-running helpers (%d)" % risky_count)
+	for file: String in ["peephole_review.gd", "porch_review.gd"]:
+		check(FileAccess.get_file_as_string("res://scripts/dev/" + file).contains("ReviewSpots.isolated("), "%s is guarded" % file)
+
 func _ready() -> void:
 	# Isolation check: true in this Run-Tests copy, false for the real game's
 	# user dir. Only the in-memory setting changes; the user dir in use was
@@ -27,6 +52,7 @@ func _ready() -> void:
 	ProjectSettings.set_setting(setting, before)
 	check(ReviewSpots.is_isolated(), "setting restored")
 
+	_check_dev_scene_guards()
 	check(ReviewSpots.has_floor(0), "floor 0 exists")
 	check(ReviewSpots.has_floor(HouseLayout.FLOOR_COUNT - 1), "top floor exists")
 
