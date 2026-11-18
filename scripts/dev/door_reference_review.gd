@@ -11,6 +11,8 @@ const INTERVAL: float = 0.07
 
 
 func _ready() -> void:
+	if not ReviewSpots.isolated(get_tree()):
+		return
 	GameState.new_campaign(42)
 	var scene: Node = load("res://scenes/main/house_blockout.tscn").instantiate()
 	add_child(scene)

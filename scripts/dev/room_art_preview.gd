@@ -1,4 +1,8 @@
 extends Node
+## Safe outside an isolated copy (DEV-HELPER-GUARDS-001): no campaign session,
+## no save or preference write; any GameState change stays in memory.
+## Captures write PNGs under res:// only. Opening the campaign session scene
+## or saving here would need ReviewSpots.isolated (dev_helpers_test checks).
 ## Isolated art preview. Never resolves a day or writes a game save.
 ## --room=<id>, optional --character=<id> for a guest room.
 ## --capture-room-art saves the real viewport and exits.

@@ -1,4 +1,8 @@
 extends Node
+## Safe outside an isolated copy (DEV-HELPER-GUARDS-001): no campaign session,
+## no save or preference write; any GameState change stays in memory.
+## Captures write PNGs under res:// only. Opening the campaign session scene
+## or saving here would need ReviewSpots.isolated (dev_helpers_test checks).
 ## Review-only scene: no campaign creation, save writes or production swaps.
 const OPTIONS: Array[Dictionary] = [
 	{"title": "Önceki geçici oda", "path": "res://docs/art/concepts/previous-living-room.png", "capture": "current"},
