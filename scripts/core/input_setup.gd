@@ -14,7 +14,8 @@ const DEFAULT_BINDINGS: Dictionary = {
 	&"move_right": KEY_D,
 	&"walk_fast": KEY_SHIFT,
 	&"interact": KEY_E,
-	&"journal": KEY_TAB,
+	&"wrist": KEY_TAB,
+	&"journal": KEY_J,
 	&"inventory": KEY_I,
 	&"pause": KEY_ESCAPE,
 }

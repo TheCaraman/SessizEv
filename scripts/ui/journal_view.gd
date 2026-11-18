@@ -43,12 +43,12 @@ func _ready() -> void:
 	_close_hint.offset_top = -64
 	_close_hint.offset_bottom = -24
 	_close_hint.add_theme_font_size_override("font_size", 20)
-	_close_hint.text = tr("JOURNAL_CLOSE_HINT")
+	_close_hint.text = tr("JOURNAL_CLOSE_HINT").format({"key": InputSetup.get_key_label(&"journal")})
 	add_child(_close_hint)
 	visible = false
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(_close_hint):
-		_close_hint.text = tr("JOURNAL_CLOSE_HINT")
+		_close_hint.text = tr("JOURNAL_CLOSE_HINT").format({"key": InputSetup.get_key_label(&"journal")})
 func open(content: String = "") -> void:
 	text.text = EvidenceManager.journal_text() if content.is_empty() else content
 	visible = true
