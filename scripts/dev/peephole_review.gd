@@ -34,7 +34,7 @@ func _ready() -> void:
 	player.set_physics_process(false)
 	scene.get_node("Hud").visible = false
 	if outage:
-		GameState.power_incident = {"state": "outage", "cause": "grid_loss", "inspected": []}
+		GameState.power_incident = {"state": "outage", "cause": "grid_outage", "inspected": []}
 	EventBus.time_changed.emit(GameState.day, GameState.minutes)
 	var front: RoomDoor
 	for body: Node in scene.find_children("*", "StaticBody3D", true, false):

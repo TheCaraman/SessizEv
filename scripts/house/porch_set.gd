@@ -9,7 +9,11 @@ extends Node3D
 ## Lighting uses the house's existing groups, so day, night and power cuts
 ## follow the same rules as indoors (scripts/dev/house_blockout.gd):
 ##   window_lights   - daylight on the porch, scaled by the clock
-##   moon_lights     - the street lamp and night sky fill, independent of power
+##   moon_lights     - the street lamp and night sky fill, independent of the
+##                     house supply; the street lamp itself is on the town grid,
+##                     so it goes dark in a grid outage (POWER_OUTSIDE_DARK) but
+##                     stays lit when only the house fails (loose connection,
+##                     sabotage)
 ##   electric_lights - the porch lantern, off when the house loses power
 
 const DOOR_X: float = 7.5
@@ -18,6 +22,10 @@ const SLAB_TOP: float = -0.03
 const GROUND: float = -0.18
 
 var _materials: Dictionary = {}
+## Parent of the lit street lamp; hidden when the town grid is down.
+var _street_supply: Node3D
+var _dark_head: MeshInstance3D
+var _grid_down: bool = false
 
 
 func _ready() -> void:
@@ -31,6 +39,24 @@ func _ready() -> void:
 	_kerbs_and_hedge()
 	_side_trees()
 	_lights()
+	_apply_grid(street_grid_down())
+
+
+## True when the town grid itself is down, not just the house supply.
+static func street_grid_down() -> bool:
+	return GameState.power_incident.get("state", "") == "outage" and GameState.power_incident.get("cause", "") == "grid_outage"
+
+
+func _process(_delta: float) -> void:
+	var down: bool = street_grid_down()
+	if down != _grid_down:
+		_apply_grid(down)
+
+
+func _apply_grid(down: bool) -> void:
+	_grid_down = down
+	_street_supply.visible = not down
+	_dark_head.visible = down
 
 
 func _porch() -> void:
@@ -117,8 +143,14 @@ func _street_lamp() -> void:
 	var foot := Vector3(10.6, GROUND, 25.4)
 	_cylinder(foot + Vector3(0.0, 2.2, 0.0), 0.06, 0.09, 4.4, &"iron")
 	_box(foot + Vector3(0.0, 4.35, -0.45), Vector3(0.06, 0.06, 0.9), &"iron")
-	var head := _box(foot + Vector3(0.0, 4.28, -0.85), Vector3(0.32, 0.12, 0.5), &"street_glass")
+	_street_supply = Node3D.new()
+	_street_supply.name = "StreetSupply"
+	add_child(_street_supply)
+	var head := _box(foot + Vector3(0.0, 4.28, -0.85), Vector3(0.32, 0.12, 0.5), &"street_glass", _street_supply)
 	head.name = "StreetLampHead"
+	_dark_head = _box(foot + Vector3(0.0, 4.28, -0.85), Vector3(0.32, 0.12, 0.5), &"street_glass_dark")
+	_dark_head.name = "StreetLampHeadDark"
+	_dark_head.visible = false
 
 
 func _lights() -> void:
@@ -153,7 +185,7 @@ func _lights() -> void:
 	street.omni_range = 8.0
 	street.shadow_enabled = true
 	street.add_to_group("moon_lights")
-	add_child(street)
+	_street_supply.add_child(street)
 
 
 func _material(kind: StringName) -> StandardMaterial3D:
@@ -166,6 +198,7 @@ func _material(kind: StringName) -> StandardMaterial3D:
 		&"leaves": Color(0.22, 0.36, 0.2), &"blossom_red": Color(0.72, 0.16, 0.14), &"blossom_yellow": Color(0.86, 0.72, 0.24),
 		&"fence": Color(0.32, 0.32, 0.25), &"mailbox": Color(0.24, 0.3, 0.27), &"iron": Color(0.16, 0.17, 0.16),
 		&"street_glass": Color(0.95, 0.8, 0.55),
+		&"street_glass_dark": Color(0.30, 0.28, 0.24),
 	}
 	var material := StandardMaterial3D.new()
 	material.albedo_color = colors.get(kind, Color.MAGENTA)
