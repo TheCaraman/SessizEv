@@ -6,12 +6,14 @@ var animation: AnimationPlayer
 var yaw := 0.0
 var walking := false
 var close_up := false
+var capture_phase := 0.4
+var capture_cycle := false
 func _ready() -> void:
 	if not str(ProjectSettings.get_setting("application/config/custom_user_dir_name", "")).begins_with("TheQuietHours-Tests/"):
 		push_error("Use the isolated Elena review launcher")
 		get_tree().quit(2)
 		return
-	actor = load("res://assets/models/elena_v3/elena_v3.glb").instantiate()
+	actor = load("res://assets/models/elena_v4/elena_v4.glb").instantiate()
 	add_child(actor)
 	for child: Node in actor.find_children("*", "AnimationPlayer", true, false):
 		animation = child
@@ -48,6 +50,8 @@ func _ready() -> void:
 	canvas.add_child(label)
 	_update_camera()
 	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--phase="): capture_phase = float(arg.trim_prefix("--phase="))
+		if arg == "--cycle": capture_cycle = true
 		if arg == "--angle":
 			yaw = 0.65
 			_update_camera()
@@ -104,8 +108,17 @@ func _capture(path: String) -> void:
 		get_tree().quit(7)
 		return
 	print("STEPPED_WALK_PASS")
-	animation.seek(0.4, true)
+	animation.seek(capture_phase, true)
+	animation.pause()
 	for frame in 3: await RenderingServer.frame_post_draw
 	var result := get_viewport().get_texture().get_image().save_png(path)
+	if capture_cycle:
+		for sample in 8:
+			animation.seek(float(sample)/8.0, true)
+			await RenderingServer.frame_post_draw
+			var frame_path := path.get_basename() + "-pose-%02d.png" % sample
+			if get_viewport().get_texture().get_image().save_png(frame_path) != OK:
+				result = ERR_CANT_CREATE
+		print("WALK_CYCLE_CAPTURED 8 poses")
 	print("ELENA_NATIVE_REVIEW ", error_string(result), " bones=", skeletons[0].get_bone_count())
 	get_tree().quit(0 if result == OK else 5)

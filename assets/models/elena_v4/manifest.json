@@ -1,0 +1,19 @@
+{
+  "triangles": 8360,
+  "vertices": 4244,
+  "bones": 13,
+  "animations": [
+    "Idle_8fps",
+    "Walk_8fps"
+  ],
+  "animation_samples_per_second": 8,
+  "limb_rings": 25,
+  "limb_sides": 24,
+  "joint_weights": "smooth two-bone blend",
+  "separate_bag": true,
+  "limitations": [
+    "Front projection texture; reverse uses procedural pigments",
+    "Study likeness, not approved production character",
+    "Shoulder attachment and side UV require further art refinement"
+  ]
+}
