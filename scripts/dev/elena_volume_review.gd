@@ -13,7 +13,7 @@ func _ready() -> void:
 		push_error("Use the isolated Elena review launcher")
 		get_tree().quit(2)
 		return
-	actor = load("res://assets/models/elena_v5/elena_v5.glb").instantiate()
+	actor = load("res://assets/models/elena_v6/elena_v6.glb").instantiate()
 	add_child(actor)
 	for child: Node in actor.find_children("*", "AnimationPlayer", true, false):
 		animation = child
@@ -36,7 +36,18 @@ func _ready() -> void:
 	key.rotation_degrees = Vector3(-35, -30, 0)
 	key.light_energy = 1.1
 	key.light_color = Color("ffdfbd")
+	key.shadow_enabled = true
 	add_child(key)
+	var floor_mesh := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(4, 4)
+	floor_mesh.mesh = plane
+	floor_mesh.position.y = -0.005
+	var floor_material := StandardMaterial3D.new()
+	floor_material.albedo_color = Color("273730")
+	floor_material.roughness = 1.0
+	floor_mesh.material_override = floor_material
+	add_child(floor_mesh)
 	camera = Camera3D.new()
 	camera.current = true
 	camera.fov = 37
@@ -50,6 +61,9 @@ func _ready() -> void:
 	canvas.add_child(label)
 	_update_camera()
 	for arg: String in OS.get_cmdline_user_args():
+		if arg == "--side":
+			yaw = PI * 0.5
+			_update_camera()
 		if arg == "--close":
 			close_up = true
 			_update_camera()

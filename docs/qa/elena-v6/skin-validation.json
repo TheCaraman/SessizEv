@@ -1,0 +1,9 @@
+{
+  "blended_vertices": 2880,
+  "walk_samples_checked": 8,
+  "minimum_edge_ratio": 0.4006581295754459,
+  "maximum_edge_ratio": 1.4722683194904336,
+  "weights_normalized": true,
+  "maximum_ankle_target_error_m": 1.1590383340495858e-07,
+  "maximum_support_sole_height_m": 0.0009527690708637238
+}
