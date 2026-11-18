@@ -1,0 +1,14 @@
+{
+  "_note": "I-06 pose table. Activity comes from NpcRoutine (isolated > work > sleep > phase). Each pose is a CharacterArt context; until a character has that drawing, its room drawing is used.",
+  "default_pose": "stand",
+  "poses": {
+    "isolated": "sit",
+    "work": "work",
+    "watch": "sit",
+    "sleep": "lie",
+    "morning": "stand",
+    "afternoon": "sit",
+    "evening": "sit",
+    "night": "stand"
+  }
+}

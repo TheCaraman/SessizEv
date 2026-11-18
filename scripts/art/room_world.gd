@@ -7,6 +7,11 @@ var background: TextureRect
 var props: RoomProps
 var characters: HBoxContainer
 var resident_ids: Array[String] = []
+## Figures of residents who just left, fading out (not counted as present).
+var departing: Control
+const FIGURE_FADE_SECONDS: float = 0.3
+var _poses: Dictionary = {}
+var _shown_room: StringName = &""
 var _visuals := RoomVisuals.new()
 var _placeholder: Texture2D
 var _room_id: StringName = &""
@@ -38,6 +43,11 @@ func _init() -> void:
 	characters.add_theme_constant_override(&"separation", 40)
 	characters.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(characters)
+	departing = Control.new()
+	departing.name = "Departing"
+	departing.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	departing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(departing)
 
 func show_room(id: StringName, minutes: int, powered: bool, canvas_brightness: bool = true) -> Dictionary:
 	id = StringName(RoomAliases.canonical(id))
@@ -53,18 +63,63 @@ func show_room(id: StringName, minutes: int, powered: bool, canvas_brightness: b
 	background.modulate = Settings.world_tint(visual["background_tint"]) if canvas_brightness else visual["background_tint"]
 	props.modulate = Settings.world_tint(visual["actor_tint"]) if canvas_brightness else visual["actor_tint"]
 	characters.modulate = props.modulate
-	var occupants: Array[String] = GameState.get_room_occupants(id)
-	if occupants != resident_ids:
-		for child: Node in characters.get_children():
-			characters.remove_child(child)
-			child.queue_free()
-		resident_ids = occupants.duplicate()
-		for npc_id: String in resident_ids:
-			var figure: Control = make_figure(npc_id)
-			figure.set_meta(&"npc_id", npc_id)
-			characters.add_child(figure)
+	departing.modulate = props.modulate
+	_show_occupants(id)
 	visual["available"] = available
 	return visual
+
+
+## Draws the residents in this room with their routine pose (I-06). While the
+## same room stays on screen, someone leaving fades out where they stood and
+## someone arriving (or changing pose) fades in, so nobody pops in or out.
+## resident_ids always matches GameState at once.
+func _show_occupants(id: StringName) -> void:
+	var occupants: Array[String] = GameState.get_room_occupants(id)
+	var poses: Dictionary = {}
+	for npc_id: String in occupants:
+		poses[npc_id] = NpcRoutine.pose(npc_id)
+	var same_room: bool = id == _shown_room
+	if occupants == resident_ids and poses == _poses and same_room:
+		return
+	var animate: bool = same_room and is_visible_in_tree()
+	var kept: Dictionary = {}
+	for child: Node in characters.get_children():
+		var npc_id: String = str(child.get_meta(&"npc_id", ""))
+		if same_room and npc_id in occupants and _poses.get(npc_id) == poses[npc_id]:
+			kept[npc_id] = child
+			continue
+		characters.remove_child(child)
+		if animate and child is Control:
+			_fade_out(child as Control)
+		else:
+			child.queue_free()
+	for child: Node in characters.get_children():
+		characters.remove_child(child)
+	for npc_id: String in occupants:
+		var figure: Control = kept.get(npc_id)
+		if figure == null:
+			figure = make_figure(npc_id, poses[npc_id])
+			figure.set_meta(&"npc_id", npc_id)
+			figure.set_meta(&"pose", poses[npc_id])
+			if animate:
+				figure.modulate.a = 0.0
+				create_tween().tween_property(figure, "modulate:a", 1.0, FIGURE_FADE_SECONDS)
+		characters.add_child(figure)
+	resident_ids = occupants.duplicate()
+	_poses = poses
+	_shown_room = id
+
+
+## Keeps a departing figure where it stood, above the room, while it fades.
+func _fade_out(figure: Control) -> void:
+	var at: Vector2 = figure.global_position
+	var size_now: Vector2 = figure.size
+	departing.add_child(figure)
+	figure.global_position = at
+	figure.size = size_now
+	var tween: Tween = create_tween()
+	tween.tween_property(figure, "modulate:a", 0.0, FIGURE_FADE_SECONDS)
+	tween.tween_callback(figure.queue_free)
 
 static func make_figure(npc_id: String, context: StringName = &"room") -> Control:
 	var path: String = CharacterArt.texture_path(npc_id, context)
