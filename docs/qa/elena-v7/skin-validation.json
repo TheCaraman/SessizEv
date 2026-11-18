@@ -1,0 +1,18 @@
+{
+  "blended_vertices": 3842,
+  "walk_samples_checked": 8,
+  "minimum_edge_ratio": 0.399259456475164,
+  "maximum_edge_ratio": 1.4731064179128135,
+  "weights_normalized": true,
+  "maximum_ankle_target_error_m": 1.343172518709298e-07,
+  "maximum_support_sole_height_m": 0.0009527690708637238,
+  "hand_swing_m": {
+    "LHand": 0.25830524414777756,
+    "RHand": 0.25830524414777756
+  },
+  "shoulder_lift_m": {
+    "LClavicle": 0.04494822025299072,
+    "RClavicle": 0.04494822025299072
+  },
+  "chest_pelvis_counterrotation": true
+}

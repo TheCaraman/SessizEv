@@ -1,0 +1,11 @@
+# Elena V7 / üst gövde ve eller
+
+Sahip V6bacak yürüyüşünü olumlu buldu; üstgövde/omuz/kol katılımı, dışadönük eller ve kadına uygun vücut dengesi istedi. Yüz ve ayakIK korundu. Göğüskafesi karşıdönüşü, küçük omuzkaldırma ve kolların gerçek3Dhedeflerle karşısalınımı eklendi. Clavicle veHandkemikleriyle13→17kemik. Rootyaw+.028sin,spineyaw−.070sin,head+.025sin;8poz/snkorunur. Arm/Forearm/Hand yönleri dünyahedeflerinden işlenir; motorun canlıIK'ye ihtiyacı yok.
+
+Geometri: omuzlar hafifdar,belhattı içeri,hırka kalçada dışarı; gövdealtıroota ağırlıklı. Pantolon üsthalkası daralıp kökblend aldı; önceki görüntüdeki ikigeniş üstkapakhemaltına alınır. Yetişkinkadın günlük kıyafet oranı hedeflenir; vücut abartısı eklenmedi. Eller .0025mvoxelbirleştirmeyle sürekli avuç/parmak;68derece içrotasyonla avuçlar uyluklara döner,parmaklar hafifkıvrık. Remeshsonrası baskıskinUVyeniden verildi. Parmakbağımsızrig yok.55.992üçgen28.097köşe; artış çoğunlukla elyüzeyi. Optimize edilmiş finalvarlık iddiası yok.
+
+Kaynaklar: tools/art/build_elena_v7.py,validate_elena_v7.py; source_art/elena_v7/elena_v7.blend; assets/models/elena_v7/elena_v7.glb ve PNG/importdosyaları. scripts/dev/elena_volume_review.gd V7ye bağlı. Sahne17kemikli rig/AnimationPlayer,Camera,zemin,gölge,UI içerir. H elyakınplanı,F yüz,Space walk/idle,A/Ddönüş,Escçıkış. Eroot DENE_ELENA_3D.cmd V7 Show-ElenaVolume.ps1 açar. Ayrı kullanıcıdizini;kampanya/oyuncukayıtları değiştirilmez. ÖncekiV6dalı korunur.
+
+Blendergerçekderformasyon8pozPASS:3842karışıkağırlıkköşesi;kenaroranı.39926..1.47311,normalizeweights. AyakIKkemikbaşmaxhata1.34e−7m,gerçekbasıştabanıyerdenmax.000953m. Bilekönarka salınımı iki elde.2583m,clavicletaildikeyaralık.04495m,kalça/göğüskarşıdönüş doğrulandı. Sonuçskin-validation.json;runtime/elena-v7-skin-final.log.
+
+Godot4.7.2Forward+1280x9604nativekoşu(ön/yan/açı/el):exit0stderrboş;17kemik,Idle/Walk,STEPPED_WALK_PASS. Ön/yan8'erpozda ithalLHandsalınımı.24737m(UPPER_BODY_SWING_PASS). NativehedefdokularUV/gölge incelendi. walk-front/side-contact.png ve walk-side.mp4 gerçekyakalamalardan. Son remeshUVdüzeltmesi sonrası4koşu yeniden geçti. Bu ölçümler animasyonun sahibi tarafından kabulünü veya tümkumaşkesişmelerinin yokluğunu garanti etmez. Yerinde döngü;root-motionyok;oyunevi/rota entegrasyonu yok. Arka/yanUV,saçtelleri,çantaaskısıveinceomuzbağlantısı sanat rötuşu hâlâ açık.

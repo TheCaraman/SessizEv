@@ -6,6 +6,7 @@ var animation: AnimationPlayer
 var yaw := 0.0
 var walking := false
 var close_up := false
+var hand_view := false
 var capture_phase := 0.4
 var capture_cycle := false
 func _ready() -> void:
@@ -13,7 +14,7 @@ func _ready() -> void:
 		push_error("Use the isolated Elena review launcher")
 		get_tree().quit(2)
 		return
-	actor = load("res://assets/models/elena_v6/elena_v6.glb").instantiate()
+	actor = load("res://assets/models/elena_v7/elena_v7.glb").instantiate()
 	add_child(actor)
 	for child: Node in actor.find_children("*", "AnimationPlayer", true, false):
 		animation = child
@@ -55,12 +56,15 @@ func _ready() -> void:
 	var canvas := CanvasLayer.new()
 	add_child(canvas)
 	var label := Label.new()
-	label.text = "ELENA — 3D STUDY / NOT FINAL\nA/D: rotate   Space: walk/idle   F: face   Esc: exit"
+	label.text = "ELENA V7 — 3D STUDY / NOT FINAL\nA/D: rotate   Space: walk/idle   F: face   H: hand   Esc: exit"
 	label.position = Vector2(24, 24)
 	label.add_theme_font_size_override("font_size", 22)
 	canvas.add_child(label)
 	_update_camera()
 	for arg: String in OS.get_cmdline_user_args():
+		if arg == "--hands":
+			hand_view = true
+			_update_camera()
 		if arg == "--side":
 			yaw = PI * 0.5
 			_update_camera()
@@ -84,6 +88,9 @@ func _play(suffix: String) -> void:
 func _update_camera() -> void:
 	var target := Vector3(0, 1.58 if close_up else 0.96, 0)
 	var distance := 0.85 if close_up else 3.1
+	if hand_view:
+		target = Vector3(0.28, 0.77, 0)
+		distance = 0.52
 	camera.position = target + Vector3(sin(yaw)*distance, 0.03, cos(yaw)*distance)
 	camera.look_at(target)
 func _process(delta: float) -> void:
@@ -98,6 +105,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_play("Walk_8fps" if walking else "Idle_8fps")
 		KEY_F:
 			close_up = not close_up
+			hand_view = false
+		KEY_H:
+			hand_view = not hand_view
+			close_up = false
 		KEY_ESCAPE:
 			get_tree().quit()
 func _capture(path: String) -> void:
@@ -130,12 +141,29 @@ func _capture(path: String) -> void:
 	for frame in 3: await RenderingServer.frame_post_draw
 	var result := get_viewport().get_texture().get_image().save_png(path)
 	if capture_cycle:
+		var hand_samples: Array[Vector3] = []
 		for sample in 8:
 			animation.seek(float(sample)/8.0, true)
 			await RenderingServer.frame_post_draw
+			var hand_bone := skeleton.find_bone("LHand")
+			if hand_bone < 0:
+				push_error("Imported wrist bone missing")
+				get_tree().quit(8)
+				return
+			hand_samples.append(skeleton.get_bone_global_pose(hand_bone).origin)
 			var frame_path := path.get_basename() + "-pose-%02d.png" % sample
 			if get_viewport().get_texture().get_image().save_png(frame_path) != OK:
 				result = ERR_CANT_CREATE
 		print("WALK_CYCLE_CAPTURED 8 poses")
+		var low := INF
+		var high := -INF
+		for point: Vector3 in hand_samples:
+			low = minf(low, point.z)
+			high = maxf(high, point.z)
+		if high - low < 0.15:
+			push_error("Imported arm swing is too small")
+			get_tree().quit(9)
+			return
+		print("UPPER_BODY_SWING_PASS ", high-low)
 	print("ELENA_NATIVE_REVIEW ", error_string(result), " bones=", skeletons[0].get_bone_count())
 	get_tree().quit(0 if result == OK else 5)
