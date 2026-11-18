@@ -208,7 +208,10 @@ for side,sg in [('L',-1),('R',1)]:
     hg.add(list(range(len(hand.data.vertices))),1,'REPLACE')
     # Restore printed skin after voxel union, which otherwise has no UV layer.
     hand.data.materials.clear(); hand.data.materials.append(front)
-    uv=hand.data.uv_layers.new(name='PrintedHandSkin')
+    while hand.data.uv_layers:
+        hand.data.uv_layers.remove(hand.data.uv_layers[0])
+    uv=hand.data.uv_layers.new(name='ReferenceProjection')
+    uv.active_render=True
     for poly in hand.data.polygons:
         poly.material_index=0
         for li in poly.loop_indices:
