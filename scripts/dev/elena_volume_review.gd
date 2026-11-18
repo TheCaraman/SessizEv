@@ -13,7 +13,7 @@ func _ready() -> void:
 		push_error("Use the isolated Elena review launcher")
 		get_tree().quit(2)
 		return
-	actor = load("res://assets/models/elena_v4/elena_v4.glb").instantiate()
+	actor = load("res://assets/models/elena_v5/elena_v5.glb").instantiate()
 	add_child(actor)
 	for child: Node in actor.find_children("*", "AnimationPlayer", true, false):
 		animation = child
@@ -50,6 +50,9 @@ func _ready() -> void:
 	canvas.add_child(label)
 	_update_camera()
 	for arg: String in OS.get_cmdline_user_args():
+		if arg == "--close":
+			close_up = true
+			_update_camera()
 		if arg.begins_with("--phase="): capture_phase = float(arg.trim_prefix("--phase="))
 		if arg == "--cycle": capture_cycle = true
 		if arg == "--angle":
