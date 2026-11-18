@@ -185,7 +185,7 @@ TRUST_DISTRUSTFUL,"Distrustful","Güvensiz"
 TRUST_NEUTRAL,"Neutral","Tarafsız"
 TRUST_COOPERATIVE,"Cooperative","İşbirlikçi"
 TRUST_LOYAL,"Loyal","Sadık"
-POWER_WAKE,"At 23:00 the house lights go out. Check the utility room. Tab in corridor: journal.","Saat 23:00: ev ışıkları söndü. Tesisat odasını kontrol et. Koridorda Tab: günlük."
+POWER_WAKE,"At 23:00 the house lights go out. Check the utility room. Tab in corridor: journal.","Saat 23:00: ev ışıkları söndü. Servis odasını kontrol et. Koridorda Tab: günlük."
 WATCH_ACTION,Stay awake tonight (up to 40 energy),Bu gece uyanık kal (en çok 40 enerji)
 WATCH_WAIT_ACTION,Wait until {time},Saat {time} olana kadar bekle
 WATCH_CONFIRM,"The watch starts at 23:00, or now if later. An eight-hour watch costs 40 energy; a late start only counts the hours ahead. You can investigate or sleep for the remaining hours. Press again to begin; another action or leaving this room cancels.","Nöbet 23:00'te, daha geçse şimdi başlar. Sekiz saatlik nöbet 40 enerjiye mal olur; geç başlarsan yalnızca kalan süre sayılır. Araştırabilir veya kalan saatleri uyuyabilirsin. Başlamak için tekrar bas; başka eylem veya odadan çıkmak iptal eder."
@@ -237,8 +237,8 @@ DAY4_REVIEW_TITLE,DAY 4 — LAST NIGHT,GÜN 4 — DÜN GECE
 DAY4_REVIEW_INTRO,The lights went out. What happened still needs to be understood.,Işıklar söndü. Ne olduğunu hâlâ anlamak gerekiyor.
 DAY4_REVIEW_LIMIT,This review contains recorded observations only. It does not establish who is infected.,Bu değerlendirme yalnızca kaydedilmiş gözlemleri içerir. Kimin enfekte olduğunu belirlemez.
 DAY4_REVIEW_RESIDENTS,Residents currently in the shelter: {count},Şu anda evde kalan kişi: {count}
-DAY4_REVIEW_NO_RECORDS,No observations have been recorded. The utility room may still offer things to examine.,Henüz gözlem kaydedilmedi. Tesisat odasında incelenebilecek şeyler olabilir.
-DAY4_REVIEW_NEXT,You can return to the utility room or continue investigating. No resident has been judged by this review.,Tesisat odasına dönebilir veya araştırmaya devam edebilirsin. Bu değerlendirmede hiçbir sakin hakkında hüküm verilmedi.
+DAY4_REVIEW_NO_RECORDS,No observations have been recorded. The utility room may still offer things to examine.,Henüz gözlem kaydedilmedi. Servis odasında incelenebilecek şeyler olabilir.
+DAY4_REVIEW_NEXT,You can return to the utility room or continue investigating. No resident has been judged by this review.,Servis odasına dönebilir veya araştırmaya devam edebilirsin. Bu değerlendirmede hiçbir sakin hakkında hüküm verilmedi.
 DAY4_REVIEW_SAVE_FAILED,The review could not be saved. Nothing changed. Try again or leave.,Değerlendirme kaydedilemedi. Hiçbir şey değişmedi. Tekrar dene veya çık.
 DAY4_REVIEW_LEGACY,There is no usable incident record for last night. Missing records do not prove that anything happened.,Dün geceye ait kullanılabilir olay kaydı yok. Eksik kayıt bir şey yaşandığını kanıtlamaz.
 JUDGMENT_EXPEL_ACTION,Ask {name} to leave,{name} evden ayrılsın
