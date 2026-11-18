@@ -83,6 +83,10 @@ func _physics_process(_delta: float) -> void:
 			)
 			Input.action_release(&"move_forward")
 			Input.action_release(&"walk_fast")
+		# FOLEY-001: let the last footstep finish (0.24 s) before quitting, as
+		# the real game does (it quits from a menu, standing still). A voice
+		# still sounding at quit is reported as leaked by the WASAPI gate.
+		780:
 			_finish()
 
 

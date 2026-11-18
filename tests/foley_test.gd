@@ -68,14 +68,18 @@ func _test_synthesis() -> void:
 		check(absi(cue.data.decode_s16(cue.data.size() - 2)) < 200, "cue ends quietly, no click")
 	check(takes[0].get_length() < 0.3, "a footstep is short (%.2f s)" % takes[0].get_length())
 	check(Foley.peak_time(takes[2]) < 0.06, "a footstep hits at once")
+	for take: AudioStreamWAV in takes:
+		var bright: float = _brightness(take)
+		check(bright < 300.0, "footsteps are dull wood, not a bright click (centre ~%.0f Hz)" % bright)
 	# Open: the latch at the very start, then the creak while the leaf swings.
 	check(_peak(open, 0.0, 0.03) > 6000, "opening starts with the latch")
-	check(_rms(open, 0.12, RoomDoor.OPEN_SECONDS) > 800.0, "the hinge creaks while the door opens (rms %.0f)" % _rms(open, 0.12, RoomDoor.OPEN_SECONDS))
+	check(_rms(open, 0.15, 0.45) > 250.0 and _rms(open, 0.15, 0.45) < _rms(open, 0.08, 0.12), "the swing is heard, quieter than the latch (rms %.0f)" % _rms(open, 0.15, 0.45))
 	check(open.get_length() >= RoomDoor.OPEN_SECONDS, "opening cue covers the swing")
 	# Close: the loudest moment is the leaf meeting the frame, at CLOSE_SECONDS.
 	var hit: float = Foley.peak_time(close)
+	print("door open rms: handle %.0f bolt %.0f swing %.0f | close: swing %.0f hit %.0f tail %.0f" % [_rms(open, 0.0, 0.05), _rms(open, 0.08, 0.12), _rms(open, 0.15, 0.45), _rms(close, 0.05, RoomDoor.CLOSE_SECONDS - 0.05), _rms(close, RoomDoor.CLOSE_SECONDS, RoomDoor.CLOSE_SECONDS + 0.05), _rms(close, RoomDoor.CLOSE_SECONDS + 0.1, close.get_length())])
 	check(absf(hit - RoomDoor.CLOSE_SECONDS) < 0.05, "the door hits the frame when the swing ends (%.2f s)" % hit)
-	check(_rms(close, 0.05, RoomDoor.CLOSE_SECONDS - 0.1) > 500.0, "it creaks on the way shut")
+	check(_rms(close, 0.05, RoomDoor.CLOSE_SECONDS - 0.1) > 200.0 and _rms(close, 0.05, RoomDoor.CLOSE_SECONDS - 0.1) * 3.0 < _rms(close, RoomDoor.CLOSE_SECONDS, RoomDoor.CLOSE_SECONDS + 0.05), "the swing is heard before the hit, well under it")
 	check(close.get_length() > RoomDoor.CLOSE_SECONDS + 0.1, "the latch is heard after the hit")
 	check(open.data != close.data and _rms(open, 0.0, 0.4) != _rms(close, 0.0, 0.4), "opening and closing sound different")
 	check(GameState.to_dict() == before, "building sounds never changes the campaign")
@@ -338,6 +342,21 @@ func _peak(cue: AudioStreamWAV, from: float, to: float) -> int:
 	for i: int in range(int(from * cue.mix_rate), mini(int(to * cue.mix_rate), cue.data.size() / 2)):
 		best = maxi(best, absi(cue.data.decode_s16(i * 2)))
 	return best
+
+
+## Rough spectral centre (Hz) from the energy of the first difference: how
+## bright a cue sounds. The first footstep takes measured ~430 Hz and were
+## judged too sharp; the wooden ones are ~160-220 Hz.
+func _brightness(cue: AudioStreamWAV) -> float:
+	var energy: float = 0.0
+	var change: float = 0.0
+	var last: float = 0.0
+	for i: int in cue.data.size() / 2:
+		var value: float = cue.data.decode_s16(i * 2)
+		energy += value * value
+		change += (value - last) * (value - last)
+		last = value
+	return cue.mix_rate / TAU * sqrt(change / maxf(energy, 1.0))
 
 
 func _rms(cue: AudioStreamWAV, from: float, to: float) -> float:

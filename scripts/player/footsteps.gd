@@ -20,10 +20,10 @@ const STEP_LENGTH: float = BodyCamMotion.STRIDE * 0.5
 const FIRST_STEP: float = BodyCamMotion.STRIDE * 0.25
 ## Slower than this (m/s), a footfall makes no sound (shuffling to a stop).
 const MIN_SPEED: float = 0.6
-const WALK_VOLUME_DB: float = -15.0
-const FAST_VOLUME_DB: float = -11.5
+const WALK_VOLUME_DB: float = -21.0
+const FAST_VOLUME_DB: float = -17.5
 ## Random pitch range of each step (AudioStreamRandomizer.random_pitch).
-const PITCH_SPREAD: float = 1.06
+const PITCH_SPREAD: float = 1.04
 
 var _player: PlayerController
 var _door_transition: bool = false
@@ -40,7 +40,7 @@ func _ready() -> void:
 	var takes := AudioStreamRandomizer.new()
 	takes.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM_NO_REPEATS
 	takes.random_pitch = PITCH_SPREAD
-	takes.random_volume_offset_db = 1.5
+	takes.random_volume_offset_db = 1.0
 	for variant: int in Foley.FOOTSTEP_VARIANTS:
 		takes.add_stream(-1, Foley.make_footstep(variant))
 	stream = takes
