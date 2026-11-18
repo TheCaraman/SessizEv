@@ -29,7 +29,7 @@ func _ready() -> void:
 	_steps = _player.get_node("Footsteps") as Footsteps
 	_body = _player.get_node("BodyCam") as BodyCamMotion
 	check(_steps != null and _steps.stream is AudioStreamRandomizer, "player carries footsteps with several takes")
-	check((_steps.stream as AudioStreamRandomizer).streams_count == Foley.FOOTSTEP_VARIANTS, "every take is in the randomizer")
+	check((_steps.stream as AudioStreamRandomizer).streams_count == Foley.footstep_takes().size() and Foley.footstep_takes().size() >= 2, "every take is in the randomizer")
 	check((_steps.stream as AudioStreamRandomizer).playback_mode == AudioStreamRandomizer.PLAYBACK_RANDOM_NO_REPEATS, "the same take never plays twice in a row")
 	_steps.stepped.connect(func(speed: float) -> void:
 		_heard.append({"at": Time.get_ticks_msec(), "speed": speed, "phase": _body._phase, "walked": _steps.walked()}))
@@ -83,12 +83,36 @@ func _test_synthesis() -> void:
 	check(close.get_length() > RoomDoor.CLOSE_SECONDS + 0.1, "the latch is heard after the hit")
 	check(open.data != close.data and _rms(open, 0.0, 0.4) != _rms(close, 0.0, 0.4), "opening and closing sound different")
 	check(GameState.to_dict() == before, "building sounds never changes the campaign")
+	_test_recordings()
 	if "--export-audio" in OS.get_cmdline_user_args():
 		DirAccess.make_dir_recursive_absolute("res://docs/qa/foley")
 		for variant: int in takes.size():
 			check(takes[variant].save_to_wav("res://docs/qa/foley/footstep-%d.wav" % variant) == OK, "export footstep sample")
 		check(open.save_to_wav("res://docs/qa/foley/door-open.wav") == OK, "export door open sample")
 		check(close.save_to_wav("res://docs/qa/foley/door-close.wav") == OK, "export door close sample")
+
+
+## Recorded foley (made by Codex) replaces the synthesized cues when present,
+## and must fit the timing the door and footsteps rely on.
+func _test_recordings() -> void:
+	var open: AudioStream = Foley.recorded_cue("door_open")
+	var close: AudioStream = Foley.recorded_cue("door_close")
+	check((Foley.door_open() is AudioStreamWAV) if open == null else Foley.door_open() == open, "door opening uses the recording when there is one")
+	check((Foley.door_close(RoomDoor.CLOSE_SECONDS) is AudioStreamWAV) if close == null else Foley.door_close(RoomDoor.CLOSE_SECONDS) == close, "door closing uses the recording when there is one")
+	if open != null:
+		check(open.get_length() >= 0.2 and open.get_length() <= 1.5, "recorded door_open is 0.2-1.5 s (%.2f)" % open.get_length())
+	if close != null:
+		check(close.get_length() > RoomDoor.CLOSE_SECONDS + 0.05 and close.get_length() <= 1.8, "recorded door_close runs past the hit at %.2f s (%.2f)" % [RoomDoor.CLOSE_SECONDS, close.get_length()])
+		if close is AudioStreamWAV:
+			var hit: float = Foley.peak_time(close as AudioStreamWAV)
+			check(absf(hit - RoomDoor.CLOSE_SECONDS) < 0.06, "recorded door_close hits the frame at %.2f s (%.2f)" % [RoomDoor.CLOSE_SECONDS, hit])
+	var recorded_steps: int = 0
+	while Foley.recorded_cue("footstep_%d" % recorded_steps) != null:
+		var take: AudioStream = Foley.recorded_cue("footstep_%d" % recorded_steps)
+		check(take.get_length() >= 0.05 and take.get_length() <= 0.6, "recorded footstep_%d is one short step (%.2f s)" % [recorded_steps, take.get_length()])
+		recorded_steps += 1
+	check(recorded_steps == 0 or recorded_steps >= 2, "at least two recorded footsteps, so steps can vary")
+	check(Foley.footstep_takes().size() == (recorded_steps if recorded_steps > 0 else Foley.FOOTSTEP_VARIANTS), "footsteps use the recordings when there are any")
 
 
 func _test_walking() -> void:
@@ -255,7 +279,7 @@ func _test_real_door() -> void:
 	door.interact(player)
 	door.interact(player)
 	check(cues == [&"open"], "opening plays the opening cue once")
-	check(sound.stream != null and absf(sound.stream.get_length() - Foley.DOOR_OPEN_SECONDS) < 0.01, "the opening cue is loaded")
+	check(sound.stream != null and sound.stream.get_length() >= RoomDoor.OPEN_SECONDS * 0.5, "the opening cue is loaded")
 	var open_stream: AudioStream = sound.stream
 	await get_tree().create_timer(RoomDoor.TRANSITION_SECONDS + 0.4).timeout
 	check(room.is_open(), "room reached")

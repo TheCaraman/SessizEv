@@ -45,8 +45,8 @@ var _composition: RoomWorld
 var _power_source: PowerIncident
 ## FOLEY-001: open and close cues, built on first use.
 var _sound: AudioStreamPlayer3D
-var _open_cue: AudioStreamWAV
-var _close_cue: AudioStreamWAV
+var _open_cue: AudioStream
+var _close_cue: AudioStream
 ## Emitted when the door plays a cue (&"open" or &"close").
 signal sound_played(kind: StringName)
 
@@ -199,11 +199,11 @@ func _play_cue(kind: StringName) -> void:
 		return
 	if kind == &"open":
 		if _open_cue == null:
-			_open_cue = Foley.make_door_open()
+			_open_cue = Foley.door_open()
 		_sound.stream = _open_cue
 	else:
 		if _close_cue == null:
-			_close_cue = Foley.make_door_close(CLOSE_SECONDS)
+			_close_cue = Foley.door_close(CLOSE_SECONDS)
 		_sound.stream = _close_cue
 	_sound.play()
 	sound_played.emit(kind)

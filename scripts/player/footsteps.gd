@@ -41,8 +41,8 @@ func _ready() -> void:
 	takes.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM_NO_REPEATS
 	takes.random_pitch = PITCH_SPREAD
 	takes.random_volume_offset_db = 1.0
-	for variant: int in Foley.FOOTSTEP_VARIANTS:
-		takes.add_stream(-1, Foley.make_footstep(variant))
+	for take: AudioStream in Foley.footstep_takes():
+		takes.add_stream(-1, take)
 	stream = takes
 	max_polyphony = 2
 	volume_db = WALK_VOLUME_DB

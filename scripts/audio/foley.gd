@@ -5,11 +5,20 @@ extends RefCounted
 ## shut. Every cue is built from fixed seeds, so the same call always returns
 ## the same samples. Nothing here touches campaign state.
 ##
+## Recorded foley wins: a file in RECORDED_DIR replaces the synthesized cue
+## (see door_open(), door_close(), footstep_takes()). The synthesized cues
+## remain the fallback when no recording is there.
+##
 ## Each caller builds its own streams (no shared cache): a stream is released
 ## together with the node that plays it, which the hardware audio lifecycle
 ## gate relies on.
 
 const RATE: int = 22050
+## Recorded cues, made by Codex (art/sound). Names, without extension:
+## door_open, door_close (the leaf hits the frame at RoomDoor.CLOSE_SECONDS
+## into the file), footstep_0, footstep_1, ... (any number, one step each).
+const RECORDED_DIR: String = "res://assets/audio/foley/"
+const RECORDED_EXTENSIONS: Array[String] = ["ogg", "wav"]
 ## Peak level every cue is normalized to (of full scale).
 const PEAK: float = 0.6
 ## Number of distinct footstep takes.
@@ -18,6 +27,43 @@ const FOOTSTEP_SECONDS: float = 0.24
 const DOOR_OPEN_SECONDS: float = 0.55
 ## The close cue lasts until shortly after the latch.
 const DOOR_CLOSE_TAIL: float = 0.25
+
+
+## The door opening cue: the recording if there is one.
+static func door_open() -> AudioStream:
+	var recorded: AudioStream = recorded_cue("door_open")
+	return recorded if recorded != null else make_door_open()
+
+
+## The door closing cue, hit at [param shut_at] seconds: the recording if
+## there is one (it must put the hit at the same moment).
+static func door_close(shut_at: float) -> AudioStream:
+	var recorded: AudioStream = recorded_cue("door_close")
+	return recorded if recorded != null else make_door_close(shut_at)
+
+
+## Footstep takes: every recorded footstep_N in order, or the synthesized
+## ones when none is recorded.
+static func footstep_takes() -> Array[AudioStream]:
+	var takes: Array[AudioStream] = []
+	while true:
+		var recorded: AudioStream = recorded_cue("footstep_%d" % takes.size())
+		if recorded == null:
+			break
+		takes.append(recorded)
+	if takes.is_empty():
+		for variant: int in FOOTSTEP_VARIANTS:
+			takes.append(make_footstep(variant))
+	return takes
+
+
+## A recorded cue by name, or null.
+static func recorded_cue(cue: String) -> AudioStream:
+	for extension: String in RECORDED_EXTENSIONS:
+		var path: String = RECORDED_DIR + cue + "." + extension
+		if ResourceLoader.exists(path):
+			return load(path) as AudioStream
+	return null
 
 
 ## One footstep take: a soft heel thud on boards, then a lighter toe contact
